@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navigation Bars · Day 001 · Thecore</title>
+  <meta name="description" content="Six production-ready, accessible navigation bar patterns. Day 001 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    /* Resolve the theme before first paint so there is never a light/dark flash. */
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Icon sprite (Lucide-style, 24px grid) ===================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevrons" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16v-5"/><path d="M12 16V7"/><path d="M17 16v-3"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <!-- ===================== Showcase header ===================== -->
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="#main">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to pattern">
+        <a href="#v-aurora">01</a>
+        <a href="#v-atlas">02</a>
+        <a href="#v-halden">03</a>
+        <a href="#v-nova">04</a>
+        <a href="#v-pulse">05</a>
+        <a href="#v-dock">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Intro ===================== -->
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 001 / 100</span> Phase 1 · UI Components</p>
+      <h1>Navigation <em>Bars</em></h1>
+      <p class="lead">
+        Six production-grade navigation patterns, from marketing sites to SaaS dashboards.
+        Each one is keyboard-accessible, theme-aware and responsive to its <strong>container</strong>,
+        not just the screen. Use the device toggles on any frame to watch it adapt.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>patterns</li>
+        <li><strong>0</strong>dependencies</li>
+        <li><strong>WCAG 2.2</strong>keyboard &amp; ARIA</li>
+        <li><strong>Light + Dark</strong>themes</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- =================================================================
+           01 · AURORA: Floating glass pill
+           ================================================================= -->
+      <section class="demo" id="v-aurora" aria-labelledby="v-aurora-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="v-aurora-title">Aurora <span>· Floating glass pill</span></h2>
+            <p class="demo__desc">A frosted, floating pill for modern SaaS and product sites. A spring-eased highlight follows your cursor and settles back on the active page. On small screens it becomes a dropdown sheet with staggered links.</p>
+            <ul class="demo__tags" role="list"><li>Glassmorphism</li><li>Sliding indicator</li><li>Dropdown sheet</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.app</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Aurora preview">
+
+              <div class="aurora-site">
+                <div class="aurora-bg" aria-hidden="true"><span></span><span></span><span></span></div>
+
+                <header class="aurora" data-nav="aurora">
+                  <nav class="aurora__bar" aria-label="Main">
+                    <a class="aurora__logo" href="#" aria-label="Lumen home">
+                      <svg class="aurora__mark" viewBox="0 0 24 24" aria-hidden="true">
+                        <defs><linearGradient id="lumen-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#22c3e6"/></linearGradient></defs>
+                        <path fill="url(#lumen-g)" d="M12 2c.7 5.2 4.8 9.3 10 10-5.2.7-9.3 4.8-10 10-.7-5.2-4.8-9.3-10-10 5.2-.7 9.3-4.8 10-10z"/>
+                      </svg>
+                      <span>Lumen</span>
+                    </a>
+
+                    <div class="aurora__track">
+                      <ul class="aurora__links" role="list">
+                        <li><a href="#" aria-current="page">Home</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Customers</a></li>
+                        <li><a href="#">Changelog</a></li>
+                      </ul>
+                      <span class="aurora__indicator" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="aurora__actions">
+                      <a class="btn btn--ghost aurora__signin" href="#">Sign in</a>
+                      <a class="btn btn--glow" href="#">Get started <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></a>
+                      <button class="hamburger aurora__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="aurora-sheet"><span></span><span></span></button>
+                    </div>
+                  </nav>
+                </header>
+
+                <div class="aurora-sheet" id="aurora-sheet" data-state="closed">
+                  <ul role="list">
+                    <li style="--i:0"><a class="aurora-sheet__link" href="#" aria-current="page">Home <svg class="icon"><use href="#i-arrow-right"/></svg></a></li>
+                    <li style="--i:1"><a class="aurora-sheet__link" href="#">Features <svg class="icon"><use href="#i-arrow-right"/></svg></a></li>
+                    <li style="--i:2"><a class="aurora-sheet__link" href="#">Pricing <svg class="icon"><use href="#i-arrow-right"/></svg></a></li>
+                    <li style="--i:3"><a class="aurora-sheet__link" href="#">Customers <svg class="icon"><use href="#i-arrow-right"/></svg></a></li>
+                    <li style="--i:4"><a class="aurora-sheet__link" href="#">Changelog <svg class="icon"><use href="#i-arrow-right"/></svg></a></li>
+                  </ul>
+                  <div class="aurora-sheet__cta" style="--i:5">
+                    <a class="btn btn--outline btn--block" href="#">Sign in</a>
+                  </div>
+                </div>
+
+                <div class="mock-hero">
+                  <p class="mock-hero__badge"><span>New</span> Lumen 3.0 is live: realtime collaboration</p>
+                  <h3 class="mock-hero__title">Ship ideas at the<br><span class="gradient-text">speed of light.</span></h3>
+                  <p class="mock-hero__sub">The workspace where product teams plan, build and launch, all in one beautifully fast place.</p>
+                </div>
+                <div class="mock-grid">
+                  <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                  <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                  <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                  <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                  <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                  <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the links, then scroll the frame to see the glass blur the content behind it.</p>
+      </section>
+
+      <!-- =================================================================
+           02 · ATLAS: SaaS mega menu
+           ================================================================= -->
+      <section class="demo" id="v-atlas" aria-labelledby="v-atlas-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="v-atlas-title">Atlas <span>· SaaS mega menu</span></h2>
+            <p class="demo__desc">An enterprise-style mega menu like the ones Stripe and Vercel use. Hover-intent timing stops accidental opens, panels switch instantly once one is already open, and on mobile it becomes a slide-in drawer with accordions.</p>
+            <ul class="demo__tags" role="list"><li>Mega menu</li><li>Hover intent</li><li>Off-canvas drawer</li><li>Accordion</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Atlas preview">
+
+              <header class="atlas" data-nav="atlas">
+                <nav class="atlas__bar" aria-label="Main">
+                  <a class="atlas__logo" href="#" aria-label="Atlas home">
+                    <svg class="atlas__mark" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7"/><path class="cut" d="M7 17.5 12 6.5l5 11M9 13.5h6"/></svg>
+                    <span>Atlas</span>
+                  </a>
+
+                  <ul class="atlas__menu" role="list">
+                    <li class="atlas__item">
+                      <button class="atlas__trigger" type="button" aria-expanded="false" aria-controls="atlas-products" data-mega-trigger>
+                        Products <svg class="icon"><use href="#i-chevron-down"/></svg>
+                      </button>
+                      <div class="mega" id="atlas-products" data-state="closed">
+                        <div class="mega__inner">
+                          <div class="mega__col">
+                            <p class="mega__label">Platform</p>
+                            <ul role="list">
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 290"><svg class="icon"><use href="#i-zap"/></svg></span><span><strong>Automations</strong><small>Trigger workflows from any event</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 230"><svg class="icon"><use href="#i-chart"/></svg></span><span><strong>Analytics</strong><small>Realtime insight into every metric</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 155"><svg class="icon"><use href="#i-shield"/></svg></span><span><strong>Security</strong><small>SOC 2, SSO and audit logs built-in</small></span></a></li>
+                            </ul>
+                          </div>
+                          <div class="mega__col">
+                            <p class="mega__label">Developers</p>
+                            <ul role="list">
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 30"><svg class="icon"><use href="#i-code"/></svg></span><span><strong>API reference</strong><small>Typed SDKs for every language</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 340"><svg class="icon"><use href="#i-layers"/></svg></span><span><strong>Integrations</strong><small>Connect 200+ tools in a click</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 200"><svg class="icon"><use href="#i-globe"/></svg></span><span><strong>Edge network</strong><small>Sub-50ms responses worldwide</small></span></a></li>
+                            </ul>
+                          </div>
+                          <a class="mega__feature" href="#">
+                            <span class="mega__feature-tag">New</span>
+                            <strong>Atlas AI is here</strong>
+                            <span class="mega__feature-text">Draft, summarise and automate with an assistant that understands your whole workspace.</span>
+                            <span class="mega__feature-cta">Read the launch post <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+                          </a>
+                        </div>
+                        <div class="mega__footer">
+                          <div class="mega__footer-inner">
+                            <a href="#">Talk to sales</a>
+                            <a href="#">Changelog</a>
+                            <span class="mega__status"><i aria-hidden="true"></i>All systems normal</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="atlas__item">
+                      <button class="atlas__trigger" type="button" aria-expanded="false" aria-controls="atlas-solutions" data-mega-trigger>
+                        Solutions <svg class="icon"><use href="#i-chevron-down"/></svg>
+                      </button>
+                      <div class="mega" id="atlas-solutions" data-state="closed">
+                        <div class="mega__inner">
+                          <div class="mega__col">
+                            <p class="mega__label">By team</p>
+                            <ul role="list">
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 260"><svg class="icon"><use href="#i-code"/></svg></span><span><strong>Engineering</strong><small>Ship faster with fewer handoffs</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 340"><svg class="icon"><use href="#i-users"/></svg></span><span><strong>Marketing</strong><small>Campaigns, launches and assets</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 60"><svg class="icon"><use href="#i-sliders"/></svg></span><span><strong>Operations</strong><small>Processes that run themselves</small></span></a></li>
+                            </ul>
+                          </div>
+                          <div class="mega__col">
+                            <p class="mega__label">By size</p>
+                            <ul role="list">
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 180"><svg class="icon"><use href="#i-zap"/></svg></span><span><strong>Startups</strong><small>Free for your first year</small></span></a></li>
+                              <li><a class="mega__link" href="#"><span class="mega__icon" style="--tint: 220"><svg class="icon"><use href="#i-shield"/></svg></span><span><strong>Enterprise</strong><small>Governance, scale and support</small></span></a></li>
+                            </ul>
+                          </div>
+                          <a class="mega__feature mega__feature--alt" href="#">
+                            <span class="mega__feature-tag">Case study</span>
+                            <strong>Northwind cut onboarding time by 63%</strong>
+                            <span class="mega__feature-text">How a 400-person team replaced six tools with one workspace.</span>
+                            <span class="mega__feature-cta">Read the story <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+                          </a>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="atlas__item"><a class="atlas__trigger" href="#">Developers</a></li>
+                    <li class="atlas__item"><a class="atlas__trigger" href="#">Pricing</a></li>
+                  </ul>
+
+                  <div class="atlas__actions">
+                    <a class="btn btn--ghost atlas__sales" href="#">Contact sales</a>
+                    <a class="btn btn--primary btn--sm" href="#">Start free</a>
+                    <button class="hamburger atlas__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="atlas-drawer"><span></span><span></span></button>
+                  </div>
+                </nav>
+                <div class="atlas__scrim" aria-hidden="true"></div>
+              </header>
+
+              <div class="atlas-drawer" id="atlas-drawer" data-state="closed">
+                <div class="atlas-drawer__backdrop" data-close></div>
+                <div class="atlas-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+                  <div class="atlas-drawer__head">
+                    <span class="atlas__logo"><svg class="atlas__mark" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7"/><path class="cut" d="M7 17.5 12 6.5l5 11M9 13.5h6"/></svg><span>Atlas</span></span>
+                    <button class="icon-btn" type="button" data-close aria-label="Close menu"><svg class="icon"><use href="#i-x"/></svg></button>
+                  </div>
+                  <div class="atlas-drawer__body">
+                    <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="atlas-acc-products">Products <svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion__panel" id="atlas-acc-products">
+                      <div>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 290"><svg class="icon"><use href="#i-zap"/></svg></span><span><strong>Automations</strong><small>Trigger workflows from any event</small></span></a>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 230"><svg class="icon"><use href="#i-chart"/></svg></span><span><strong>Analytics</strong><small>Realtime insight into every metric</small></span></a>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 155"><svg class="icon"><use href="#i-shield"/></svg></span><span><strong>Security</strong><small>SOC 2, SSO and audit logs</small></span></a>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 30"><svg class="icon"><use href="#i-code"/></svg></span><span><strong>API reference</strong><small>Typed SDKs for every language</small></span></a>
+                      </div>
+                    </div>
+                    <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="atlas-acc-solutions">Solutions <svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion__panel" id="atlas-acc-solutions">
+                      <div>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 260"><svg class="icon"><use href="#i-code"/></svg></span><span><strong>Engineering</strong><small>Ship faster with fewer handoffs</small></span></a>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 340"><svg class="icon"><use href="#i-users"/></svg></span><span><strong>Marketing</strong><small>Campaigns, launches and assets</small></span></a>
+                        <a class="mega__link" href="#"><span class="mega__icon" style="--tint: 220"><svg class="icon"><use href="#i-shield"/></svg></span><span><strong>Enterprise</strong><small>Governance, scale and support</small></span></a>
+                      </div>
+                    </div>
+                    <a class="accordion__link" href="#">Developers</a>
+                    <a class="accordion__link" href="#">Pricing</a>
+                  </div>
+                  <div class="atlas-drawer__foot">
+                    <a class="btn btn--outline btn--block" href="#">Contact sales</a>
+                    <a class="btn btn--primary btn--block" href="#">Start free</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mock-hero mock-hero--left">
+                <p class="mock-hero__eyebrow">Platform</p>
+                <h3 class="mock-hero__title">The operating system<br>for modern teams.</h3>
+                <p class="mock-hero__sub">Automations, analytics and AI in one connected workspace, trusted by 12,000+ companies.</p>
+              </div>
+              <div class="mock-logos" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="mock-grid">
+                <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+                <div class="mock-card"><span class="skeleton skeleton--icon"></span><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover “Products”, then slide across to “Solutions”. Keyboard: <kbd>Tab</kbd> to a trigger, <kbd>↓</kbd> to enter, <kbd>Esc</kbd> to close.</p>
+      </section>
+
+      <!-- =================================================================
+           03 · HALDEN: Editorial full-screen menu
+           ================================================================= -->
+      <section class="demo" id="v-halden" aria-labelledby="v-halden-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="v-halden-title">Halden <span>· Editorial overlay</span></h2>
+            <p class="demo__desc">An agency-style navigation with a serif wordmark, a draw-on underline CTA, and a full-screen menu that wipes down while oversized type rises line by line. It suits studios, architects, restaurants and luxury brands.</p>
+            <ul class="demo__tags" role="list"><li>Clip-path reveal</li><li>Staggered type</li><li>Focus trap</li><li>Live local time</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Halden preview">
+
+              <div class="halden-site">
+                <header class="halden" data-nav="halden">
+                  <nav class="halden__bar" aria-label="Main">
+                    <button class="halden__menu-btn" type="button" aria-expanded="false" aria-controls="halden-overlay">
+                      <span class="halden__lines" aria-hidden="true"><i></i><i></i></span> Menu
+                    </button>
+                    <a class="halden__logo" href="#" aria-label="Halden Studio home">Halden<span>Studio</span></a>
+                    <a class="halden__cta" href="#"><span class="halden__cta-label">Start a project</span> <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
+                  </nav>
+                </header>
+
+                <div class="halden-overlay" id="halden-overlay" data-state="closed" role="dialog" aria-modal="true" aria-label="Site menu">
+                  <div class="halden-overlay__bar">
+                    <button class="halden__menu-btn" type="button" data-close>
+                      <span class="halden__lines is-x" aria-hidden="true"><i></i><i></i></span> Close
+                    </button>
+                    <span class="halden__logo" aria-hidden="true">Halden<span>Studio</span></span>
+                    <span class="halden-overlay__meta">Est. 2014 · Copenhagen</span>
+                  </div>
+                  <nav class="halden-overlay__nav" aria-label="Site">
+                    <ol role="list">
+                      <li style="--i:0"><a href="#"><span class="halden-overlay__num">01</span><span class="halden-overlay__mask"><span class="halden-overlay__word">Work</span></span><span class="halden-overlay__count">24</span></a></li>
+                      <li style="--i:1"><a href="#"><span class="halden-overlay__num">02</span><span class="halden-overlay__mask"><span class="halden-overlay__word">Studio</span></span><span class="halden-overlay__count"></span></a></li>
+                      <li style="--i:2"><a href="#"><span class="halden-overlay__num">03</span><span class="halden-overlay__mask"><span class="halden-overlay__word">Journal</span></span><span class="halden-overlay__count">08</span></a></li>
+                      <li style="--i:3"><a href="#"><span class="halden-overlay__num">04</span><span class="halden-overlay__mask"><span class="halden-overlay__word">Contact</span></span><span class="halden-overlay__count"></span></a></li>
+                    </ol>
+                  </nav>
+                  <div class="halden-overlay__foot">
+                    <div><p>New business</p><a href="#">hello@halden.studio</a></div>
+                    <div><p>Follow</p><a href="#">Instagram</a> · <a href="#">LinkedIn</a></div>
+                    <div class="halden-overlay__time"><p>Local time</p><span data-clock>--:--</span> CPH</div>
+                  </div>
+                </div>
+
+                <div class="halden-hero">
+                  <p class="halden-hero__kicker">Brand &amp; digital studio</p>
+                  <h3 class="halden-hero__title">We design brands<br>people <em>remember.</em></h3>
+                  <div class="halden-work">
+                    <figure style="--h: 35"><div></div><figcaption>Nordlys Hotels <span>Identity</span></figcaption></figure>
+                    <figure style="--h: 160"><div></div><figcaption>Fern &amp; Field <span>Packaging</span></figcaption></figure>
+                    <figure style="--h: 260"><div></div><figcaption>Arkiv Museum <span>Digital</span></figcaption></figure>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open the menu and hover the big links. Focus is trapped inside while it's open, and <kbd>Esc</kbd> closes it.</p>
+      </section>
+
+      <!-- =================================================================
+           04 · NOVA: App bar + command palette
+           ================================================================= -->
+      <section class="demo" id="v-nova" aria-labelledby="v-nova-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="v-nova-title">Nova <span>· App bar + command palette</span></h2>
+            <p class="demo__desc">A dashboard top bar in the style of Linear and Vercel, with a workspace switcher, breadcrumbs, notifications and an account menu. It also includes a fully working <kbd data-mod>Ctrl</kbd>&nbsp;<kbd>K</kbd> command palette with live filtering and arrow-key navigation.</p>
+            <ul class="demo__tags" role="list"><li>Command palette</li><li>ARIA combobox</li><li>Popover menus</li><li>Roving focus</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 580px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.nova.so</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nova preview">
+
+              <div class="nova-app">
+                <header class="nova" data-nav="nova">
+                  <div class="nova__left">
+                    <a class="nova__logo" href="#" aria-label="Nova home">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <defs><linearGradient id="nova-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#c13dff"/></linearGradient></defs>
+                        <rect width="24" height="24" rx="7" fill="url(#nova-g)"/>
+                        <path d="M8 16V8l8 8V8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                    <span class="nova__sep" aria-hidden="true">/</span>
+
+                    <div class="nova__pop">
+                      <button class="nova__workspace" type="button" aria-label="Switch workspace" aria-haspopup="true" aria-expanded="false" aria-controls="nova-ws" data-popover-trigger>
+                        <span class="avatar avatar--sq" style="--h: 150" data-ws-avatar>A</span>
+                        <span class="nova__ws-name" data-ws-name>Acme Inc</span>
+                        <svg class="icon"><use href="#i-chevrons"/></svg>
+                      </button>
+                      <div class="popover popover--start" id="nova-ws" data-state="closed">
+                        <p class="menu-label">Workspaces</p>
+                        <button class="menu-item" type="button" data-ws="Acme Inc" data-h="150" aria-current="true"><span class="avatar avatar--sq" style="--h: 150">A</span>Acme Inc<svg class="icon menu-item__check"><use href="#i-check"/></svg></button>
+                        <button class="menu-item" type="button" data-ws="Globex" data-h="30"><span class="avatar avatar--sq" style="--h: 30">G</span>Globex<svg class="icon menu-item__check"><use href="#i-check"/></svg></button>
+                        <button class="menu-item" type="button" data-ws="Initech" data-h="220"><span class="avatar avatar--sq" style="--h: 220">I</span>Initech<svg class="icon menu-item__check"><use href="#i-check"/></svg></button>
+                        <div class="menu-sep" role="separator"></div>
+                        <button class="menu-item" type="button"><svg class="icon"><use href="#i-plus"/></svg>Create workspace</button>
+                      </div>
+                    </div>
+
+                    <span class="nova__sep nova__crumb-sep" aria-hidden="true">/</span>
+                    <nav class="nova__crumbs" aria-label="Breadcrumb">
+                      <ol role="list">
+                        <li><a href="#">Projects</a></li>
+                        <li><span aria-current="page" data-crumb>Website redesign</span></li>
+                      </ol>
+                    </nav>
+                  </div>
+
+                  <button class="nova__search" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="nova-palette" data-palette-trigger>
+                    <svg class="icon"><use href="#i-search"/></svg>
+                    <span>Search or jump to…</span>
+                    <kbd><span data-mod>Ctrl</span>K</kbd>
+                  </button>
+
+                  <div class="nova__right">
+                    <button class="icon-btn nova__search-icon" type="button" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="nova-palette" data-palette-trigger><svg class="icon"><use href="#i-search"/></svg></button>
+                    <button class="icon-btn nova__help" type="button" aria-label="Help"><svg class="icon"><use href="#i-help"/></svg></button>
+
+                    <div class="nova__pop">
+                      <button class="icon-btn" type="button" aria-label="Notifications, 3 unread" aria-haspopup="true" aria-expanded="false" aria-controls="nova-notif" data-popover-trigger data-notif-trigger>
+                        <svg class="icon"><use href="#i-bell"/></svg>
+                        <span class="badge" data-unread-badge aria-hidden="true">3</span>
+                      </button>
+                      <div class="popover popover--wide" id="nova-notif" data-state="closed">
+                        <div class="popover__head"><strong>Notifications</strong><button class="link-btn" type="button" data-mark-read>Mark all read</button></div>
+                        <ul class="notif-list" role="list">
+                          <li class="notif is-unread"><span class="avatar" style="--h: 20">MK</span><div><p><strong>Maya Kim</strong> commented on <strong>Homepage hero</strong></p><time>2 min ago</time></div></li>
+                          <li class="notif is-unread"><span class="avatar" style="--h: 200">LP</span><div><p><strong>Leo Park</strong> assigned you <strong>Pricing table QA</strong></p><time>1 hour ago</time></div></li>
+                          <li class="notif is-unread"><span class="avatar avatar--ok"><svg class="icon"><use href="#i-check"/></svg></span><div><p>Deployment <strong>v2.4.1</strong> is live on production</p><time>3 hours ago</time></div></li>
+                        </ul>
+                        <a class="popover__foot" href="#">View all activity</a>
+                      </div>
+                    </div>
+
+                    <div class="nova__pop">
+                      <button class="nova__avatar-btn" type="button" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nova-account" data-popover-trigger>
+                        <span class="avatar" style="--h: 265">RS</span>
+                      </button>
+                      <div class="popover" id="nova-account" data-state="closed">
+                        <div class="menu-head"><strong>Riya Sharma</strong><span>riya@acme.co</span></div>
+                        <div class="menu-sep" role="separator"></div>
+                        <a class="menu-item" href="#"><svg class="icon"><use href="#i-user"/></svg>Profile</a>
+                        <a class="menu-item" href="#"><svg class="icon"><use href="#i-sliders"/></svg>Settings<kbd>,</kbd></a>
+                        <a class="menu-item" href="#"><svg class="icon"><use href="#i-card"/></svg>Billing</a>
+                        <button class="menu-item" type="button" data-theme-toggle><svg class="icon"><use href="#i-moon"/></svg>Toggle theme</button>
+                        <div class="menu-sep" role="separator"></div>
+                        <a class="menu-item menu-item--danger" href="#"><svg class="icon"><use href="#i-logout"/></svg>Sign out</a>
+                      </div>
+                    </div>
+                  </div>
+                </header>
+
+                <div class="palette" id="nova-palette" data-state="closed">
+                  <div class="palette__backdrop" data-close></div>
+                  <div class="palette__dialog" role="dialog" aria-modal="true" aria-label="Command palette">
+                    <div class="palette__search">
+                      <svg class="icon"><use href="#i-search"/></svg>
+                      <input class="palette__input" type="text" role="combobox" aria-expanded="true" aria-controls="nova-palette-list" aria-autocomplete="list" aria-label="Search commands" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" data-autofocus>
+                      <kbd>Esc</kbd>
+                    </div>
+                    <div class="palette__list" id="nova-palette-list" role="listbox" aria-label="Results">
+                      <div class="palette__group" role="group" aria-labelledby="pg-jump">
+                        <p class="palette__label" id="pg-jump">Jump to</p>
+                        <div class="palette__option" role="option" id="po-dashboard" aria-selected="false" data-label="Dashboard"><svg class="icon"><use href="#i-home"/></svg>Dashboard<span class="palette__hint"><kbd>G</kbd><kbd>D</kbd></span></div>
+                        <div class="palette__option" role="option" id="po-projects" aria-selected="false" data-label="Projects"><svg class="icon"><use href="#i-folder"/></svg>Projects<span class="palette__hint"><kbd>G</kbd><kbd>P</kbd></span></div>
+                        <div class="palette__option" role="option" id="po-inbox" aria-selected="false" data-label="Inbox"><svg class="icon"><use href="#i-inbox"/></svg>Inbox<span class="palette__hint"><kbd>G</kbd><kbd>I</kbd></span></div>
+                        <div class="palette__option" role="option" id="po-analytics" aria-selected="false" data-label="Analytics" data-keywords="reports metrics charts"><svg class="icon"><use href="#i-chart"/></svg>Analytics</div>
+                        <div class="palette__option" role="option" id="po-settings" aria-selected="false" data-label="Settings" data-keywords="preferences account"><svg class="icon"><use href="#i-sliders"/></svg>Settings</div>
+                      </div>
+                      <div class="palette__group" role="group" aria-labelledby="pg-actions">
+                        <p class="palette__label" id="pg-actions">Actions</p>
+                        <div class="palette__option" role="option" id="po-new" aria-selected="false" data-label="New project" data-keywords="create add"><svg class="icon"><use href="#i-plus"/></svg>Create new project</div>
+                        <div class="palette__option" role="option" id="po-invite" aria-selected="false" data-label="Invite teammates" data-keywords="team members share"><svg class="icon"><use href="#i-users"/></svg>Invite teammates</div>
+                        <div class="palette__option" role="option" id="po-theme" aria-selected="false" data-label="Toggle dark mode" data-keywords="theme light appearance" data-action="theme"><svg class="icon"><use href="#i-moon"/></svg>Toggle dark mode</div>
+                        <div class="palette__option" role="option" id="po-docs" aria-selected="false" data-label="Documentation" data-keywords="help docs guide"><svg class="icon"><use href="#i-book"/></svg>Open documentation</div>
+                      </div>
+                      <p class="palette__empty" hidden>No results for “<span></span>”</p>
+                    </div>
+                    <div class="palette__foot" aria-hidden="true">
+                      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                      <span><kbd>↵</kbd> select</span>
+                      <span><kbd>esc</kbd> close</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="nova-body">
+                  <div class="nova-body__head">
+                    <h3>Overview</h3>
+                    <span class="nova-body__range">Last 30 days</span>
+                  </div>
+                  <div class="stat-grid">
+                    <div class="stat"><span>Visitors</span><strong>48,213</strong><em class="up">+12.4%</em></div>
+                    <div class="stat"><span>Conversion</span><strong>3.82%</strong><em class="up">+0.6%</em></div>
+                    <div class="stat"><span>Revenue</span><strong>$24,930</strong><em class="up">+8.1%</em></div>
+                    <div class="stat"><span>Churn</span><strong>1.2%</strong><em class="down">−0.3%</em></div>
+                  </div>
+                  <div class="chart-card" aria-hidden="true">
+                    <svg viewBox="0 0 600 180" preserveAspectRatio="none">
+                      <defs><linearGradient id="nova-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+                      <path d="M0 140 C 50 130, 80 90, 130 100 S 210 60, 260 80 S 340 120, 390 70 S 470 30, 520 50 S 580 20, 600 25 V180 H0Z" fill="url(#nova-area)"/>
+                      <path d="M0 140 C 50 130, 80 90, 130 100 S 210 60, 260 80 S 340 120, 390 70 S 470 30, 520 50 S 580 20, 600 25" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press <kbd data-mod>Ctrl</kbd> <kbd>K</kbd> anywhere on this page. Try typing “theme” and pressing <kbd>↵</kbd>.</p>
+      </section>
+
+      <!-- =================================================================
+           05 · PULSE: Smart sticky header
+           ================================================================= -->
+      <section class="demo" id="v-pulse" aria-labelledby="v-pulse-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="v-pulse-title">Pulse <span>· Smart sticky header</span></h2>
+            <p class="demo__desc">A content-first header for blogs and media sites. It condenses after you start scrolling, slides away as you read down, comes back the moment you scroll up, and keeps a reading-progress line visible the whole time. On mobile the links become a swipeable strip.</p>
+            <ul class="demo__tags" role="list"><li>Scroll-aware</li><li>Reading progress</li><li>rAF-throttled</li><li>Swipe tabs</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">pulse.press/motion</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Pulse preview">
+
+              <div class="pulse-site">
+                <header class="pulse" data-nav="pulse">
+                  <nav class="pulse__bar" aria-label="Main">
+                    <a class="pulse__logo" href="#" aria-label="Pulse home">pulse<span class="pulse__dot" aria-hidden="true"></span></a>
+                    <ul class="pulse__links" role="list">
+                      <li><a href="#" aria-current="page">Latest</a></li>
+                      <li><a href="#">Design</a></li>
+                      <li><a href="#">Engineering</a></li>
+                      <li><a href="#">Product</a></li>
+                      <li><a href="#">Podcasts</a></li>
+                      <li><a href="#">Newsletter</a></li>
+                    </ul>
+                    <div class="pulse__actions">
+                      <button class="icon-btn" type="button" aria-label="Search articles"><svg class="icon"><use href="#i-search"/></svg></button>
+                      <a class="btn btn--accent btn--sm" href="#">Subscribe</a>
+                    </div>
+                  </nav>
+                  <div class="pulse__progress" aria-hidden="true"><span></span></div>
+                </header>
+
+                <article class="pulse-article">
+                  <p class="pulse-article__kicker">Design · 6 min read</p>
+                  <h3>The quiet craft of interface motion</h3>
+                  <div class="pulse-article__byline"><span class="avatar" style="--h: 320">AN</span><span><strong>Ana Novak</strong> · 2 October 2026</span></div>
+                  <div class="pulse-article__figure" aria-hidden="true"></div>
+                  <p>Good motion is rarely noticed. It answers a question before the user thinks to ask it: where did that panel come from, what changed, and where should I look next?</p>
+                  <p>The best interfaces use easing curves that start fast and land softly, which mirrors how physical objects settle. Linear motion feels mechanical. Expo-out feels considered.</p>
+                  <p>Duration matters as much as curve. Small elements such as toggles, chips and tooltips want 120–200ms. Larger surfaces such as drawers, sheets and modals want 300–450ms. Anything longer starts to feel like waiting.</p>
+                  <p>Then there is restraint. A header that hides while you read and returns the instant you scroll up respects attention. It is present when needed and invisible when not.</p>
+                  <p>Finally, honour the system. When someone has asked their device for reduced motion, every flourish should gracefully step aside. Craft includes knowing when not to animate.</p>
+                  <p>Motion is a material. Like typography or colour, it carries tone, and the tone should be calm, quick and confident.</p>
+                  <p>Scroll back up and watch the header return. That small courtesy is the whole idea.</p>
+                </article>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Scroll down inside the frame, then scroll up a little.</p>
+      </section>
+
+      <!-- =================================================================
+           06 · DOCK: Mobile tab bar → desktop rail
+           ================================================================= -->
+      <section class="demo" id="v-dock" aria-labelledby="v-dock-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="v-dock-title">Dock <span>· Adaptive app navigation</span></h2>
+            <p class="demo__desc">One piece of markup with two layouts. On phones it's a floating, thumb-friendly bottom tab bar with a raised action button. On wider screens the same nav turns into a vertical side rail. It handles iOS safe areas and uses Material-style active pills.</p>
+            <ul class="demo__tags" role="list"><li>Bottom tab bar</li><li>Side rail</li><li>Safe-area aware</li><li>Spring motion</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="false"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="true"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="mobile" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">orbit.app</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="-1">
+
+              <div class="dock-app">
+                <div class="dock-scroll" tabindex="0" role="region" aria-label="Dock preview">
+                  <div class="dock-top">
+                    <div><p>Good evening</p><h3>Riya</h3></div>
+                    <span class="avatar avatar--lg" style="--h: 265">RS</span>
+                  </div>
+                  <div class="dock-chips" aria-hidden="true"><span class="is-active">For you</span><span>Following</span><span>Design</span><span>Tech</span></div>
+                  <div class="dock-feed">
+                    <div class="feed-card" style="--h: 290"><div class="feed-card__media"></div><div class="feed-card__body"><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div></div>
+                    <div class="feed-card" style="--h: 200"><div class="feed-card__media"></div><div class="feed-card__body"><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div></div>
+                    <div class="feed-card" style="--h: 20"><div class="feed-card__media"></div><div class="feed-card__body"><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div></div>
+                    <div class="feed-card" style="--h: 150"><div class="feed-card__media"></div><div class="feed-card__body"><span class="skeleton skeleton--line"></span><span class="skeleton skeleton--line short"></span></div></div>
+                  </div>
+                </div>
+
+                <nav class="dock" aria-label="Primary" data-nav="dock">
+                  <a class="dock__brand" href="#" aria-label="Orbit home">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--color-bg)" stroke-width="2"/></svg>
+                  </a>
+                  <ul class="dock__list" role="list">
+                    <li><a class="dock__item" href="#" aria-current="page"><span class="dock__icon"><svg class="icon"><use href="#i-home"/></svg></span><span class="dock__label">Home</span></a></li>
+                    <li><a class="dock__item" href="#"><span class="dock__icon"><svg class="icon"><use href="#i-compass"/></svg></span><span class="dock__label">Explore</span></a></li>
+                    <li class="dock__fab-wrap"><button class="dock__fab" type="button" aria-label="Create new post"><svg class="icon"><use href="#i-plus"/></svg></button></li>
+                    <li><a class="dock__item" href="#"><span class="dock__icon"><svg class="icon"><use href="#i-inbox"/></svg><span class="dock__badge">4<span class="sr-only"> unread</span></span></span><span class="dock__label">Inbox</span></a></li>
+                    <li><a class="dock__item" href="#"><span class="dock__icon"><svg class="icon"><use href="#i-user"/></svg></span><span class="dock__label">Profile</span></a></li>
+                  </ul>
+                </nav>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Tap the tabs, then switch to Desktop to see the same markup become a side rail.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 001</strong> of 100 · Semantic HTML, modern CSS and vanilla JS. No frameworks, no dependencies.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 002: Hero Sections</span></p>
+    </div>
+  </footer>
+</body>
+</html>
