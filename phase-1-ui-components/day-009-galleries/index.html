@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galleries · Day 009 · Thecore</title>
+  <meta name="description" content="Six image galleries: filterable portfolio, restaurant bento grid, property photo viewer, before/after slider, swipeable screenshots and a jewellery zoom viewer. Day 009 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2M11 8v6M8 11h6"/></symbol>
+    <symbol id="i-arrows-h" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to gallery">
+        <a href="#g-portfolio">01</a><a href="#g-food">02</a><a href="#g-property">03</a><a href="#g-reno">04</a><a href="#g-screens">05</a><a href="#g-jewel">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 009 / 100</span> Phase 1 · UI Components</p>
+      <h1>Image <em>Galleries</em></h1>
+      <p class="lead">
+        Six ways to show visual work: a filterable portfolio, a restaurant menu wall, a property photo viewer,
+        a before/after slider, swipeable screenshots and a jewellery zoom. All of them share one
+        <strong>accessible lightbox</strong> that supports the keyboard, swiping and screen readers.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>gallery types</li>
+        <li><strong>1</strong>shared lightbox</li>
+        <li><strong>Swipe</strong>&amp; keyboard</li>
+        <li><strong>152 KB</strong>for all 40 images</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · HALDEN PORTFOLIO ============================ -->
+      <section class="demo" id="g-portfolio" aria-labelledby="g-portfolio-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="g-portfolio-title">Halden <span>· Filterable portfolio</span></h2>
+            <p class="demo__desc">A masonry portfolio for agencies, photographers and artists. Category filters rearrange the grid with a smooth animation, and any piece opens in a full-screen lightbox. You can move through the work with the arrow keys or a swipe.</p>
+            <ul class="demo__tags" role="list"><li>Masonry</li><li>Animated filtering</li><li>Lightbox</li><li>Swipe + keys</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/work</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Halden portfolio preview">
+
+              <div class="gx portfolio" data-portfolio>
+                <header class="portfolio__head">
+                  <h3 class="portfolio__title">Selected <em>work</em></h3>
+                  <div class="portfolio__filters" role="group" aria-label="Filter work">
+                    <button type="button" aria-pressed="true" data-filter="all">All <sup>12</sup></button>
+                    <button type="button" aria-pressed="false" data-filter="brand">Branding <sup>5</sup></button>
+                    <button type="button" aria-pressed="false" data-filter="digital">Digital <sup>4</sup></button>
+                    <button type="button" aria-pressed="false" data-filter="print">Print <sup>3</sup></button>
+                  </div>
+                </header>
+                <p class="sr-only" aria-live="polite" data-portfolio-status></p>
+                <div class="masonry" data-masonry>
+                  <a class="tile" href="images/work-01.svg" data-cat="brand" data-lightbox="work" data-caption="Nordlys Hotels · Identity"><img src="images/work-01.svg" alt="Abstract orange circle composition" width="800" height="800"><span class="tile__cap"><strong>Nordlys Hotels</strong>Identity</span></a>
+                  <a class="tile" href="images/work-02.svg" data-cat="digital" data-lightbox="work" data-caption="Arkiv Museum · Website"><img src="images/work-02.svg" alt="Flowing blue and coral lines" width="800" height="600"><span class="tile__cap"><strong>Arkiv Museum</strong>Website</span></a>
+                  <a class="tile" href="images/work-03.svg" data-cat="print" data-lightbox="work" data-caption="Fern &amp; Field · Packaging"><img src="images/work-03.svg" alt="Overlapping lilac and coral squares" width="800" height="1100"><span class="tile__cap"><strong>Fern &amp; Field</strong>Packaging</span></a>
+                  <a class="tile" href="images/work-04.svg" data-cat="brand" data-lightbox="work" data-caption="Solvej Bakery · Identity"><img src="images/work-04.svg" alt="Green circle with gold accents" width="800" height="700"><span class="tile__cap"><strong>Solvej Bakery</strong>Identity</span></a>
+                  <a class="tile" href="images/work-05.svg" data-cat="digital" data-lightbox="work" data-caption="Kestrel · Product design"><img src="images/work-05.svg" alt="Burgundy and gold wave lines" width="800" height="1000"><span class="tile__cap"><strong>Kestrel</strong>Product design</span></a>
+                  <a class="tile" href="images/work-06.svg" data-cat="brand" data-lightbox="work" data-caption="Orbitly · Rebrand"><img src="images/work-06.svg" alt="Teal and orange tilted squares" width="800" height="800"><span class="tile__cap"><strong>Orbitly</strong>Rebrand</span></a>
+                  <a class="tile" href="images/work-07.svg" data-cat="print" data-lightbox="work" data-caption="Copenhagen Jazz · Posters"><img src="images/work-07.svg" alt="Bold circle and bar poster" width="800" height="600"><span class="tile__cap"><strong>Copenhagen Jazz</strong>Posters</span></a>
+                  <a class="tile" href="images/work-08.svg" data-cat="digital" data-lightbox="work" data-caption="Halcyon · App"><img src="images/work-08.svg" alt="Navy and peach wave lines" width="800" height="1100"><span class="tile__cap"><strong>Halcyon</strong>App</span></a>
+                  <a class="tile" href="images/work-09.svg" data-cat="brand" data-lightbox="work" data-caption="Mørk Coffee · Identity"><img src="images/work-09.svg" alt="Dark lilac geometric composition" width="800" height="700"><span class="tile__cap"><strong>Mørk Coffee</strong>Identity</span></a>
+                  <a class="tile" href="images/work-10.svg" data-cat="print" data-lightbox="work" data-caption="Strand Books · Covers"><img src="images/work-10.svg" alt="Green and gold circle on cream" width="800" height="1000"><span class="tile__cap"><strong>Strand Books</strong>Covers</span></a>
+                  <a class="tile" href="images/work-11.svg" data-cat="digital" data-lightbox="work" data-caption="Northwind · Dashboard"><img src="images/work-11.svg" alt="Burgundy flowing lines" width="800" height="800"><span class="tile__cap"><strong>Northwind</strong>Dashboard</span></a>
+                  <a class="tile" href="images/work-12.svg" data-cat="brand" data-lightbox="work" data-caption="Tide Studio · Identity"><img src="images/work-12.svg" alt="Teal and orange squares" width="800" height="600"><span class="tile__cap"><strong>Tide Studio</strong>Identity</span></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Filter by “Print”, then open a piece and use ← → (or swipe) and Esc.</p>
+      </section>
+
+      <!-- ============================ 02 · EMBER FOOD ============================ -->
+      <section class="demo" id="g-food" aria-labelledby="g-food-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="g-food-title">Ember <span>· Menu photo wall</span></h2>
+            <p class="demo__desc">A bento-style grid of dishes for restaurants, cafés and bakeries. Hovering (or focusing) a dish reveals its name, description and price, a small heart lets guests save favourites, and every photo opens in the lightbox.</p>
+            <ul class="demo__tags" role="list"><li>Bento grid</li><li>Hover captions</li><li>Save favourites</li><li>Lightbox</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk/menu</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember menu wall preview">
+
+              <div class="gx food" data-food>
+                <header class="food__head">
+                  <p class="food__kicker">This week from the hearth</p>
+                  <h3 class="food__title">Tonight's <em>plates</em></h3>
+                  <p class="food__saved" aria-live="polite" data-saved>Tap ♥ to save dishes you'd like to try.</p>
+                </header>
+                <div class="bento">
+                  <figure class="dish dish--big"><a href="images/dish-01.svg" data-lightbox="food" data-caption="Ember lamb · £34"><img src="images/dish-01.svg" alt="Wood-fired lamb with charred herbs" width="900" height="900"></a><figcaption><strong>Ember lamb</strong><span>Charred herbs, smoked yoghurt</span><b>£34</b></figcaption><button class="heart" type="button" aria-pressed="false" aria-label="Save Ember lamb"><svg class="icon"><use href="#i-heart"/></svg></button></figure>
+                  <figure class="dish"><a href="images/dish-02.svg" data-lightbox="food" data-caption="Beetroot & cherry · £14"><img src="images/dish-02.svg" alt="Smoked beetroot with cherries" width="900" height="900"></a><figcaption><strong>Beetroot &amp; cherry</strong><span>Smoked, cultured cream</span><b>£14</b></figcaption><button class="heart" type="button" aria-pressed="false" aria-label="Save Beetroot and cherry"><svg class="icon"><use href="#i-heart"/></svg></button></figure>
+                  <figure class="dish"><a href="images/dish-03.svg" data-lightbox="food" data-caption="Hearth squash · £16"><img src="images/dish-03.svg" alt="Roasted squash with sage" width="900" height="900"></a><figcaption><strong>Hearth squash</strong><span>Brown butter, sage</span><b>£16</b></figcaption><button class="heart" type="button" aria-pressed="false" aria-label="Save Hearth squash"><svg class="icon"><use href="#i-heart"/></svg></button></figure>
+                  <figure class="dish"><a href="images/dish-04.svg" data-lightbox="food" data-caption="Short rib · £29"><img src="images/dish-04.svg" alt="Slow-cooked short rib" width="900" height="900"></a><figcaption><strong>Short rib</strong><span>12-hour embers, onion</span><b>£29</b></figcaption><button class="heart" type="button" aria-pressed="false" aria-label="Save Short rib"><svg class="icon"><use href="#i-heart"/></svg></button></figure>
+                  <figure class="dish"><a href="images/dish-05.svg" data-lightbox="food" data-caption="Garden greens · £12"><img src="images/dish-05.svg" alt="Charred greens with chilli" width="900" height="900"></a><figcaption><strong>Garden greens</strong><span>Chilli, toasted seeds</span><b>£12</b></figcaption><button class="heart" type="button" aria-pressed="false" aria-label="Save Garden greens"><svg class="icon"><use href="#i-heart"/></svg></button></figure>
+                  <figure class="dish dish--wide"><a href="images/dish-06.svg" data-lightbox="food" data-caption="Burnt honey tart · £11"><img src="images/dish-06.svg" alt="Burnt honey tart with berries" width="900" height="900"></a><figcaption><strong>Burnt honey tart</strong><span>Crème fraîche, berries</span><b>£11</b></figcaption><button class="heart" type="button" aria-pressed="false" aria-label="Save Burnt honey tart"><svg class="icon"><use href="#i-heart"/></svg></button></figure>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover a dish for details, save a favourite with ♥, or open one full-screen.</p>
+      </section>
+
+      <!-- ============================ 03 · FORMA PROPERTY ============================ -->
+      <section class="demo" id="g-property" aria-labelledby="g-property-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="g-property-title">Forma <span>· Property photo viewer</span></h2>
+            <p class="demo__desc">The listing gallery buyers expect: a large main photo with arrows and a counter, a thumbnail strip that follows along, room labels, and a “Show all photos” button that opens every photo full screen. You can swipe on phones and use the arrow keys on desktop.</p>
+            <ul class="demo__tags" role="list"><li>Main + thumbnails</li><li>Photo counter</li><li>Room labels</li><li>Show all photos</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com/villa-solvej</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma property gallery preview">
+
+              <div class="gx property" data-property>
+                <div class="viewer" aria-roledescription="carousel" aria-label="Villa Solvej photos">
+                  <div class="viewer__stage" data-stage>
+                    <img class="viewer__img" src="images/room-01.svg" alt="Living room with green sofa and large window" width="1200" height="800" data-main>
+                    <span class="viewer__label" data-label>Living room</span>
+                    <span class="viewer__count" aria-live="polite" data-count>1 / 6</span>
+                    <button class="viewer__nav viewer__nav--prev" type="button" data-v-prev aria-label="Previous photo"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+                    <button class="viewer__nav viewer__nav--next" type="button" data-v-next aria-label="Next photo"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+                    <button class="viewer__all" type="button" data-v-all><svg class="icon"><use href="#i-grid"/></svg>Show all photos</button>
+                  </div>
+                  <div class="thumbs" role="tablist" aria-label="Choose a photo" data-thumbs>
+                    <button type="button" role="tab" aria-selected="true" data-src="images/room-01.svg" data-alt="Living room with green sofa and large window" data-room="Living room"><img src="images/room-01.svg" alt=""></button>
+                    <button type="button" role="tab" aria-selected="false" tabindex="-1" data-src="images/room-02.svg" data-alt="Calm bedroom with soft linen tones" data-room="Bedroom"><img src="images/room-02.svg" alt=""></button>
+                    <button type="button" role="tab" aria-selected="false" tabindex="-1" data-src="images/room-03.svg" data-alt="Dining room with navy seating" data-room="Dining room"><img src="images/room-03.svg" alt=""></button>
+                    <button type="button" role="tab" aria-selected="false" tabindex="-1" data-src="images/room-04.svg" data-alt="Study with blue-grey walls" data-room="Study"><img src="images/room-04.svg" alt=""></button>
+                    <button type="button" role="tab" aria-selected="false" tabindex="-1" data-src="images/room-05.svg" data-alt="Lounge with burgundy sofa" data-room="Lounge"><img src="images/room-05.svg" alt=""></button>
+                    <button type="button" role="tab" aria-selected="false" tabindex="-1" data-src="images/room-06.svg" data-alt="Kitchen and family room" data-room="Kitchen"><img src="images/room-06.svg" alt=""></button>
+                  </div>
+                </div>
+                <aside class="property__info">
+                  <p class="property__price">€1,240,000</p>
+                  <h3 class="property__name">Villa Solvej, Hellerup</h3>
+                  <p class="property__meta">4 bedrooms · 3 bathrooms · 212 m² · Garden</p>
+                  <a class="btn property__cta" href="#">Book a viewing</a>
+                </aside>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Use the arrows or thumbnails, then “Show all photos”.</p>
+      </section>
+
+      <!-- ============================ 04 · BYGG RENOVATION ============================ -->
+      <section class="demo" id="g-reno" aria-labelledby="g-reno-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="g-reno-title">Bygg &amp; Co <span>· Before / after slider</span></h2>
+            <p class="demo__desc">The most persuasive gallery for construction, renovation, cleaning, landscaping and clinics. Drag the handle to compare before and after. It works with mouse and touch, and with the arrow keys because the handle is a real slider.</p>
+            <ul class="demo__tags" role="list"><li>Drag to compare</li><li>Keyboard slider</li><li>Touch friendly</li><li>Project facts</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">byggco.dk/projects/oesterbro-apartment</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Bygg renovation preview">
+
+              <div class="gx reno">
+                <header class="reno__head">
+                  <p class="reno__kicker">Project · Østerbro apartment</p>
+                  <h3 class="reno__title">From tired to timeless in 7 weeks</h3>
+                </header>
+                <div class="compare" data-compare style="--pos: 50%">
+                  <img class="compare__img" src="images/reno-after.svg" alt="After: bright living room with new sofa, plant and warm lighting" width="1200" height="800">
+                  <div class="compare__before" aria-hidden="true"><img class="compare__img" src="images/reno-before.svg" alt="" width="1200" height="800"></div>
+                  <span class="compare__tag compare__tag--before">Before</span>
+                  <span class="compare__tag compare__tag--after">After</span>
+                  <span class="compare__line" aria-hidden="true"><span class="compare__knob"><svg class="icon"><use href="#i-arrows-h"/></svg></span></span>
+                  <input class="compare__range" type="range" min="0" max="100" value="50" step="1" aria-label="Compare before and after. 0 shows after, 100 shows before." data-compare-range>
+                </div>
+                <ul class="reno__facts" role="list">
+                  <li><strong>7 weeks</strong>start to finish</li>
+                  <li><strong>86 m²</strong>fully renovated</li>
+                  <li><strong>On budget</strong>fixed-price contract</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Drag the handle, click anywhere on the image, or focus it and use ← →.</p>
+      </section>
+
+      <!-- ============================ 05 · NOVA SCREENS ============================ -->
+      <section class="demo" id="g-screens" aria-labelledby="g-screens-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="g-screens-title">Nova <span>· Swipeable screenshots</span></h2>
+            <p class="demo__desc">Product screenshots in a smooth horizontal strip that snaps to each slide. It swipes on touch and click-and-drags with a mouse, with dots and a progress bar that show where you are. It's made for app and SaaS feature tours.</p>
+            <ul class="demo__tags" role="list"><li>Scroll snap</li><li>Mouse drag</li><li>Dot navigation</li><li>Feature captions</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">nova.so/tour</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nova screenshots preview">
+
+              <div class="gx screens" data-screens>
+                <header class="screens__head">
+                  <h3 class="screens__title">Take the tour</h3>
+                  <div class="screens__progress" aria-hidden="true"><span data-progress></span></div>
+                </header>
+                <ul class="strip" role="list" tabindex="0" aria-label="Feature screenshots, scroll horizontally" data-strip>
+                  <li class="shot"><img src="images/screen-01.svg" alt="Dashboard with revenue chart" width="1200" height="760" draggable="false"><p><strong>Live dashboard</strong> Every metric that matters, updated in real time.</p></li>
+                  <li class="shot"><img src="images/screen-02.svg" alt="Analytics view with traffic chart" width="1200" height="760" draggable="false"><p><strong>Deep analytics</strong> Slice by channel, cohort or campaign.</p></li>
+                  <li class="shot"><img src="images/screen-03.svg" alt="Reports view with orange accents" width="1200" height="760" draggable="false"><p><strong>Scheduled reports</strong> Sent to your inbox every Monday.</p></li>
+                  <li class="shot"><img src="images/screen-04.svg" alt="Goals tracking view" width="1200" height="760" draggable="false"><p><strong>Goals</strong> Track targets and get nudged before you miss them.</p></li>
+                  <li class="shot"><img src="images/screen-05.svg" alt="Team activity view" width="1200" height="760" draggable="false"><p><strong>Team activity</strong> See who changed what, and when.</p></li>
+                </ul>
+                <div class="dots" role="group" aria-label="Go to screenshot" data-dots></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click and drag the screenshots sideways, or use the dots.</p>
+      </section>
+
+      <!-- ============================ 06 · AURUM JEWELLERY ============================ -->
+      <section class="demo" id="g-jewel" aria-labelledby="g-jewel-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="g-jewel-title">Aurum <span>· Jewellery zoom viewer</span></h2>
+            <p class="demo__desc">For jewellery, watches and anything where detail sells. Hovering over the product shows a magnifying lens. Metal and stone swatches swap the photo instantly, and the price and name update with the choice. On touch screens, tapping opens the full-screen view.</p>
+            <ul class="demo__tags" role="list"><li>Magnifier lens</li><li>Variant swatches</li><li>Live price</li><li>Tap to zoom</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 660px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">aurum-atelier.com/rings/celeste</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Aurum jewellery preview">
+
+              <div class="gx jewel" data-jewel>
+                <div class="zoom" data-zoom tabindex="0" role="button" aria-label="Open full-screen view of the ring">
+                  <img src="images/ring-gold-emerald.svg" alt="Celeste ring in 18k gold with emerald" width="1000" height="1000" data-zoom-img>
+                  <span class="zoom__lens" aria-hidden="true" data-lens></span>
+                  <span class="zoom__hint" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg>Hover to zoom</span>
+                </div>
+
+                <div class="jewel__info">
+                  <p class="jewel__kicker">Aurum Atelier · Handmade in Florence</p>
+                  <h3 class="jewel__name" data-j-name>Celeste ring · 18k gold, emerald</h3>
+                  <p class="jewel__price" data-j-price aria-live="polite">€2,450</p>
+
+                  <fieldset class="swatches">
+                    <legend>Metal <span data-metal-name>18k gold</span></legend>
+                    <label class="sw" style="--c: linear-gradient(135deg,#fff2b8,#d4a73a,#8a6414)"><input type="radio" name="metal" value="gold" checked><span class="sr-only">18k gold</span></label>
+                    <label class="sw" style="--c: linear-gradient(135deg,#ffffff,#c7ccd3,#7b828c)"><input type="radio" name="metal" value="silver"><span class="sr-only">Platinum</span></label>
+                    <label class="sw" style="--c: linear-gradient(135deg,#ffe2d6,#e3a089,#9a5a46)"><input type="radio" name="metal" value="rose"><span class="sr-only">Rose gold</span></label>
+                  </fieldset>
+                  <fieldset class="swatches">
+                    <legend>Stone <span data-gem-name>Emerald</span></legend>
+                    <label class="sw sw--gem" style="--c: linear-gradient(135deg,#b8ffd9,#1f9e6b,#0b4a33)"><input type="radio" name="gem" value="emerald" checked><span class="sr-only">Emerald</span></label>
+                    <label class="sw sw--gem" style="--c: linear-gradient(135deg,#cfe0ff,#2f5bd3,#132a6b)"><input type="radio" name="gem" value="sapphire"><span class="sr-only">Sapphire</span></label>
+                    <label class="sw sw--gem" style="--c: linear-gradient(135deg,#ffd0d8,#d12a4a,#6b0f22)"><input type="radio" name="gem" value="ruby"><span class="sr-only">Ruby</span></label>
+                  </fieldset>
+                  <a class="btn jewel__cta" href="#">Add to bag</a>
+                  <p class="jewel__note">Free insured delivery · 30-day returns · Lifetime resizing</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Move your cursor over the ring, then try platinum with a sapphire.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 009</strong> of 100 · All images are lightweight illustrations in <code>images/</code>; swap in real photos with the same file names.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 010: Product Cards</span></p>
+    </div>
+  </footer>
+</body>
+</html>
