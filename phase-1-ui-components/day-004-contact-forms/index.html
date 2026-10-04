@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Forms · Day 004 · Thecore</title>
+  <meta name="description" content="Five fully working contact forms: sales enquiry, multi-step project brief, table reservation, support ticket and a quick-contact widget. Day 004 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    /* Resolve the theme before first paint so there is never a light/dark flash. */
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Anton&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="../../packages/form-kit/form-kit.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Icon sprite (Lucide-style, 24px grid) ===================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-phone-call" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="m12 19 7-7 3 3-7 7z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="m2 2 7.59 7.59"/><circle cx="11" cy="11" r="2"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-life-buoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <!-- ===================== Showcase header ===================== -->
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="#main">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to form">
+        <a href="#c-sales">01</a>
+        <a href="#c-brief">02</a>
+        <a href="#c-booking">03</a>
+        <a href="#c-support">04</a>
+        <a href="#c-widget">05</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 004 / 100</span> Phase 1 · UI Components</p>
+      <h1>Contact <em>Forms</em></h1>
+      <p class="lead">
+        Five contact forms that really work. Each one validates as you type with clear, human messages,
+        shows a loading state, and confirms success. They're all built on <strong>FormKit</strong>, a reusable
+        form engine that every future project in this series will use.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>5</strong>working forms</li>
+        <li><strong>1</strong>shared form engine</li>
+        <li><strong>WCAG</strong>accessible errors</li>
+        <li><strong>0</strong>dependencies</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- =================================================================
+           01 · LUMEN: Talk to sales
+           ================================================================= -->
+      <section class="demo" id="c-sales" aria-labelledby="c-sales-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="c-sales-title">Lumen <span>· Talk to sales</span></h2>
+            <p class="demo__desc">The classic B2B enquiry form, done properly. It politely rejects personal email addresses, offers topic chips instead of a dropdown, counts characters as you type, and shows an error summary that links straight to each problem.</p>
+            <ul class="demo__tags" role="list"><li>Work-email check</li><li>Error summary</li><li>Topic chips</li><li>Character counter</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.app/contact-sales</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Lumen contact preview">
+
+              <div class="cf sales">
+                <aside class="sales__info">
+                  <p class="sales__eyebrow">Contact sales</p>
+                  <h3 class="sales__title">Let's find the right plan for your team.</h3>
+                  <ul class="sales__points" role="list">
+                    <li><svg class="icon"><use href="#i-check"/></svg>A tailored demo of the features you need</li>
+                    <li><svg class="icon"><use href="#i-check"/></svg>Volume pricing for teams of 50+</li>
+                    <li><svg class="icon"><use href="#i-check"/></svg>Security review &amp; SSO setup help</li>
+                  </ul>
+                  <ul class="sales__methods" role="list">
+                    <li><span class="sales__method-icon"><svg class="icon"><use href="#i-mail"/></svg></span><div><strong>Email</strong><a href="#">sales@lumen.app</a></div></li>
+                    <li><span class="sales__method-icon"><svg class="icon"><use href="#i-phone-call"/></svg></span><div><strong>Phone</strong><a href="#">+44 20 7946 0102</a></div></li>
+                    <li><span class="sales__method-icon"><svg class="icon"><use href="#i-chat"/></svg></span><div><strong>Live chat</strong><span>Average reply in 4 minutes</span></div></li>
+                  </ul>
+                  <figure class="sales__quote">
+                    <blockquote>“The sales team understood our needs in one call. We were live in a week.”</blockquote>
+                    <figcaption><span class="avatar" style="--h: 160">PK</span><span><strong>Priya Kapoor</strong> Head of Ops, Northwind</span></figcaption>
+                  </figure>
+                </aside>
+
+                <div class="sales__card">
+                  <form class="form-grid" id="sales-form" data-success="#sales-success" novalidate>
+                    <div class="error-summary span-2" data-error-summary hidden></div>
+
+                    <div class="fld">
+                      <label class="fld__label" for="s-first">First name</label>
+                      <input class="input" id="s-first" name="first" autocomplete="given-name" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s-last">Last name</label>
+                      <input class="input" id="s-last" name="last" autocomplete="family-name" required>
+                    </div>
+                    <div class="fld span-2">
+                      <label class="fld__label" for="s-email">Work email</label>
+                      <input class="input" id="s-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required data-validate="workEmail">
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s-company">Company</label>
+                      <input class="input" id="s-company" name="company" autocomplete="organization" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s-size">Team size</label>
+                      <span class="select-wrap">
+                        <select class="input" id="s-size" name="size" required>
+                          <option value="">Select…</option><option>1–10</option><option>11–50</option><option>51–200</option><option>201–1,000</option><option>1,000+</option>
+                        </select>
+                      </span>
+                    </div>
+
+                    <fieldset class="fld" data-group data-msg-required="Choose what you'd like to talk about.">
+                      <legend>What would you like to discuss?</legend>
+                      <div class="chips">
+                        <label class="chip"><input type="radio" name="topic" value="pricing" required>Pricing</label>
+                        <label class="chip"><input type="radio" name="topic" value="demo">Product demo</label>
+                        <label class="chip"><input type="radio" name="topic" value="security">Security &amp; compliance</label>
+                        <label class="chip"><input type="radio" name="topic" value="partner">Partnership</label>
+                      </div>
+                    </fieldset>
+
+                    <div class="fld span-2">
+                      <label class="fld__label" for="s-msg">How can we help? <span class="fld__optional">Optional</span></label>
+                      <textarea class="input" id="s-msg" name="message" maxlength="500" rows="4" placeholder="Tell us about your team and goals"></textarea>
+                      <span class="fld__counter" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="fld span-2">
+                      <label class="check"><input type="checkbox" name="consent" required data-msg-required="Please accept the privacy policy so we can reply.">I agree to Lumen's <a href="#">privacy policy</a>.</label>
+                    </div>
+
+                    <div class="form-actions sales__actions">
+                      <button class="btn btn--accent sales__submit" type="submit">Send message <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></button>
+                      <p class="sales__note">We reply within one business day.</p>
+                    </div>
+                  </form>
+
+                  <div class="form-success" id="sales-success" hidden>
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3>Thanks<span data-sales-name></span>, message received.</h3>
+                    <p>A product specialist will reply to <strong data-sales-email></strong> within one business day.</p>
+                    <button class="btn btn--outline btn--sm" type="button" data-form-reset>Send another message</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press “Send message” with the form empty, then try a <code>@gmail.com</code> address.</p>
+      </section>
+
+      <!-- =================================================================
+           02 · HALDEN: Multi-step project brief
+           ================================================================= -->
+      <section class="demo" id="c-brief" aria-labelledby="c-brief-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="c-brief-title">Halden <span>· Multi-step project brief</span></h2>
+            <p class="demo__desc">Long forms feel short when they're broken into steps. Visitors pick services from cards, set a budget with a slider and choose a timeline, then review everything before sending. Each step is checked before moving on, and any answer can be edited from the review.</p>
+            <ul class="demo__tags" role="list"><li>4-step wizard</li><li>Progress indicator</li><li>Budget slider</li><li>Review &amp; edit</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/start</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Halden brief preview">
+
+              <div class="cf brief" data-wizard>
+                <header class="brief__head">
+                  <p class="brief__brand">Halden<span>Studio</span></p>
+                  <ol class="brief__steps" role="list" aria-label="Progress">
+                    <li data-step-label>Services</li>
+                    <li data-step-label>Budget</li>
+                    <li data-step-label>About you</li>
+                    <li data-step-label>Review</li>
+                  </ol>
+                  <div class="brief__progress" aria-hidden="true"><span data-progress></span></div>
+                </header>
+
+                <form class="brief__form" id="brief-form" data-success="#brief-success" novalidate>
+                  <!-- Step 1 -->
+                  <section class="brief__step" data-step aria-labelledby="b-s1">
+                    <p class="brief__count" data-step-count></p>
+                    <h3 class="brief__title" id="b-s1" tabindex="-1">What can we help you with?</h3>
+                    <p class="brief__sub">Choose everything that applies.</p>
+                    <fieldset class="fld" data-group data-min="1" data-msg-required="Choose at least one service.">
+                      <legend class="sr-only">Services</legend>
+                      <div class="option-cards">
+                        <label class="option-card"><input type="checkbox" name="services" value="Brand identity"><span class="option-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Brand identity</strong><small>Logo, type, colour, voice</small></label>
+                        <label class="option-card"><input type="checkbox" name="services" value="Website"><span class="option-card__icon"><svg class="icon"><use href="#i-monitor"/></svg></span><strong>Website</strong><small>Design &amp; development</small></label>
+                        <label class="option-card"><input type="checkbox" name="services" value="Mobile app"><span class="option-card__icon"><svg class="icon"><use href="#i-smartphone"/></svg></span><strong>Mobile app</strong><small>iOS &amp; Android</small></label>
+                        <label class="option-card"><input type="checkbox" name="services" value="Campaign"><span class="option-card__icon"><svg class="icon"><use href="#i-megaphone"/></svg></span><strong>Campaign</strong><small>Launch &amp; content</small></label>
+                      </div>
+                    </fieldset>
+                  </section>
+
+                  <!-- Step 2 -->
+                  <section class="brief__step" data-step aria-labelledby="b-s2" hidden>
+                    <p class="brief__count" data-step-count></p>
+                    <h3 class="brief__title" id="b-s2" tabindex="-1">Budget &amp; timing</h3>
+                    <p class="brief__sub">A rough idea helps us suggest the right team and scope.</p>
+                    <div class="fld">
+                      <label class="fld__label" for="b-budget">Estimated budget <output class="brief__budget" for="b-budget" data-budget-out>€40,000</output></label>
+                      <input class="range" id="b-budget" name="budget" type="range" min="10000" max="250000" step="5000" value="40000" data-budget>
+                      <div class="brief__range-labels" aria-hidden="true"><span>€10k</span><span>€250k+</span></div>
+                    </div>
+                    <fieldset class="fld" data-group data-msg-required="Choose a timeline.">
+                      <legend>When do you want to start?</legend>
+                      <div class="segmented">
+                        <label><input type="radio" name="timeline" value="As soon as possible" required>ASAP</label>
+                        <label><input type="radio" name="timeline" value="In 1–3 months">1–3 months</label>
+                        <label><input type="radio" name="timeline" value="In 3–6 months">3–6 months</label>
+                        <label><input type="radio" name="timeline" value="Flexible">Flexible</label>
+                      </div>
+                    </fieldset>
+                  </section>
+
+                  <!-- Step 3 -->
+                  <section class="brief__step" data-step aria-labelledby="b-s3" hidden>
+                    <p class="brief__count" data-step-count></p>
+                    <h3 class="brief__title" id="b-s3" tabindex="-1">Tell us about you</h3>
+                    <div class="form-grid">
+                      <div class="fld">
+                        <label class="fld__label" for="b-name">Your name</label>
+                        <input class="input" id="b-name" name="name" autocomplete="name" required>
+                      </div>
+                      <div class="fld">
+                        <label class="fld__label" for="b-email">Email</label>
+                        <input class="input" id="b-email" name="email" type="email" autocomplete="email" required>
+                      </div>
+                      <div class="fld span-2">
+                        <label class="fld__label" for="b-company">Company <span class="fld__optional">Optional</span></label>
+                        <input class="input" id="b-company" name="company" autocomplete="organization">
+                      </div>
+                      <div class="fld span-2">
+                        <label class="fld__label" for="b-about">About the project</label>
+                        <textarea class="input" id="b-about" name="about" minlength="20" maxlength="800" rows="4" required placeholder="What are you making, who is it for, and what does success look like?" data-msg-minlength="A couple of sentences helps us prepare. Please write at least 20 characters."></textarea>
+                        <span class="fld__counter" aria-hidden="true"></span>
+                      </div>
+                    </div>
+                  </section>
+
+                  <!-- Step 4 -->
+                  <section class="brief__step" data-step aria-labelledby="b-s4" hidden>
+                    <p class="brief__count" data-step-count></p>
+                    <h3 class="brief__title" id="b-s4" tabindex="-1">Review your brief</h3>
+                    <dl class="review" data-review></dl>
+                  </section>
+
+                  <div class="brief__nav">
+                    <button class="btn btn--ghost" type="button" data-prev hidden><svg class="icon"><use href="#i-arrow-left"/></svg>Back</button>
+                    <button class="btn btn--primary" type="button" data-next>Continue <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></button>
+                    <button class="btn btn--primary" type="submit" data-submit hidden>Send brief <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></button>
+                  </div>
+                </form>
+
+                <div class="form-success" id="brief-success" hidden>
+                  <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                  <h3>Brief received. Thank you.</h3>
+                  <p>We'll review it and send a short proposal, with a time for a call, within two working days.</p>
+                  <button class="btn btn--outline btn--sm" type="button" data-form-reset>Start a new brief</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Try pressing “Continue” without choosing anything, then go all the way to Review and use “Edit”.</p>
+      </section>
+
+      <!-- =================================================================
+           03 · EMBER: Table reservation
+           ================================================================= -->
+      <section class="demo" id="c-booking" aria-labelledby="c-booking-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="c-booking-title">Ember <span>· Table reservation</span></h2>
+            <p class="demo__desc">A booking request that understands the restaurant. It blocks closed days, generates time slots from that day's real opening hours (with sold-out slots greyed out), uses a party-size stepper, and keeps a live summary of the booking as you fill it in.</p>
+            <ul class="demo__tags" role="list"><li>Smart time slots</li><li>Closed-day check</li><li>Party stepper</li><li>Live summary</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk/book</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember booking preview">
+
+              <div class="cf booking">
+                <div class="booking__intro">
+                  <p class="booking__logo">Ember<span>&amp; Ash</span></p>
+                  <h3 class="booking__title">Reserve a <em>table</em></h3>
+                  <p class="booking__sub">Twelve seats around the hearth. We hold tables for 15 minutes.</p>
+                  <div class="booking__summary" aria-live="polite">
+                    <span class="booking__summary-label">Your booking</span>
+                    <p data-booking-summary>Choose a date and time</p>
+                  </div>
+                </div>
+
+                <div class="booking__card">
+                  <form class="form-grid" id="booking-form" data-success="#booking-success" novalidate>
+                    <div class="fld">
+                      <label class="fld__label" for="r-date">Date</label>
+                      <div class="input-group">
+                        <svg class="icon"><use href="#i-calendar"/></svg>
+                        <input class="input" id="r-date" name="date" type="date" required data-validate="openDay" data-msg-required="Please choose a date." data-msg-min="Please choose today or a later date." data-msg-max="We take bookings up to 60 days ahead.">
+                      </div>
+                    </div>
+
+                    <div class="fld">
+                      <span class="fld__label" id="r-party-label">Guests</span>
+                      <div class="stepper" role="group" aria-labelledby="r-party-label">
+                        <button type="button" data-step-down aria-label="Fewer guests"><svg class="icon"><use href="#i-minus"/></svg></button>
+                        <input id="r-party" name="party" type="number" min="1" max="12" value="2" inputmode="numeric" aria-labelledby="r-party-label">
+                        <button type="button" data-step-up aria-label="More guests"><svg class="icon"><use href="#i-plus"/></svg></button>
+                      </div>
+                      <p class="fld__hint" data-party-note>Up to 12 guests online.</p>
+                    </div>
+
+                    <fieldset class="fld" data-group data-min="1" data-msg-required="Please choose a time.">
+                      <legend>Time</legend>
+                      <div class="chips booking__slots" data-slots>
+                        <p class="booking__slots-empty">Pick a date to see available times.</p>
+                      </div>
+                    </fieldset>
+
+                    <div class="fld">
+                      <label class="fld__label" for="r-name">Name</label>
+                      <input class="input" id="r-name" name="name" autocomplete="name" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="r-phone">Mobile</label>
+                      <input class="input" id="r-phone" name="phone" type="tel" autocomplete="tel" required pattern="\+?[0-9 ()\-]{7,20}" data-msg-pattern="Enter a phone number we can text, e.g. 07700 900123." placeholder="07700 900123">
+                    </div>
+                    <div class="fld span-2">
+                      <label class="fld__label" for="r-email">Email</label>
+                      <input class="input" id="r-email" name="email" type="email" autocomplete="email" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="r-occasion">Occasion <span class="fld__optional">Optional</span></label>
+                      <span class="select-wrap">
+                        <select class="input" id="r-occasion" name="occasion"><option value="">None</option><option>Birthday</option><option>Anniversary</option><option>Business</option><option>Date night</option></select>
+                      </span>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="r-notes">Requests <span class="fld__optional">Optional</span></label>
+                      <input class="input" id="r-notes" name="notes" maxlength="120" placeholder="Allergies, high chair…">
+                    </div>
+
+                    <div class="form-actions">
+                      <button class="btn booking__submit" type="submit">Request booking</button>
+                    </div>
+                  </form>
+
+                  <div class="form-success" id="booking-success" hidden>
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3>You're booked in!</h3>
+                    <p data-booking-confirm></p>
+                    <p class="booking__code">Reference <strong data-booking-code></strong></p>
+                    <button class="btn btn--outline btn--sm" type="button" data-form-reset>Make another booking</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Choose a Monday to see the closed-day message, then compare a Saturday (lunch and dinner) with a Sunday (lunch only).</p>
+      </section>
+
+      <!-- =================================================================
+           04 · NOVA: Support ticket
+           ================================================================= -->
+      <section class="demo" id="c-support" aria-labelledby="c-support-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="c-support-title">Nova <span>· Support ticket</span></h2>
+            <p class="demo__desc">An IT support request with priority levels, a drag-and-drop attachment zone that checks file type and size, and response-time promises that change with priority. It also shows how the form handles a server error gracefully.</p>
+            <ul class="demo__tags" role="list"><li>Drag &amp; drop files</li><li>Priority levels</li><li>Server-error handling</li><li>Ticket number</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">help.nova.so/new-ticket</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nova support preview">
+
+              <div class="cf support">
+                <div class="support__head">
+                  <span class="support__icon"><svg class="icon"><use href="#i-life-buoy"/></svg></span>
+                  <div>
+                    <h3>Open a support ticket</h3>
+                    <p>Our team is online now · median first reply <strong data-sla>4 hours</strong></p>
+                  </div>
+                </div>
+
+                <form class="support__form form-grid" id="support-form" data-success="#support-success" novalidate>
+                  <div class="form-alert form-alert--error span-2" data-form-alert role="alert" tabindex="-1" hidden>
+                    <svg class="icon"><use href="#i-alert"/></svg><span data-form-alert-text></span>
+                  </div>
+
+                  <div class="fld">
+                    <label class="fld__label" for="t-email">Account email</label>
+                    <input class="input" id="t-email" name="email" type="email" autocomplete="email" required>
+                  </div>
+                  <div class="fld">
+                    <label class="fld__label" for="t-cat">Category</label>
+                    <span class="select-wrap">
+                      <select class="input" id="t-cat" name="category" required>
+                        <option value="">Choose a category…</option><option>Account &amp; billing</option><option>Technical problem</option><option>Security concern</option><option>Feature request</option>
+                      </select>
+                    </span>
+                  </div>
+
+                  <fieldset class="fld" data-group>
+                    <legend>Priority</legend>
+                    <div class="segmented priority" data-priority>
+                      <label><input type="radio" name="priority" value="low">Low</label>
+                      <label><input type="radio" name="priority" value="normal" checked>Normal</label>
+                      <label><input type="radio" name="priority" value="high">High</label>
+                      <label class="priority__urgent"><input type="radio" name="priority" value="urgent">Urgent</label>
+                    </div>
+                    <p class="form-alert form-alert--info priority__note" data-urgent-note hidden><svg class="icon"><use href="#i-zap"/></svg><span>Is production down? For outages, call our 24/7 line on <strong>+44 20 7946 0999</strong> for the fastest response.</span></p>
+                  </fieldset>
+
+                  <div class="fld span-2">
+                    <label class="fld__label" for="t-subject">Subject</label>
+                    <input class="input" id="t-subject" name="subject" minlength="6" maxlength="90" required placeholder="e.g. Can't export reports to CSV">
+                    <p class="fld__hint">Tip for testing: include the word “error” to see how a server failure is handled.</p>
+                  </div>
+
+                  <div class="fld span-2">
+                    <label class="fld__label" for="t-desc">Describe the problem</label>
+                    <textarea class="input" id="t-desc" name="description" minlength="30" maxlength="2000" rows="5" required placeholder="What happened, what you expected, and steps to reproduce" data-msg-minlength="Please add a little more detail (at least 30 characters) so we can help first time."></textarea>
+                    <span class="fld__counter" aria-hidden="true"></span>
+                  </div>
+
+                  <div class="fld span-2">
+                    <span class="fld__label" id="t-files-label">Attachments <span class="fld__optional">Up to 3 files · PNG, JPG, PDF, TXT, LOG · 5 MB each</span></span>
+                    <label class="dropzone" data-dropzone>
+                      <input type="file" name="files" multiple accept=".png,.jpg,.jpeg,.pdf,.txt,.log" aria-labelledby="t-files-label" data-fk-ignore>
+                      <svg class="icon"><use href="#i-upload"/></svg>
+                      <span><strong>Click to upload</strong> or drag files here</span>
+                      <small>Screenshots help us fix things faster</small>
+                    </label>
+                    <p class="fld__error" data-file-error role="alert"></p>
+                    <ul class="file-list" role="list" data-file-list></ul>
+                  </div>
+
+                  <div class="form-actions support__actions">
+                    <button class="btn btn--accent" type="submit">Submit ticket</button>
+                  </div>
+                </form>
+
+                <div class="form-success" id="support-success" hidden>
+                  <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                  <h3>Ticket <span data-ticket-id></span> created</h3>
+                  <p data-ticket-sla></p>
+                  <button class="btn btn--outline btn--sm" type="button" data-form-reset>Open another ticket</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Drag a file onto the upload area, choose “Urgent”, or put “error” in the subject to test the failure path.</p>
+      </section>
+
+      <!-- =================================================================
+           05 · FORGE: Quick-contact widget
+           ================================================================= -->
+      <section class="demo" id="c-widget" aria-labelledby="c-widget-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="c-widget-title">Forge <span>· Quick-contact widget</span></h2>
+            <p class="demo__desc">A floating “Questions?” button that opens a compact form on any page, so visitors can ask without leaving. It uses floating labels, accepts either a phone number or an email address, and has an optional call-back time.</p>
+            <ul class="demo__tags" role="list"><li>Floating launcher</li><li>Floating labels</li><li>Email or phone</li><li>Conditional fields</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit/membership</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forge widget preview">
+
+              <div class="cf widget-page">
+                <div class="widget-page__mock" aria-hidden="true">
+                  <p class="widget-page__logo">FORGE<span>.</span></p>
+                  <p class="widget-page__title">Membership<br><span>that fits.</span></p>
+                  <div class="widget-page__plans"><span></span><span></span><span></span></div>
+                </div>
+
+                <button class="launcher" type="button" aria-expanded="false" aria-controls="qc-panel" data-launcher>
+                  <span class="launcher__icon"><svg class="icon launcher__chat"><use href="#i-chat"/></svg><svg class="icon launcher__close"><use href="#i-x"/></svg></span>
+                  <span class="launcher__label">Questions?</span>
+                </button>
+
+                <div class="qc" id="qc-panel" role="dialog" aria-modal="false" aria-labelledby="qc-title" data-state="closed">
+                  <div class="qc__head">
+                    <div class="qc__team" aria-hidden="true"><span class="avatar" style="--h: 120">JM</span><span class="avatar" style="--h: 20">AL</span></div>
+                    <div>
+                      <h3 id="qc-title">Ask the Forge team</h3>
+                      <p><i class="qc__online" aria-hidden="true"></i>Coaches usually reply within 1 hour</p>
+                    </div>
+                  </div>
+
+                  <form class="qc__form" id="qc-form" data-success="#qc-success" novalidate>
+                    <div class="fld fld--float">
+                      <input class="input" id="q-name" name="name" placeholder=" " autocomplete="given-name" required>
+                      <label class="fld__label" for="q-name">First name</label>
+                    </div>
+                    <div class="fld fld--float">
+                      <input class="input" id="q-contact" name="contact" placeholder=" " autocomplete="email" required data-validate="emailOrPhone" data-msg-required="Add an email or phone number so we can reply.">
+                      <label class="fld__label" for="q-contact">Email or phone</label>
+                    </div>
+                    <fieldset class="fld" data-group data-msg-required="Choose what you're interested in.">
+                      <legend>I'm interested in</legend>
+                      <div class="chips">
+                        <label class="chip"><input type="radio" name="interest" value="Membership" required>Membership</label>
+                        <label class="chip"><input type="radio" name="interest" value="Personal training">Personal training</label>
+                        <label class="chip"><input type="radio" name="interest" value="Classes">Classes</label>
+                      </div>
+                    </fieldset>
+                    <div class="fld fld--float">
+                      <textarea class="input" id="q-msg" name="message" placeholder=" " rows="2" maxlength="300"></textarea>
+                      <label class="fld__label" for="q-msg">Your question (optional)</label>
+                    </div>
+                    <label class="check"><input type="checkbox" name="callback" data-callback-toggle>Request a call back</label>
+                    <fieldset class="fld" data-group data-callback-times hidden data-msg-required="Choose a time that suits you.">
+                      <legend>Best time to call</legend>
+                      <div class="segmented">
+                        <label><input type="radio" name="callTime" value="Morning" required>Morning</label>
+                        <label><input type="radio" name="callTime" value="Afternoon">Afternoon</label>
+                        <label><input type="radio" name="callTime" value="Evening">Evening</label>
+                      </div>
+                    </fieldset>
+                    <button class="btn qc__submit" type="submit">Send <svg class="icon"><use href="#i-arrow-right"/></svg></button>
+                  </form>
+
+                  <div class="form-success qc__success" id="qc-success" hidden>
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3>Got it, <span data-qc-name></span>!</h3>
+                    <p data-qc-confirm></p>
+                    <button class="btn btn--sm qc__again" type="button" data-form-reset>Ask something else</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open the “Questions?” button. Try typing a phone number instead of an email, and tick “Request a call back”.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 004</strong> of 100 · Built on FormKit, the shared form engine in <code>packages/form-kit</code>.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 005: Login &amp; Sign-up</span></p>
+    </div>
+  </footer>
+</body>
+</html>
