@@ -1,0 +1,190 @@
+/* ==========================================================================
+   Thecore Design System — Components
+   --------------------------------------------------------------------------
+   Small, reusable UI primitives shared across projects: buttons, icon
+   buttons, hamburger toggle, avatars, badges, gradient text, skeletons.
+   ========================================================================== */
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  height: 2.5rem;
+  padding-inline: 1.05rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 550;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    scale var(--dur-fast) var(--ease-out);
+}
+
+.btn:active { scale: 0.97; }
+.btn .icon { width: 1rem; height: 1rem; }
+.btn .icon--nudge { transition: translate var(--dur-base) var(--ease-out); }
+.btn:hover .icon--nudge { translate: 3px 0; }
+
+.btn--sm { height: 2.2rem; padding-inline: 0.9rem; }
+.btn--block { width: 100%; }
+
+.btn--primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.btn--primary:hover { background: color-mix(in oklch, var(--color-text) 86%, var(--color-bg)); }
+
+.btn--accent {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.2);
+}
+
+.btn--accent:hover { background: var(--color-accent-hover); }
+
+.btn--ghost { color: var(--color-text-muted); }
+.btn--ghost:hover { color: var(--color-text); background: var(--color-surface-2); }
+
+.btn--outline {
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.btn--outline:hover { background: var(--color-surface-2); }
+
+/* Gradient CTA with a soft brand glow that intensifies on hover */
+.btn--glow {
+  position: relative;
+  background: var(--gradient-cta);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.28),
+    0 1px 2px oklch(40% 0.2 285 / 0.3),
+    0 6px 20px -6px oklch(55% 0.25 285 / 0.55);
+}
+
+.btn--glow:hover {
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.28),
+    0 1px 2px oklch(40% 0.2 285 / 0.3),
+    0 10px 28px -6px oklch(55% 0.25 285 / 0.75);
+}
+
+/* ---------- Icon button ---------- */
+.icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.icon-btn:hover,
+.icon-btn[aria-expanded="true"] {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.icon-btn .icon { width: 1.15rem; height: 1.15rem; }
+
+/* ---------- Hamburger (two lines morph into an X) ---------- */
+.hamburger {
+  position: relative;
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  transition: background-color var(--dur-fast);
+}
+
+.hamburger:hover { background: var(--color-surface-2); }
+
+.hamburger span {
+  position: absolute;
+  top: calc(50% - 0.75px);
+  left: calc(50% - 9px);
+  width: 18px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: translate var(--dur-base) var(--ease-out), rotate var(--dur-base) var(--ease-out);
+}
+
+.hamburger span:nth-child(1) { translate: 0 -3.5px; }
+.hamburger span:nth-child(2) { translate: 0 3.5px; }
+.hamburger[aria-expanded="true"] span { translate: 0 0; }
+.hamburger[aria-expanded="true"] span:nth-child(1) { rotate: 45deg; }
+.hamburger[aria-expanded="true"] span:nth-child(2) { rotate: -45deg; }
+
+/* ---------- Avatars & badges ---------- */
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, oklch(68% 0.16 var(--h, 265)), oklch(54% 0.2 calc(var(--h, 265) + 40)));
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.avatar--sq { width: 1.35rem; height: 1.35rem; border-radius: 6px; font-size: 0.66rem; }
+.avatar--lg { width: 2.75rem; height: 2.75rem; font-size: 0.85rem; }
+.avatar--ok { background: oklch(62% 0.16 155 / 0.16); color: var(--color-success); }
+.avatar--ok .icon { width: 0.95rem; height: 0.95rem; stroke-width: 2.5; }
+
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  display: grid;
+  place-items: center;
+  min-width: 1rem;
+  height: 1rem;
+  padding-inline: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+/* ---------- Text effects ---------- */
+.gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Loading skeleton ---------- */
+.skeleton {
+  display: block;
+  height: 0.75rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--color-surface-2) 0%, var(--color-surface-3) 50%, var(--color-surface-2) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+.skeleton--icon { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-md); }
+.skeleton--line { width: 85%; }
+.skeleton--line.short { width: 55%; }
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
