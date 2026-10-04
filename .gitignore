@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.astro/
+.next/
+.turbo/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+*.log
+desktop.ini
+
+# Local tooling (not part of the project)
+.claude/
+.vscode/
+.idea/
+
+# Private working documents: never published
+*.docx
+*.pdf
+private/
