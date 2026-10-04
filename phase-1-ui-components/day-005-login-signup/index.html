@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login &amp; Sign-up · Day 005 · Thecore</title>
+  <meta name="description" content="Five production-grade authentication screens: sign-in, sign-up with password strength, passwordless one-time code, tabbed auth with password reset, and a sign-in modal. Day 005 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    /* Resolve the theme before first paint so there is never a light/dark flash. */
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="../../packages/form-kit/form-kit.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Icon sprite ===================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M9.9 4.24A9 9 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.16 3.19M6.6 6.6A18 18 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-arrow-big-up" viewBox="0 0 24 24"><path d="M9 18v-6H5l7-7 7 7h-4v6z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+    <symbol id="s-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+    <symbol id="s-google" viewBox="0 0 24 24"><path fill="#4285F4" stroke="none" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" stroke="none" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" stroke="none" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6H1.3a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" stroke="none" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.8 3.6-4.9 6.7-4.9z"/></symbol>
+    <symbol id="s-microsoft" viewBox="0 0 24 24"><path fill="#F25022" stroke="none" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" stroke="none" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" stroke="none" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" stroke="none" d="M12.5 12.5H22V22h-9.5z"/></symbol>
+  </svg>
+
+  <!-- ===================== Showcase header ===================== -->
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="#main">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to screen">
+        <a href="#a-signin">01</a>
+        <a href="#a-signup">02</a>
+        <a href="#a-otp">03</a>
+        <a href="#a-tabs">04</a>
+        <a href="#a-modal">05</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 005 / 100</span> Phase 1 · UI Components</p>
+      <h1>Login &amp; <em>Sign-up</em></h1>
+      <p class="lead">
+        Five authentication screens built the way serious products build them. They work with password managers,
+        warn when Caps Lock is on, check password strength live, spot email typos, and handle wrong passwords and
+        lockouts. Everything here is <strong>simulated in the browser</strong>. Real accounts arrive in Phase 4.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>5</strong>auth flows</li>
+        <li><strong>Password-manager</strong>friendly</li>
+        <li><strong>One-time</strong>code input</li>
+        <li><strong>0</strong>data sent anywhere</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- =================================================================
+           01 · LUMEN: Split-screen sign in
+           ================================================================= -->
+      <section class="demo" id="a-signin" aria-labelledby="a-signin-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="a-signin-title">Lumen <span>· Split-screen sign in</span></h2>
+            <p class="demo__desc">The standard SaaS sign-in, polished. It has single sign-on buttons, a show/hide password toggle, a Caps Lock warning, and “remember me”. A wrong password shows a clear error, and after three failed attempts a temporary lockout with a countdown kicks in.</p>
+            <ul class="demo__tags" role="list"><li>Social sign-in</li><li>Caps Lock warning</li><li>Show password</li><li>Lockout countdown</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/login</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Lumen sign-in preview">
+
+              <div class="auth split">
+                <div class="split__form">
+                  <a class="split__logo" href="#" aria-label="Lumen home">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lumen-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#22c3e6"/></linearGradient></defs><path fill="url(#lumen-a)" d="M12 2c.7 5.2 4.8 9.3 10 10-5.2.7-9.3 4.8-10 10-.7-5.2-4.8-9.3-10-10 5.2-.7 9.3-4.8 10-10z"/></svg>
+                    Lumen
+                  </a>
+
+                  <div class="split__inner" id="signin-view">
+                    <h3 class="auth__title">Welcome back</h3>
+                    <p class="auth__sub">Sign in to your workspace.</p>
+
+                    <div class="sso">
+                      <button class="sso__btn" type="button" data-sso="Google"><svg class="icon"><use href="#s-google"/></svg>Continue with Google</button>
+                      <button class="sso__btn" type="button" data-sso="Microsoft"><svg class="icon"><use href="#s-microsoft"/></svg>Continue with Microsoft</button>
+                    </div>
+                    <p class="divider"><span>or sign in with email</span></p>
+
+                    <form class="auth__form" id="signin-form" novalidate>
+                      <div class="form-alert form-alert--error" data-form-alert role="alert" tabindex="-1" hidden><svg class="icon"><use href="#i-alert"/></svg><span data-form-alert-text></span></div>
+
+                      <div class="fld">
+                        <label class="fld__label" for="si-email">Email</label>
+                        <input class="input" id="si-email" name="email" type="email" autocomplete="username" required>
+                      </div>
+                      <div class="fld">
+                        <span class="fld__label"><label for="si-pass">Password</label><a class="auth__link" href="#">Forgot password?</a></span>
+                        <div class="input-group">
+                          <input class="input" id="si-pass" name="password" type="password" autocomplete="current-password" required data-caps>
+                          <button class="input-group__end" type="button" data-password-toggle aria-label="Show password" aria-pressed="false" aria-controls="si-pass"><svg class="icon"><use href="#i-eye"/></svg></button>
+                        </div>
+                        <p class="caps-warning" data-caps-warning hidden><svg class="icon"><use href="#i-arrow-big-up"/></svg>Caps Lock is on</p>
+                      </div>
+                      <label class="check"><input type="checkbox" name="remember" checked>Keep me signed in for 30 days</label>
+                      <button class="btn btn--primary auth__submit" type="submit">Sign in</button>
+                      <p class="demo-note">Demo: any email and password signs in. Use the password <code>wrongpass</code> to see errors and the lockout.</p>
+                    </form>
+
+                    <p class="auth__switch">New to Lumen? <a href="#">Create an account</a></p>
+                  </div>
+
+                  <div class="form-success" id="signin-success" hidden>
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3 data-signin-welcome>Signed in</h3>
+                    <p>Redirecting you to your workspace…</p>
+                    <div class="redirect-bar" aria-hidden="true"><span></span></div>
+                    <button class="btn btn--outline btn--sm" type="button" data-signout>Sign out (reset demo)</button>
+                  </div>
+                </div>
+
+                <aside class="split__panel" aria-label="Customer story">
+                  <div class="split__glow" aria-hidden="true"></div>
+                  <div class="split__mock" aria-hidden="true">
+                    <div class="split__mock-bar"><i></i><i></i><i></i></div>
+                    <div class="split__mock-body"><span></span><span></span><span></span><span class="wide"></span></div>
+                  </div>
+                  <figure class="split__quote">
+                    <blockquote>“Lumen replaced four tools for us. Our launches are calmer, faster and actually fun.”</blockquote>
+                    <figcaption><span class="avatar" style="--h: 200">MO</span><span><strong>Mateo Ortiz</strong>VP Product, Kestrel</span></figcaption>
+                  </figure>
+                </aside>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Turn on Caps Lock while typing a password, or sign in three times with <code>wrongpass</code>.</p>
+      </section>
+
+      <!-- =================================================================
+           02 · ATLAS: Sign up with password strength
+           ================================================================= -->
+      <section class="demo" id="a-signup" aria-labelledby="a-signup-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="a-signup-title">Atlas <span>· Sign up with password strength</span></h2>
+            <p class="demo__desc">Account creation that helps people succeed. It has a live strength meter and checklist, a block on very common passwords, an email-typo check (“Did you mean gmail.com?”), password confirmation, and a “check your inbox” screen with a resend timer.</p>
+            <ul class="demo__tags" role="list"><li>Strength meter</li><li>Email typo fix</li><li>Common-password block</li><li>Verify-email screen</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 740px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/signup</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Atlas sign-up preview">
+
+              <div class="auth centered signup">
+                <div class="card">
+                  <div class="card__brand">
+                    <svg class="atlas-mark" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7"/><path class="cut" d="M7 17.5 12 6.5l5 11M9 13.5h6"/></svg>
+                  </div>
+                  <h3 class="auth__title">Create your Atlas account</h3>
+                  <p class="auth__sub">Free for 14 days. No credit card needed.</p>
+
+                  <form class="auth__form" id="signup-form" data-success="#signup-success" novalidate>
+                    <div class="fld">
+                      <label class="fld__label" for="su-name">Full name</label>
+                      <input class="input" id="su-name" name="name" autocomplete="name" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="su-email">Work email</label>
+                      <input class="input" id="su-email" name="email" type="email" autocomplete="email" required>
+                      <p class="typo-hint" data-typo-hint hidden>Did you mean <button type="button" data-typo-fix></button>?</p>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="su-pass">Password</label>
+                      <div class="input-group">
+                        <input class="input" id="su-pass" name="password" type="password" autocomplete="new-password" required minlength="8" data-validate="strongPassword" data-caps aria-describedby="su-strength">
+                        <button class="input-group__end" type="button" data-password-toggle aria-label="Show password" aria-pressed="false" aria-controls="su-pass"><svg class="icon"><use href="#i-eye"/></svg></button>
+                      </div>
+                      <div class="strength" id="su-strength" data-strength>
+                        <div class="strength__bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+                        <p class="strength__label" aria-live="polite"><span data-strength-label>Use 8 or more characters</span></p>
+                      </div>
+                      <ul class="rules" role="list" data-rules>
+                        <li data-rule="length">8+ characters</li>
+                        <li data-rule="case">Upper &amp; lower case</li>
+                        <li data-rule="number">A number</li>
+                        <li data-rule="symbol">A symbol</li>
+                      </ul>
+                      <p class="caps-warning" data-caps-warning hidden><svg class="icon"><use href="#i-arrow-big-up"/></svg>Caps Lock is on</p>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="su-confirm">Confirm password</label>
+                      <input class="input" id="su-confirm" name="confirm" type="password" autocomplete="new-password" required data-match="#su-pass" data-msg-match="Passwords don’t match yet." data-msg-required="Please type your password again.">
+                    </div>
+                    <label class="check"><input type="checkbox" name="terms" required data-msg-required="You need to accept the terms to create an account.">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</label>
+                    <label class="check"><input type="checkbox" name="updates">Send me product tips <span class="fld__optional">(optional, about 1 a month)</span></label>
+                    <button class="btn btn--primary auth__submit" type="submit">Create account</button>
+                  </form>
+
+                  <div class="verify" id="signup-success" hidden>
+                    <span class="verify__icon"><svg class="icon"><use href="#i-mail"/></svg></span>
+                    <h3 class="auth__title">Check your inbox</h3>
+                    <p class="auth__sub">We sent a verification link to <strong data-verify-email></strong>. Click it to activate your account.</p>
+                    <button class="btn btn--outline auth__submit" type="button" data-resend disabled>Resend email in <span data-resend-timer>30</span>s</button>
+                    <p class="verify__status" data-resend-status aria-live="polite"></p>
+                    <button class="auth__link" type="button" data-form-reset>Use a different email</button>
+                  </div>
+                </div>
+                <p class="auth__switch">Already have an account? <a href="#">Sign in</a></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Try the password <code>password123</code>, then a strong one. Type an email ending in <code>@gmial.com</code> to see the typo fix.</p>
+      </section>
+
+      <!-- =================================================================
+           03 · NOVA: Passwordless one-time code
+           ================================================================= -->
+      <section class="demo" id="a-otp" aria-labelledby="a-otp-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="a-otp-title">Nova <span>· Passwordless code</span></h2>
+            <p class="demo__desc">No password to remember: enter an email and receive a 6-digit code. The code boxes jump forward as you type, accept a pasted code, support Backspace and arrow keys, fill automatically from SMS or email on phones, and submit as soon as the sixth digit is in.</p>
+            <ul class="demo__tags" role="list"><li>6-digit code</li><li>Paste &amp; auto-submit</li><li>Resend timer</li><li>Autofill from SMS</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.nova.so/login</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nova passwordless preview">
+
+              <div class="auth centered otp-flow" data-otp-flow>
+                <div class="card">
+                  <!-- Step 1: email -->
+                  <div data-otp-step="email">
+                    <div class="card__brand">
+                      <svg class="nova-mark" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="nova-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#c13dff"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#nova-a)"/><path d="M8 16V8l8 8V8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3 class="auth__title">Sign in to Nova</h3>
+                    <p class="auth__sub">We'll email you a code. No password needed.</p>
+                    <form class="auth__form" id="otp-email-form" novalidate>
+                      <div class="fld">
+                        <label class="fld__label" for="otp-email">Email</label>
+                        <div class="input-group">
+                          <svg class="icon"><use href="#i-mail"/></svg>
+                          <input class="input" id="otp-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+                        </div>
+                      </div>
+                      <button class="btn btn--accent auth__submit" type="submit">Send code</button>
+                    </form>
+                  </div>
+
+                  <!-- Step 2: code -->
+                  <div data-otp-step="code" hidden>
+                    <button class="back-link" type="button" data-otp-back><svg class="icon"><use href="#i-arrow-left"/></svg>Change email</button>
+                    <h3 class="auth__title" tabindex="-1" data-otp-heading>Enter your code</h3>
+                    <p class="auth__sub">We sent a 6-digit code to <strong data-otp-email></strong>. It expires in 10 minutes.</p>
+                    <form class="auth__form" id="otp-code-form" novalidate>
+                      <fieldset class="fld otp-fld">
+                        <legend class="sr-only">6-digit code</legend>
+                        <div class="otp" data-otp>
+                          <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder=" " aria-label="Digit 1 of 6">
+                          <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 2 of 6">
+                          <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 3 of 6">
+                          <span class="otp__sep" aria-hidden="true"></span>
+                          <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 4 of 6">
+                          <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 5 of 6">
+                          <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 6 of 6">
+                        </div>
+                        <p class="fld__error otp__error" data-otp-error role="alert"></p>
+                      </fieldset>
+                      <button class="btn btn--accent auth__submit" type="submit">Verify &amp; sign in</button>
+                      <p class="otp__resend"><button class="auth__link" type="button" data-otp-resend disabled>Resend code in <span data-otp-timer>30</span>s</button></p>
+                      <p class="demo-note">Demo code: <code data-demo-code>246810</code></p>
+                    </form>
+                  </div>
+
+                  <!-- Step 3: done -->
+                  <div class="form-success" data-otp-step="done" hidden tabindex="-1">
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3>You're in</h3>
+                    <p>Signed in securely without a password.</p>
+                    <button class="btn btn--outline btn--sm" type="button" data-otp-restart>Start over</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Paste <code>246810</code> into the first box, or type a wrong code to see the error.</p>
+      </section>
+
+      <!-- =================================================================
+           04 · NORDE: Tabbed auth + password reset (e-commerce)
+           ================================================================= -->
+      <section class="demo" id="a-tabs" aria-labelledby="a-tabs-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="a-tabs-title">Norde <span>· Shop account with reset</span></h2>
+            <p class="demo__desc">An online-store account card where Sign in and Create account sit side by side as tabs. A built-in “Forgot password” flow sends a reset link without leaving the page. A guest checkout option keeps first-time buyers from abandoning their basket.</p>
+            <ul class="demo__tags" role="list"><li>Sign in / Register tabs</li><li>Password reset flow</li><li>Guest checkout</li><li>Calm editorial style</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">norde.store/account</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Norde account preview">
+
+              <div class="auth shop">
+                <header class="shop__bar">
+                  <span class="shop__logo">NORDE</span>
+                  <span class="shop__bag"><svg class="icon"><use href="#i-bag"/></svg>Basket (2)</span>
+                </header>
+
+                <div class="shop__card" data-shop>
+                  <!-- Sign in / Register -->
+                  <div data-shop-view="main">
+                    <div class="shop__tabs" role="tablist" aria-label="Account">
+                      <button type="button" role="tab" id="shop-tab-in" aria-selected="true" aria-controls="shop-panel-in">Sign in</button>
+                      <button type="button" role="tab" id="shop-tab-up" aria-selected="false" aria-controls="shop-panel-up" tabindex="-1">Create account</button>
+                      <span class="shop__tab-line" aria-hidden="true"></span>
+                    </div>
+
+                    <div role="tabpanel" id="shop-panel-in" aria-labelledby="shop-tab-in">
+                      <form class="auth__form" id="shop-in-form" novalidate>
+                        <div class="fld fld--float">
+                          <input class="input" id="sh-email" name="email" type="email" placeholder=" " autocomplete="username" required>
+                          <label class="fld__label" for="sh-email">Email</label>
+                        </div>
+                        <div class="fld fld--float">
+                          <input class="input" id="sh-pass" name="password" type="password" placeholder=" " autocomplete="current-password" required>
+                          <label class="fld__label" for="sh-pass">Password</label>
+                        </div>
+                        <button class="auth__link shop__forgot" type="button" data-shop-go="reset">Forgot your password?</button>
+                        <button class="btn shop__btn" type="submit">Sign in</button>
+                      </form>
+                    </div>
+
+                    <div role="tabpanel" id="shop-panel-up" aria-labelledby="shop-tab-up" hidden>
+                      <form class="auth__form" id="shop-up-form" novalidate>
+                        <div class="form-grid">
+                          <div class="fld fld--float">
+                            <input class="input" id="sh-first" name="first" placeholder=" " autocomplete="given-name" required>
+                            <label class="fld__label" for="sh-first">First name</label>
+                          </div>
+                          <div class="fld fld--float">
+                            <input class="input" id="sh-last" name="last" placeholder=" " autocomplete="family-name" required>
+                            <label class="fld__label" for="sh-last">Last name</label>
+                          </div>
+                        </div>
+                        <div class="fld fld--float">
+                          <input class="input" id="sh-new-email" name="email" type="email" placeholder=" " autocomplete="email" required>
+                          <label class="fld__label" for="sh-new-email">Email</label>
+                        </div>
+                        <div class="fld fld--float">
+                          <input class="input" id="sh-new-pass" name="password" type="password" placeholder=" " autocomplete="new-password" required minlength="8">
+                          <label class="fld__label" for="sh-new-pass">Password (8+ characters)</label>
+                        </div>
+                        <label class="check"><input type="checkbox" name="news" checked>Get 10% off your first order with our newsletter</label>
+                        <button class="btn shop__btn" type="submit">Create account</button>
+                      </form>
+                    </div>
+
+                    <p class="divider"><span>or</span></p>
+                    <a class="btn btn--outline btn--block shop__guest" href="#">Continue as guest</a>
+                  </div>
+
+                  <!-- Reset password -->
+                  <div data-shop-view="reset" hidden>
+                    <button class="back-link" type="button" data-shop-go="main"><svg class="icon"><use href="#i-arrow-left"/></svg>Back to sign in</button>
+                    <h3 class="shop__title" tabindex="-1">Reset your password</h3>
+                    <p class="auth__sub">Enter your email and we'll send you a link to choose a new password.</p>
+                    <form class="auth__form" id="shop-reset-form" novalidate>
+                      <div class="fld fld--float">
+                        <input class="input" id="sh-reset" name="email" type="email" placeholder=" " autocomplete="email" required>
+                        <label class="fld__label" for="sh-reset">Email</label>
+                      </div>
+                      <button class="btn shop__btn" type="submit">Send reset link</button>
+                    </form>
+                  </div>
+
+                  <!-- Done -->
+                  <div class="form-success" data-shop-view="done" hidden tabindex="-1">
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3 data-shop-done-title></h3>
+                    <p data-shop-done-text></p>
+                    <button class="btn btn--outline btn--sm" type="button" data-shop-go="main">Back to sign in</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Switch tabs with the arrow keys, then try “Forgot your password?”.</p>
+      </section>
+
+      <!-- =================================================================
+           05 · ORBIT: Sign-in modal
+           ================================================================= -->
+      <section class="demo" id="a-modal" aria-labelledby="a-modal-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="a-modal-title">Orbit <span>· Sign-in modal</span></h2>
+            <p class="demo__desc">Let people browse first and ask them to sign in only when they want to do something, like saving or liking a post. The modal explains why it appeared and offers one-tap sign-in or email. Once signed in, the action they wanted completes automatically.</p>
+            <ul class="demo__tags" role="list"><li>Contextual prompt</li><li>Accessible modal</li><li>Focus trap</li><li>Resumes the action</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="false"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="true"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="tablet" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">orbit.app/explore</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Orbit modal preview">
+
+              <div class="auth feed" data-feed>
+                <header class="feed__bar">
+                  <span class="feed__logo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--color-bg)" stroke-width="2"/></svg>Orbit</span>
+                  <span class="feed__user" data-feed-user><button class="btn btn--primary btn--sm" type="button" data-auth-open data-action="signin">Sign in</button></span>
+                </header>
+                <div class="feed__grid">
+                  <article class="post" style="--h: 290">
+                    <div class="post__media"></div>
+                    <div class="post__body">
+                      <h3>A field guide to calm interfaces</h3>
+                      <p>Why the best products feel quiet, and how to get there.</p>
+                      <div class="post__actions">
+                        <button type="button" class="post__btn" data-auth-open data-action="like" aria-pressed="false"><svg class="icon"><use href="#i-heart"/></svg><span>Like</span></button>
+                        <button type="button" class="post__btn" data-auth-open data-action="save" aria-pressed="false"><svg class="icon"><use href="#i-bookmark"/></svg><span>Save</span></button>
+                      </div>
+                    </div>
+                  </article>
+                  <article class="post" style="--h: 160">
+                    <div class="post__media"></div>
+                    <div class="post__body">
+                      <h3>Designing for the thumb zone</h3>
+                      <p>Mobile layouts that feel effortless to hold.</p>
+                      <div class="post__actions">
+                        <button type="button" class="post__btn" data-auth-open data-action="like" aria-pressed="false"><svg class="icon"><use href="#i-heart"/></svg><span>Like</span></button>
+                        <button type="button" class="post__btn" data-auth-open data-action="save" aria-pressed="false"><svg class="icon"><use href="#i-bookmark"/></svg><span>Save</span></button>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <div class="modal" id="auth-modal" data-state="closed">
+                <div class="modal__backdrop" data-modal-close></div>
+                <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-reason">
+                  <button class="modal__close" type="button" data-modal-close aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+                  <span class="modal__icon" data-modal-icon><svg class="icon"><use href="#i-sparkles"/></svg></span>
+                  <h3 class="auth__title" id="modal-title" data-modal-title>Sign in to Orbit</h3>
+                  <p class="auth__sub" id="modal-reason" data-modal-reason>Join thousands of designers sharing their best work.</p>
+
+                  <div class="sso">
+                    <button class="sso__btn" type="button" data-modal-sso="Google"><svg class="icon"><use href="#s-google"/></svg>Continue with Google</button>
+                    <button class="sso__btn" type="button" data-modal-sso="GitHub"><svg class="icon"><use href="#s-github"/></svg>Continue with GitHub</button>
+                  </div>
+                  <p class="divider"><span>or</span></p>
+                  <form class="auth__form" id="modal-form" novalidate>
+                    <div class="fld">
+                      <label class="fld__label" for="m-email">Email</label>
+                      <input class="input" id="m-email" name="email" type="email" autocomplete="username" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="m-pass">Password</label>
+                      <div class="input-group">
+                        <input class="input" id="m-pass" name="password" type="password" autocomplete="current-password" required>
+                        <button class="input-group__end" type="button" data-password-toggle aria-label="Show password" aria-pressed="false" aria-controls="m-pass"><svg class="icon"><use href="#i-eye"/></svg></button>
+                      </div>
+                    </div>
+                    <button class="btn btn--primary auth__submit" type="submit">Continue</button>
+                  </form>
+                  <p class="modal__legal">By continuing you agree to Orbit's <a href="#">Terms</a>.</p>
+                </div>
+              </div>
+              <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press “Save” on a post while signed out. After signing in, the post is saved automatically.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 005</strong> of 100 · Everything is simulated in the browser. Real accounts, sessions and security arrive in Phase 4.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 006: Pricing Sections</span></p>
+    </div>
+  </footer>
+</body>
+</html>
