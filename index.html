@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thecore · 100 Days of Web Development</title>
+  <meta name="description" content="A growing library of reusable components, websites and web applications, one project a day for 100 days.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;600&display=swap">
+
+  <link rel="stylesheet" href="packages/design-system/tokens.css">
+  <link rel="stylesheet" href="packages/design-system/base.css">
+  <link rel="stylesheet" href="packages/design-system/components.css">
+  <link rel="stylesheet" href="packages/showcase/showcase.css">
+  <script src="packages/showcase/showcase.js" defer></script>
+
+  <style>
+    /* ---------- Hub page (project index) ---------- */
+    .phases {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.75rem;
+      margin-block: 0 3rem;
+    }
+
+    .phase {
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+    }
+
+    .phase.is-active { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+    .phase__days { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-subtle); }
+    .phase__name { margin-top: 0.2rem; font-size: var(--text-sm); font-weight: 650; }
+
+    .phase__bar {
+      height: 4px;
+      margin-top: 0.85rem;
+      overflow: hidden;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-3);
+    }
+
+    .phase__bar span {
+      display: block;
+      height: 100%;
+      width: calc(var(--done, 0) * 100%);
+      border-radius: inherit;
+      background: var(--gradient-brand);
+    }
+
+    .section-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.25rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title h2 { font-size: var(--text-2xl); font-weight: 650; }
+    .section-title p { font-size: var(--text-sm); color: var(--color-text-subtle); }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+
+    .day {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.25rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      background: var(--color-surface);
+      transition: border-color var(--dur-fast), box-shadow var(--dur-base) var(--ease-out), translate var(--dur-base) var(--ease-out);
+    }
+
+    a.day:hover {
+      border-color: var(--color-border-strong);
+      box-shadow: var(--shadow-lg);
+      translate: 0 -3px;
+    }
+
+    .day__top { display: flex; align-items: center; justify-content: space-between; }
+    .day__num { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; color: var(--color-accent); }
+
+    .day__status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-full);
+      background: oklch(62% 0.16 155 / 0.12);
+      color: var(--color-success);
+      font-size: var(--text-2xs);
+      font-weight: 650;
+    }
+
+    .day__status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .day h3 { font-size: var(--text-lg); font-weight: 650; letter-spacing: -0.02em; }
+    .day p { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+    .day__tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto; padding-top: 0.5rem; }
+
+    .day__tags li {
+      padding: 0.15rem 0.5rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--text-2xs);
+      color: var(--color-text-subtle);
+    }
+
+    .day__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+
+    .day__cta .icon { width: 1rem; height: 1rem; transition: translate var(--dur-base) var(--ease-out); }
+    a.day:hover .day__cta .icon { translate: 4px 0; }
+
+    .day--soon { border-style: dashed; background: transparent; }
+    .day--soon h3 { color: var(--color-text-muted); }
+    .day--soon .day__status { background: var(--color-surface-2); color: var(--color-text-subtle); }
+
+    @media (width < 900px) {
+      .phases { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="#main">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">5 / 100 days</span> Phase 1 · UI Components</p>
+      <h1>100 Days of <em>Web</em></h1>
+      <p class="lead">
+        A growing library of reusable components, landing pages, complete websites and web applications,
+        all built on one shared design system. Every project below is a <strong>live, working demo</strong>.
+      </p>
+    </section>
+
+    <div class="container">
+      <ol class="phases" role="list" aria-label="Roadmap">
+        <li class="phase is-active" style="--done: 0.25"><p class="phase__days">Days 1–20</p><p class="phase__name">UI Components</p><div class="phase__bar" aria-hidden="true"><span></span></div></li>
+        <li class="phase"><p class="phase__days">Days 21–40</p><p class="phase__name">Landing Pages</p><div class="phase__bar" aria-hidden="true"><span></span></div></li>
+        <li class="phase"><p class="phase__days">Days 41–60</p><p class="phase__name">Complete Websites</p><div class="phase__bar" aria-hidden="true"><span></span></div></li>
+        <li class="phase"><p class="phase__days">Days 61–80</p><p class="phase__name">Web Applications</p><div class="phase__bar" aria-hidden="true"><span></span></div></li>
+        <li class="phase"><p class="phase__days">Days 81–100</p><p class="phase__name">Portfolio Projects</p><div class="phase__bar" aria-hidden="true"><span></span></div></li>
+      </ol>
+
+      <div class="section-title">
+        <h2>Phase 1 · UI Components</h2>
+        <p>Reusable building blocks for every later project</p>
+      </div>
+
+      <div class="days">
+        <a class="day" href="phase-1-ui-components/day-001-navigation-bars/">
+          <div class="day__top"><span class="day__num">DAY 001</span><span class="day__status">Live</span></div>
+          <h3>Navigation Bars</h3>
+          <p>Six patterns: glass pill, mega menu, editorial overlay, app bar with command palette, smart sticky header, mobile dock.</p>
+          <ul class="day__tags" role="list"><li>Container queries</li><li>Keyboard support</li><li>Command palette</li></ul>
+          <span class="day__cta">View demo <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+        </a>
+        <a class="day" href="phase-1-ui-components/day-002-hero-sections/">
+          <div class="day__top"><span class="day__num">DAY 002</span><span class="day__status">Live</span></div>
+          <h3>Hero Sections</h3>
+          <p>Six industry heroes: SaaS, real estate, restaurant, IT agency, cybersecurity and gym.</p>
+          <ul class="day__tags" role="list"><li>SVG illustration</li><li>Live data</li><li>Motion</li></ul>
+          <span class="day__cta">View demo <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+        </a>
+        <a class="day" href="phase-1-ui-components/day-003-footers/">
+          <div class="day__top"><span class="day__num">DAY 003</span><span class="day__status">Live</span></div>
+          <h3>Footers</h3>
+          <p>Six footers with newsletter, live opening hours, uptime chart, theme switch and multi-location status.</p>
+          <ul class="day__tags" role="list"><li>Accordions</li><li>Theme switch</li><li>Live status</li></ul>
+          <span class="day__cta">View demo <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+        </a>
+        <a class="day" href="phase-1-ui-components/day-004-contact-forms/">
+          <div class="day__top"><span class="day__num">DAY 004</span><span class="day__status">Live</span></div>
+          <h3>Contact Forms</h3>
+          <p>Five working forms: sales enquiry, multi-step brief, table booking, support ticket, quick-contact widget.</p>
+          <ul class="day__tags" role="list"><li>FormKit engine</li><li>Validation</li><li>File upload</li></ul>
+          <span class="day__cta">View demo <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+        </a>
+        <a class="day" href="phase-1-ui-components/day-005-login-signup/">
+          <div class="day__top"><span class="day__num">DAY 005</span><span class="day__status">Live</span></div>
+          <h3>Login &amp; Sign-up</h3>
+          <p>Five auth flows: sign in with lockout, sign up with strength meter, one-time code, shop account, sign-in modal.</p>
+          <ul class="day__tags" role="list"><li>Password strength</li><li>OTP input</li><li>Accessible modal</li></ul>
+          <span class="day__cta">View demo <svg class="icon"><use href="#i-arrow-right"/></svg></span>
+        </a>
+        <div class="day day--soon">
+          <div class="day__top"><span class="day__num">DAY 006</span><span class="day__status">Next</span></div>
+          <h3>Pricing Sections</h3>
+          <p>Plans, comparison tables and billing toggles.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Thecore</strong> · 100 Days of Web Development</p>
+      <p>Built with semantic HTML, modern CSS and vanilla JavaScript.</p>
+    </div>
+  </footer>
+</body>
+</html>
