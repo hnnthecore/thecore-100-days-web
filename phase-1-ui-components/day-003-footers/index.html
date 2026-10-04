@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Footers · Day 003 · Thecore</title>
+  <meta name="description" content="Six production-ready website footers for SaaS, agencies, restaurants, apps, cybersecurity and gyms. Day 003 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    /* Resolve the theme before first paint so there is never a light/dark flash. */
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Anton&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Icon sprite (Lucide-style, 24px grid) ===================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-phone-call" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></symbol>
+    <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4v16l14-8z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+    <!-- Social (simplified outline marks) -->
+    <symbol id="s-x" viewBox="0 0 24 24"><path d="M4 4h4.5L20 20h-4.5z"/><path d="M4 20l6.6-7M20 4l-6.4 6.8"/></symbol>
+    <symbol id="s-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+    <symbol id="s-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
+    <symbol id="s-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+    <symbol id="s-youtube" viewBox="0 0 24 24"><path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></symbol>
+  </svg>
+
+  <!-- ===================== Showcase header ===================== -->
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="#main">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to footer">
+        <a href="#f-lumen">01</a>
+        <a href="#f-halden">02</a>
+        <a href="#f-ember">03</a>
+        <a href="#f-orbit">04</a>
+        <a href="#f-sentinel">05</a>
+        <a href="#f-forge">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 003 / 100</span> Phase 1 · UI Components</p>
+      <h1>Footers that <em>work</em></h1>
+      <p class="lead">
+        A footer is where visitors go when they're looking for something specific, or deciding whether to trust you.
+        These six footers turn that moment into <strong>action</strong>: sign-ups, bookings, support and proof of credibility.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>industries</li>
+        <li><strong>Live</strong>hours, status &amp; time</li>
+        <li><strong>Accordion</strong>links on mobile</li>
+        <li><strong>Light + Dark</strong>themes</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- =================================================================
+           01 · LUMEN: SaaS mega footer
+           ================================================================= -->
+      <section class="demo" id="f-lumen" aria-labelledby="f-lumen-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="f-lumen-title">Lumen <span>· SaaS mega footer</span></h2>
+            <p class="demo__desc">The full-featured footer that software companies rely on. It has a newsletter sign-up, four organised link columns, live system status, a language picker and a back-to-top button. On phones the link columns fold into tidy accordions.</p>
+            <ul class="demo__tags" role="list"><li>Newsletter</li><li>Mobile accordions</li><li>System status</li><li>Back to top</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.app</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root data-stick-bottom tabindex="0" role="region" aria-label="Lumen preview">
+              <div class="page-end" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
+
+              <footer class="ft lumen" data-footer="lumen">
+                <div class="lumen__top">
+                  <div class="lumen__brand">
+                    <a class="lumen__logo" href="#" aria-label="Lumen home">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lumen-ft" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#22c3e6"/></linearGradient></defs><path fill="url(#lumen-ft)" d="M12 2c.7 5.2 4.8 9.3 10 10-5.2.7-9.3 4.8-10 10-.7-5.2-4.8-9.3-10-10 5.2-.7 9.3-4.8 10-10z"/></svg>
+                      Lumen
+                    </a>
+                    <p>The workspace where product teams plan, build and launch.</p>
+
+                    <form class="newsletter" data-newsletter novalidate>
+                      <label class="newsletter__label" for="lumen-news">Product updates, monthly. No spam.</label>
+                      <div class="newsletter__field">
+                        <svg class="icon"><use href="#i-mail"/></svg>
+                        <input id="lumen-news" type="email" placeholder="you@company.com" autocomplete="email" required aria-describedby="lumen-news-msg">
+                        <button class="btn btn--primary btn--sm" type="submit">Subscribe</button>
+                      </div>
+                      <p class="newsletter__msg" id="lumen-news-msg" aria-live="polite"></p>
+                    </form>
+                  </div>
+
+                  <nav class="lumen__cols" aria-label="Footer">
+                    <details class="ft-col" data-collapsible open>
+                      <summary>Product <svg class="icon"><use href="#i-chevron-down"/></svg></summary>
+                      <ul role="list"><li><a href="#">Features</a></li><li><a href="#">Integrations</a></li><li><a href="#">Pricing</a></li><li><a href="#">Changelog</a> <span class="ft-tag">New</span></li><li><a href="#">Roadmap</a></li></ul>
+                    </details>
+                    <details class="ft-col" data-collapsible open>
+                      <summary>Solutions <svg class="icon"><use href="#i-chevron-down"/></svg></summary>
+                      <ul role="list"><li><a href="#">Startups</a></li><li><a href="#">Enterprise</a></li><li><a href="#">Agencies</a></li><li><a href="#">Education</a></li></ul>
+                    </details>
+                    <details class="ft-col" data-collapsible open>
+                      <summary>Resources <svg class="icon"><use href="#i-chevron-down"/></svg></summary>
+                      <ul role="list"><li><a href="#">Documentation</a></li><li><a href="#">API reference</a></li><li><a href="#">Guides</a></li><li><a href="#">Community</a></li><li><a href="#">Help centre</a></li></ul>
+                    </details>
+                    <details class="ft-col" data-collapsible open>
+                      <summary>Company <svg class="icon"><use href="#i-chevron-down"/></svg></summary>
+                      <ul role="list"><li><a href="#">About</a></li><li><a href="#">Careers</a> <span class="ft-tag ft-tag--muted">5 open</span></li><li><a href="#">Press</a></li><li><a href="#">Contact</a></li></ul>
+                    </details>
+                  </nav>
+                </div>
+
+                <div class="lumen__bottom">
+                  <div class="lumen__meta">
+                    <a class="status-pill" href="#"><i aria-hidden="true"></i>All systems operational</a>
+                    <label class="lang">
+                      <svg class="icon"><use href="#i-globe"/></svg>
+                      <span class="sr-only">Language</span>
+                      <select><option>English</option><option>Deutsch</option><option>Français</option><option>Español</option><option>日本語</option></select>
+                      <svg class="icon lang__chev"><use href="#i-chevron-down"/></svg>
+                    </label>
+                  </div>
+                  <p class="lumen__legal">© <span data-year>2026</span> Lumen Labs Ltd. · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Cookies</a></p>
+                  <div class="lumen__social">
+                    <a class="social" href="#" aria-label="Lumen on X"><svg class="icon"><use href="#s-x"/></svg></a>
+                    <a class="social" href="#" aria-label="Lumen on GitHub"><svg class="icon"><use href="#s-github"/></svg></a>
+                    <a class="social" href="#" aria-label="Lumen on LinkedIn"><svg class="icon"><use href="#s-linkedin"/></svg></a>
+                    <a class="social" href="#" aria-label="Lumen on YouTube"><svg class="icon"><use href="#s-youtube"/></svg></a>
+                    <button class="to-top" type="button" data-to-top aria-label="Back to top"><svg class="icon"><use href="#i-arrow-up"/></svg></button>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Try the newsletter, switch to Mobile to see the accordions, and use the ↑ button to jump back to the top of the page.</p>
+      </section>
+
+      <!-- =================================================================
+           02 · HALDEN: Editorial "let's talk" footer
+           ================================================================= -->
+      <section class="demo" id="f-halden" aria-labelledby="f-halden-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="f-halden-title">Halden <span>· Editorial agency</span></h2>
+            <p class="demo__desc">A footer that works as a final pitch. A huge “Let's talk” invitation, a copy-to-clipboard email button, studio addresses with live local times, and a giant wordmark whose letters lift as you hover.</p>
+            <ul class="demo__tags" role="list"><li>Copy email</li><li>Live studio clocks</li><li>Interactive wordmark</li><li>Pairs with Day 1 Halden nav</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root data-stick-bottom tabindex="0" role="region" aria-label="Halden preview">
+              <div class="page-end page-end--paper" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
+
+              <footer class="ft halden-ft" data-footer="halden">
+                <div class="halden-ft__cta">
+                  <p class="halden-ft__kicker">Have a project in mind?</p>
+                  <h3 class="halden-ft__title"><a href="#">Let's <em>talk.</em><svg class="icon"><use href="#i-arrow-up-right"/></svg></a></h3>
+                  <button class="copy-email" type="button" data-copy="hello@halden.studio">
+                    <span class="copy-email__text">hello@halden.studio</span>
+                    <span class="copy-email__hint" data-copy-hint>Copy</span>
+                  </button>
+                </div>
+
+                <div class="halden-ft__grid">
+                  <div class="halden-ft__studio">
+                    <p class="halden-ft__label">Copenhagen</p>
+                    <address>Bredgade 34<br>1260 København K</address>
+                    <p class="halden-ft__time"><span data-clock="Europe/Copenhagen">--:--</span> local time</p>
+                  </div>
+                  <div class="halden-ft__studio">
+                    <p class="halden-ft__label">New York</p>
+                    <address>210 Elizabeth St<br>New York, NY 10012</address>
+                    <p class="halden-ft__time"><span data-clock="America/New_York">--:--</span> local time</p>
+                  </div>
+                  <nav aria-label="Footer">
+                    <p class="halden-ft__label">Studio</p>
+                    <ul role="list"><li><a href="#">Work</a></li><li><a href="#">About</a></li><li><a href="#">Journal</a></li><li><a href="#">Careers</a></li></ul>
+                  </nav>
+                  <nav aria-label="Social">
+                    <p class="halden-ft__label">Follow</p>
+                    <ul role="list"><li><a href="#">Instagram</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Dribbble</a></li><li><a href="#">Are.na</a></li></ul>
+                  </nav>
+                </div>
+
+                <p class="halden-ft__wordmark" aria-hidden="true"><span>H</span><span>a</span><span>l</span><span>d</span><span>e</span><span>n</span></p>
+
+                <div class="halden-ft__legal">
+                  <span>© <span data-year>2026</span> Halden Studio ApS</span>
+                  <span>CVR 41 22 87 90</span>
+                  <a href="#">Privacy</a>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click the email to copy it, and hover the big wordmark.</p>
+      </section>
+
+      <!-- =================================================================
+           03 · EMBER: Restaurant footer with hours & map
+           ================================================================= -->
+      <section class="demo" id="f-ember" aria-labelledby="f-ember-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="f-ember-title">Ember <span>· Restaurant</span></h2>
+            <p class="demo__desc">Everything a hungry visitor needs in one glance: opening hours with today highlighted and a live open/closed badge, a stylised map with the address, booking and phone buttons, and a small mailing-list invite.</p>
+            <ul class="demo__tags" role="list"><li>Today's hours highlighted</li><li>Live open status</li><li>Map card</li><li>Pairs with Day 2 Ember hero</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root data-stick-bottom tabindex="0" role="region" aria-label="Ember preview">
+              <div class="page-end page-end--ember" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
+
+              <footer class="ft ember-ft" data-footer="ember">
+                <div class="ember-ft__grid">
+                  <div class="ember-ft__intro">
+                    <a class="ember-ft__logo" href="#">Ember<span>&amp; Ash</span></a>
+                    <p>A twelve-seat counter around an open hearth in Shoreditch.</p>
+                    <div class="ember-ft__actions">
+                      <a class="btn ember-ft__btn" href="#">Book a table</a>
+                      <a class="ember-ft__call" href="#"><svg class="icon"><use href="#i-phone-call"/></svg>020 7946 0321</a>
+                    </div>
+                  </div>
+
+                  <div class="ember-ft__hours">
+                    <div class="ember-ft__hours-head">
+                      <h3>Opening hours</h3>
+                      <span class="ember-ft__status" data-open-badge>…</span>
+                    </div>
+                    <table>
+                      <caption class="sr-only">Opening hours, London time</caption>
+                      <tbody data-hours>
+                        <tr data-day="Mon"><th scope="row">Monday</th><td>Closed</td></tr>
+                        <tr data-day="Tue"><th scope="row">Tuesday</th><td>17:00 – 23:00</td></tr>
+                        <tr data-day="Wed"><th scope="row">Wednesday</th><td>17:00 – 23:00</td></tr>
+                        <tr data-day="Thu"><th scope="row">Thursday</th><td>17:00 – 23:00</td></tr>
+                        <tr data-day="Fri"><th scope="row">Friday</th><td>17:00 – 23:30</td></tr>
+                        <tr data-day="Sat"><th scope="row">Saturday</th><td>12:00 – 23:30</td></tr>
+                        <tr data-day="Sun"><th scope="row">Sunday</th><td>12:00 – 16:00</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="ember-ft__map">
+                    <a class="map-card" href="#" aria-label="18 Ash Lane, London. Open in maps">
+                      <svg class="map-card__svg" viewBox="0 0 320 200" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+                        <rect width="320" height="200" fill="#231d18"/>
+                        <path d="M-10 140 C 60 120, 120 160, 200 130 S 300 90, 340 110" stroke="#3a2f27" stroke-width="22" fill="none"/>
+                        <g stroke="#3a312a" stroke-width="7" fill="none" stroke-linecap="round"><path d="M0 60 H320"/><path d="M90 0 V200"/><path d="M220 0 L190 200"/><path d="M0 20 L140 100"/></g>
+                        <g stroke="#2e2620" stroke-width="3" fill="none"><path d="M0 95 H320"/><path d="M150 0 V200"/><path d="M270 0 V200"/><path d="M40 0 V200"/></g>
+                        <rect x="104" y="72" width="34" height="22" rx="3" fill="#2f4a2c" opacity=".8"/>
+                        <rect x="232" y="20" width="28" height="30" rx="3" fill="#2f4a2c" opacity=".8"/>
+                      </svg>
+                      <span class="map-card__pin" aria-hidden="true"><svg class="icon"><use href="#i-pin"/></svg></span>
+                      <span class="map-card__label"><strong>18 Ash Lane</strong> London E2 7AB <svg class="icon"><use href="#i-arrow-up-right"/></svg></span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="ember-ft__bottom">
+                  <form class="ember-ft__news" data-newsletter novalidate>
+                    <label for="ember-news">Seasonal menus &amp; supper clubs, first.</label>
+                    <div class="ember-ft__news-field">
+                      <input id="ember-news" type="email" placeholder="Your email" autocomplete="email" required aria-describedby="ember-news-msg">
+                      <button type="submit" aria-label="Join the mailing list"><svg class="icon"><use href="#i-send"/></svg></button>
+                    </div>
+                    <p class="newsletter__msg" id="ember-news-msg" aria-live="polite"></p>
+                  </form>
+                  <div class="ember-ft__social">
+                    <a class="social" href="#" aria-label="Ember on Instagram"><svg class="icon"><use href="#s-instagram"/></svg></a>
+                    <a class="social" href="#" aria-label="Ember on X"><svg class="icon"><use href="#s-x"/></svg></a>
+                  </div>
+                  <p class="ember-ft__legal">© <span data-year>2026</span> Ember &amp; Ash · <a href="#">Allergens</a> · <a href="#">Privacy</a></p>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Today's row is highlighted automatically, and the badge shows whether the restaurant is open right now (London time).</p>
+      </section>
+
+      <!-- =================================================================
+           04 · ORBIT: Minimal app footer with theme switcher
+           ================================================================= -->
+      <section class="demo" id="f-orbit" aria-labelledby="f-orbit-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="f-orbit-title">Orbit <span>· Minimal app &amp; blog</span></h2>
+            <p class="demo__desc">A calm, compact footer for apps, blogs and documentation. It has one row of links, social icons and a System / Light / Dark switch, which really controls the theme of this whole page.</p>
+            <ul class="demo__tags" role="list"><li>Theme switcher</li><li>Follows OS setting</li><li>Radio-group a11y</li><li>Compact</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 360px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">orbit.app/blog</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root data-stick-bottom tabindex="0" role="region" aria-label="Orbit preview">
+              <div class="page-end" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
+
+              <footer class="ft orbit-ft" data-footer="orbit">
+                <div class="orbit-ft__row">
+                  <a class="orbit-ft__logo" href="#" aria-label="Orbit home">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--color-bg)" stroke-width="2"/></svg>
+                    Orbit
+                  </a>
+                  <nav aria-label="Footer">
+                    <ul class="orbit-ft__links" role="list"><li><a href="#">Blog</a></li><li><a href="#">Docs</a></li><li><a href="#">Changelog</a></li><li><a href="#">Support</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul>
+                  </nav>
+                </div>
+                <div class="orbit-ft__row orbit-ft__row--bottom">
+                  <p class="orbit-ft__copy">© <span data-year>2026</span> Orbit, Inc. Made with care in Lisbon.</p>
+                  <div class="orbit-ft__social">
+                    <a class="social" href="#" aria-label="Orbit on X"><svg class="icon"><use href="#s-x"/></svg></a>
+                    <a class="social" href="#" aria-label="Orbit on GitHub"><svg class="icon"><use href="#s-github"/></svg></a>
+                  </div>
+                  <div class="theme-switch" role="radiogroup" aria-label="Colour theme" data-theme-switch>
+                    <button type="button" role="radio" aria-checked="false" data-mode="system" title="System"><svg class="icon"><use href="#i-laptop"/></svg><span class="sr-only">System</span></button>
+                    <button type="button" role="radio" aria-checked="false" data-mode="light" title="Light"><svg class="icon"><use href="#i-sun"/></svg><span class="sr-only">Light</span></button>
+                    <button type="button" role="radio" aria-checked="false" data-mode="dark" title="Dark"><svg class="icon"><use href="#i-moon"/></svg><span class="sr-only">Dark</span></button>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> The theme switch changes the whole page. “System” follows your computer's setting.</p>
+      </section>
+
+      <!-- =================================================================
+           05 · SENTINEL: Trust & compliance footer
+           ================================================================= -->
+      <section class="demo" id="f-sentinel" aria-labelledby="f-sentinel-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="f-sentinel-title">Sentinel <span>· Trust &amp; compliance</span></h2>
+            <p class="demo__desc">For businesses where trust is the product. A 90-day uptime chart you can hover day by day, certification badges, a responsible-disclosure contact with a PGP key, and clearly grouped links.</p>
+            <ul class="demo__tags" role="list"><li>Interactive uptime chart</li><li>Compliance badges</li><li>Security contact</li><li>Pairs with Day 2 Sentinel hero</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">sentinel-security.io</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root data-stick-bottom tabindex="0" role="region" aria-label="Sentinel preview">
+              <div class="page-end page-end--sentinel" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
+
+              <footer class="ft sentinel-ft" data-footer="sentinel">
+                <div class="sentinel-ft__status">
+                  <div class="sentinel-ft__status-head">
+                    <p><span class="sentinel-ft__dot" aria-hidden="true"></span><strong>All systems operational</strong></p>
+                    <p class="sentinel-ft__uptime"><span data-uptime-avg>99.98%</span> uptime · last 90 days</p>
+                  </div>
+                  <div class="uptime" data-uptime role="img" aria-label="Uptime over the last 90 days: 99.98 percent, with 3 days of minor degradation.">
+                    <div class="uptime__bars" data-uptime-bars></div>
+                    <div class="uptime__tip" data-uptime-tip hidden></div>
+                  </div>
+                  <div class="uptime__axis" aria-hidden="true"><span>90 days ago</span><span>Today</span></div>
+                </div>
+
+                <div class="sentinel-ft__grid">
+                  <div class="sentinel-ft__brand">
+                    <a class="sentinel-ft__logo" href="#"><svg class="icon"><use href="#i-shield"/></svg>Sentinel</a>
+                    <p>Detection, response and compliance for modern infrastructure.</p>
+                    <ul class="badges" role="list" aria-label="Certifications">
+                      <li class="badge-cert"><svg class="icon"><use href="#i-shield"/></svg><span><strong>SOC 2</strong>Type II</span></li>
+                      <li class="badge-cert"><svg class="icon"><use href="#i-shield"/></svg><span><strong>ISO</strong>27001</span></li>
+                      <li class="badge-cert"><svg class="icon"><use href="#i-shield"/></svg><span><strong>GDPR</strong>Compliant</span></li>
+                    </ul>
+                  </div>
+                  <nav class="sentinel-ft__links" aria-label="Footer">
+                    <div><p>Platform</p><ul role="list"><li><a href="#">Detection</a></li><li><a href="#">Response</a></li><li><a href="#">Compliance</a></li><li><a href="#">Integrations</a></li></ul></div>
+                    <div><p>Trust</p><ul role="list"><li><a href="#">Trust centre</a></li><li><a href="#">Status</a></li><li><a href="#">Sub-processors</a></li><li><a href="#">DPA</a></li></ul></div>
+                    <div><p>Company</p><ul role="list"><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Partners</a></li><li><a href="#">Contact</a></li></ul></div>
+                  </nav>
+                  <div class="sentinel-ft__disclosure">
+                    <p class="sentinel-ft__disclosure-title"><svg class="icon"><use href="#i-key"/></svg>Found a vulnerability?</p>
+                    <p>Report it to <a href="#">security@sentinel-security.io</a>. We respond within 24 hours.</p>
+                    <code>PGP · 4F2A 9C1E 7B3D 55A0</code>
+                  </div>
+                </div>
+
+                <div class="sentinel-ft__bottom">
+                  <p>© <span data-year>2026</span> Sentinel Security Inc.</p>
+                  <ul role="list"><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li><li><a href="#">Cookie settings</a></li></ul>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the uptime bars to see each day. Amber and red bars mark days with incidents.</p>
+      </section>
+
+      <!-- =================================================================
+           06 · FORGE: CTA band + locations footer
+           ================================================================= -->
+      <section class="demo" id="f-forge" aria-labelledby="f-forge-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="f-forge-title">Forge <span>· Gym &amp; multi-location</span></h2>
+            <p class="demo__desc">A high-conversion footer for businesses with several locations. A bold trial offer leads into a list of studios, each with its own live open/closed status, plus app download buttons and a social row.</p>
+            <ul class="demo__tags" role="list"><li>CTA band</li><li>Per-location live status</li><li>App download</li><li>Pairs with Day 2 Forge hero</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root data-stick-bottom tabindex="0" role="region" aria-label="Forge preview">
+              <div class="page-end page-end--forge" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
+
+              <footer class="ft forge-ft" data-footer="forge">
+                <div class="forge-ft__cta">
+                  <div>
+                    <p class="forge-ft__cta-kicker">First week free</p>
+                    <h3 class="forge-ft__cta-title">Your strongest year starts <span>today.</span></h3>
+                  </div>
+                  <a class="btn forge-ft__cta-btn" href="#">Start free trial <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></a>
+                </div>
+
+                <div class="forge-ft__grid">
+                  <div class="forge-ft__brand">
+                    <a class="forge-ft__logo" href="#">FORGE<span>.</span></a>
+                    <p>Coach-led strength and conditioning. Three studios across Manchester.</p>
+                    <div class="forge-ft__apps">
+                      <a class="app-btn" href="#"><svg class="icon"><use href="#i-smartphone"/></svg><span><small>Download for</small>iPhone</span></a>
+                      <a class="app-btn" href="#"><svg class="icon"><use href="#i-play"/></svg><span><small>Get it for</small>Android</span></a>
+                    </div>
+                  </div>
+
+                  <div class="forge-ft__locations">
+                    <p class="forge-ft__label">Studios</p>
+                    <ul role="list" data-locations>
+                      <li data-open="05:00" data-close="23:00"><div><strong>Ancoats</strong><span>Blossom St, M4 6BF</span></div><span class="loc-status" data-loc-status>…</span></li>
+                      <li data-open="06:00" data-close="22:00"><div><strong>Spinningfields</strong><span>Hardman Blvd, M3 3AQ</span></div><span class="loc-status" data-loc-status>…</span></li>
+                      <li data-open="06:00" data-close="21:00"><div><strong>Didsbury</strong><span>Wilmslow Rd, M20 5PG</span></div><span class="loc-status" data-loc-status>…</span></li>
+                    </ul>
+                  </div>
+
+                  <nav class="forge-ft__nav" aria-label="Footer">
+                    <p class="forge-ft__label">Explore</p>
+                    <ul role="list"><li><a href="#">Timetable</a></li><li><a href="#">Coaches</a></li><li><a href="#">Membership</a></li><li><a href="#">Corporate</a></li><li><a href="#">Gift cards</a></li></ul>
+                  </nav>
+                </div>
+
+                <div class="forge-ft__bottom">
+                  <p>© <span data-year>2026</span> Forge Fitness Ltd.</p>
+                  <div class="forge-ft__social">
+                    <a class="social" href="#" aria-label="Forge on Instagram"><svg class="icon"><use href="#s-instagram"/></svg></a>
+                    <a class="social" href="#" aria-label="Forge on YouTube"><svg class="icon"><use href="#s-youtube"/></svg></a>
+                    <a class="social" href="#" aria-label="Forge on X"><svg class="icon"><use href="#s-x"/></svg></a>
+                  </div>
+                  <ul class="forge-ft__legal" role="list"><li><a href="#">Privacy</a></li><li><a href="#">Membership terms</a></li></ul>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Each studio's badge shows whether it is open right now (UK time).</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 003</strong> of 100 · Every footer pairs with a nav from Day 1 or a hero from Day 2, so they combine into full pages.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 004: Contact Forms</span></p>
+    </div>
+  </footer>
+</body>
+</html>
