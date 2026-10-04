@@ -1,6 +1,6 @@
 # Day 004 · Contact Forms
 
-Five contact forms that really work, each for a different real-world situation. All of them validate as you type with clear, human messages, show a loading state while sending, handle errors, and confirm success.
+Six contact forms that really work, each for a different real-world situation. All of them validate as you type with clear, human messages, show a loading state while sending, handle errors, and confirm success.
 
 | # | Form | Situation | Highlights |
 |---|------|-----------|------------|
@@ -9,6 +9,7 @@ Five contact forms that really work, each for a different real-world situation. 
 | 03 | **Ember** | Restaurant booking | Blocks closed days, generates time slots from real opening hours (sold-out slots greyed), party-size stepper, live booking summary, booking reference |
 | 04 | **Nova** | IT support ticket | Priority levels that change the promised reply time, drag-and-drop attachments with type/size checks, graceful server-error handling, ticket number |
 | 05 | **Forge** | Quick-contact widget | Floating "Questions?" button, floating labels, accepts email *or* phone, optional call-back time |
+| 06 | **Forma** | Property viewing booking | In person or video call, two-week calendar (Sundays closed), live free slots for the chosen day, buyer situation, "Add to calendar" (.ics) download |
 
 ## Run it
 

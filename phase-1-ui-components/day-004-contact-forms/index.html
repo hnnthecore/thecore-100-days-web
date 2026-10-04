@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact Forms · Day 004 · Thecore</title>
-  <meta name="description" content="Five fully working contact forms: sales enquiry, multi-step project brief, table reservation, support ticket and a quick-contact widget. Day 004 of Thecore's 100 Days of Web Development.">
+  <meta name="description" content="Six fully working contact forms: sales enquiry, multi-step project brief, table reservation, support ticket, quick-contact widget and property viewing booking. Day 004 of Thecore's 100 Days of Web Development.">
   <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -66,6 +66,11 @@
     <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
     <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
     <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></symbol>
   </svg>
 
   <!-- ===================== Showcase header ===================== -->
@@ -81,6 +86,7 @@
         <a href="#c-booking">03</a>
         <a href="#c-support">04</a>
         <a href="#c-widget">05</a>
+        <a href="#c-viewing">06</a>
       </nav>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
         <svg class="icon icon--moon"><use href="#i-moon"/></svg>
@@ -94,12 +100,12 @@
       <p class="eyebrow"><span class="pill">Day 004 / 100</span> Phase 1 · UI Components</p>
       <h1>Contact <em>Forms</em></h1>
       <p class="lead">
-        Five contact forms that really work. Each one validates as you type with clear, human messages,
+        Six contact forms that really work. Each one validates as you type with clear, human messages,
         shows a loading state, and confirms success. They're all built on <strong>FormKit</strong>, a reusable
         form engine that every future project in this series will use.
       </p>
       <ul class="intro__stats" role="list">
-        <li><strong>5</strong>working forms</li>
+        <li><strong>6</strong>working forms</li>
         <li><strong>1</strong>shared form engine</li>
         <li><strong>WCAG</strong>accessible errors</li>
         <li><strong>0</strong>dependencies</li>
@@ -646,6 +652,114 @@
           </div>
         </div>
         <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open the “Questions?” button. Try typing a phone number instead of an email, and tick “Request a call back”.</p>
+      </section>
+
+      <!-- =================================================================
+           06 · FORMA: Book a property viewing
+           ================================================================= -->
+      <section class="demo" id="c-viewing" aria-labelledby="c-viewing-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="c-viewing-title">Forma <span>· Book a property viewing</span></h2>
+            <p class="demo__desc">An appointment request for estate agents, clinics and showrooms. It offers in-person or video viewings, a two-week calendar (closed on Sundays), the agent's free slots for the chosen day, and the buyer's situation so the agent can prepare. After booking, visitors can add the appointment straight to their calendar.</p>
+            <ul class="demo__tags" role="list"><li>Mini calendar</li><li>Live free slots</li><li>In person or video</li><li>Add to calendar (.ics)</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com/viewing</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma viewing preview">
+
+              <div class="cf viewing">
+                <aside class="viewing__property">
+                  <div class="viewing__photo" aria-hidden="true"></div>
+                  <div class="viewing__info">
+                    <p class="viewing__price">€1,240,000</p>
+                    <h3 class="viewing__name">Villa Solvej</h3>
+                    <p class="viewing__addr"><svg class="icon"><use href="#i-pin"/></svg>Strandvejen 112, Hellerup</p>
+                    <ul class="viewing__meta" role="list"><li><svg class="icon"><use href="#i-bed"/></svg>4 beds</li><li>3 baths</li><li>212 m²</li></ul>
+                    <div class="viewing__agent"><span class="avatar" style="--h: 30">SK</span><div><strong>Sofie Krag</strong><span>Your agent for this home</span></div></div>
+                  </div>
+                </aside>
+
+                <div class="viewing__card">
+                  <form class="form-grid" id="viewing-form" data-success="#viewing-success" novalidate>
+                    <fieldset class="fld" data-group>
+                      <legend>How would you like to view?</legend>
+                      <div class="segmented viewing__type">
+                        <label><input type="radio" name="type" value="In person" checked><svg class="icon"><use href="#i-home"/></svg>In person</label>
+                        <label><input type="radio" name="type" value="Video call"><svg class="icon"><use href="#i-video"/></svg>Video call</label>
+                      </div>
+                    </fieldset>
+
+                    <fieldset class="fld" data-group data-min="1" data-msg-required="Please choose a day.">
+                      <legend><span>Choose a day</span><span class="viewing__month" data-month></span></legend>
+                      <div class="cal" data-cal></div>
+                    </fieldset>
+
+                    <fieldset class="fld" data-group data-min="1" data-msg-required="Please choose a time.">
+                      <legend>Available times <span class="fld__optional" data-slot-note>Choose a day first</span></legend>
+                      <div class="chips viewing__slots" data-v-slots></div>
+                    </fieldset>
+
+                    <div class="fld span-2">
+                      <label class="fld__label" for="v-position">Your situation</label>
+                      <span class="select-wrap">
+                        <select class="input" id="v-position" name="position" required>
+                          <option value="">Choose one…</option>
+                          <option>First-time buyer</option>
+                          <option>I have a property to sell</option>
+                          <option>My property is sold, ready to move</option>
+                          <option>Cash buyer</option>
+                          <option>Investor</option>
+                        </select>
+                      </span>
+                    </div>
+                    <div class="fld span-2">
+                      <label class="switch"><input type="checkbox" role="switch" name="mortgage">I have a mortgage agreement in principle</label>
+                    </div>
+
+                    <div class="fld">
+                      <label class="fld__label" for="v-name">Full name</label>
+                      <input class="input" id="v-name" name="name" autocomplete="name" required>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="v-phone">Phone</label>
+                      <input class="input" id="v-phone" name="phone" type="tel" autocomplete="tel" required pattern="\+?[0-9 ()\-]{7,20}" data-msg-pattern="Enter a phone number, e.g. +45 20 12 34 56.">
+                    </div>
+                    <div class="fld span-2">
+                      <label class="fld__label" for="v-email">Email</label>
+                      <input class="input" id="v-email" name="email" type="email" autocomplete="email" required>
+                    </div>
+
+                    <div class="form-actions">
+                      <button class="btn viewing__submit" type="submit">Request viewing</button>
+                    </div>
+                  </form>
+
+                  <div class="form-success" id="viewing-success" hidden>
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3>Viewing requested</h3>
+                    <p data-viewing-confirm></p>
+                    <div class="viewing__done-actions">
+                      <button class="btn btn--accent btn--sm" type="button" data-ics><svg class="icon"><use href="#i-download"/></svg>Add to calendar</button>
+                      <button class="btn btn--outline btn--sm" type="button" data-form-reset>Book another</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Pick a day to see that day's free times (Saturdays are shorter, Sundays closed). After booking, try “Add to calendar”.</p>
       </section>
 
     </div>

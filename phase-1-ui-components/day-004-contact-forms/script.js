@@ -445,4 +445,148 @@
       callbackTimes.hidden = true;
     });
   })();
+
+  /* ======================================================================
+     06 · Forma: book a property viewing
+     ====================================================================== */
+  (() => {
+    const form = $('#viewing-form');
+    const success = $('#viewing-success');
+    const cal = $('[data-cal]', form);
+    const monthEl = $('[data-month]', form);
+    const slots = $('[data-v-slots]', form);
+    const slotNote = $('[data-slot-note]', form);
+    const DAYS_AHEAD = 14;
+    const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    // Agent hours (24h) by weekday, 0 = Sunday (closed). Video calls add evening slots on weekdays.
+    const HOURS = { 1: [9, 17], 2: [9, 17], 3: [9, 17], 4: [9, 17], 5: [9, 17], 6: [10, 13] };
+    const VIDEO_EVENING = [18, 19];
+
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const fromIso = (s) => new Date(`${s}T12:00`);
+    const longDate = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    const monthFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
+
+    const isTaken = (key) => {
+      let h = 0;
+      for (const ch of key) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+      return h % 4 === 0;
+    };
+
+    function renderCalendar() {
+      cal.innerHTML = DOW.map((d) => `<span class="cal__dow" aria-hidden="true">${d}</span>`).join('');
+      const today = new Date();
+      const first = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const offset = (first.getDay() + 6) % 7; // Monday-first grid
+      for (let i = 0; i < offset; i++) cal.insertAdjacentHTML('beforeend', '<span class="cal__blank" aria-hidden="true"></span>');
+
+      for (let i = 0; i < DAYS_AHEAD; i++) {
+        const d = new Date(first);
+        d.setDate(first.getDate() + i);
+        const closed = d.getDay() === 0;
+        const label = document.createElement('label');
+        label.className = `cal__day${i === 0 ? ' is-today' : ''}`;
+        label.innerHTML = `<input type="radio" name="day" value="${iso(d)}"${closed ? ' disabled' : ''} aria-label="${longDate.format(d)}${closed ? ', closed' : ''}">${d.getDate()}`;
+        if (closed) label.title = 'Closed on Sundays';
+        cal.append(label);
+      }
+
+      const last = new Date(first);
+      last.setDate(first.getDate() + DAYS_AHEAD - 1);
+      const a = monthFmt.format(first);
+      const b = monthFmt.format(last);
+      monthEl.textContent = a === b ? a : `${a.split(' ')[0]} – ${b}`;
+    }
+
+    function renderSlots() {
+      const day = form.elements.day.value;
+      const video = form.elements.type.value === 'Video call';
+      slots.innerHTML = '';
+      if (!day) {
+        slotNote.textContent = 'Choose a day first';
+        return;
+      }
+
+      const date = fromIso(day);
+      const range = HOURS[date.getDay()];
+      const hours = [];
+      for (let h = range[0]; h <= range[1]; h++) hours.push(h);
+      if (video && date.getDay() !== 6) hours.push(...VIDEO_EVENING);
+
+      const now = new Date();
+      const isToday = day === iso(now);
+      let free = 0;
+      hours.forEach((h) => {
+        const time = `${String(h).padStart(2, '0')}:00`;
+        const past = isToday && h <= now.getHours() + 1;
+        const taken = isTaken(day + time) || past;
+        const label = document.createElement('label');
+        label.className = 'chip';
+        label.innerHTML = `<input type="radio" name="time" value="${time}"${taken ? ' disabled' : ''}>${time}`;
+        if (taken) label.title = past ? 'Too soon' : 'Already booked';
+        slots.append(label);
+        if (!taken) free += 1;
+      });
+
+      slotNote.textContent = free ? `${free} free on ${longDate.format(date)}` : 'Fully booked';
+      if (!free) slots.insertAdjacentHTML('beforeend', '<p>No free times left on this day. Please choose another.</p>');
+    }
+
+    form.addEventListener('change', (e) => {
+      if (e.target.name === 'day' || e.target.name === 'type') renderSlots();
+    });
+
+    /** Build a standard calendar file (.ics) that Google, Outlook and Apple Calendar all open. */
+    function downloadIcs() {
+      const day = form.elements.day.value.replace(/-/g, '');
+      const [h, m] = form.elements.time.value.split(':');
+      const start = `${day}T${h}${m}00`;
+      const end = `${day}T${h}4500`; // viewings last 45 minutes
+      const video = form.elements.type.value === 'Video call';
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Forma Estates//Viewing//EN',
+        'BEGIN:VEVENT',
+        `UID:${Date.now()}@forma-estates.example`,
+        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+        `DTSTART:${start}`,
+        `DTEND:${end}`,
+        `SUMMARY:${video ? 'Video viewing' : 'Viewing'}: Villa Solvej`,
+        `LOCATION:${video ? 'Video call (link sent by email)' : 'Strandvejen 112\\, Hellerup'}`,
+        'DESCRIPTION:With Sofie Krag\\, Forma Estates.',
+        'END:VEVENT',
+        'END:VCALENDAR',
+      ].join('\r\n');
+      const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+      const a = Object.assign(document.createElement('a'), { href: url, download: 'forma-viewing.ics' });
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    $('[data-ics]', success).addEventListener('click', downloadIcs);
+
+    enhance(form, {
+      onSubmit: () => fakeRequest(1200),
+      onSuccess: () => {
+        const date = fromIso(form.elements.day.value);
+        const video = form.elements.type.value === 'Video call';
+        $('[data-viewing-confirm]', success).textContent =
+          `${video ? 'Video viewing' : 'Viewing'} of Villa Solvej on ${longDate.format(date)} at ${form.elements.time.value}. ` +
+          `Sofie will confirm by text to ${form.elements.phone.value.trim()} within 2 hours.`;
+        showSuccess(form);
+      },
+    });
+
+    form.addEventListener('fk:reset', () => {
+      renderCalendar();
+      renderSlots();
+    });
+
+    renderCalendar();
+    renderSlots();
+  })();
 })();
