@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testimonials · Day 007 · Thecore</title>
+  <meta name="description" content="Six testimonial and review sections: wall of love, logo carousel, review summary with filters, case-study results, member stories marquee and a leave-a-review form. Day 007 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Anton&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="../../packages/form-kit/form-kit.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.76-2.02-2-2H4c-1.25 0-2 .75-2 1.97V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .01-1 1.03V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.76-2.02-2-2h-4c-1.25 0-2 .75-2 1.97V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-thumb" viewBox="0 0 24 24"><path d="M7 10v12M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4v16l14-8z"/></symbol>
+    <symbol id="i-badge" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to section">
+        <a href="#t-wall">01</a><a href="#t-carousel">02</a><a href="#t-reviews">03</a><a href="#t-cases">04</a><a href="#t-stories">05</a><a href="#t-guests">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 007 / 100</span> Phase 1 · UI Components</p>
+      <h1>Testimonials &amp; <em>Reviews</em></h1>
+      <p class="lead">
+        People trust people. These six sections turn customer voices into <strong>proof</strong>: walls of praise,
+        logo carousels, filterable star ratings, results-driven case studies, member stories and a form for
+        guests to leave their own review.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>trust patterns</li>
+        <li><strong>Filter</strong>sort &amp; rate</li>
+        <li><strong>Accessible</strong>carousel</li>
+        <li><strong>Light + Dark</strong>themes</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · LUMEN WALL ============================ -->
+      <section class="demo" id="t-wall" aria-labelledby="t-wall-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="t-wall-title">Lumen <span>· Wall of love</span></h2>
+            <p class="demo__desc">A masonry wall of short, genuine-sounding quotes, the kind SaaS companies use to show momentum. Visitors can filter by role to find people like them, long quotes expand in place, and “Show more” reveals the rest without leaving the page.</p>
+            <ul class="demo__tags" role="list"><li>Masonry layout</li><li>Filter by role</li><li>Read more</li><li>Rating summary</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.app/customers</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Lumen wall preview">
+
+              <div class="tx wall" data-wall>
+                <header class="tx__head">
+                  <p class="tx__eyebrow">Wall of love</p>
+                  <h3 class="tx__title">Teams can't stop talking about Lumen</h3>
+                  <p class="wall__score"><span class="stars" aria-hidden="true">★★★★★</span><strong>4.9 out of 5</strong> from 2,400+ reviews</p>
+                </header>
+
+                <div class="chips wall__filters" role="group" aria-label="Filter by role">
+                  <button class="chip" type="button" aria-pressed="true" data-filter="all">All</button>
+                  <button class="chip" type="button" aria-pressed="false" data-filter="founder">Founders</button>
+                  <button class="chip" type="button" aria-pressed="false" data-filter="engineer">Engineers</button>
+                  <button class="chip" type="button" aria-pressed="false" data-filter="designer">Designers</button>
+                </div>
+                <p class="sr-only" aria-live="polite" data-wall-status></p>
+
+                <div class="wall__grid" data-wall-grid>
+                  <figure class="tcard" data-role="founder"><blockquote>We moved our whole roadmap into Lumen in an afternoon. Planning meetings went from an hour to fifteen minutes.</blockquote><figcaption><span class="avatar" style="--h: 20">AO</span><span><strong>Ada Okafor</strong>Founder, Brightloop</span></figcaption></figure>
+                  <figure class="tcard tcard--accent" data-role="engineer"><blockquote>The API is a joy. Typed, predictable, fast. I built our Slack bot on a Sunday morning and it's still running untouched.</blockquote><figcaption><span class="avatar" style="--h: 200">JL</span><span><strong>Jonas Lind</strong>Staff engineer, Kestrel</span></figcaption></figure>
+                  <figure class="tcard" data-role="designer"><blockquote>Finally a tool designers actually enjoy opening. The attention to detail shows everywhere.</blockquote><figcaption><span class="avatar" style="--h: 320">MV</span><span><strong>Mira Vance</strong>Design lead, Orbitly</span></figcaption></figure>
+                  <figure class="tcard" data-role="engineer"><blockquote data-long>Lumen replaced three separate tools for us: our issue tracker, our docs wiki and our release checklist. The migration was painless because the importer understood our old structure, kept every comment, and even mapped our custom fields. Six months in, nobody on the team wants to go back, and our release cadence has doubled.</blockquote><button class="tcard__more" type="button" aria-expanded="false">Read more</button><figcaption><span class="avatar" style="--h: 150">RT</span><span><strong>Rahul Trivedi</strong>Engineering manager, Northwind</span></figcaption></figure>
+                  <figure class="tcard" data-role="founder"><blockquote>Best money we spend each month. Our investors love the weekly updates we now generate straight from it.</blockquote><figcaption><span class="avatar" style="--h: 60">SL</span><span><strong>Sara Lindqvist</strong>CEO, Halcyon</span></figcaption></figure>
+                  <figure class="tcard" data-role="designer"><blockquote>Dark mode is gorgeous and the keyboard shortcuts mean I barely touch the mouse.</blockquote><figcaption><span class="avatar" style="--h: 270">KN</span><span><strong>Kai Nakamura</strong>Product designer, Fern</span></figcaption></figure>
+                  <figure class="tcard is-extra" data-role="engineer" hidden><blockquote>Webhooks just work. Retries, signatures, logs. Everything I'd have built myself, already done properly.</blockquote><figcaption><span class="avatar" style="--h: 100">DB</span><span><strong>Diego Barros</strong>Backend engineer, Arkiv</span></figcaption></figure>
+                  <figure class="tcard tcard--accent is-extra" data-role="founder" hidden><blockquote>We onboarded 40 people in a week without a single training session. That says everything.</blockquote><figcaption><span class="avatar" style="--h: 30">EH</span><span><strong>Elif Hansen</strong>Co-founder, Nordlys</span></figcaption></figure>
+                  <figure class="tcard is-extra" data-role="designer" hidden><blockquote>The design-review flow is the best I've used. Comments right on the work, no screenshots flying around.</blockquote><figcaption><span class="avatar" style="--h: 230">PC</span><span><strong>Paula Costa</strong>Creative director, Studio Ponte</span></figcaption></figure>
+                </div>
+
+                <div class="wall__more">
+                  <button class="btn btn--outline" type="button" data-wall-more>Show more reviews</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Filter by “Engineers”, open “Read more”, then press “Show more reviews”.</p>
+      </section>
+
+      <!-- ============================ 02 · ATLAS CAROUSEL ============================ -->
+      <section class="demo" id="t-carousel" aria-labelledby="t-carousel-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="t-carousel-title">Atlas <span>· Logo carousel</span></h2>
+            <p class="demo__desc">One big, confident quote at a time. The customer logos double as the controls, with a progress line showing when the next story arrives. It pauses when you hover, focus or press pause, works with arrow keys, and never auto-plays for people who prefer reduced motion.</p>
+            <ul class="demo__tags" role="list"><li>Logos as tabs</li><li>Auto-play with pause</li><li>Keyboard arrows</li><li>WAI-ARIA carousel</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 560px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/customers</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Atlas carousel preview">
+
+              <section class="tx carousel" data-carousel aria-roledescription="carousel" aria-label="Customer stories">
+                <div class="carousel__slides">
+                  <div class="carousel__slide" role="tabpanel" id="slide-1" aria-labelledby="ctab-1" aria-roledescription="slide">
+                    <svg class="icon carousel__mark" aria-hidden="true"><use href="#i-quote"/></svg>
+                    <blockquote>Atlas cut our deploy time from forty minutes to under four. Our engineers ship on Fridays now, and they don't even think twice about it.</blockquote>
+                    <p class="carousel__who"><span class="avatar" style="--h: 210">NP</span><span><strong>Nadia Petrova</strong>VP Engineering, Northwind</span></p>
+                    <p class="carousel__stat"><strong>10×</strong> faster deploys</p>
+                  </div>
+                  <div class="carousel__slide" role="tabpanel" id="slide-2" aria-labelledby="ctab-2" aria-roledescription="slide" hidden>
+                    <svg class="icon carousel__mark" aria-hidden="true"><use href="#i-quote"/></svg>
+                    <blockquote>We replaced a patchwork of scripts with one platform. Security reviews that took weeks now take an afternoon.</blockquote>
+                    <p class="carousel__who"><span class="avatar" style="--h: 30">TG</span><span><strong>Tomás García</strong>CISO, Kestrel</span></p>
+                    <p class="carousel__stat"><strong>−80%</strong> review time</p>
+                  </div>
+                  <div class="carousel__slide" role="tabpanel" id="slide-3" aria-labelledby="ctab-3" aria-roledescription="slide" hidden>
+                    <svg class="icon carousel__mark" aria-hidden="true"><use href="#i-quote"/></svg>
+                    <blockquote>The edge network made our app feel instant for customers in Asia. Conversion there went up the very next week.</blockquote>
+                    <p class="carousel__who"><span class="avatar" style="--h: 140">HC</span><span><strong>Hana Choi</strong>Head of Growth, Orbitly</span></p>
+                    <p class="carousel__stat"><strong>+27%</strong> APAC conversion</p>
+                  </div>
+                  <div class="carousel__slide" role="tabpanel" id="slide-4" aria-labelledby="ctab-4" aria-roledescription="slide" hidden>
+                    <svg class="icon carousel__mark" aria-hidden="true"><use href="#i-quote"/></svg>
+                    <blockquote>Onboarding a new developer used to take a week of setup. With Atlas previews, they ship a real change on day one.</blockquote>
+                    <p class="carousel__who"><span class="avatar" style="--h: 300">BO</span><span><strong>Ben Oyelaran</strong>CTO, Halcyon</span></p>
+                    <p class="carousel__stat"><strong>Day 1</strong> first commit</p>
+                  </div>
+                </div>
+
+                <div class="carousel__bar">
+                  <div class="carousel__logos" role="tablist" aria-label="Choose a customer story">
+                    <button type="button" role="tab" id="ctab-1" aria-controls="slide-1" aria-selected="true"><span class="logo logo--1">Northwind</span><i class="carousel__progress" aria-hidden="true"></i></button>
+                    <button type="button" role="tab" id="ctab-2" aria-controls="slide-2" aria-selected="false" tabindex="-1"><span class="logo logo--2">KESTREL</span><i class="carousel__progress" aria-hidden="true"></i></button>
+                    <button type="button" role="tab" id="ctab-3" aria-controls="slide-3" aria-selected="false" tabindex="-1"><span class="logo logo--3">orbitly</span><i class="carousel__progress" aria-hidden="true"></i></button>
+                    <button type="button" role="tab" id="ctab-4" aria-controls="slide-4" aria-selected="false" tabindex="-1"><span class="logo logo--4">Halcyon</span><i class="carousel__progress" aria-hidden="true"></i></button>
+                  </div>
+                  <div class="carousel__controls">
+                    <button class="icon-btn" type="button" data-prev aria-label="Previous story"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+                    <button class="icon-btn" type="button" data-toggle aria-label="Pause auto-play"><svg class="icon"><use href="#i-pause"/></svg></button>
+                    <button class="icon-btn" type="button" data-next aria-label="Next story"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Let it play, hover to pause, click a logo, or focus a logo and use the arrow keys.</p>
+      </section>
+
+      <!-- ============================ 03 · FORMA REVIEWS ============================ -->
+      <section class="demo" id="t-reviews" aria-labelledby="t-reviews-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="t-reviews-title">Forma <span>· Review summary &amp; filters</span></h2>
+            <p class="demo__desc">The rating breakdown shoppers expect from e-commerce and local businesses. Click a star bar to filter, sort by newest or rating, mark reviews as helpful, and spot verified customers at a glance. Visitors can find honest negative reviews too, which builds more trust than hiding them.</p>
+            <ul class="demo__tags" role="list"><li>Rating breakdown</li><li>Filter by stars</li><li>Sort</li><li>Helpful votes</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com/reviews</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma reviews preview">
+
+              <div class="tx reviews" data-reviews>
+                <aside class="reviews__summary">
+                  <h3 class="reviews__title">Client reviews</h3>
+                  <p class="reviews__avg"><strong data-avg>4.6</strong><span><span class="stars stars--lg" data-avg-stars aria-hidden="true">★★★★★</span><small data-count>Based on 312 reviews</small></span></p>
+                  <ul class="bars" role="list" aria-label="Filter by rating" data-bars>
+                    <li><button type="button" data-star="5" aria-pressed="false"><span>5 ★</span><span class="bars__track"><i style="--p: 0.74"></i></span><span>74%</span></button></li>
+                    <li><button type="button" data-star="4" aria-pressed="false"><span>4 ★</span><span class="bars__track"><i style="--p: 0.16"></i></span><span>16%</span></button></li>
+                    <li><button type="button" data-star="3" aria-pressed="false"><span>3 ★</span><span class="bars__track"><i style="--p: 0.05"></i></span><span>5%</span></button></li>
+                    <li><button type="button" data-star="2" aria-pressed="false"><span>2 ★</span><span class="bars__track"><i style="--p: 0.03"></i></span><span>3%</span></button></li>
+                    <li><button type="button" data-star="1" aria-pressed="false"><span>1 ★</span><span class="bars__track"><i style="--p: 0.02"></i></span><span>2%</span></button></li>
+                  </ul>
+                  <p class="reviews__trust"><svg class="icon"><use href="#i-badge"/></svg>Only verified clients can review</p>
+                </aside>
+
+                <div class="reviews__main">
+                  <div class="reviews__toolbar">
+                    <p class="reviews__showing" aria-live="polite" data-showing></p>
+                    <label class="reviews__sort"><span>Sort by</span>
+                      <span class="select-wrap"><select class="input" data-sort><option value="recent">Most recent</option><option value="high">Highest rated</option><option value="low">Lowest rated</option><option value="helpful">Most helpful</option></select></span>
+                    </label>
+                  </div>
+
+                  <ul class="review-list" role="list" data-list>
+                    <li class="review" data-rating="5" data-date="2026-09-28" data-helpful="24"><div class="review__top"><span class="avatar" style="--h: 30">LH</span><div><strong>Lars Holm</strong><span class="review__meta"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg>Verified buyer</span> · Bought in Hellerup</span></div><time datetime="2026-09-28">28 Sep 2026</time></div><p class="stars" aria-label="5 out of 5 stars">★★★★★</p><h4>Sold above asking in 11 days</h4><p>Sofie priced it honestly, the photos were stunning and we had four offers by the second weekend. Calm and clear the whole way.</p><button class="helpful" type="button" aria-pressed="false"><svg class="icon"><use href="#i-thumb"/></svg>Helpful <span>(24)</span></button></li>
+                    <li class="review" data-rating="4" data-date="2026-09-14" data-helpful="9"><div class="review__top"><span class="avatar" style="--h: 200">MK</span><div><strong>Maja Kristensen</strong><span class="review__meta"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg>Verified renter</span> · Rented in Aarhus</span></div><time datetime="2026-09-14">14 Sep 2026</time></div><p class="stars" aria-label="4 out of 5 stars">★★★★<span class="stars__off">★</span></p><h4>Great flat, slightly slow paperwork</h4><p>Found exactly what we wanted on the first viewing. Lease signing took a few days longer than promised, but the team kept us updated.</p><button class="helpful" type="button" aria-pressed="false"><svg class="icon"><use href="#i-thumb"/></svg>Helpful <span>(9)</span></button></li>
+                    <li class="review" data-rating="5" data-date="2026-08-30" data-helpful="31"><div class="review__top"><span class="avatar" style="--h: 120">PJ</span><div><strong>Peter &amp; Jun</strong><span class="review__meta"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg>Verified buyers</span> · First home</span></div><time datetime="2026-08-30">30 Aug 2026</time></div><p class="stars" aria-label="5 out of 5 stars">★★★★★</p><h4>Patient with first-time buyers</h4><p>We asked a hundred questions and never felt rushed. They even came to the survey with us and explained every line.</p><button class="helpful" type="button" aria-pressed="false"><svg class="icon"><use href="#i-thumb"/></svg>Helpful <span>(31)</span></button></li>
+                    <li class="review" data-rating="2" data-date="2026-08-12" data-helpful="12"><div class="review__top"><span class="avatar" style="--h: 0">AR</span><div><strong>Anders Rask</strong><span class="review__meta"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg>Verified seller</span> · Odense</span></div><time datetime="2026-08-12">12 Aug 2026</time></div><p class="stars" aria-label="2 out of 5 stars">★★<span class="stars__off">★★★</span></p><h4>Took longer than expected</h4><p>Our sale dragged on for three months. Communication was polite but I'd have liked more honesty about the price early on.</p><div class="review__reply"><strong>Reply from Forma</strong><p>Thank you, Anders. You're right that we should have flagged the market slowdown sooner. We've since changed how we report pricing to sellers.</p></div><button class="helpful" type="button" aria-pressed="false"><svg class="icon"><use href="#i-thumb"/></svg>Helpful <span>(12)</span></button></li>
+                    <li class="review is-extra" data-rating="5" data-date="2026-07-22" data-helpful="6" hidden><div class="review__top"><span class="avatar" style="--h: 260">EV</span><div><strong>Emma Vestergaard</strong><span class="review__meta"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg>Verified buyer</span> · Frederiksberg</span></div><time datetime="2026-07-22">22 Jul 2026</time></div><p class="stars" aria-label="5 out of 5 stars">★★★★★</p><h4>Found our dream home off-market</h4><p>They knew the owner was thinking of selling and arranged a quiet viewing. We'd never have found it online.</p><button class="helpful" type="button" aria-pressed="false"><svg class="icon"><use href="#i-thumb"/></svg>Helpful <span>(6)</span></button></li>
+                    <li class="review is-extra" data-rating="3" data-date="2026-07-02" data-helpful="4" hidden><div class="review__top"><span class="avatar" style="--h: 80">OB</span><div><strong>Oliver Berg</strong><span class="review__meta"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg>Verified renter</span> · Copenhagen</span></div><time datetime="2026-07-02">2 Jul 2026</time></div><p class="stars" aria-label="3 out of 5 stars">★★★<span class="stars__off">★★</span></p><h4>Fine, but busy office</h4><p>Got the apartment, but it was hard to reach anyone by phone in July. Email replies were quick, though.</p><button class="helpful" type="button" aria-pressed="false"><svg class="icon"><use href="#i-thumb"/></svg>Helpful <span>(4)</span></button></li>
+                  </ul>
+                  <p class="reviews__empty" data-empty hidden>No reviews match this filter yet.</p>
+                  <button class="btn btn--outline btn--block reviews__more" type="button" data-more>Load more reviews</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click the “2 ★” bar to filter, change the sort order, and mark a review as helpful.</p>
+      </section>
+
+      <!-- ============================ 04 · HALDEN CASES ============================ -->
+      <section class="demo" id="t-cases" aria-labelledby="t-cases-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="t-cases-title">Halden <span>· Case-study results</span></h2>
+            <p class="demo__desc">For agencies and consultants whose best proof is numbers. Each client gets a large editorial quote paired with the results the project delivered. The figures count up when a client is selected, and tabs move between stories.</p>
+            <ul class="demo__tags" role="list"><li>Client tabs</li><li>Count-up metrics</li><li>Editorial type</li><li>Crossfade</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/results</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Halden case studies preview">
+
+              <div class="tx cases" data-cases>
+                <p class="cases__kicker">Results</p>
+                <div class="cases__tabs" role="tablist" aria-label="Client">
+                  <button type="button" role="tab" id="case-tab-1" aria-controls="case-1" aria-selected="true">Nordlys Hotels</button>
+                  <button type="button" role="tab" id="case-tab-2" aria-controls="case-2" aria-selected="false" tabindex="-1">Fern &amp; Field</button>
+                  <button type="button" role="tab" id="case-tab-3" aria-controls="case-3" aria-selected="false" tabindex="-1">Arkiv Museum</button>
+                </div>
+
+                <article class="case" role="tabpanel" id="case-1" aria-labelledby="case-tab-1" style="--h: 35">
+                  <div class="case__visual" aria-hidden="true"></div>
+                  <div class="case__body">
+                    <blockquote>“Halden gave our hotels a voice. Guests now book because of the brand, not despite it.”</blockquote>
+                    <p class="case__who"><strong>Ingrid Sørensen</strong> · CMO, Nordlys Hotels</p>
+                    <dl class="case__stats">
+                      <div><dt>Direct bookings</dt><dd>+<span data-to="212">0</span>%</dd></div>
+                      <div><dt>Avg. nightly rate</dt><dd>+<span data-to="18">0</span>%</dd></div>
+                      <div><dt>Launch time</dt><dd><span data-to="9">0</span> wks</dd></div>
+                    </dl>
+                  </div>
+                </article>
+                <article class="case" role="tabpanel" id="case-2" aria-labelledby="case-tab-2" style="--h: 150" hidden>
+                  <div class="case__visual" aria-hidden="true"></div>
+                  <div class="case__body">
+                    <blockquote>“The new packaging sold out in the first week. Retailers started calling us.”</blockquote>
+                    <p class="case__who"><strong>Tom Ashby</strong> · Founder, Fern &amp; Field</p>
+                    <dl class="case__stats">
+                      <div><dt>Retail stockists</dt><dd><span data-to="140">0</span></dd></div>
+                      <div><dt>Online sales</dt><dd>+<span data-to="3.4" data-decimals="1">0</span>×</dd></div>
+                      <div><dt>Awards</dt><dd><span data-to="2">0</span></dd></div>
+                    </dl>
+                  </div>
+                </article>
+                <article class="case" role="tabpanel" id="case-3" aria-labelledby="case-tab-3" style="--h: 260" hidden>
+                  <div class="case__visual" aria-hidden="true"></div>
+                  <div class="case__body">
+                    <blockquote>“Our digital collection finally feels as considered as the galleries themselves.”</blockquote>
+                    <p class="case__who"><strong>Dr. Lea Moreau</strong> · Director, Arkiv Museum</p>
+                    <dl class="case__stats">
+                      <div><dt>Online visitors</dt><dd><span data-to="1.2" data-decimals="1">0</span>M</dd></div>
+                      <div><dt>Avg. visit</dt><dd><span data-to="7">0</span> min</dd></div>
+                      <div><dt>Membership sign-ups</dt><dd>+<span data-to="64">0</span>%</dd></div>
+                    </dl>
+                  </div>
+                </article>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Switch clients and watch the results count up.</p>
+      </section>
+
+      <!-- ============================ 05 · FORGE STORIES ============================ -->
+      <section class="demo" id="t-stories" aria-labelledby="t-stories-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="t-stories-title">Forge <span>· Member stories</span></h2>
+            <p class="demo__desc">Real progress sells memberships. Swipeable story cards show each member's results, with previous/next buttons for mouse users. Underneath, two rows of short reviews drift in opposite directions and pause when you hover.</p>
+            <ul class="demo__tags" role="list"><li>Swipe cards</li><li>Results chips</li><li>Dual marquee</li><li>Pause on hover</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit/stories</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forge stories preview">
+
+              <div class="tx stories" data-stories>
+                <div class="stories__head">
+                  <h3 class="stories__title">Real members.<br><span>Real results.</span></h3>
+                  <div class="stories__nav">
+                    <button class="stories__btn" type="button" data-s-prev aria-label="Previous stories"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+                    <button class="stories__btn" type="button" data-s-next aria-label="Next stories"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+                  </div>
+                </div>
+
+                <ul class="stories__track" role="list" data-s-track tabindex="0" aria-label="Member stories, scroll horizontally">
+                  <li class="story" style="--h: 120"><div class="story__media" aria-hidden="true"><span class="story__initials">JM</span></div><div class="story__body"><ul class="story__chips" role="list"><li>−12 kg</li><li>6 months</li></ul><p>“I'd never lifted before. The coaches made me feel like I belonged from day one.”</p><strong>Jess M. · Unlimited member</strong></div></li>
+                  <li class="story" style="--h: 20"><div class="story__media" aria-hidden="true"><span class="story__initials">AL</span></div><div class="story__body"><ul class="story__chips" role="list"><li>140 kg deadlift</li><li>PB</li></ul><p>“Strength classes changed everything. I'm 52 and stronger than I was at 30.”</p><strong>Alan L. · Coach plan</strong></div></li>
+                  <li class="story" style="--h: 220"><div class="story__media" aria-hidden="true"><span class="story__initials">TS</span></div><div class="story__body"><ul class="story__chips" role="list"><li>First half marathon</li></ul><p>“The HIIT and conditioning got me from couch to 21 km in five months.”</p><strong>Tara S. · Off-peak member</strong></div></li>
+                  <li class="story" style="--h: 300"><div class="story__media" aria-hidden="true"><span class="story__initials">RK</span></div><div class="story__body"><ul class="story__chips" role="list"><li>Back pain gone</li><li>3 months</li></ul><p>“My physio sent me here. Mobility classes fixed what years of sitting did.”</p><strong>Ravi K. · Unlimited member</strong></div></li>
+                  <li class="story" style="--h: 70"><div class="story__media" aria-hidden="true"><span class="story__initials">NO</span></div><div class="story__body"><ul class="story__chips" role="list"><li>Pull-up unlocked</li></ul><p>“Eight months ago I couldn't hang from a bar. Now I do sets of five.”</p><strong>Nora O. · Class pack</strong></div></li>
+                </ul>
+
+                <div class="marquee2" aria-label="Short reviews">
+                  <ul class="marquee2__row" role="list">
+                    <li>“Best coaches in Manchester” <b>★★★★★</b></li><li>“Spotless and never crowded” <b>★★★★★</b></li><li>“The 6am crew is family” <b>★★★★★</b></li><li>“Worth every penny” <b>★★★★★</b></li><li>“Music, lights, energy” <b>★★★★★</b></li>
+                    <li aria-hidden="true">“Best coaches in Manchester” <b>★★★★★</b></li><li aria-hidden="true">“Spotless and never crowded” <b>★★★★★</b></li><li aria-hidden="true">“The 6am crew is family” <b>★★★★★</b></li><li aria-hidden="true">“Worth every penny” <b>★★★★★</b></li><li aria-hidden="true">“Music, lights, energy” <b>★★★★★</b></li>
+                  </ul>
+                  <ul class="marquee2__row marquee2__row--reverse" role="list">
+                    <li>“Classes for every level” <b>★★★★★</b></li><li>“I actually look forward to Mondays” <b>★★★★★</b></li><li>“Friendly from day one” <b>★★★★★</b></li><li>“Great app for booking” <b>★★★★☆</b></li><li>“Changed my life, honestly” <b>★★★★★</b></li>
+                    <li aria-hidden="true">“Classes for every level” <b>★★★★★</b></li><li aria-hidden="true">“I actually look forward to Mondays” <b>★★★★★</b></li><li aria-hidden="true">“Friendly from day one” <b>★★★★★</b></li><li aria-hidden="true">“Great app for booking” <b>★★★★☆</b></li><li aria-hidden="true">“Changed my life, honestly” <b>★★★★★</b></li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Use the arrows or swipe the cards. Hover a review row to pause it.</p>
+      </section>
+
+      <!-- ============================ 06 · EMBER GUESTS ============================ -->
+      <section class="demo" id="t-guests" aria-labelledby="t-guests-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="t-guests-title">Ember <span>· Critics, guests &amp; leave a review</span></h2>
+            <p class="demo__desc">Restaurants live on reputation. Press quotes sit above recent guest reviews, and an inviting form lets diners leave their own. It has a star picker you can hover, tap or use with the keyboard. New reviews appear at the top instantly.</p>
+            <ul class="demo__tags" role="list"><li>Press quotes</li><li>Star-rating input</li><li>Validated form</li><li>Instant post</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk/reviews</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember reviews preview">
+
+              <div class="tx guests" data-guests>
+                <ul class="press" role="list">
+                  <li><p>“The most exciting live-fire cooking in London right now.”</p><span class="press__stars" aria-label="5 stars">★★★★★</span><strong>The London Table</strong></li>
+                  <li><p>“A twelve-seat theatre of smoke, flame and genuine warmth.”</p><span class="press__stars" aria-label="4 stars">★★★★<span class="stars__off">★</span></span><strong>Evening Plate</strong></li>
+                  <li><p>“Book now, before everyone else finds out.”</p><span class="press__stars" aria-label="5 stars">★★★★★</span><strong>City Supper Club</strong></li>
+                </ul>
+
+                <div class="guests__grid">
+                  <div class="guests__list">
+                    <h3 class="guests__title">From our guests</h3>
+                    <ul class="glist" role="list" data-glist aria-live="polite">
+                      <li class="greview"><p class="stars" aria-label="5 out of 5 stars">★★★★★</p><p>The smoked beetroot alone is worth the trip. Lovely, unhurried service.</p><span>Charlotte · 3 days ago</span></li>
+                      <li class="greview"><p class="stars" aria-label="5 out of 5 stars">★★★★★</p><p>Sat at the counter for our anniversary. Watching the chefs was half the fun.</p><span>Marcus &amp; Ellie · 1 week ago</span></li>
+                      <li class="greview"><p class="stars" aria-label="4 out of 5 stars">★★★★<span class="stars__off">★</span></p><p>Wonderful food. A little warm near the hearth, so ask for a seat at the end.</p><span>Priya · 2 weeks ago</span></li>
+                    </ul>
+                  </div>
+
+                  <div class="guests__form">
+                    <h3 class="guests__title">Dined with us?</h3>
+                    <form class="leave" id="review-form" novalidate>
+                      <fieldset class="fld" data-group data-min="1" data-msg-required="Please choose a star rating.">
+                        <legend>Your rating</legend>
+                        <div class="rate" data-rate>
+                          <input type="radio" name="rating" value="1" id="r1"><label for="r1"><span class="sr-only">1 star, poor</span></label>
+                          <input type="radio" name="rating" value="2" id="r2"><label for="r2"><span class="sr-only">2 stars, fair</span></label>
+                          <input type="radio" name="rating" value="3" id="r3"><label for="r3"><span class="sr-only">3 stars, good</span></label>
+                          <input type="radio" name="rating" value="4" id="r4"><label for="r4"><span class="sr-only">4 stars, very good</span></label>
+                          <input type="radio" name="rating" value="5" id="r5"><label for="r5"><span class="sr-only">5 stars, excellent</span></label>
+                          <span class="rate__word" data-rate-word aria-hidden="true">Tap to rate</span>
+                        </div>
+                      </fieldset>
+                      <div class="fld">
+                        <label class="fld__label" for="rv-name">Your first name</label>
+                        <input class="input" id="rv-name" name="name" autocomplete="given-name" required maxlength="30">
+                      </div>
+                      <div class="fld">
+                        <label class="fld__label" for="rv-text">Your review</label>
+                        <textarea class="input" id="rv-text" name="text" rows="3" required minlength="15" maxlength="280" placeholder="What did you love? What could be better?" data-msg-minlength="Please write at least 15 characters."></textarea>
+                        <span class="fld__counter" aria-hidden="true"></span>
+                      </div>
+                      <button class="btn guests__submit" type="submit">Post review</button>
+                    </form>
+                    <p class="guests__thanks" data-thanks hidden tabindex="-1">Thank you! Your review is now live.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the stars, pick a rating (or use the arrow keys), write a review and post it.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 007</strong> of 100 · All names, companies and reviews are fictional demo content.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 008: FAQ Sections</span></p>
+    </div>
+  </footer>
+</body>
+</html>
