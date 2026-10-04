@@ -89,4 +89,5 @@ Then open `http://localhost:5500/phase-1-ui-components/day-001-navigation-bars/`
 | 003 | [Footers](phase-1-ui-components/day-003-footers/) | ✅ Done |
 | 004 | [Contact Forms](phase-1-ui-components/day-004-contact-forms/) | ✅ Done |
 | 005 | [Login & Sign-up](phase-1-ui-components/day-005-login-signup/) | ✅ Done |
-| 006 | Pricing Sections | ⏳ Next |
+| 006 | [Pricing Sections](phase-1-ui-components/day-006-pricing/) | ✅ Done |
+| 007 | Testimonials | ⏳ Next |
