@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ Sections · Day 008 · Thecore</title>
+  <meta name="description" content="Six FAQ sections: searchable categories, help-centre search, staged process guide, editorial accordion, chat-style FAQ and tabbed FAQ with Google-ready structured data. Day 008 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <!-- Structured data: lets Google show the Ember FAQ as rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How far ahead can I book a table?", "acceptedAnswer": { "@type": "Answer", "text": "We release tables 60 days ahead at 10am each morning. Bookings for the chef's counter usually fill within a week." } },
+      { "@type": "Question", "name": "Can you cater for allergies?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Tell us when you book and the kitchen will adapt the menu. We can't guarantee a nut-free kitchen as nuts are used on site." } },
+      { "@type": "Question", "name": "Do you offer gift cards?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, from £50, valid for 12 months and delivered instantly by email." } }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Anton&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="../../packages/form-kit/form-kit.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-thumb" viewBox="0 0 24 24"><path d="M7 10v12M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z"/></symbol>
+    <symbol id="i-thumb-down" viewBox="0 0 24 24"><path d="M17 14V2M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88z"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to section">
+        <a href="#q-search">01</a><a href="#q-help">02</a><a href="#q-stages">03</a><a href="#q-editorial">04</a><a href="#q-chat">05</a><a href="#q-tabs">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 008 / 100</span> Phase 1 · UI Components</p>
+      <h1>FAQ <em>Sections</em></h1>
+      <p class="lead">
+        A good FAQ answers questions before they become emails, and it helps a page rank in search.
+        These six sections make answers <strong>easy to find</strong>: live search, instant suggestions,
+        guided steps, a conversational helper and Google-ready structured data.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>FAQ patterns</li>
+        <li><strong>Live</strong>search &amp; highlight</li>
+        <li><strong>Works</strong>without JavaScript</li>
+        <li><strong>SEO</strong>structured data</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · LUMEN SEARCHABLE FAQ ============================ -->
+      <section class="demo" id="q-search" aria-labelledby="q-search-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="q-search-title">Lumen <span>· Searchable FAQ with categories</span></h2>
+            <p class="demo__desc">The everyday SaaS FAQ, made genuinely useful. Category tabs on the side and live search that highlights matching words. Every answer has a copy-link button for support teams and a quick “Was this helpful?” vote.</p>
+            <ul class="demo__tags" role="list"><li>Live search + highlight</li><li>Categories</li><li>Copy link</li><li>Helpful vote</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.app/faq</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Lumen FAQ preview">
+
+              <div class="qx sfaq" data-sfaq>
+                <header class="qx__head">
+                  <h3 class="qx__title">Frequently asked questions</h3>
+                  <label class="sfaq__search">
+                    <svg class="icon"><use href="#i-search"/></svg>
+                    <span class="sr-only">Search questions</span>
+                    <input class="input" type="search" placeholder="Search, e.g. “refund” or “SSO”" data-sfaq-search autocomplete="off">
+                  </label>
+                  <p class="sfaq__status" aria-live="polite" data-sfaq-status></p>
+                </header>
+
+                <div class="sfaq__layout">
+                  <nav class="sfaq__cats" aria-label="FAQ categories">
+                    <button type="button" aria-pressed="true" data-cat="all">All questions</button>
+                    <button type="button" aria-pressed="false" data-cat="general">General</button>
+                    <button type="button" aria-pressed="false" data-cat="billing">Billing</button>
+                    <button type="button" aria-pressed="false" data-cat="security">Security</button>
+                    <button type="button" aria-pressed="false" data-cat="integrations">Integrations</button>
+                  </nav>
+
+                  <div class="sfaq__list" data-sfaq-list>
+                    <details class="qa" id="faq-free" data-cat="general"><summary><span class="qa__q">Is there a free plan?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>Yes. Starter is free forever for up to 3 people, with 3 projects and 5 GB of storage.</p></div></details>
+                    <details class="qa" id="faq-trial" data-cat="general"><summary><span class="qa__q">How does the 14-day trial work?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>You get every Pro feature for 14 days with no card required. At the end you can pick a plan or drop back to Starter automatically.</p></div></details>
+                    <details class="qa" id="faq-refund" data-cat="billing"><summary><span class="qa__q">Can I get a refund?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>Yes. If you're not happy within 30 days of any payment, contact us for a full refund. No forms, no questions.</p></div></details>
+                    <details class="qa" id="faq-invoice" data-cat="billing"><summary><span class="qa__q">Do you send VAT invoices?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>Every payment creates a VAT invoice you can download from Settings → Billing. Add your VAT number there and future invoices include it.</p></div></details>
+                    <details class="qa" id="faq-sso" data-cat="security"><summary><span class="qa__q">Do you support SSO?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>SAML single sign-on with Okta, Azure AD and Google Workspace is included on the Business plan.</p></div></details>
+                    <details class="qa" id="faq-data" data-cat="security"><summary><span class="qa__q">Where is my data stored?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>In the EU (Frankfurt) by default, encrypted at rest and in transit. Enterprise customers can choose US or UK hosting.</p></div></details>
+                    <details class="qa" id="faq-slack" data-cat="integrations"><summary><span class="qa__q">Does Lumen integrate with Slack?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>Yes. Connect Slack in one click to get updates in channels and create tasks with a shortcut.</p></div></details>
+                    <details class="qa" id="faq-api" data-cat="integrations"><summary><span class="qa__q">Is there a public API?</span><svg class="icon qa__icon"><use href="#i-plus"/></svg></summary><div class="qa__a"><p>Yes, a REST API with typed SDKs for JavaScript and Python, plus webhooks for real-time events.</p></div></details>
+                    <p class="sfaq__empty" data-sfaq-empty hidden>No questions match “<span></span>”. Try another word, or <a href="#">contact support</a>.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “invoice” or “SSO”, try a category, then open an answer and vote or copy its link.</p>
+      </section>
+
+      <!-- ============================ 02 · ATLAS HELP CENTRE ============================ -->
+      <section class="demo" id="q-help" aria-labelledby="q-help-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="q-help-title">Atlas <span>· Help-centre search</span></h2>
+            <p class="demo__desc">A help-centre homepage built around one big search box. Suggestions appear as you type and can be picked with the arrow keys. The answer opens on the same page with related articles, and popular topics give a way in for people who don't know what to search for.</p>
+            <ul class="demo__tags" role="list"><li>Instant suggestions</li><li>ARIA combobox</li><li>Article view</li><li>Related articles</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">help.atlas.dev</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Atlas help centre preview">
+
+              <div class="qx help" data-help>
+                <div class="help__home" data-help-home>
+                  <div class="help__hero">
+                    <h3 class="help__title">How can we help?</h3>
+                    <div class="help__box">
+                      <svg class="icon"><use href="#i-search"/></svg>
+                      <input class="help__input" type="text" role="combobox" aria-expanded="false" aria-controls="help-suggest" aria-autocomplete="list" aria-label="Search help articles" placeholder="Search for answers…" autocomplete="off" data-help-input>
+                      <ul class="help__suggest" id="help-suggest" role="listbox" aria-label="Suggested articles" hidden data-help-suggest></ul>
+                    </div>
+                    <p class="help__popular">Popular: <button type="button" data-help-try="domain">custom domain</button> <button type="button" data-help-try="invite">invite team</button> <button type="button" data-help-try="rollback">rollback</button></p>
+                  </div>
+
+                  <div class="help__topics">
+                    <button class="topic" type="button" data-help-topic="Getting started"><span class="topic__icon"><svg class="icon"><use href="#i-rocket"/></svg></span><strong>Getting started</strong><small>Deploy your first project</small></button>
+                    <button class="topic" type="button" data-help-topic="Teams"><span class="topic__icon"><svg class="icon"><use href="#i-users"/></svg></span><strong>Teams &amp; access</strong><small>Members, roles, SSO</small></button>
+                    <button class="topic" type="button" data-help-topic="Billing"><span class="topic__icon"><svg class="icon"><use href="#i-card"/></svg></span><strong>Billing</strong><small>Plans, invoices, usage</small></button>
+                    <button class="topic" type="button" data-help-topic="Integrations"><span class="topic__icon"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>Git, Slack, webhooks</small></button>
+                  </div>
+                  <p class="help__topic-list" aria-live="polite" data-topic-list></p>
+                </div>
+
+                <article class="help__article" data-help-article hidden tabindex="-1">
+                  <button class="help__back" type="button" data-help-back><svg class="icon"><use href="#i-arrow-left"/></svg>All help topics</button>
+                  <p class="help__crumb" data-article-topic></p>
+                  <h3 class="help__article-title" data-article-title></h3>
+                  <div class="help__article-body" data-article-body></div>
+                  <div class="help__related">
+                    <p>Related articles</p>
+                    <ul role="list" data-article-related></ul>
+                  </div>
+                </article>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “dom” or “team”, use ↓ and Enter to open an article, then try a related one.</p>
+      </section>
+
+      <!-- ============================ 03 · FORMA STAGES ============================ -->
+      <section class="demo" id="q-stages" aria-labelledby="q-stages-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="q-stages-title">Forma <span>· Step-by-step guide FAQ</span></h2>
+            <p class="demo__desc">For processes with an order, like buying a home, onboarding or treatment, questions are grouped by stage along a timeline. Visitors see where they are in the journey, with “Expand all” for readers and “Collapse all” to get back to the overview.</p>
+            <ul class="demo__tags" role="list"><li>Timeline stages</li><li>Expand / collapse all</li><li>Native &lt;details&gt;</li><li>Works without JS</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com/buying-guide</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma guide preview">
+
+              <div class="qx stages" data-stages>
+                <header class="stages__head">
+                  <div>
+                    <p class="stages__eyebrow">Buyer's guide</p>
+                    <h3 class="qx__title">Buying a home, step by step</h3>
+                  </div>
+                  <div class="stages__tools">
+                    <button class="btn btn--outline btn--sm" type="button" data-expand-all>Expand all</button>
+                    <button class="btn btn--ghost btn--sm" type="button" data-collapse-all>Collapse all</button>
+                  </div>
+                </header>
+
+                <ol class="timeline" role="list">
+                  <li class="stage">
+                    <span class="stage__dot" aria-hidden="true">1</span>
+                    <div class="stage__body">
+                      <h4>Before you buy</h4>
+                      <details class="qa"><summary><span class="qa__q">How much deposit do I need?</span><svg class="icon qa__icon"><use href="#i-chevron-down"/></svg></summary><div class="qa__a"><p>Usually at least 5% of the price. Banks typically lend up to 80%, and the rest can be covered by a top-up loan.</p></div></details>
+                      <details class="qa"><summary><span class="qa__q">Should I get mortgage approval first?</span><svg class="icon qa__icon"><use href="#i-chevron-down"/></svg></summary><div class="qa__a"><p>Yes. An agreement in principle shows sellers you're serious and tells you exactly what you can spend.</p></div></details>
+                    </div>
+                  </li>
+                  <li class="stage">
+                    <span class="stage__dot" aria-hidden="true">2</span>
+                    <div class="stage__body">
+                      <h4>Making an offer</h4>
+                      <details class="qa"><summary><span class="qa__q">How do I know what to offer?</span><svg class="icon qa__icon"><use href="#i-chevron-down"/></svg></summary><div class="qa__a"><p>Your agent will share recent sales nearby. Most homes in Copenhagen sell within 2–4% of the asking price.</p></div></details>
+                      <details class="qa"><summary><span class="qa__q">Is my offer legally binding?</span><svg class="icon qa__icon"><use href="#i-chevron-down"/></svg></summary><div class="qa__a"><p>Not until both sides sign the purchase agreement. You also get a 6-day right to withdraw after signing.</p></div></details>
+                    </div>
+                  </li>
+                  <li class="stage">
+                    <span class="stage__dot" aria-hidden="true">3</span>
+                    <div class="stage__body">
+                      <h4>Moving in</h4>
+                      <details class="qa"><summary><span class="qa__q">How long until I get the keys?</span><svg class="icon qa__icon"><use href="#i-chevron-down"/></svg></summary><div class="qa__a"><p>Typically 2–3 months from signing, agreed with the seller in the purchase contract.</p></div></details>
+                      <details class="qa"><summary><span class="qa__q">What costs come on top of the price?</span><svg class="icon qa__icon"><use href="#i-chevron-down"/></svg></summary><div class="qa__a"><p>Registration fees, legal advice and bank fees. Budget around 2–3% of the price, and we'll give you an exact estimate.</p></div></details>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press “Expand all”. The questions also open and close with Enter or Space.</p>
+      </section>
+
+      <!-- ============================ 04 · HALDEN EDITORIAL ============================ -->
+      <section class="demo" id="q-editorial" aria-labelledby="q-editorial-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="q-editorial-title">Halden <span>· Editorial accordion</span></h2>
+            <p class="demo__desc">A calm, magazine-style FAQ for studios and premium brands. It uses large numbered serif questions, and only one answer opens at a time. Opening and closing animates smoothly using the browser's built-in accordion grouping, with no JavaScript needed.</p>
+            <ul class="demo__tags" role="list"><li>One open at a time</li><li>Smooth height</li><li>Zero JavaScript</li><li>Serif type</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/process</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Halden FAQ preview">
+
+              <div class="qx edit">
+                <div class="edit__intro">
+                  <p class="edit__kicker">Working with us</p>
+                  <h3 class="edit__title">Questions, <em>answered.</em></h3>
+                  <p class="edit__lead">Everything clients usually ask before our first call. Anything else? <a href="#">hello@halden.studio</a></p>
+                </div>
+                <div class="edit__list">
+                  <details class="eq" name="halden-faq" open><summary><span class="eq__num">01</span><span class="eq__q">How long does a typical project take?</span><span class="eq__mark" aria-hidden="true"></span></summary><div class="eq__a"><p>Brand identities take 4–6 weeks and websites 6–8. We agree a fixed timeline before starting and share progress every Friday.</p></div></details>
+                  <details class="eq" name="halden-faq"><summary><span class="eq__num">02</span><span class="eq__q">Do you work with early-stage startups?</span><span class="eq__mark" aria-hidden="true"></span></summary><div class="eq__a"><p>Yes. We reserve two places a year for founders at pre-seed or seed, with a lighter scope and staged payments.</p></div></details>
+                  <details class="eq" name="halden-faq"><summary><span class="eq__num">03</span><span class="eq__q">Who owns the work at the end?</span><span class="eq__mark" aria-hidden="true"></span></summary><div class="eq__a"><p>You do. Full rights transfer on final payment, including source files, fonts licensing guidance and design system files.</p></div></details>
+                  <details class="eq" name="halden-faq"><summary><span class="eq__num">04</span><span class="eq__q">Can you work with our in-house team?</span><span class="eq__mark" aria-hidden="true"></span></summary><div class="eq__a"><p>Often the best results come that way. We run shared workshops and hand over a design system your team can extend.</p></div></details>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open question 03. Question 01 closes on its own, with no script involved.</p>
+      </section>
+
+      <!-- ============================ 05 · FORGE CHAT FAQ ============================ -->
+      <section class="demo" id="q-chat" aria-labelledby="q-chat-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="q-chat-title">Forge <span>· Chat-style FAQ</span></h2>
+            <p class="demo__desc">The FAQ as a friendly conversation. Visitors tap a suggested question and get the answer like a chat reply, typing dots included. It's a lightweight preview of the AI assistants planned for later phases, built from plain prepared answers for now.</p>
+            <ul class="demo__tags" role="list"><li>Quick-reply chips</li><li>Typing indicator</li><li>Live region</li><li>Human hand-off</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="false"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="true"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="tablet" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit/help</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forge chat FAQ preview">
+
+              <div class="qx chat" data-chat>
+                <header class="chat__head">
+                  <span class="chat__avatar" aria-hidden="true">F</span>
+                  <div><strong>Forge help</strong><span><i aria-hidden="true"></i>Answers in seconds</span></div>
+                </header>
+                <div class="chat__log" role="log" aria-live="polite" aria-label="Conversation" data-chat-log>
+                  <div class="bubble bubble--bot">Hey! 👋 I can answer the most common questions about Forge. What would you like to know?</div>
+                </div>
+                <div class="chat__chips" role="group" aria-label="Suggested questions" data-chat-chips>
+                  <button type="button" data-ask="cancel">Can I cancel any time?</button>
+                  <button type="button" data-ask="guest">Can I bring a friend?</button>
+                  <button type="button" data-ask="beginner">I'm a total beginner</button>
+                  <button type="button" data-ask="parking">Is there parking?</button>
+                  <button type="button" data-ask="freeze">Can I pause my membership?</button>
+                </div>
+                <div class="chat__human"><span>Still stuck?</span><a href="#">Talk to a coach <svg class="icon"><use href="#i-arrow-right"/></svg></a></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Tap a few questions. Each chip disappears once it's answered.</p>
+      </section>
+
+      <!-- ============================ 06 · EMBER TABS + ASK ============================ -->
+      <section class="demo" id="q-tabs" aria-labelledby="q-tabs-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="q-tabs-title">Ember <span>· Tabbed FAQ + ask a question</span></h2>
+            <p class="demo__desc">Answers are grouped into tabs (Booking, Dietary, Private dining, Gift cards) with a short form for anything not covered. The page also includes FAQ structured data, so Google can show these answers directly in search results.</p>
+            <ul class="demo__tags" role="list"><li>Accessible tabs</li><li>Allergen table</li><li>Ask-a-question form</li><li>FAQPage schema (SEO)</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk/faq</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember FAQ preview">
+
+              <div class="qx tfaq" data-tfaq>
+                <p class="tfaq__kicker">Good to know</p>
+                <h3 class="tfaq__title">Before you <em>visit</em></h3>
+
+                <div class="tfaq__tabs" role="tablist" aria-label="FAQ topics">
+                  <button type="button" role="tab" id="et-1" aria-controls="ep-1" aria-selected="true">Booking</button>
+                  <button type="button" role="tab" id="et-2" aria-controls="ep-2" aria-selected="false" tabindex="-1">Dietary</button>
+                  <button type="button" role="tab" id="et-3" aria-controls="ep-3" aria-selected="false" tabindex="-1">Private dining</button>
+                  <button type="button" role="tab" id="et-4" aria-controls="ep-4" aria-selected="false" tabindex="-1">Gift cards</button>
+                </div>
+
+                <div class="tfaq__panel" role="tabpanel" id="ep-1" aria-labelledby="et-1">
+                  <dl class="tfaq__list">
+                    <div><dt>How far ahead can I book a table?</dt><dd>We release tables 60 days ahead at 10am each morning. Bookings for the chef's counter usually fill within a week.</dd></div>
+                    <div><dt>Do you take walk-ins?</dt><dd>We keep four counter seats for walk-ins every night. Come early, as they usually go by 7pm.</dd></div>
+                    <div><dt>What's your cancellation policy?</dt><dd>Free cancellation up to 48 hours before. After that we charge £20 per guest, as we buy fresh for every booking.</dd></div>
+                  </dl>
+                </div>
+                <div class="tfaq__panel" role="tabpanel" id="ep-2" aria-labelledby="et-2" hidden>
+                  <dl class="tfaq__list">
+                    <div><dt>Can you cater for allergies?</dt><dd>Yes. Tell us when you book and the kitchen will adapt the menu. We can't guarantee a nut-free kitchen as nuts are used on site.</dd></div>
+                    <div><dt>Is there a vegetarian menu?</dt><dd>Always. Our vegetarian tasting menu changes weekly with the market.</dd></div>
+                  </dl>
+                  <table class="allergens">
+                    <caption>This week's allergens</caption>
+                    <thead><tr><th scope="col">Dish</th><th scope="col">Gluten</th><th scope="col">Dairy</th><th scope="col">Nuts</th></tr></thead>
+                    <tbody>
+                      <tr><th scope="row">Smoked beetroot</th><td>—</td><td>✓</td><td>✓</td></tr>
+                      <tr><th scope="row">Ember lamb</th><td>—</td><td>✓</td><td>—</td></tr>
+                      <tr><th scope="row">Burnt honey tart</th><td>✓</td><td>✓</td><td>—</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="tfaq__panel" role="tabpanel" id="ep-3" aria-labelledby="et-3" hidden>
+                  <dl class="tfaq__list">
+                    <div><dt>How many guests can you host?</dt><dd>The private room seats 6–40. The chef's table takes up to 12.</dd></div>
+                    <div><dt>Is there a minimum spend?</dt><dd>£1,500 Sunday to Thursday and £3,000 on Fridays and Saturdays, including food and drink.</dd></div>
+                  </dl>
+                </div>
+                <div class="tfaq__panel" role="tabpanel" id="ep-4" aria-labelledby="et-4" hidden>
+                  <dl class="tfaq__list">
+                    <div><dt>Do you offer gift cards?</dt><dd>Yes, from £50, valid for 12 months and delivered instantly by email.</dd></div>
+                    <div><dt>Can gift cards be used for private dining?</dt><dd>Yes, against any booking, including deposits.</dd></div>
+                  </dl>
+                </div>
+
+                <div class="ask">
+                  <h4>Didn't find your answer?</h4>
+                  <form class="ask__form" id="ask-form" data-success="#ask-success" novalidate>
+                    <div class="fld">
+                      <label class="fld__label" for="ask-q">Your question</label>
+                      <input class="input" id="ask-q" name="question" required minlength="8" placeholder="e.g. Is there step-free access?">
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="ask-email">Email for the reply</label>
+                      <input class="input" id="ask-email" name="email" type="email" autocomplete="email" required>
+                    </div>
+                    <button class="btn ask__submit" type="submit">Send question</button>
+                  </form>
+                  <p class="ask__success" id="ask-success" hidden tabindex="-1"><svg class="icon"><use href="#i-check"/></svg>Thanks! We'll reply within a day, and add it here if others ask too.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open the Dietary tab for the allergen table, then try asking a question.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 008</strong> of 100 · Questions are real HTML, readable by search engines and assistive tech.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 009: Galleries</span></p>
+    </div>
+  </footer>
+</body>
+</html>
