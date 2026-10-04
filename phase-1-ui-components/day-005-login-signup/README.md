@@ -1,6 +1,6 @@
 # Day 005 · Login & Sign-up
 
-Five authentication screens, built the way serious products build them. Everything is **simulated in the browser**: nothing is sent or stored. Real accounts (secure password storage, sessions, server-side rate limiting, email delivery) are built in Phase 4. These screens are designed so that only each `onSubmit` needs replacing.
+Six authentication screens, built the way serious products build them. Everything is **simulated in the browser**: nothing is sent or stored. Real accounts (secure password storage, sessions, server-side rate limiting, email delivery) are built in Phase 4. These screens are designed so that only each `onSubmit` needs replacing.
 
 | # | Screen | Best for | Highlights |
 |---|--------|----------|------------|
@@ -9,12 +9,14 @@ Five authentication screens, built the way serious products build them. Everythi
 | 03 | **Nova** passwordless code | Apps, internal tools | Email → 6-digit code; boxes auto-advance, accept paste and phone autofill, support Backspace and arrow keys, and auto-submit; resend timer |
 | 04 | **Norde** shop account | E-commerce | Sign in / Create account tabs, built-in password reset, guest checkout, welcome-discount message |
 | 05 | **Orbit** sign-in modal | Communities, content sites | Appears only when a guest tries to like or save; explains why; focus trap; finishes the original action after sign-in |
+| 06 | **Sentinel** two-factor setup | Security-sensitive products | Authenticator app (QR + copyable key, simulated rotating code) or text message; 6-digit verification; 10 one-time backup codes with copy and download; can't finish until codes are saved |
 
 ## Demo tips
 
 - Sign in with the password `wrongpass` to see the error, then the lockout on the third try.
 - Sign up with `password123` to see the common-password block; type `name@gmial.com` to see the typo fix.
 - The one-time code is `246810`. Paste it into the first box to see auto-submit.
+- In two-factor setup, type the code shown under "Demo app shows". It changes every 30 seconds, just like a real authenticator. The QR code is decorative.
 
 ## Security & UX practices built in
 

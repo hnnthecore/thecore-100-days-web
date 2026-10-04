@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login &amp; Sign-up · Day 005 · Thecore</title>
-  <meta name="description" content="Five production-grade authentication screens: sign-in, sign-up with password strength, passwordless one-time code, tabbed auth with password reset, and a sign-in modal. Day 005 of Thecore's 100 Days of Web Development.">
+  <meta name="description" content="Six production-grade authentication screens: sign-in, sign-up with password strength, passwordless one-time code, tabbed auth with password reset, a sign-in modal and two-factor setup. Day 005 of Thecore's 100 Days of Web Development.">
   <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -63,6 +63,11 @@
     <symbol id="s-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
     <symbol id="s-google" viewBox="0 0 24 24"><path fill="#4285F4" stroke="none" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" stroke="none" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" stroke="none" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6H1.3a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" stroke="none" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.8 3.6-4.9 6.7-4.9z"/></symbol>
     <symbol id="s-microsoft" viewBox="0 0 24 24"><path fill="#F25022" stroke="none" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" stroke="none" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" stroke="none" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" stroke="none" d="M12.5 12.5H22V22h-9.5z"/></symbol>
+    <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></symbol>
   </svg>
 
   <!-- ===================== Showcase header ===================== -->
@@ -78,6 +83,7 @@
         <a href="#a-otp">03</a>
         <a href="#a-tabs">04</a>
         <a href="#a-modal">05</a>
+        <a href="#a-2fa">06</a>
       </nav>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
         <svg class="icon icon--moon"><use href="#i-moon"/></svg>
@@ -91,12 +97,12 @@
       <p class="eyebrow"><span class="pill">Day 005 / 100</span> Phase 1 · UI Components</p>
       <h1>Login &amp; <em>Sign-up</em></h1>
       <p class="lead">
-        Five authentication screens built the way serious products build them. They work with password managers,
+        Six authentication screens built the way serious products build them. They work with password managers,
         warn when Caps Lock is on, check password strength live, spot email typos, and handle wrong passwords and
         lockouts. Everything here is <strong>simulated in the browser</strong>. Real accounts arrive in Phase 4.
       </p>
       <ul class="intro__stats" role="list">
-        <li><strong>5</strong>auth flows</li>
+        <li><strong>6</strong>auth flows</li>
         <li><strong>Password-manager</strong>friendly</li>
         <li><strong>One-time</strong>code input</li>
         <li><strong>0</strong>data sent anywhere</li>
@@ -569,6 +575,140 @@
           </div>
         </div>
         <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press “Save” on a post while signed out. After signing in, the post is saved automatically.</p>
+      </section>
+
+      <!-- =================================================================
+           06 · SENTINEL: Two-factor authentication setup
+           ================================================================= -->
+      <section class="demo" id="a-2fa" aria-labelledby="a-2fa-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="a-2fa-title">Sentinel <span>· Two-factor security setup</span></h2>
+            <p class="demo__desc">The guided flow that adds a second lock to an account. Users pick an authenticator app or text messages, scan a QR code (or copy the key), confirm with a 6-digit code, and save one-time backup codes before finishing. The setup can't complete until they confirm the backup codes are saved.</p>
+            <ul class="demo__tags" role="list"><li>QR + manual key</li><li>Rotating demo code</li><li>Backup codes</li><li>Copy &amp; download</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">console.sentinel-security.io/settings/security</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Sentinel two-factor preview">
+
+              <div class="auth tfa" data-tfa>
+                <div class="tfa__card">
+                  <header class="tfa__head">
+                    <span class="tfa__shield"><svg class="icon"><use href="#i-shield"/></svg></span>
+                    <div>
+                      <p class="tfa__eyebrow">Account security</p>
+                      <h3 class="tfa__title">Turn on two-factor authentication</h3>
+                    </div>
+                  </header>
+                  <ol class="tfa__steps" role="list" aria-label="Progress">
+                    <li data-tfa-label>Method</li><li data-tfa-label>Connect</li><li data-tfa-label>Backup codes</li>
+                  </ol>
+
+                  <!-- Step 1: method -->
+                  <section class="tfa__step" data-tfa-step="method" aria-labelledby="tfa-s1">
+                    <h4 class="tfa__step-title" id="tfa-s1" tabindex="-1">How do you want to receive codes?</h4>
+                    <div class="option-cards tfa__methods" role="radiogroup" aria-labelledby="tfa-s1">
+                      <label class="option-card"><input type="radio" name="tfaMethod" value="app" checked><span class="option-card__icon"><svg class="icon"><use href="#i-smartphone"/></svg></span><strong>Authenticator app</strong><small>Recommended · works offline</small></label>
+                      <label class="option-card"><input type="radio" name="tfaMethod" value="sms"><span class="option-card__icon"><svg class="icon"><use href="#i-message"/></svg></span><strong>Text message</strong><small>Codes sent to your phone</small></label>
+                    </div>
+                    <div class="tfa__nav"><button class="btn tfa__btn" type="button" data-tfa-next>Continue</button></div>
+                  </section>
+
+                  <!-- Step 2a: authenticator app -->
+                  <section class="tfa__step" data-tfa-step="app" aria-labelledby="tfa-s2a" hidden>
+                    <h4 class="tfa__step-title" id="tfa-s2a" tabindex="-1">Scan this code with your authenticator app</h4>
+                    <div class="tfa__connect">
+                      <div class="tfa__qr" role="img" aria-label="QR code for your authenticator app" data-qr></div>
+                      <div class="tfa__key">
+                        <p>Can't scan? Enter this key manually:</p>
+                        <div class="tfa__secret"><code data-secret>JBSW Y3DP EHPK 3PXP</code><button type="button" class="tfa__copy" data-copy-secret aria-label="Copy setup key"><svg class="icon"><use href="#i-copy"/></svg></button></div>
+                        <p class="tfa__copied" data-secret-status aria-live="polite"></p>
+                        <div class="tfa__demo" aria-label="Demo authenticator">
+                          <span class="tfa__demo-label">Demo app shows</span>
+                          <span class="tfa__demo-code" data-demo-totp>------</span>
+                          <svg class="tfa__ring" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15"/><circle class="tfa__ring-fill" cx="18" cy="18" r="15" data-ring/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    <form class="tfa__verify" data-verify="app" novalidate>
+                      <label class="fld__label" for="tfa-app-code-1">Enter the 6-digit code from the app</label>
+                      <div class="otp" data-tfa-otp>
+                        <input id="tfa-app-code-1" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder=" " aria-label="Digit 1 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 2 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 3 of 6">
+                        <span class="otp__sep" aria-hidden="true"></span>
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 4 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 5 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 6 of 6">
+                      </div>
+                      <p class="fld__error tfa__error" role="alert" data-tfa-error></p>
+                      <div class="tfa__nav"><button class="btn btn--ghost" type="button" data-tfa-back>Back</button><button class="btn tfa__btn" type="submit">Verify</button></div>
+                    </form>
+                  </section>
+
+                  <!-- Step 2b: SMS -->
+                  <section class="tfa__step" data-tfa-step="sms" aria-labelledby="tfa-s2b" hidden>
+                    <h4 class="tfa__step-title" id="tfa-s2b" tabindex="-1">Add your mobile number</h4>
+                    <form class="tfa__phone" data-sms-send novalidate>
+                      <div class="fld">
+                        <label class="fld__label" for="tfa-phone">Mobile number</label>
+                        <input class="input" id="tfa-phone" name="phone" type="tel" autocomplete="tel" required pattern="\+?[0-9 ()\-]{7,20}" placeholder="+44 7700 900123" data-msg-pattern="Enter a mobile number including the country code.">
+                      </div>
+                      <button class="btn btn--outline tfa__send" type="submit">Send code</button>
+                    </form>
+                    <form class="tfa__verify" data-verify="sms" novalidate hidden>
+                      <label class="fld__label" for="tfa-sms-code-1">Enter the code we texted you <span class="fld__optional">Demo code: <code data-sms-demo></code></span></label>
+                      <div class="otp" data-tfa-otp>
+                        <input id="tfa-sms-code-1" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder=" " aria-label="Digit 1 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 2 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 3 of 6">
+                        <span class="otp__sep" aria-hidden="true"></span>
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 4 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 5 of 6">
+                        <input type="text" inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 6 of 6">
+                      </div>
+                      <p class="fld__error tfa__error" role="alert" data-tfa-error></p>
+                      <div class="tfa__nav"><button class="btn btn--ghost" type="button" data-tfa-back>Back</button><button class="btn tfa__btn" type="submit">Verify</button></div>
+                    </form>
+                  </section>
+
+                  <!-- Step 3: backup codes -->
+                  <section class="tfa__step" data-tfa-step="backup" aria-labelledby="tfa-s3" hidden>
+                    <h4 class="tfa__step-title" id="tfa-s3" tabindex="-1">Save your backup codes</h4>
+                    <p class="tfa__text">If you lose your phone, each of these codes lets you sign in once. Keep them somewhere safe, like a password manager.</p>
+                    <ol class="tfa__codes" data-codes></ol>
+                    <div class="tfa__code-actions">
+                      <button class="btn btn--outline btn--sm" type="button" data-codes-copy><svg class="icon"><use href="#i-copy"/></svg>Copy all</button>
+                      <button class="btn btn--outline btn--sm" type="button" data-codes-download><svg class="icon"><use href="#i-download"/></svg>Download .txt</button>
+                      <span class="tfa__copied" data-codes-status aria-live="polite"></span>
+                    </div>
+                    <label class="check tfa__confirm"><input type="checkbox" data-codes-saved>I've saved my backup codes somewhere safe</label>
+                    <div class="tfa__nav"><button class="btn tfa__btn" type="button" data-tfa-finish disabled>Finish setup</button></div>
+                  </section>
+
+                  <!-- Done -->
+                  <section class="tfa__step form-success" data-tfa-step="done" tabindex="-1" hidden>
+                    <span class="form-success__icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <h3>Two-factor authentication is on</h3>
+                    <p data-tfa-summary></p>
+                    <button class="btn btn--outline btn--sm" type="button" data-tfa-restart>Start over (demo)</button>
+                  </section>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type the code shown under “Demo app shows” (it changes every 30 seconds, just like a real authenticator), then save the backup codes.</p>
       </section>
 
     </div>

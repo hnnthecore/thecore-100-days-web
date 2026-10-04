@@ -635,4 +635,253 @@
       onSuccess: (name) => completeSignIn(name),
     });
   })();
+
+  /* ======================================================================
+     06 · Sentinel: two-factor authentication setup
+     (Demo only: the QR code is decorative and the "authenticator" code is
+     simulated in the page. Real setup generates the secret on the server.)
+     ====================================================================== */
+  (() => {
+    const root = $('[data-tfa]');
+    const steps = Object.fromEntries($$('[data-tfa-step]', root).map((s) => [s.dataset.tfaStep, s]));
+    const labels = $$('[data-tfa-label]', root);
+    const STEP_INDEX = { method: 0, app: 1, sms: 1, backup: 2, done: 3 };
+    let method = 'app';
+    let smsCode = '';
+    let backupCodes = [];
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        const area = Object.assign(document.createElement('textarea'), { value: text });
+        area.style.cssText = 'position:fixed;opacity:0';
+        document.body.append(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+      }
+    }
+
+    function goTo(name) {
+      Object.entries(steps).forEach(([key, el]) => { el.hidden = key !== name; });
+      const index = STEP_INDEX[name];
+      labels.forEach((l, i) => {
+        l.classList.toggle('is-current', i === index);
+        l.classList.toggle('is-done', i < index);
+        if (i === index) l.setAttribute('aria-current', 'step');
+        else l.removeAttribute('aria-current');
+      });
+      focusSoon(name === 'done' ? steps.done : $('.tfa__step-title', steps[name]));
+    }
+
+    /* ---- Decorative QR code (deterministic pattern with real-looking finder squares) ---- */
+    (function drawQr() {
+      const N = 25;
+      let seed = 1337;
+      const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      let rects = '';
+      for (let y = 0; y < N; y++) {
+        for (let x = 0; x < N; x++) {
+          const inFinder = [[0, 0], [N - 7, 0], [0, N - 7]].find(([fx, fy]) => x >= fx && x < fx + 7 && y >= fy && y < fy + 7);
+          let on;
+          if (inFinder) {
+            const dx = x - inFinder[0];
+            const dy = y - inFinder[1];
+            on = dx === 0 || dy === 0 || dx === 6 || dy === 6 || (dx >= 2 && dx <= 4 && dy >= 2 && dy <= 4);
+          } else {
+            on = rand() > 0.52;
+          }
+          if (on) rects += `<rect x="${x}" y="${y}" width="1.02" height="1.02"/>`;
+        }
+      }
+      const qr = $('[data-qr]', root);
+      qr.innerHTML = `<svg viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges" fill="#0b1220">${rects}</svg>`;
+      qr.setAttribute('aria-label', 'Example QR code (demo only, not scannable)');
+    })();
+
+    /* ---- Simulated authenticator: a new 6-digit code every 30 seconds ---- */
+    const WINDOW = 30_000;
+    const codeFor = (windowIndex) => {
+      let h = 2166136261;
+      for (const ch of `sentinel-demo-${windowIndex}`) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+      return String(h % 1_000_000).padStart(6, '0');
+    };
+    const demoEl = $('[data-demo-totp]', root);
+    const ring = $('[data-ring]', root);
+    const tick = () => {
+      const now = Date.now();
+      const index = Math.floor(now / WINDOW);
+      demoEl.textContent = `${codeFor(index).slice(0, 3)} ${codeFor(index).slice(3)}`;
+      ring.style.setProperty('--ring', `${(94.25 * (now % WINDOW)) / WINDOW}`);
+    };
+    tick();
+    setInterval(tick, 1000);
+    // Like real authenticators, accept the current or the previous code (clock drift)
+    const validAppCode = (code) => {
+      const index = Math.floor(Date.now() / WINDOW);
+      return code === codeFor(index) || code === codeFor(index - 1);
+    };
+
+    $('[data-copy-secret]', root).addEventListener('click', async () => {
+      await copyText($('[data-secret]', root).textContent.replace(/\s/g, ''));
+      $('[data-secret-status]', root).textContent = 'Key copied';
+      setTimeout(() => { $('[data-secret-status]', root).textContent = ''; }, 2000);
+    });
+
+    /* ---- 6-digit code boxes (auto-advance, paste, backspace, arrows) ---- */
+    function wireOtp(form) {
+      const boxes = $$('[data-tfa-otp] input', form);
+      const submitIfFull = () => { if (boxes.every((b) => b.value)) form.requestSubmit(); };
+      const fill = (digits, start) => {
+        const clean = digits.replace(/\D/g, '').slice(0, boxes.length - start);
+        [...clean].forEach((d, i) => { boxes[start + i].value = d; });
+        boxes[Math.min(start + clean.length, boxes.length - 1)].focus();
+        submitIfFull();
+      };
+      boxes.forEach((box, i) => {
+        box.addEventListener('input', () => {
+          $('[data-tfa-error]', form).textContent = '';
+          if (box.value.length > 1) {
+            const v = box.value;
+            box.value = '';
+            fill(v, i);
+            return;
+          }
+          box.value = box.value.replace(/\D/g, '');
+          if (box.value && i < boxes.length - 1) boxes[i + 1].focus();
+          submitIfFull();
+        });
+        box.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !box.value && i > 0) { e.preventDefault(); boxes[i - 1].value = ''; boxes[i - 1].focus(); }
+          else if (e.key === 'ArrowLeft' && i > 0) { e.preventDefault(); boxes[i - 1].focus(); }
+          else if (e.key === 'ArrowRight' && i < boxes.length - 1) { e.preventDefault(); boxes[i + 1].focus(); }
+        });
+        box.addEventListener('paste', (e) => { e.preventDefault(); fill(e.clipboardData.getData('text'), i); });
+        box.addEventListener('focus', () => box.select());
+      });
+      return boxes;
+    }
+
+    $$('[data-verify]', root).forEach((form) => {
+      const boxes = wireOtp(form);
+      const error = $('[data-tfa-error]', form);
+      const button = $('[type="submit"]', form);
+      const otp = $('[data-tfa-otp]', form);
+      let busy = false;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (busy) return;
+        const code = boxes.map((b) => b.value).join('');
+        if (code.length < 6) {
+          error.textContent = 'Enter all 6 digits.';
+          boxes.find((b) => !b.value)?.focus();
+          return;
+        }
+        busy = true;
+        button.setAttribute('aria-busy', 'true');
+        await fakeRequest(700);
+        button.removeAttribute('aria-busy');
+        busy = false;
+
+        const ok = form.dataset.verify === 'app' ? validAppCode(code) : code === smsCode;
+        if (!ok) {
+          error.textContent = form.dataset.verify === 'app'
+            ? 'That code didn’t match. Codes change every 30 seconds, so use the newest one.'
+            : 'That code didn’t match. Check your messages and try again.';
+          boxes.forEach((b) => { b.value = ''; b.setAttribute('aria-invalid', 'true'); });
+          otp.classList.remove('is-shaking');
+          void otp.offsetWidth;
+          otp.classList.add('is-shaking');
+          boxes[0].focus();
+          return;
+        }
+        boxes.forEach((b) => b.removeAttribute('aria-invalid'));
+        makeBackupCodes();
+        goTo('backup');
+      });
+    });
+
+    /* ---- SMS: send a code ---- */
+    const smsSend = $('[data-sms-send]', root);
+    const smsVerify = $('[data-verify="sms"]', root);
+    enhance(smsSend, {
+      onSubmit: () => fakeRequest(900),
+      onSuccess: () => {
+        smsCode = String(Math.floor(100000 + Math.random() * 900000));
+        $('[data-sms-demo]', root).textContent = smsCode;
+        smsVerify.hidden = false;
+        focusSoon($('[data-tfa-otp] input', smsVerify));
+      },
+    });
+
+    /* ---- Backup codes ---- */
+    const codesList = $('[data-codes]', root);
+    const saved = $('[data-codes-saved]', root);
+    const finish = $('[data-tfa-finish]', root);
+    const codesStatus = $('[data-codes-status]', root);
+
+    function makeBackupCodes() {
+      const alphabet = 'abcdefghjkmnpqrstuvwxyz23456789'; // no look-alike characters
+      const bytes = new Uint8Array(80);
+      crypto.getRandomValues(bytes);
+      backupCodes = Array.from({ length: 10 }, (_, i) => {
+        const chars = [...bytes.slice(i * 8, i * 8 + 8)].map((b) => alphabet[b % alphabet.length]).join('');
+        return `${chars.slice(0, 4)}-${chars.slice(4)}`;
+      });
+      codesList.innerHTML = backupCodes.map((c) => `<li>${c}</li>`).join('');
+      saved.checked = false;
+      finish.disabled = true;
+      codesStatus.textContent = '';
+    }
+
+    $('[data-codes-copy]', root).addEventListener('click', async () => {
+      await copyText(backupCodes.join('\n'));
+      codesStatus.textContent = 'Copied to clipboard';
+    });
+
+    $('[data-codes-download]', root).addEventListener('click', () => {
+      const text = `Sentinel backup codes\nGenerated ${new Date().toLocaleString()}\nEach code can be used once.\n\n${backupCodes.join('\n')}\n`;
+      const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+      const a = Object.assign(document.createElement('a'), { href: url, download: 'sentinel-backup-codes.txt' });
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      codesStatus.textContent = 'Downloaded';
+    });
+
+    saved.addEventListener('change', () => { finish.disabled = !saved.checked; });
+
+    finish.addEventListener('click', () => {
+      $('[data-tfa-summary]', root).textContent = method === 'app'
+        ? 'You’ll be asked for a code from your authenticator app when you sign in on a new device. 10 backup codes are ready if you ever lose your phone.'
+        : `We’ll text a code to ${smsSend.elements.phone.value.trim()} when you sign in on a new device. 10 backup codes are ready if you lose access.`;
+      goTo('done');
+    });
+
+    /* ---- Navigation ---- */
+    $('[data-tfa-next]', root).addEventListener('click', () => {
+      method = $('input[name="tfaMethod"]:checked', root).value;
+      goTo(method);
+      if (method === 'sms') {
+        smsVerify.hidden = true;
+      }
+    });
+
+    $$('[data-tfa-back]', root).forEach((btn) => btn.addEventListener('click', () => goTo('method')));
+
+    $('[data-tfa-restart]', root).addEventListener('click', () => {
+      smsSend.reset();
+      clear(smsSend);
+      $$('[data-tfa-otp] input', root).forEach((b) => { b.value = ''; b.removeAttribute('aria-invalid'); });
+      $$('[data-tfa-error]', root).forEach((e) => { e.textContent = ''; });
+      goTo('method');
+    });
+
+    // Initial state without stealing focus on page load
+    labels[0].classList.add('is-current');
+    labels[0].setAttribute('aria-current', 'step');
+  })();
 })();
