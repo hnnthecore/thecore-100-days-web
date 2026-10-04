@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Cards · Day 010 · Thecore</title>
+  <meta name="description" content="Six product card patterns: shop cards with swatches, property listings, menu items with ordering, car listings with compare, luxury quick view and app marketplace cards. Day 010 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></symbol>
+    <symbol id="i-bath" viewBox="0 0 24 24"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.68 3 4 3.68 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M2 12h20M7 19v2M17 19v2"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+    <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M3 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18M3 22h12M15 13h2a2 2 0 0 1 2 2v3a2 2 0 0 0 4 0V9.83a2 2 0 0 0-.59-1.42L18 4M7 7h4"/></symbol>
+    <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to section">
+        <a href="#c-shop">01</a><a href="#c-listing">02</a><a href="#c-menu">03</a><a href="#c-cars">04</a><a href="#c-luxury">05</a><a href="#c-apps">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 010 / 100</span> Phase 1 · UI Components</p>
+      <h1>Product <em>Cards</em></h1>
+      <p class="lead">
+        The card is where browsing turns into buying. Six patterns for shops, estate agents, restaurants,
+        car dealers, luxury brands and app marketplaces, each with the <strong>interactions those customers expect</strong>:
+        swatches, quick add, comparing, quick view and install states.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>card patterns</li>
+        <li><strong>Live</strong>basket &amp; order totals</li>
+        <li><strong>Compare</strong>&amp; quick view</li>
+        <li><strong>Loading</strong>skeleton states</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · NORDE SHOP ============================ -->
+      <section class="demo" id="c-shop" aria-labelledby="c-shop-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="c-shop-title">Norde <span>· Shop product cards</span></h2>
+            <p class="demo__desc">E-commerce cards that sell. Hovering shows a styled “lifestyle” photo, colour swatches swap the image and name, there's a sale price with savings and a wishlist heart, and quick add drops the item into the basket without leaving the page.</p>
+            <ul class="demo__tags" role="list"><li>Hover image swap</li><li>Colour swatches</li><li>Quick add + basket</li><li>Sale pricing</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 660px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">norde.store/ceramics</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Norde shop preview">
+
+              <div class="px shop" data-shop>
+                <header class="shop__bar">
+                  <span class="shop__logo">NORDE</span>
+                  <span class="shop__basket" data-basket aria-live="polite"><svg class="icon"><use href="#i-bag"/></svg><span>Basket</span><b data-basket-count>0</b></span>
+                </header>
+                <div class="shop__head"><h3>Ceramics</h3><p>Hand-thrown in Denmark · 4 pieces</p></div>
+
+                <div class="pgrid">
+                  <article class="pcard" data-pcard data-name="Amphora vase" data-price="89">
+                    <div class="pcard__media">
+                      <img class="pcard__img" src="images/vase-sage.svg" alt="Amphora vase in sage" width="800" height="1000" data-img>
+                      <img class="pcard__img pcard__img--alt" src="images/vase-sage-styled.svg" alt="" width="800" height="1000" data-img-alt>
+                      <span class="pcard__badge">New</span>
+                      <button class="pcard__wish" type="button" aria-pressed="false" aria-label="Save Amphora vase to wishlist"><svg class="icon"><use href="#i-heart"/></svg></button>
+                      <button class="pcard__quick" type="button" data-quick-add><svg class="icon"><use href="#i-plus"/></svg>Quick add</button>
+                    </div>
+                    <div class="pcard__body">
+                      <h4 class="pcard__name"><a href="#">Amphora vase</a></h4>
+                      <p class="pcard__variant" data-variant>Sage</p>
+                      <p class="pcard__price">€89</p>
+                      <div class="pcard__swatches" role="radiogroup" aria-label="Colour">
+                        <button type="button" role="radio" aria-checked="true" style="--sw: #94a88a" data-color="sage" aria-label="Sage"></button>
+                        <button type="button" role="radio" aria-checked="false" tabindex="-1" style="--sw: #c9a77f" data-color="sand" aria-label="Sand"></button>
+                        <button type="button" role="radio" aria-checked="false" tabindex="-1" style="--sw: #c7704f" data-color="clay" aria-label="Clay"></button>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="pcard" data-pcard data-name="Tall bottle" data-price="64">
+                    <div class="pcard__media">
+                      <img class="pcard__img" src="images/bottle-sage.svg" alt="Tall bottle vase in sage" width="800" height="1000">
+                      <img class="pcard__img pcard__img--alt" src="images/bottle-sage-styled.svg" alt="" width="800" height="1000">
+                      <span class="pcard__badge pcard__badge--sale">−20%</span>
+                      <button class="pcard__wish" type="button" aria-pressed="false" aria-label="Save Tall bottle to wishlist"><svg class="icon"><use href="#i-heart"/></svg></button>
+                      <button class="pcard__quick" type="button" data-quick-add><svg class="icon"><use href="#i-plus"/></svg>Quick add</button>
+                    </div>
+                    <div class="pcard__body">
+                      <h4 class="pcard__name"><a href="#">Tall bottle</a></h4>
+                      <p class="pcard__variant">Sage</p>
+                      <p class="pcard__price"><span class="pcard__now">€64</span> <s>€80</s> <span class="pcard__save">Save €16</span></p>
+                      <p class="pcard__rating"><svg class="icon"><use href="#i-star"/></svg>4.8 <span>(126)</span></p>
+                    </div>
+                  </article>
+
+                  <article class="pcard" data-pcard data-name="Low bowl" data-price="54">
+                    <div class="pcard__media">
+                      <img class="pcard__img" src="images/bowl-clay.svg" alt="Low bowl in clay" width="800" height="1000">
+                      <img class="pcard__img pcard__img--alt" src="images/bowl-clay-styled.svg" alt="" width="800" height="1000">
+                      <button class="pcard__wish" type="button" aria-pressed="false" aria-label="Save Low bowl to wishlist"><svg class="icon"><use href="#i-heart"/></svg></button>
+                      <button class="pcard__quick" type="button" data-quick-add><svg class="icon"><use href="#i-plus"/></svg>Quick add</button>
+                    </div>
+                    <div class="pcard__body">
+                      <h4 class="pcard__name"><a href="#">Low bowl</a></h4>
+                      <p class="pcard__variant">Clay</p>
+                      <p class="pcard__price">€54</p>
+                      <p class="pcard__stock">Only 3 left</p>
+                    </div>
+                  </article>
+
+                  <article class="pcard is-soldout" data-pcard data-name="Amphora vase" data-price="89">
+                    <div class="pcard__media">
+                      <img class="pcard__img" src="images/vase-sand.svg" alt="Amphora vase in sand, sold out" width="800" height="1000">
+                      <span class="pcard__badge pcard__badge--muted">Sold out</span>
+                      <button class="pcard__wish" type="button" aria-pressed="false" aria-label="Save Amphora vase in sand to wishlist"><svg class="icon"><use href="#i-heart"/></svg></button>
+                    </div>
+                    <div class="pcard__body">
+                      <h4 class="pcard__name"><a href="#">Amphora vase, large</a></h4>
+                      <p class="pcard__variant">Sand</p>
+                      <p class="pcard__price">€129</p>
+                      <button class="pcard__notify" type="button" aria-pressed="false" data-notify>Notify me when back</button>
+                    </div>
+                  </article>
+                </div>
+                <div class="toast" role="status" aria-live="polite" data-toast></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover a product, change the vase colour, then “Quick add” and watch the basket.</p>
+      </section>
+
+      <!-- ============================ 02 · FORMA LISTINGS ============================ -->
+      <section class="demo" id="c-listing" aria-labelledby="c-listing-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="c-listing-title">Forma <span>· Property listing cards</span></h2>
+            <p class="demo__desc">Listing cards for estate agents, holiday rentals and hotels. Each card has its own mini photo carousel (arrows on hover, dots, swipe), a save button, status badges like “New” or “Open house”, key facts and the agent.</p>
+            <ul class="demo__tags" role="list"><li>In-card carousel</li><li>Status badges</li><li>Save listing</li><li>Key facts</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com/search?area=hellerup</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma listings preview">
+
+              <div class="px listings">
+                <p class="listings__count">3 homes in Hellerup · sorted by newest</p>
+                <div class="lgrid">
+                  <article class="lcard" data-lcard>
+                    <div class="lcard__media" data-slides='["images/room-1.svg","images/room-2.svg","images/room-3.svg"]' data-alts='["Living room","Bedroom","Dining room"]'>
+                      <img src="images/room-1.svg" alt="Villa Solvej, living room" width="900" height="600" data-l-img>
+                      <span class="lcard__badges"><span class="lcard__badge">New</span><span class="lcard__badge lcard__badge--open"><svg class="icon"><use href="#i-calendar"/></svg>Open house Sat</span></span>
+                      <button class="lcard__save" type="button" aria-pressed="false" aria-label="Save Villa Solvej"><svg class="icon"><use href="#i-heart"/></svg></button>
+                      <button class="lcard__nav lcard__nav--prev" type="button" data-l-prev aria-label="Previous photo"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+                      <button class="lcard__nav lcard__nav--next" type="button" data-l-next aria-label="Next photo"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+                      <span class="lcard__dots" aria-hidden="true" data-l-dots></span>
+                      <span class="sr-only" aria-live="polite" data-l-status></span>
+                    </div>
+                    <div class="lcard__body">
+                      <p class="lcard__price">€1,240,000</p>
+                      <h4 class="lcard__name"><a href="#">Villa Solvej</a></h4>
+                      <p class="lcard__addr"><svg class="icon"><use href="#i-pin"/></svg>Strandvejen 112, Hellerup</p>
+                      <ul class="lcard__facts" role="list"><li><svg class="icon"><use href="#i-bed"/></svg>4 beds</li><li><svg class="icon"><use href="#i-bath"/></svg>3 baths</li><li><svg class="icon"><use href="#i-ruler"/></svg>212 m²</li></ul>
+                    </div>
+                  </article>
+
+                  <article class="lcard" data-lcard>
+                    <div class="lcard__media" data-slides='["images/room-4.svg","images/room-2.svg"]' data-alts='["Study","Bedroom"]'>
+                      <img src="images/room-4.svg" alt="Townhouse Linde, study" width="900" height="600" data-l-img>
+                      <span class="lcard__badges"><span class="lcard__badge lcard__badge--drop">Price drop</span></span>
+                      <button class="lcard__save" type="button" aria-pressed="false" aria-label="Save Townhouse Linde"><svg class="icon"><use href="#i-heart"/></svg></button>
+                      <button class="lcard__nav lcard__nav--prev" type="button" data-l-prev aria-label="Previous photo"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+                      <button class="lcard__nav lcard__nav--next" type="button" data-l-next aria-label="Next photo"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+                      <span class="lcard__dots" aria-hidden="true" data-l-dots></span>
+                      <span class="sr-only" aria-live="polite" data-l-status></span>
+                    </div>
+                    <div class="lcard__body">
+                      <p class="lcard__price">€865,000 <s>€910,000</s></p>
+                      <h4 class="lcard__name"><a href="#">Townhouse Linde</a></h4>
+                      <p class="lcard__addr"><svg class="icon"><use href="#i-pin"/></svg>Lindevej 8, Hellerup</p>
+                      <ul class="lcard__facts" role="list"><li><svg class="icon"><use href="#i-bed"/></svg>3 beds</li><li><svg class="icon"><use href="#i-bath"/></svg>2 baths</li><li><svg class="icon"><use href="#i-ruler"/></svg>148 m²</li></ul>
+                    </div>
+                  </article>
+
+                  <article class="lcard" data-lcard>
+                    <div class="lcard__media" data-slides='["images/room-3.svg","images/room-1.svg","images/room-4.svg"]' data-alts='["Dining room","Living room","Study"]'>
+                      <img src="images/room-3.svg" alt="Penthouse Havn, dining room" width="900" height="600" data-l-img>
+                      <span class="lcard__badges"><span class="lcard__badge lcard__badge--dark">Under offer</span></span>
+                      <button class="lcard__save" type="button" aria-pressed="false" aria-label="Save Penthouse Havn"><svg class="icon"><use href="#i-heart"/></svg></button>
+                      <button class="lcard__nav lcard__nav--prev" type="button" data-l-prev aria-label="Previous photo"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+                      <button class="lcard__nav lcard__nav--next" type="button" data-l-next aria-label="Next photo"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+                      <span class="lcard__dots" aria-hidden="true" data-l-dots></span>
+                      <span class="sr-only" aria-live="polite" data-l-status></span>
+                    </div>
+                    <div class="lcard__body">
+                      <p class="lcard__price">€1,980,000</p>
+                      <h4 class="lcard__name"><a href="#">Penthouse Havn</a></h4>
+                      <p class="lcard__addr"><svg class="icon"><use href="#i-pin"/></svg>Tuborg Havnevej 4, Hellerup</p>
+                      <ul class="lcard__facts" role="list"><li><svg class="icon"><use href="#i-bed"/></svg>3 beds</li><li><svg class="icon"><use href="#i-bath"/></svg>2 baths</li><li><svg class="icon"><use href="#i-ruler"/></svg>176 m²</li></ul>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover a listing for photo arrows (or swipe on touch), and save a home with ♥.</p>
+      </section>
+
+      <!-- ============================ 03 · EMBER MENU ============================ -->
+      <section class="demo" id="c-menu" aria-labelledby="c-menu-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="c-menu-title">Ember <span>· Menu items with ordering</span></h2>
+            <p class="demo__desc">Order-ahead cards for restaurants and takeaways. Dietary badges (vegetarian, gluten-free), a spice level, “Add” that turns into a quantity stepper, and an order bar that slides up with the running total.</p>
+            <ul class="demo__tags" role="list"><li>Dietary badges</li><li>Add → stepper</li><li>Live order bar</li><li>Spice level</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk/order</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember ordering preview">
+
+              <div class="px menu" data-menu>
+                <h3 class="menu__title">Order for <em>collection</em></h3>
+                <div class="mgrid">
+                  <article class="mcard" data-item data-name="Ember lamb" data-price="34">
+                    <img src="images/dish-1.svg" alt="Ember lamb on a cream plate" width="800" height="600">
+                    <div class="mcard__body">
+                      <h4>Ember lamb</h4>
+                      <p>Charred herbs, smoked yoghurt, flatbread</p>
+                      <ul class="mcard__tags" role="list"><li class="tag-gf">GF</li><li class="tag-spice" aria-label="Mild"><svg class="icon"><use href="#i-flame"/></svg></li></ul>
+                      <div class="mcard__foot"><span class="mcard__price">£34</span><span class="mcard__ctrl" data-ctrl></span></div>
+                    </div>
+                  </article>
+                  <article class="mcard" data-item data-name="Garden greens" data-price="12">
+                    <img src="images/dish-2.svg" alt="Charred garden greens" width="800" height="600">
+                    <div class="mcard__body">
+                      <h4>Garden greens</h4>
+                      <p>Chilli, toasted seeds, lemon</p>
+                      <ul class="mcard__tags" role="list"><li class="tag-v"><svg class="icon"><use href="#i-leaf"/></svg>V</li><li class="tag-gf">GF</li><li class="tag-spice" aria-label="Medium"><svg class="icon"><use href="#i-flame"/></svg><svg class="icon"><use href="#i-flame"/></svg></li></ul>
+                      <div class="mcard__foot"><span class="mcard__price">£12</span><span class="mcard__ctrl" data-ctrl></span></div>
+                    </div>
+                  </article>
+                  <article class="mcard" data-item data-name="Burnt honey tart" data-price="11">
+                    <img src="images/dish-3.svg" alt="Burnt honey tart with berries" width="800" height="600">
+                    <div class="mcard__body">
+                      <h4>Burnt honey tart</h4>
+                      <p>Crème fraîche, summer berries</p>
+                      <ul class="mcard__tags" role="list"><li class="tag-v"><svg class="icon"><use href="#i-leaf"/></svg>V</li></ul>
+                      <div class="mcard__foot"><span class="mcard__price">£11</span><span class="mcard__ctrl" data-ctrl></span></div>
+                    </div>
+                  </article>
+                  <article class="mcard" data-item data-name="Beetroot & cherry" data-price="14">
+                    <img src="images/dish-4.svg" alt="Smoked beetroot with cherries" width="800" height="600">
+                    <div class="mcard__body">
+                      <h4>Beetroot &amp; cherry</h4>
+                      <p>Smoked, cultured cream, rye crumb</p>
+                      <ul class="mcard__tags" role="list"><li class="tag-v"><svg class="icon"><use href="#i-leaf"/></svg>V</li></ul>
+                      <div class="mcard__foot"><span class="mcard__price">£14</span><span class="mcard__ctrl" data-ctrl></span></div>
+                    </div>
+                  </article>
+                </div>
+                <div class="orderbar" data-orderbar hidden>
+                  <span class="orderbar__count" data-order-count>0 items</span>
+                  <span class="orderbar__total" data-order-total aria-live="polite">£0</span>
+                  <a class="btn orderbar__cta" href="#">View order</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press “Add”, then use + and − and watch the order bar.</p>
+      </section>
+
+      <!-- ============================ 04 · DRIVE CARS ============================ -->
+      <section class="demo" id="c-cars" aria-labelledby="c-cars-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="c-cars-title">Drive <span>· Car listings with compare</span></h2>
+            <p class="demo__desc">For car dealerships and other big-ticket purchases. Each card shows key specs as chips, prices switch between cash and monthly finance for every card at once, and a compare tray collects up to three cars side by side.</p>
+            <ul class="demo__tags" role="list"><li>Cash / finance toggle</li><li>Spec chips</li><li>Compare tray (max 3)</li><li>Big-ticket UX</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">drive-motors.co.uk/used</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Drive car listings preview">
+
+              <div class="px cars" data-cars>
+                <div class="cars__head">
+                  <h3>Approved used cars</h3>
+                  <div class="segmented" role="radiogroup" aria-label="Show prices as">
+                    <label><input type="radio" name="carPrice" value="cash" checked>Cash price</label>
+                    <label><input type="radio" name="carPrice" value="monthly">Monthly</label>
+                  </div>
+                </div>
+                <div class="cgrid">
+                  <article class="ccard" data-car data-name="Volta X5 Sport" data-cash="32995" data-monthly="389">
+                    <div class="ccard__media"><img src="images/car-midnight.svg" alt="Volta X5 Sport in midnight blue" width="1000" height="600"><span class="ccard__badge">1 owner</span></div>
+                    <div class="ccard__body">
+                      <h4>Volta X5 Sport</h4>
+                      <p class="ccard__sub">2.0 Hybrid · Midnight Blue</p>
+                      <ul class="ccard__specs" role="list"><li><svg class="icon"><use href="#i-calendar"/></svg>2023</li><li><svg class="icon"><use href="#i-gauge"/></svg>18,400 mi</li><li><svg class="icon"><use href="#i-fuel"/></svg>Hybrid</li><li><svg class="icon"><use href="#i-cog"/></svg>Auto</li></ul>
+                      <div class="ccard__foot"><p class="ccard__price" data-price></p><label class="ccard__compare"><input type="checkbox" data-compare-check>Compare</label></div>
+                    </div>
+                  </article>
+                  <article class="ccard" data-car data-name="Aria S Saloon" data-cash="24750" data-monthly="299">
+                    <div class="ccard__media"><img src="images/car-pearl.svg" alt="Aria S Saloon in pearl white" width="1000" height="600"><span class="ccard__badge ccard__badge--deal">Great price</span></div>
+                    <div class="ccard__body">
+                      <h4>Aria S Saloon</h4>
+                      <p class="ccard__sub">1.5 Petrol · Pearl White</p>
+                      <ul class="ccard__specs" role="list"><li><svg class="icon"><use href="#i-calendar"/></svg>2022</li><li><svg class="icon"><use href="#i-gauge"/></svg>26,100 mi</li><li><svg class="icon"><use href="#i-fuel"/></svg>Petrol</li><li><svg class="icon"><use href="#i-cog"/></svg>Manual</li></ul>
+                      <div class="ccard__foot"><p class="ccard__price" data-price></p><label class="ccard__compare"><input type="checkbox" data-compare-check>Compare</label></div>
+                    </div>
+                  </article>
+                  <article class="ccard" data-car data-name="Volta X5 Electric" data-cash="41500" data-monthly="469">
+                    <div class="ccard__media"><img src="images/car-ember.svg" alt="Volta X5 Electric in ember red" width="1000" height="600"><span class="ccard__badge ccard__badge--ev">Electric</span></div>
+                    <div class="ccard__body">
+                      <h4>Volta X5 Electric</h4>
+                      <p class="ccard__sub">Long Range · Ember Red</p>
+                      <ul class="ccard__specs" role="list"><li><svg class="icon"><use href="#i-calendar"/></svg>2024</li><li><svg class="icon"><use href="#i-gauge"/></svg>6,900 mi</li><li><svg class="icon"><use href="#i-fuel"/></svg>310 mi range</li><li><svg class="icon"><use href="#i-cog"/></svg>Auto</li></ul>
+                      <div class="ccard__foot"><p class="ccard__price" data-price></p><label class="ccard__compare"><input type="checkbox" data-compare-check>Compare</label></div>
+                    </div>
+                  </article>
+                </div>
+                <p class="cars__fine">Representative example: 48 months, 9.9% APR, 10% deposit. Monthly prices are illustrative.</p>
+                <div class="ctray" data-ctray hidden>
+                  <span data-ctray-text>0 cars selected</span>
+                  <button class="btn btn--sm ctray__clear" type="button" data-ctray-clear>Clear</button>
+                  <a class="btn btn--sm ctray__go" href="#" data-ctray-go>Compare</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Switch to “Monthly”, then tick “Compare” on two cars.</p>
+      </section>
+
+      <!-- ============================ 05 · AURUM LUXURY ============================ -->
+      <section class="demo" id="c-luxury" aria-labelledby="c-luxury-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="c-luxury-title">Aurum <span>· Luxury cards with quick view</span></h2>
+            <p class="demo__desc">Quiet, elegant cards for jewellery, watches and fashion. Lots of whitespace, serif names and minimal details. “Quick view” opens an accessible panel with the larger image, description, ring size and “Add to bag”, without leaving the collection.</p>
+            <ul class="demo__tags" role="list"><li>Minimal luxury style</li><li>Quick view dialog</li><li>Size selection</li><li>Focus management</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">aurum-atelier.com/rings</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Aurum luxury preview">
+
+              <div class="px luxe" data-luxe>
+                <header class="luxe__head"><p>Aurum Atelier</p><h3>The Celeste collection</h3></header>
+                <div class="luxe__grid">
+                  <article class="xcard" data-x data-name="Celeste · Emerald" data-metal="18k yellow gold" data-price="€2,450" data-desc="A 1.2 ct Colombian emerald, hand-set in 18k yellow gold. Each ring is finished by hand in our Florence workshop.">
+                    <div class="xcard__media"><img src="images/ring-gold-emerald.svg" alt="Celeste ring in yellow gold with emerald" width="800" height="800"><button class="xcard__quick" type="button" data-quick><svg class="icon"><use href="#i-eye"/></svg>Quick view</button></div>
+                    <h4>Celeste · Emerald</h4><p>18k yellow gold</p><p class="xcard__price">€2,450</p>
+                  </article>
+                  <article class="xcard" data-x data-name="Celeste · Diamond" data-metal="Platinum" data-price="€3,900" data-desc="A brilliant-cut 1 ct diamond in a platinum setting, certified conflict-free with a lifetime guarantee.">
+                    <div class="xcard__media"><img src="images/ring-silver-diamond.svg" alt="Celeste ring in platinum with diamond" width="800" height="800"><button class="xcard__quick" type="button" data-quick><svg class="icon"><use href="#i-eye"/></svg>Quick view</button></div>
+                    <h4>Celeste · Diamond</h4><p>Platinum</p><p class="xcard__price">€3,900</p>
+                  </article>
+                  <article class="xcard" data-x data-name="Celeste · Sapphire" data-metal="18k rose gold" data-price="€2,800" data-desc="A deep Ceylon sapphire in warm 18k rose gold, a modern take on a classic cocktail ring.">
+                    <div class="xcard__media"><img src="images/ring-rose-sapphire.svg" alt="Celeste ring in rose gold with sapphire" width="800" height="800"><button class="xcard__quick" type="button" data-quick><svg class="icon"><use href="#i-eye"/></svg>Quick view</button></div>
+                    <h4>Celeste · Sapphire</h4><p>18k rose gold</p><p class="xcard__price">€2,800</p>
+                  </article>
+                </div>
+
+                <div class="qv" data-qv hidden>
+                  <div class="qv__backdrop" data-qv-close></div>
+                  <div class="qv__panel" role="dialog" aria-modal="true" aria-labelledby="qv-name">
+                    <button class="qv__close" type="button" data-qv-close aria-label="Close quick view"><svg class="icon"><use href="#i-x"/></svg></button>
+                    <img class="qv__img" src="images/ring-gold-emerald.svg" alt="" width="800" height="800" data-qv-img>
+                    <div class="qv__info">
+                      <p class="qv__metal" data-qv-metal></p>
+                      <h4 class="qv__name" id="qv-name" data-qv-name></h4>
+                      <p class="qv__price" data-qv-price></p>
+                      <p class="qv__desc" data-qv-desc></p>
+                      <fieldset class="qv__sizes">
+                        <legend>Ring size <a href="#">Size guide</a></legend>
+                        <div class="chips">
+                          <label class="chip"><input type="radio" name="qvSize" value="48">48</label>
+                          <label class="chip"><input type="radio" name="qvSize" value="50">50</label>
+                          <label class="chip"><input type="radio" name="qvSize" value="52">52</label>
+                          <label class="chip"><input type="radio" name="qvSize" value="54">54</label>
+                          <label class="chip"><input type="radio" name="qvSize" value="56" disabled>56</label>
+                        </div>
+                        <p class="qv__error" data-qv-error role="alert"></p>
+                      </fieldset>
+                      <button class="btn qv__add" type="button" data-qv-add>Add to bag</button>
+                      <p class="qv__note" data-qv-note aria-live="polite">Complimentary engraving · Free insured delivery</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover a ring and choose “Quick view”, then try “Add to bag” without picking a size.</p>
+      </section>
+
+      <!-- ============================ 06 · NOVA APPS ============================ -->
+      <section class="demo" id="c-apps" aria-labelledby="c-apps-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="c-apps-title">Nova <span>· App marketplace cards</span></h2>
+            <p class="demo__desc">Cards for integrations, plugins and templates. They load with skeleton placeholders (so the page never jumps), filter by category, and the Install button walks through real states: Install → Installing → Installed, with Remove available on hover.</p>
+            <ul class="demo__tags" role="list"><li>Skeleton loading</li><li>Category filter</li><li>Install states</li><li>Ratings &amp; installs</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.nova.so/integrations</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nova marketplace preview">
+
+              <div class="px apps" data-apps>
+                <div class="apps__head">
+                  <h3>Integrations</h3>
+                  <button class="btn btn--outline btn--sm" type="button" data-apps-reload>Reload (see skeletons)</button>
+                </div>
+                <div class="chips apps__filters" role="group" aria-label="Category">
+                  <button class="chip" type="button" aria-pressed="true" data-cat="all">All</button>
+                  <button class="chip" type="button" aria-pressed="false" data-cat="comms">Communication</button>
+                  <button class="chip" type="button" aria-pressed="false" data-cat="dev">Developer</button>
+                  <button class="chip" type="button" aria-pressed="false" data-cat="data">Analytics</button>
+                </div>
+                <div class="agrid" data-agrid aria-busy="true"></div>
+                <p class="sr-only" aria-live="polite" data-apps-status></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Watch the skeletons load, filter by “Developer”, then install an app. Hover an installed app to remove it.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 010</strong> of 100 · Images are lightweight illustrations in <code>images/</code>; prices and products are fictional.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 011: Dashboards</span></p>
+    </div>
+  </footer>
+</body>
+</html>
