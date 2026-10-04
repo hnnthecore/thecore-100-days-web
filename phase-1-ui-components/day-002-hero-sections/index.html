@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Sections · Day 002 · Thecore</title>
+  <meta name="description" content="Six production-ready hero sections for SaaS, real estate, restaurants, IT agencies, cybersecurity and fitness. Day 002 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    /* Resolve the theme before first paint so there is never a light/dark flash. */
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Anton&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Icon sprite (Lucide-style, 24px grid) ===================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></symbol>
+    <symbol id="i-bath" viewBox="0 0 24 24"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.68 3 4 3.68 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M2 12h20M7 19v2M17 19v2"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-phone-call" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4v16l14-8z"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <!-- ===================== Showcase header ===================== -->
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="#main">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to hero">
+        <a href="#h-nimbus">01</a>
+        <a href="#h-forma">02</a>
+        <a href="#h-ember">03</a>
+        <a href="#h-kinetic">04</a>
+        <a href="#h-sentinel">05</a>
+        <a href="#h-forge">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 002 / 100</span> Phase 1 · UI Components</p>
+      <h1>Hero <em>Sections</em></h1>
+      <p class="lead">
+        The first screen decides whether a visitor stays. Here are six hero sections, each designed for a
+        different industry from the roadmap, with a clear message, a strong call to action and motion that
+        <strong>supports</strong> the story instead of distracting from it.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>industries</li>
+        <li><strong>4</strong>working forms &amp; widgets</li>
+        <li><strong>0</strong>image downloads</li>
+        <li><strong>Light + Dark</strong>themes</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- =================================================================
+           01 · NIMBUS: SaaS product launch
+           ================================================================= -->
+      <section class="demo" id="h-nimbus" aria-labelledby="h-nimbus-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="h-nimbus-title">Nimbus <span>· SaaS product launch</span></h2>
+            <p class="demo__desc">A centred launch hero for software products. A soft spotlight follows the cursor across a grid backdrop, the email sign-up validates as you type, and the product screenshot tilts upright as you scroll.</p>
+            <ul class="demo__tags" role="list"><li>Cursor spotlight</li><li>Email capture</li><li>Scroll-linked tilt</li><li>Logo cloud</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 660px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">nimbus.so</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nimbus preview">
+
+              <section class="hero nimbus" data-hero="nimbus" aria-label="Nimbus">
+                <div class="nimbus__grid" aria-hidden="true"></div>
+                <div class="nimbus__spotlight" aria-hidden="true"></div>
+
+                <nav class="mini-nav" aria-label="Nimbus">
+                  <a class="mini-nav__logo" href="#"><span class="nimbus__mark" aria-hidden="true"></span>Nimbus</a>
+                  <ul class="mini-nav__links" role="list"><li><a href="#">Product</a></li><li><a href="#">Pricing</a></li><li><a href="#">Docs</a></li><li><a href="#">Blog</a></li></ul>
+                  <a class="btn btn--primary btn--sm" href="#">Sign in</a>
+                </nav>
+
+                <div class="nimbus__content">
+                  <a class="nimbus__announce" href="#">
+                    <span class="nimbus__announce-tag"><svg class="icon"><use href="#i-sparkles"/></svg>New</span>
+                    AI workflows are now in public beta
+                    <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg>
+                  </a>
+
+                  <h3 class="nimbus__title">Your team's work,<br><span class="gradient-text">on autopilot.</span></h3>
+                  <p class="nimbus__sub">Nimbus connects your tools, automates the busywork and surfaces what matters, so your team can focus on the work only people can do.</p>
+
+                  <form class="capture" data-capture novalidate>
+                    <label class="sr-only" for="nimbus-email">Work email</label>
+                    <div class="capture__field">
+                      <input id="nimbus-email" name="email" type="email" placeholder="you@company.com" autocomplete="email" required aria-describedby="nimbus-email-msg">
+                      <button class="btn btn--glow" type="submit">Get early access <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></button>
+                    </div>
+                    <p class="capture__msg" id="nimbus-email-msg" aria-live="polite">
+                      <svg class="icon"><use href="#i-check"/></svg><span data-capture-text>Free for 14 days · No credit card required</span>
+                    </p>
+                  </form>
+                </div>
+
+                <div class="nimbus__product" aria-hidden="true">
+                  <div class="nimbus__window">
+                    <div class="nimbus__window-bar"><i></i><i></i><i></i></div>
+                    <div class="nimbus__app">
+                      <div class="nimbus__side"><span></span><span></span><span></span><span></span><span></span></div>
+                      <div class="nimbus__main">
+                        <div class="nimbus__cards"><div></div><div></div><div></div></div>
+                        <svg class="nimbus__chart" viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 100 C 40 90, 70 60, 110 70 S 180 30, 230 45 S 300 85, 340 40 S 380 15, 400 20" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="nimbus__logos">
+                  <p>Trusted by fast-moving teams at</p>
+                  <ul role="list"><li>Northwind</li><li>Lumen</li><li>Orbitly</li><li>Kestrel</li><li>Halcyon</li></ul>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Move your cursor over the hero, try submitting an invalid email, then scroll the frame.</p>
+      </section>
+
+      <!-- =================================================================
+           02 · FORMA: Real estate with property search
+           ================================================================= -->
+      <section class="demo" id="h-forma" aria-labelledby="h-forma-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="h-forma-title">Forma <span>· Real estate search</span></h2>
+            <p class="demo__desc">A split hero for real estate agencies that puts the search first. Buy, Rent and Sell tabs, a validated search form with instant feedback, and an illustrated property with floating listing cards.</p>
+            <ul class="demo__tags" role="list"><li>Accessible tabs</li><li>Search form</li><li>Floating cards</li><li>SVG illustration</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 660px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma preview">
+
+              <section class="hero forma" data-hero="forma" aria-label="Forma Estates">
+                <nav class="mini-nav" aria-label="Forma">
+                  <a class="mini-nav__logo forma__logo" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg>Forma</a>
+                  <ul class="mini-nav__links" role="list"><li><a href="#">Buy</a></li><li><a href="#">Rent</a></li><li><a href="#">Sell</a></li><li><a href="#">Agents</a></li></ul>
+                  <a class="btn btn--outline btn--sm" href="#">List a property</a>
+                </nav>
+
+                <div class="forma__layout">
+                  <div class="forma__copy">
+                    <p class="forma__eyebrow"><span></span> 12,400 homes across Denmark</p>
+                    <h3 class="forma__title">Find a home that fits the life you want.</h3>
+                    <p class="forma__sub">Verified listings, honest pricing and local agents who answer the phone.</p>
+
+                    <form class="search-card" data-search novalidate>
+                      <div class="search-card__tabs" role="tablist" aria-label="Search mode">
+                        <button type="button" role="tab" aria-selected="true" id="forma-tab-buy" data-mode="buy">Buy</button>
+                        <button type="button" role="tab" aria-selected="false" id="forma-tab-rent" data-mode="rent" tabindex="-1">Rent</button>
+                        <button type="button" role="tab" aria-selected="false" id="forma-tab-sell" data-mode="sell" tabindex="-1">Sell</button>
+                        <span class="search-card__tab-pill" aria-hidden="true"></span>
+                      </div>
+                      <div class="search-card__fields" role="tabpanel" aria-labelledby="forma-tab-buy">
+                        <label class="field field--grow">
+                          <span class="field__label">Location</span>
+                          <span class="field__control"><svg class="icon"><use href="#i-pin"/></svg><input name="location" type="text" placeholder="City, area or postcode" list="forma-cities" autocomplete="off" required></span>
+                        </label>
+                        <datalist id="forma-cities"><option value="Copenhagen"><option value="Aarhus"><option value="Odense"><option value="Aalborg"><option value="Frederiksberg"></datalist>
+                        <label class="field">
+                          <span class="field__label">Type</span>
+                          <span class="field__control"><svg class="icon"><use href="#i-home"/></svg>
+                            <select name="type"><option>Any type</option><option>Apartment</option><option>House</option><option>Townhouse</option><option>Villa</option></select>
+                          </span>
+                        </label>
+                        <label class="field">
+                          <span class="field__label" data-budget-label>Max price</span>
+                          <span class="field__control">
+                            <select name="budget" data-budget>
+                              <option value="">No limit</option><option>€400k</option><option>€750k</option><option>€1.2M</option><option>€2M+</option>
+                            </select>
+                          </span>
+                        </label>
+                        <button class="btn btn--accent search-card__submit" type="submit"><svg class="icon"><use href="#i-search"/></svg><span>Search</span></button>
+                      </div>
+                      <p class="search-card__msg" aria-live="polite"></p>
+                    </form>
+
+                    <dl class="forma__stats">
+                      <div><dt>Satisfied clients</dt><dd>98%</dd></div>
+                      <div><dt>Avg. days to sell</dt><dd>24</dd></div>
+                      <div><dt>Client rating</dt><dd>4.9<svg class="icon"><use href="#i-star"/></svg></dd></div>
+                    </dl>
+                  </div>
+
+                  <div class="forma__visual" aria-hidden="true">
+                    <svg class="forma__house" viewBox="0 0 480 520" preserveAspectRatio="xMidYMid slice">
+                      <defs>
+                        <linearGradient id="forma-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d7b8"/><stop offset=".55" stop-color="#f3b994"/><stop offset="1" stop-color="#e59a7a"/></linearGradient>
+                        <linearGradient id="forma-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b3a4f"/><stop offset="1" stop-color="#5d7290"/></linearGradient>
+                        <linearGradient id="forma-warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9a3"/><stop offset="1" stop-color="#f5a35f"/></linearGradient>
+                      </defs>
+                      <rect width="480" height="520" fill="url(#forma-sky)"/>
+                      <circle cx="360" cy="130" r="54" fill="#fff3e0" opacity=".85"/>
+                      <path d="M0 400 Q120 360 240 385 T480 370 V520 H0Z" fill="#c98b6d" opacity=".55"/>
+                      <!-- house -->
+                      <path d="M70 250 L250 190 L430 250 V430 H70Z" fill="#f4efe8"/>
+                      <path d="M56 255 L250 186 L444 255" fill="none" stroke="#2c2a2a" stroke-width="10" stroke-linejoin="round"/>
+                      <rect x="96" y="285" width="130" height="145" fill="url(#forma-glass)"/>
+                      <rect x="96" y="285" width="130" height="145" fill="url(#forma-warm)" opacity=".55"/>
+                      <path d="M161 285V430M96 357h130" stroke="#2c2a2a" stroke-width="5"/>
+                      <rect x="262" y="275" width="140" height="70" fill="url(#forma-glass)"/>
+                      <path d="M332 275v70" stroke="#2c2a2a" stroke-width="5"/>
+                      <rect x="300" y="360" width="62" height="70" fill="#2c2a2a"/>
+                      <circle cx="350" cy="397" r="3.5" fill="#f5a35f"/>
+                      <rect x="40" y="428" width="420" height="10" rx="3" fill="#2c2a2a"/>
+                      <!-- trees -->
+                      <ellipse cx="38" cy="380" rx="34" ry="60" fill="#5f7d58"/><rect x="35" y="400" width="6" height="35" fill="#3d4d38"/>
+                      <ellipse cx="452" cy="372" rx="30" ry="64" fill="#6f8f66"/><rect x="449" y="398" width="6" height="36" fill="#3d4d38"/>
+                      <path d="M0 438 H480 V520 H0Z" fill="#8ea67f"/>
+                      <path d="M300 438 L280 520 H382 L362 438Z" fill="#e8dccb"/>
+                    </svg>
+
+                    <div class="listing-card listing-card--main">
+                      <div class="listing-card__top"><span class="listing-card__badge">New listing</span><strong>€1,240,000</strong></div>
+                      <p class="listing-card__name">Villa Solvej, Hellerup</p>
+                      <ul class="listing-card__meta" role="list">
+                        <li><svg class="icon"><use href="#i-bed"/></svg>4 beds</li>
+                        <li><svg class="icon"><use href="#i-bath"/></svg>3 baths</li>
+                        <li>212 m²</li>
+                      </ul>
+                    </div>
+                    <div class="listing-card listing-card--agent">
+                      <span class="avatar" style="--h: 30">SK</span>
+                      <div><strong>Sofie Krag</strong><span>Replies in ~10 min</span></div>
+                      <span class="listing-card__online"></span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Switch tabs with the arrow keys, then press Search with the location empty, and again with “Copenhagen”.</p>
+      </section>
+
+      <!-- =================================================================
+           03 · EMBER: Restaurant
+           ================================================================= -->
+      <section class="demo" id="h-ember" aria-labelledby="h-ember-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="h-ember-title">Ember <span>· Restaurant</span></h2>
+            <p class="demo__desc">A moody, editorial hero for restaurants and bars. It has warm grain, large serif type and a slowly turning plate illustration. A rotating “Reserve a table” seal acts as the main call to action, and the opening-hours line shows whether the restaurant is open right now.</p>
+            <ul class="demo__tags" role="list"><li>Live open/closed status</li><li>Rotating text seal</li><li>Film grain</li><li>Editorial type</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-kitchen.co.uk</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember preview">
+
+              <section class="hero ember" data-hero="ember" aria-label="Ember">
+                <nav class="mini-nav ember__nav" aria-label="Ember">
+                  <a class="mini-nav__logo ember__logo" href="#">Ember<span>&amp; Ash</span></a>
+                  <ul class="mini-nav__links" role="list"><li><a href="#">Menu</a></li><li><a href="#">Wine</a></li><li><a href="#">Private dining</a></li><li><a href="#">Gift cards</a></li></ul>
+                  <a class="ember__phone" href="#"><svg class="icon"><use href="#i-phone-call"/></svg><span>020 7946 0321</span></a>
+                </nav>
+
+                <div class="ember__layout">
+                  <div class="ember__copy">
+                    <p class="ember__kicker">Wood-fired kitchen · Shoreditch</p>
+                    <h3 class="ember__title">Fire, smoke &amp;<br><em>seasonal</em> plates.</h3>
+                    <p class="ember__sub">A twelve-seat counter around an open hearth. The menu changes with the market, and everything on it meets the flame.</p>
+                    <div class="ember__actions">
+                      <a class="btn ember__btn" href="#">Book a table</a>
+                      <a class="ember__link" href="#">View tonight's menu <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                    </div>
+                    <ul class="ember__info" role="list">
+                      <li><span class="ember__status" data-open-status><i></i><span>Checking hours…</span></span></li>
+                      <li><svg class="icon"><use href="#i-pin"/></svg>18 Ash Lane, London</li>
+                    </ul>
+                  </div>
+
+                  <div class="ember__visual">
+                    <svg class="ember__plate" viewBox="0 0 400 400" aria-hidden="true">
+                      <defs>
+                        <radialGradient id="ember-plate" cx=".45" cy=".4" r=".65"><stop offset="0" stop-color="#3b3530"/><stop offset=".7" stop-color="#211d1a"/><stop offset="1" stop-color="#151210"/></radialGradient>
+                        <radialGradient id="ember-food" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#e9a15b"/><stop offset=".6" stop-color="#b25a2a"/><stop offset="1" stop-color="#6e2d14"/></radialGradient>
+                        <radialGradient id="ember-sauce" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f4d9a8"/><stop offset="1" stop-color="#d9a35f"/></radialGradient>
+                      </defs>
+                      <circle cx="200" cy="200" r="190" fill="url(#ember-plate)"/>
+                      <circle cx="200" cy="200" r="150" fill="none" stroke="#ffffff" stroke-opacity=".06" stroke-width="2"/>
+                      <path d="M120 230 Q150 150 240 140 Q300 150 290 210 Q270 280 190 280 Q130 275 120 230Z" fill="url(#ember-sauce)" opacity=".9"/>
+                      <ellipse cx="205" cy="208" rx="70" ry="52" fill="url(#ember-food)" transform="rotate(-18 205 208)"/>
+                      <path d="M160 200 Q205 180 250 205" stroke="#3a1a0c" stroke-width="5" stroke-linecap="round" fill="none" opacity=".55"/>
+                      <path d="M168 222 Q210 205 248 226" stroke="#3a1a0c" stroke-width="5" stroke-linecap="round" fill="none" opacity=".45"/>
+                      <g fill="#7d9b5a"><circle cx="150" cy="175" r="7"/><circle cx="262" cy="248" r="6"/><circle cx="244" cy="160" r="5"/><circle cx="170" cy="262" r="5"/></g>
+                      <g fill="#e2533a"><circle cx="138" cy="250" r="4"/><circle cx="280" cy="190" r="3.5"/><circle cx="226" cy="268" r="3"/></g>
+                      <g fill="#f2ead8" opacity=".8"><circle cx="190" cy="150" r="2"/><circle cx="292" cy="220" r="2"/><circle cx="128" cy="210" r="2"/></g>
+                    </svg>
+
+                    <a class="seal" href="#" aria-label="Reserve a table">
+                      <svg class="seal__ring" viewBox="0 0 120 120" aria-hidden="true">
+                        <defs><path id="seal-path" d="M60 60 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0"/></defs>
+                        <text><textPath href="#seal-path">Reserve a table · Reserve a table · </textPath></text>
+                      </svg>
+                      <svg class="icon seal__arrow" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+                    </a>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the rotating seal. The open/closed line uses London time.</p>
+      </section>
+
+      <!-- =================================================================
+           04 · KINETIC: IT company / digital agency
+           ================================================================= -->
+      <section class="demo" id="h-kinetic" aria-labelledby="h-kinetic-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="h-kinetic-title">Kinetic <span>· IT &amp; digital agency</span></h2>
+            <p class="demo__desc">A confident, type-led hero for IT companies and agencies. The headline cycles through what the company builds with a smooth vertical roll, and an endless band of services scrolls underneath and pauses when hovered.</p>
+            <ul class="demo__tags" role="list"><li>Word rotator</li><li>Infinite marquee</li><li>Outline type</li><li>Screen-reader safe</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">kinetic.dev</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Kinetic preview">
+
+              <section class="hero kinetic" data-hero="kinetic" aria-label="Kinetic">
+                <nav class="mini-nav" aria-label="Kinetic">
+                  <a class="mini-nav__logo kinetic__logo" href="#"><span aria-hidden="true">K/</span>Kinetic</a>
+                  <ul class="mini-nav__links" role="list"><li><a href="#">Services</a></li><li><a href="#">Work</a></li><li><a href="#">Process</a></li><li><a href="#">Careers</a></li></ul>
+                  <a class="btn btn--primary btn--sm" href="#">Start a project</a>
+                </nav>
+
+                <div class="kinetic__content">
+                  <p class="kinetic__eyebrow"><span class="kinetic__dot"></span> Booking projects for Q1 2027</p>
+                  <h3 class="kinetic__title">
+                    <span class="sr-only">We engineer software, platforms, mobile apps and AI products that scale.</span>
+                    <span aria-hidden="true">
+                      <span class="kinetic__line">We engineer</span>
+                      <span class="kinetic__line kinetic__rotator" data-rotator>
+                        <span class="kinetic__words">
+                          <span>software</span><span>platforms</span><span>mobile apps</span><span>AI products</span><span>software</span>
+                        </span>
+                      </span>
+                      <span class="kinetic__line kinetic__outline">that scales.</span>
+                    </span>
+                  </h3>
+                  <div class="kinetic__bottom">
+                    <p class="kinetic__sub">A senior team of 40 engineers and designers. We turn ambitious ideas into reliable products, from first sketch to millions of users.</p>
+                    <div class="kinetic__actions">
+                      <a class="btn btn--accent" href="#">See our work <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></a>
+                      <a class="kinetic__play" href="#"><span><svg class="icon"><use href="#i-play"/></svg></span>Watch showreel</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="marquee" aria-label="Services">
+                  <ul class="marquee__track" role="list">
+                    <li>Cloud architecture</li><li>AI &amp; machine learning</li><li>Web platforms</li><li>Mobile apps</li><li>DevOps</li><li>UX design</li><li>Data engineering</li>
+                  </ul>
+                  <ul class="marquee__track" role="list" aria-hidden="true">
+                    <li>Cloud architecture</li><li>AI &amp; machine learning</li><li>Web platforms</li><li>Mobile apps</li><li>DevOps</li><li>UX design</li><li>Data engineering</li>
+                  </ul>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Watch the headline roll, and hover the services band to pause it.</p>
+      </section>
+
+      <!-- =================================================================
+           05 · SENTINEL: Cybersecurity
+           ================================================================= -->
+      <section class="demo" id="h-sentinel" aria-labelledby="h-sentinel-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="h-sentinel-title">Sentinel <span>· Cybersecurity</span></h2>
+            <p class="demo__desc">A dark, technical hero for security companies. A live terminal types out a threat scan, a radar sweeps behind it, and the key numbers count up when they scroll into view. It looks the same in both themes, because security brands own the dark.</p>
+            <ul class="demo__tags" role="list"><li>Typing terminal</li><li>Count-up stats</li><li>Radar sweep</li><li>Pauses off-screen</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">sentinel-security.io</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Sentinel preview">
+
+              <section class="hero sentinel" data-hero="sentinel" aria-label="Sentinel">
+                <nav class="mini-nav" aria-label="Sentinel">
+                  <a class="mini-nav__logo sentinel__logo" href="#"><svg class="icon"><use href="#i-shield"/></svg>Sentinel</a>
+                  <ul class="mini-nav__links" role="list"><li><a href="#">Platform</a></li><li><a href="#">Threat intel</a></li><li><a href="#">Customers</a></li><li><a href="#">Resources</a></li></ul>
+                  <a class="btn btn--sm sentinel__btn-outline" href="#">Under attack?</a>
+                </nav>
+
+                <div class="sentinel__layout">
+                  <div class="sentinel__copy">
+                    <p class="sentinel__live"><span></span>Monitoring <strong>2.4M</strong> endpoints right now</p>
+                    <h3 class="sentinel__title">Stop threats<br><span>before they start.</span></h3>
+                    <p class="sentinel__sub">AI-driven detection, a 24/7 human response team, and one console for your entire attack surface.</p>
+                    <div class="sentinel__actions">
+                      <a class="btn sentinel__btn" href="#"><svg class="icon"><use href="#i-lock"/></svg>Book a security audit</a>
+                      <a class="sentinel__link" href="#">Explore the platform <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                    </div>
+                    <dl class="sentinel__stats">
+                      <div><dt>Threats blocked daily</dt><dd><span data-count="1.8" data-decimals="1">0</span>M</dd></div>
+                      <div><dt>Median response</dt><dd>&lt;<span data-count="30">0</span>s</dd></div>
+                      <div><dt>Platform uptime</dt><dd><span data-count="99.99" data-decimals="2">0</span>%</dd></div>
+                    </dl>
+                  </div>
+
+                  <div class="sentinel__visual">
+                    <div class="sentinel__radar" aria-hidden="true"><span></span></div>
+                    <div class="terminal" role="img" aria-label="Terminal showing a completed threat scan: 3 threats found and contained.">
+                      <div class="terminal__bar" aria-hidden="true"><i></i><i></i><i></i><span>sentinel — scan</span></div>
+                      <pre class="terminal__body" aria-hidden="true" data-terminal></pre>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Scroll this frame out of view and back. The stats count up again, and animations pause while off-screen.</p>
+      </section>
+
+      <!-- =================================================================
+           06 · FORGE: Gym / fitness
+           ================================================================= -->
+      <section class="demo" id="h-forge" aria-labelledby="h-forge-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="h-forge-title">Forge <span>· Gym &amp; fitness</span></h2>
+            <p class="demo__desc">A high-energy hero for gyms and studios. It has a condensed poster headline and an electric accent, and a live countdown to the next class creates urgency. Background layers shift with the cursor for depth.</p>
+            <ul class="demo__tags" role="list"><li>Live class countdown</li><li>Pointer parallax</li><li>Poster typography</li><li>Social proof</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit</span></div>
+          <div class="frame__viewport">
+            <div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forge preview">
+
+              <section class="hero forge" data-hero="forge" aria-label="Forge">
+                <div class="forge__bg-word" aria-hidden="true" data-depth="0.6">FORGE</div>
+                <div class="forge__stripe" aria-hidden="true" data-depth="0.25"></div>
+
+                <nav class="mini-nav forge__nav" aria-label="Forge">
+                  <a class="mini-nav__logo forge__logo" href="#">FORGE<span>.</span></a>
+                  <ul class="mini-nav__links" role="list"><li><a href="#">Classes</a></li><li><a href="#">Coaches</a></li><li><a href="#">Membership</a></li><li><a href="#">Locations</a></li></ul>
+                  <a class="forge__login" href="#">Member login</a>
+                </nav>
+
+                <div class="forge__layout">
+                  <div class="forge__copy">
+                    <p class="forge__kicker"><svg class="icon"><use href="#i-zap"/></svg> 3 studios · open 5am–11pm</p>
+                    <h3 class="forge__title">Stronger<br><span>every</span> day.</h3>
+                    <p class="forge__sub">Coach-led strength, HIIT and conditioning classes for every level. Your first week is on us.</p>
+                    <div class="forge__actions">
+                      <a class="btn forge__btn" href="#">Start 7-day free trial <svg class="icon icon--nudge"><use href="#i-arrow-right"/></svg></a>
+                      <a class="forge__ghost" href="#">See timetable</a>
+                    </div>
+                    <div class="forge__proof">
+                      <div class="forge__avatars" aria-hidden="true">
+                        <span class="avatar" style="--h: 120">JM</span><span class="avatar" style="--h: 20">AL</span><span class="avatar" style="--h: 220">TS</span><span class="avatar" style="--h: 300">+</span>
+                      </div>
+                      <p><strong>2,300+ members</strong><span><svg class="icon"><use href="#i-star"/></svg> 4.9 average rating</span></p>
+                    </div>
+                  </div>
+
+                  <aside class="class-card" aria-label="Next class" data-depth="-0.15">
+                    <div class="class-card__head">
+                      <span class="class-card__live"><i></i>Next class</span>
+                      <span class="class-card__studio">Studio 2</span>
+                    </div>
+                    <p class="class-card__name">HIIT Burn · 45 min</p>
+                    <p class="class-card__coach">with Coach Maya</p>
+                    <div class="class-card__timer">
+                      <span class="class-card__label">Starts in</span>
+                      <span class="class-card__time" data-countdown role="timer" aria-live="off">--:--</span>
+                    </div>
+                    <div class="class-card__spots">
+                      <div class="class-card__bar"><span style="--fill: 0.75"></span></div>
+                      <span>6 of 24 spots left</span>
+                    </div>
+                    <a class="class-card__cta" href="#">Book your spot <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                  </aside>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Move your cursor across the hero to feel the depth. The countdown always targets the next half-hour class.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 002</strong> of 100 · Every illustration is hand-built in SVG and CSS, so there are no image downloads.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 003: Footers</span></p>
+    </div>
+  </footer>
+</body>
+</html>
