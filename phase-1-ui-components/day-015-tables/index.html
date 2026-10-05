@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tables · Day 015 · Thecore</title>
+  <meta name="description" content="Six data tables: sortable customer table with bulk actions, responsive invoice table, class timetable, editable budget grid, expandable order rows and a configurable sales report. Day 015 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-sort" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="m7 14 5-5 5 5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-columns" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to table">
+        <a href="#t-customers">01</a><a href="#t-invoices">02</a><a href="#t-timetable">03</a><a href="#t-budget">04</a><a href="#t-orders">05</a><a href="#t-report">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 015 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Tables</em></h1>
+      <p class="lead">
+        Six tables for real data: sort, search, select, edit, expand and export. Each is a proper HTML table, so it
+        reads correctly with screen readers. Each adapts to phones by <strong>stacking into cards, scrolling with sticky columns</strong> or hiding what matters least.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>table patterns</li>
+        <li><strong>Sort</strong>filter &amp; paginate</li>
+        <li><strong>Edit</strong>like a spreadsheet</li>
+        <li><strong>Export</strong>to CSV</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · CUSTOMERS ============================ -->
+      <section class="demo" id="t-customers" aria-labelledby="t-customers-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="t-customers-title">Lumen <span>· Sortable data table</span></h2>
+            <p class="demo__desc">The classic admin table. Sort any column, search and filter, move through pages, and select rows (or the whole page) to export or delete them in one go, with Undo.</p>
+            <ul class="demo__tags" role="list"><li>Sort (aria-sort)</li><li>Search + filter</li><li>Pagination</li><li>Bulk actions</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/customers</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Customers preview">
+            <div class="tpage" data-customers>
+              <div class="tpage__head"><h3>Customers</h3><p data-cust-total></p></div>
+              <div class="toolbar" data-cust-toolbar>
+                <label class="tsearch"><svg class="icon"><use href="#i-search"/></svg><span class="sr-only">Search customers</span><input type="search" placeholder="Search name or email" data-cust-q></label>
+                <div class="select-wrap"><label class="sr-only" for="cust-status">Status</label><select class="input" id="cust-status" data-cust-status><option value="">All statuses</option><option>Active</option><option>Trial</option><option>Past due</option><option>Cancelled</option></select></div>
+              </div>
+              <div class="bulkbar" data-bulk hidden>
+                <span data-bulk-count></span>
+                <button class="btn btn--ghost btn--sm" type="button" data-bulk-export><svg class="icon"><use href="#i-download"/></svg>Export</button>
+                <button class="btn btn--ghost btn--sm bulkbar__danger" type="button" data-bulk-delete><svg class="icon"><use href="#i-trash"/></svg>Delete</button>
+                <button class="btn btn--ghost btn--sm" type="button" data-bulk-clear>Clear selection</button>
+              </div>
+              <div class="twrap">
+                <table class="table" data-cust-table>
+                  <caption class="sr-only">Customers, sortable. Use the column header buttons to sort.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col" class="col-check"><input type="checkbox" class="cb" aria-label="Select all rows on this page" data-select-all></th>
+                      <th scope="col" aria-sort="none"><button type="button" data-sort="name">Customer<svg class="icon"><use href="#i-sort"/></svg></button></th>
+                      <th scope="col" aria-sort="none" class="hide-sm"><button type="button" data-sort="plan">Plan<svg class="icon"><use href="#i-sort"/></svg></button></th>
+                      <th scope="col" aria-sort="none"><button type="button" data-sort="status">Status<svg class="icon"><use href="#i-sort"/></svg></button></th>
+                      <th scope="col" aria-sort="descending" class="num"><button type="button" data-sort="mrr">MRR<svg class="icon"><use href="#i-sort"/></svg></button></th>
+                      <th scope="col" aria-sort="none" class="hide-md"><button type="button" data-sort="joined">Joined<svg class="icon"><use href="#i-sort"/></svg></button></th>
+                    </tr>
+                  </thead>
+                  <tbody data-cust-body></tbody>
+                </table>
+              </div>
+              <div class="pager" data-pager>
+                <p data-pager-info aria-live="polite"></p>
+                <nav aria-label="Pagination" class="pager__nav" data-pager-nav></nav>
+              </div>
+              <div class="toast" role="status" data-toast hidden></div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click a column header to sort (click again to reverse). Tick a few rows, then Delete and Undo.</p>
+      </section>
+
+      <!-- ============================ 02 · INVOICES ============================ -->
+      <section class="demo" id="t-invoices" aria-labelledby="t-invoices-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="t-invoices-title">Halden <span>· Responsive invoice table</span></h2>
+            <p class="demo__desc">A table that turns into tidy cards on phones, keeping every label, instead of squeezing or scrolling. Status tabs with counts, a running “outstanding” total and one-tap reminders.</p>
+            <ul class="demo__tags" role="list"><li>Table → cards</li><li>Status tabs</li><li>Totals footer</li><li>Row actions</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/invoices</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Invoices preview">
+            <div class="tpage" data-invoices>
+              <div class="tpage__head"><h3>Invoices</h3><p>Halden Studio · 2026</p></div>
+              <div class="itabs" role="group" aria-label="Filter by status" data-itabs>
+                <button type="button" aria-pressed="true" data-f="">All <span></span></button>
+                <button type="button" aria-pressed="false" data-f="Paid">Paid <span></span></button>
+                <button type="button" aria-pressed="false" data-f="Due">Due <span></span></button>
+                <button type="button" aria-pressed="false" data-f="Overdue">Overdue <span></span></button>
+              </div>
+              <div class="twrap twrap--cards">
+                <table class="table table--cards">
+                  <caption class="sr-only">Invoices</caption>
+                  <thead><tr><th scope="col">Invoice</th><th scope="col">Client</th><th scope="col">Issued</th><th scope="col">Due</th><th scope="col">Status</th><th scope="col" class="num">Amount</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+                  <tbody data-inv-body></tbody>
+                  <tfoot><tr><th scope="row" colspan="5">Outstanding (due + overdue)</th><td class="num" data-label="Outstanding" data-outstanding></td><td></td></tr></tfoot>
+                </table>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Switch to Mobile to see the cards. Press “Remind” on an overdue invoice, or “Mark paid”.</p>
+      </section>
+
+      <!-- ============================ 03 · TIMETABLE ============================ -->
+      <section class="demo" id="t-timetable" aria-labelledby="t-timetable-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="t-timetable-title">Forge <span>· Class timetable</span></h2>
+            <p class="demo__desc">A weekly schedule as a real table: times down the side, days across the top. Today is highlighted, filter chips fade out other class types, and tapping a class books a spot. On phones it scrolls sideways with the time column pinned.</p>
+            <ul class="demo__tags" role="list"><li>Sticky column &amp; header</li><li>Today highlight</li><li>Type filters</li><li>Book a spot</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit/timetable</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="tpage tpage--forge" data-timetable>
+              <div class="tpage__head"><h3>This week at Forge</h3><p data-booked aria-live="polite">No classes booked yet</p></div>
+              <div class="tchips" role="group" aria-label="Show class types" data-tt-filters>
+                <button type="button" aria-pressed="true" data-type="all">All</button>
+                <button type="button" aria-pressed="false" data-type="strength"><i style="--c: var(--t-strength)"></i>Strength</button>
+                <button type="button" aria-pressed="false" data-type="cardio"><i style="--c: var(--t-cardio)"></i>Cardio</button>
+                <button type="button" aria-pressed="false" data-type="mind"><i style="--c: var(--t-mind)"></i>Mind &amp; body</button>
+              </div>
+              <div class="twrap twrap--scroll" tabindex="0" role="region" aria-label="Timetable, scrolls sideways">
+                <table class="table timetable" data-tt>
+                  <caption class="sr-only">Weekly class timetable</caption>
+                  <thead data-tt-head></thead>
+                  <tbody data-tt-body></tbody>
+                </table>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Tap a class to book (tap again to cancel). Filter by type. On Mobile, scroll sideways and the time column stays put.</p>
+      </section>
+
+      <!-- ============================ 04 · BUDGET GRID ============================ -->
+      <section class="demo" id="t-budget" aria-labelledby="t-budget-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="t-budget-title">Atlas <span>· Editable budget grid</span></h2>
+            <p class="demo__desc">Spreadsheet-style editing. Move with the arrow keys, type a number to start editing, press Enter to save or Esc to cancel. Row totals, column totals and the remaining budget update instantly.</p>
+            <ul class="demo__tags" role="list"><li>role="grid"</li><li>Arrow-key navigation</li><li>Inline editing</li><li>Live totals</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 560px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/finance/budget-2027</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="tpage" data-budget>
+              <div class="tpage__head">
+                <h3>Budget 2027</h3>
+                <div class="budget-meter" data-meter><span>Planned <strong data-planned></strong> of <strong>£400k</strong></span><span class="budget-meter__bar"><i></i></span><span data-left></span></div>
+              </div>
+              <div class="twrap twrap--scroll">
+                <table class="table grid" role="grid" aria-label="Budget 2027 by quarter, editable" aria-describedby="grid-help" data-grid>
+                  <thead><tr><th scope="col">Category</th><th scope="col" class="num">Q1</th><th scope="col" class="num">Q2</th><th scope="col" class="num">Q3</th><th scope="col" class="num">Q4</th><th scope="col" class="num">Total</th></tr></thead>
+                  <tbody data-grid-body></tbody>
+                  <tfoot data-grid-foot></tfoot>
+                </table>
+              </div>
+              <div class="grid-foot">
+                <p id="grid-help">Arrow keys move · type or Enter to edit · Esc cancels · values in £ thousands</p>
+                <button class="btn btn--outline btn--sm" type="button" data-add-row><svg class="icon"><use href="#i-plus"/></svg>Add category</button>
+              </div>
+              <p class="sr-only" aria-live="polite" data-grid-live></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click a number, type a new value and press Enter. Use the arrow keys to move around.</p>
+      </section>
+
+      <!-- ============================ 05 · ORDERS ============================ -->
+      <section class="demo" id="t-orders" aria-labelledby="t-orders-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="t-orders-title">Nova <span>· Expandable order rows</span></h2>
+            <p class="demo__desc">Keep the table short and put the detail one click away. Each order expands to show its items, delivery address and a progress timeline, with actions right there. “Expand all” is useful for printing.</p>
+            <ul class="demo__tags" role="list"><li>Expand / collapse</li><li>Nested detail</li><li>Order timeline</li><li>Expand all</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">admin.nova-store.com/orders</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Orders preview">
+            <div class="tpage" data-orders>
+              <div class="tpage__head"><h3>Orders</h3><button class="btn btn--ghost btn--sm" type="button" aria-pressed="false" data-expand-all>Expand all</button></div>
+              <div class="twrap">
+                <table class="table orders">
+                  <caption class="sr-only">Recent orders. Each row can be expanded for details.</caption>
+                  <thead><tr><th scope="col" class="col-check"><span class="sr-only">Details</span></th><th scope="col">Order</th><th scope="col" class="hide-sm">Customer</th><th scope="col">Status</th><th scope="col" class="num">Total</th></tr></thead>
+                  <tbody data-orders-body></tbody>
+                </table>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press the arrow on a row to see its details. Try “Mark as shipped”.</p>
+      </section>
+
+      <!-- ============================ 06 · REPORT ============================ -->
+      <section class="demo" id="t-report" aria-labelledby="t-report-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="t-report-title">Ember <span>· Configurable report</span></h2>
+            <p class="demo__desc">A report people can shape themselves. Choose which columns to show, switch between compact and comfortable rows, and download exactly what you see as a CSV. The header and totals stay pinned while you scroll.</p>
+            <ul class="demo__tags" role="list"><li>Column chooser</li><li>Density toggle</li><li>CSV export</li><li>Sticky header + totals</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember.kitchen/reports/october</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="tpage tpage--fill" data-report>
+              <div class="tpage__head">
+                <h3>Dish performance · October</h3>
+                <div class="report-tools">
+                  <div class="colmenu" data-colmenu>
+                    <button class="btn btn--outline btn--sm" type="button" aria-expanded="false" aria-controls="colmenu-pop" data-colmenu-btn><svg class="icon"><use href="#i-columns"/></svg>Columns</button>
+                    <fieldset class="colmenu__pop" id="colmenu-pop" hidden data-colmenu-pop><legend>Show columns</legend></fieldset>
+                  </div>
+                  <div class="segmented" role="radiogroup" aria-label="Row density"><label><input type="radio" name="density" value="compact">Compact</label><label><input type="radio" name="density" value="comfy" checked>Comfortable</label></div>
+                  <button class="btn btn--primary btn--sm" type="button" data-export><svg class="icon"><use href="#i-download"/></svg>Export CSV</button>
+                </div>
+              </div>
+              <div class="twrap twrap--fill" tabindex="0" role="region" aria-label="Dish performance table" data-report-wrap>
+                <table class="table report" data-report-table>
+                  <caption class="sr-only">Dish performance for October</caption>
+                  <thead data-report-head></thead>
+                  <tbody data-report-body></tbody>
+                  <tfoot data-report-foot></tfoot>
+                </table>
+              </div>
+              <p class="report-status" role="status" data-report-status></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open Columns and hide a few, switch to Compact, then Export CSV. The file has only the columns you chose.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 015</strong> of 100 · Phase 1 is three quarters done. Tables power the dashboards and apps in Phase 4.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 016: Profile pages</span></p>
+    </div>
+  </footer>
+</body>
+</html>
