@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidebars · Day 012 · Thecore</title>
+  <meta name="description" content="Six sidebars: collapsible app navigation, documentation navigation with scroll-spy, swipeable mobile drawer, shop filters, settings tabs and a resizable mail sidebar. Day 012 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16v-5M12 16V7M17 16v-3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevrons-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to sidebar">
+        <a href="#s-app">01</a><a href="#s-docs">02</a><a href="#s-drawer">03</a><a href="#s-filters">04</a><a href="#s-settings">05</a><a href="#s-mail">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 012 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Sidebars</em></h1>
+      <p class="lead">
+        Six sidebars for apps, documentation, mobile, shops, settings and email. They collapse, slide, filter,
+        track your scroll position and resize. The sidebar is the backbone of every
+        <strong>dashboard and web app</strong> coming in Phase 4.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>sidebar patterns</li>
+        <li><strong>Collapse</strong>resize &amp; swipe</li>
+        <li><strong>Scroll-spy</strong>navigation</li>
+        <li><strong>Keyboard</strong>friendly</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · LUMEN APP SIDEBAR ============================ -->
+      <section class="demo" id="s-app" aria-labelledby="s-app-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="s-app-title">Lumen <span>· Collapsible app sidebar</span></h2>
+            <p class="demo__desc">The main navigation for a web app. It collapses to an icon rail (with tooltips) and remembers your choice. Expandable groups, unread badges, and a workspace switcher and profile pinned top and bottom.</p>
+            <ul class="demo__tags" role="list"><li>Collapse to rail</li><li>Remembers state</li><li>Nested groups</li><li>Tooltips</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="shell" data-app>
+              <aside class="side" data-side aria-label="Lumen">
+                <div class="side__top">
+                  <span class="side__ws"><span class="side__ws-logo">L</span><span class="side__label"><strong>Lumen</strong><small>Acme Inc · Pro</small></span></span>
+                </div>
+                <nav class="side__nav" aria-label="Main">
+                  <a class="side__link" href="#" aria-current="page" data-tip="Home"><svg class="icon"><use href="#i-home"/></svg><span class="side__label">Home</span></a>
+                  <a class="side__link" href="#" data-tip="Inbox"><svg class="icon"><use href="#i-inbox"/></svg><span class="side__label">Inbox</span><span class="side__badge">12</span></a>
+                  <div class="side__group">
+                    <button class="side__link" type="button" aria-expanded="true" aria-controls="side-projects" data-tip="Projects"><svg class="icon"><use href="#i-folder"/></svg><span class="side__label">Projects</span><svg class="icon side__chev"><use href="#i-chevron-down"/></svg></button>
+                    <ul class="side__sub" id="side-projects" role="list">
+                      <li><a href="#"><i style="--c: oklch(65% 0.2 285)"></i>Website redesign</a></li>
+                      <li><a href="#"><i style="--c: oklch(70% 0.15 155)"></i>Mobile app</a></li>
+                      <li><a href="#"><i style="--c: oklch(75% 0.15 60)"></i>Q4 launch</a></li>
+                    </ul>
+                  </div>
+                  <a class="side__link" href="#" data-tip="Reports"><svg class="icon"><use href="#i-chart"/></svg><span class="side__label">Reports</span></a>
+                  <a class="side__link" href="#" data-tip="Team"><svg class="icon"><use href="#i-users"/></svg><span class="side__label">Team</span><span class="side__badge side__badge--dot" aria-label="new activity"></span></a>
+                  <a class="side__link" href="#" data-tip="Settings"><svg class="icon"><use href="#i-settings"/></svg><span class="side__label">Settings</span></a>
+                </nav>
+                <div class="side__bottom">
+                  <a class="side__user" href="#" data-tip="Riya Sharma"><span class="avatar" style="--h: 265">RS</span><span class="side__label"><strong>Riya Sharma</strong><small>riya@acme.co</small></span></a>
+                  <button class="side__collapse" type="button" aria-pressed="false" data-collapse aria-label="Collapse sidebar"><svg class="icon"><use href="#i-chevrons-left"/></svg></button>
+                </div>
+                <span class="side__tip" role="tooltip" hidden data-tip-el></span>
+              </aside>
+              <div class="shell__main" tabindex="0" role="region" aria-label="Lumen page content">
+                <h3>Home</h3>
+                <div class="mock-cards"><span></span><span></span><span></span><span class="wide"></span></div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press « at the bottom to collapse, hover the icons for tooltips, and reload to see it remembered.</p>
+      </section>
+
+      <!-- ============================ 02 · ATLAS DOCS ============================ -->
+      <section class="demo" id="s-docs" aria-labelledby="s-docs-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="s-docs-title">Atlas <span>· Documentation navigation</span></h2>
+            <p class="demo__desc">The two-sidebar documentation layout. On the left, a filterable tree of sections that expand and collapse. On the right, an “On this page” list that highlights the heading you're currently reading.</p>
+            <ul class="demo__tags" role="list"><li>Filterable tree</li><li>Scroll-spy</li><li>On this page</li><li>Smooth jump links</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">docs.atlas.dev/deployments</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="docs" data-docs>
+              <aside class="docs__nav" aria-label="Documentation">
+                <label class="docs__search"><svg class="icon"><use href="#i-search"/></svg><span class="sr-only">Filter pages</span><input type="search" placeholder="Filter pages" data-docs-filter></label>
+                <nav aria-label="Docs sections" data-docs-tree>
+                  <div class="tree-group"><button type="button" aria-expanded="true" aria-controls="tg-1">Getting started<svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                    <ul id="tg-1" role="list"><li><a href="#">Introduction</a></li><li><a href="#">Quick start</a></li><li><a href="#">Project structure</a></li></ul></div>
+                  <div class="tree-group"><button type="button" aria-expanded="true" aria-controls="tg-2">Deploying<svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                    <ul id="tg-2" role="list"><li><a href="#" aria-current="page">Deployments</a></li><li><a href="#">Environment variables</a></li><li><a href="#">Custom domains</a></li><li><a href="#">Rollbacks</a></li></ul></div>
+                  <div class="tree-group"><button type="button" aria-expanded="false" aria-controls="tg-3">Teams<svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                    <ul id="tg-3" role="list" hidden><li><a href="#">Roles</a></li><li><a href="#">Single sign-on</a></li><li><a href="#">Audit log</a></li></ul></div>
+                  <div class="tree-group"><button type="button" aria-expanded="false" aria-controls="tg-4">API reference<svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                    <ul id="tg-4" role="list" hidden><li><a href="#">Authentication</a></li><li><a href="#">Projects API</a></li><li><a href="#">Webhooks</a></li></ul></div>
+                  <p class="docs__none" data-docs-none hidden>No pages match.</p>
+                </nav>
+              </aside>
+              <article class="docs__content" tabindex="0" aria-label="Deployments documentation" data-docs-scroll>
+                <p class="docs__crumb">Deploying</p>
+                <h3>Deployments</h3>
+                <p class="docs__lead">Every push to your repository creates a deployment with its own URL.</p>
+                <h4 id="dp-how">How deployments work</h4>
+                <p>Atlas watches your Git repository. Each commit triggers a build in an isolated environment, and the output is uploaded to our edge network in under a minute.</p><p>Builds are cached between runs, so unchanged dependencies are never downloaded twice.</p><div class="docs__block"></div>
+                <h4 id="dp-preview">Preview deployments</h4>
+                <p>Every branch and pull request gets a preview URL. Share it with your team or client for feedback before anything goes live.</p><p>Previews are protected by default and expire after 30 days of inactivity.</p><div class="docs__block"></div>
+                <h4 id="dp-prod">Promoting to production</h4>
+                <p>Merging to your production branch promotes the latest build instantly. There's no rebuild, because the exact preview your team approved goes live.</p><div class="docs__block"></div>
+                <h4 id="dp-rollback">Instant rollback</h4>
+                <p>Something wrong? Choose any previous deployment and promote it. Traffic switches in seconds, with no build needed.</p><div class="docs__block"></div><div class="docs__block"></div>
+              </article>
+              <nav class="docs__toc" aria-label="On this page">
+                <p>On this page</p>
+                <ul role="list" data-toc>
+                  <li><a href="#dp-how">How deployments work</a></li>
+                  <li><a href="#dp-preview">Preview deployments</a></li>
+                  <li><a href="#dp-prod">Promoting to production</a></li>
+                  <li><a href="#dp-rollback">Instant rollback</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Scroll the article and watch “On this page”, then filter the left menu for “domain”.</p>
+      </section>
+
+      <!-- ============================ 03 · NOVA DRAWER ============================ -->
+      <section class="demo" id="s-drawer" aria-labelledby="s-drawer-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="s-drawer-title">Nova <span>· Swipeable mobile drawer</span></h2>
+            <p class="demo__desc">On phones, the sidebar becomes a drawer that slides in from the left. It follows your finger, so you can swipe or drag it closed, and it traps keyboard focus while open. On wide screens the same markup is a fixed sidebar.</p>
+            <ul class="demo__tags" role="list"><li>Drag to close</li><li>Backdrop + Esc</li><li>Focus trap</li><li>Responsive</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="false"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="true"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="mobile" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.nova.so</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="mshell" data-mshell>
+              <header class="mshell__bar">
+                <button class="icon-btn" type="button" aria-expanded="false" aria-controls="nova-drawer" aria-label="Open menu" data-drawer-open><svg class="icon"><use href="#i-menu"/></svg></button>
+                <strong>Dashboard</strong>
+                <span class="avatar" style="--h: 20">MK</span>
+              </header>
+              <div class="mshell__body">
+                <aside class="drawer" id="nova-drawer" data-drawer aria-label="Nova menu">
+                  <div class="drawer__head"><strong>Nova</strong><button class="icon-btn drawer__close" type="button" data-drawer-close aria-label="Close menu"><svg class="icon"><use href="#i-x"/></svg></button></div>
+                  <nav class="drawer__nav" aria-label="Main">
+                    <a href="#" aria-current="page"><svg class="icon"><use href="#i-home"/></svg>Dashboard</a>
+                    <a href="#"><svg class="icon"><use href="#i-chart"/></svg>Analytics</a>
+                    <a href="#"><svg class="icon"><use href="#i-folder"/></svg>Projects</a>
+                    <a href="#"><svg class="icon"><use href="#i-users"/></svg>Customers</a>
+                    <a href="#"><svg class="icon"><use href="#i-settings"/></svg>Settings</a>
+                  </nav>
+                  <p class="drawer__hint" aria-hidden="true">← drag to close</p>
+                </aside>
+                <div class="drawer__backdrop" data-drawer-backdrop hidden></div>
+                <div class="mshell__content" tabindex="0" role="region" aria-label="Nova page content"><div class="mock-cards"><span></span><span></span><span class="wide"></span><span></span><span></span></div></div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open the menu (☰), then drag the drawer left to close it, or press Esc. Switch to Desktop to see it as a fixed sidebar.</p>
+      </section>
+
+      <!-- ============================ 04 · FORMA FILTERS ============================ -->
+      <section class="demo" id="s-filters" aria-labelledby="s-filters-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="s-filters-title">Forma <span>· Search filters sidebar</span></h2>
+            <p class="demo__desc">The filter panel for property search and online shops. A two-handle price slider, checkboxes with live counts and a bedrooms selector. Active filters appear as removable chips, and the result count updates instantly.</p>
+            <ul class="demo__tags" role="list"><li>Dual price slider</li><li>Live result count</li><li>Removable chips</li><li>Clear all</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-estates.com/search</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma filters preview">
+            <div class="filters" data-filters>
+              <aside class="fpanel" aria-label="Filters">
+                <div class="fpanel__head"><h3>Filters</h3><button class="fpanel__clear" type="button" data-clear>Clear all</button></div>
+                <fieldset class="fgroup">
+                  <legend>Price</legend>
+                  <div class="dual" data-dual style="--lo: 10%; --hi: 70%">
+                    <span class="dual__track"><i></i></span>
+                    <input type="range" min="200000" max="3000000" step="50000" value="400000" aria-label="Minimum price" data-min>
+                    <input type="range" min="200000" max="3000000" step="50000" value="2100000" aria-label="Maximum price" data-max>
+                  </div>
+                  <p class="dual__out" data-price-out></p>
+                </fieldset>
+                <fieldset class="fgroup">
+                  <legend>Property type</legend>
+                  <label class="check"><input type="checkbox" name="type" value="house" checked>House <span class="fcount" data-count="house"></span></label>
+                  <label class="check"><input type="checkbox" name="type" value="apartment" checked>Apartment <span class="fcount" data-count="apartment"></span></label>
+                  <label class="check"><input type="checkbox" name="type" value="townhouse">Townhouse <span class="fcount" data-count="townhouse"></span></label>
+                </fieldset>
+                <fieldset class="fgroup">
+                  <legend>Bedrooms</legend>
+                  <div class="segmented"><label><input type="radio" name="beds" value="0" checked>Any</label><label><input type="radio" name="beds" value="2">2+</label><label><input type="radio" name="beds" value="3">3+</label><label><input type="radio" name="beds" value="4">4+</label></div>
+                </fieldset>
+                <fieldset class="fgroup">
+                  <legend>Features</legend>
+                  <label class="check"><input type="checkbox" name="feat" value="garden">Garden</label>
+                  <label class="check"><input type="checkbox" name="feat" value="parking">Parking</label>
+                  <label class="check"><input type="checkbox" name="feat" value="sea">Sea view</label>
+                </fieldset>
+              </aside>
+              <div class="fresults">
+                <p class="fresults__count" aria-live="polite" data-result-count></p>
+                <ul class="fchips" role="list" aria-label="Active filters" data-chips></ul>
+                <ul class="flist" role="list" data-list></ul>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Drag the price handles, tick “Garden”, pick 3+ bedrooms, then remove a chip.</p>
+      </section>
+
+      <!-- ============================ 05 · SETTINGS ============================ -->
+      <section class="demo" id="s-settings" aria-labelledby="s-settings-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="s-settings-title">Atlas <span>· Settings with vertical tabs</span></h2>
+            <p class="demo__desc">The settings layout every app needs. A vertical tab list on the side switches panels instantly, using the up and down arrow keys. Each panel shows unsaved changes and a sticky save bar.</p>
+            <ul class="demo__tags" role="list"><li>Vertical tabs</li><li>↑ ↓ keys</li><li>Unsaved-changes bar</li><li>Toggles</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 580px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/settings</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Settings preview">
+            <div class="settings" data-settings>
+              <div class="settings__tabs" role="tablist" aria-label="Settings" aria-orientation="vertical">
+                <button type="button" role="tab" id="st-1" aria-controls="sp-1" aria-selected="true"><svg class="icon"><use href="#i-user"/></svg>Profile</button>
+                <button type="button" role="tab" id="st-2" aria-controls="sp-2" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-bell"/></svg>Notifications</button>
+                <button type="button" role="tab" id="st-3" aria-controls="sp-3" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-card"/></svg>Billing</button>
+              </div>
+              <div class="settings__panels">
+                <form class="settings__panel" role="tabpanel" id="sp-1" aria-labelledby="st-1" data-panel>
+                  <h3>Profile</h3><p class="settings__sub">How you appear to your team.</p>
+                  <div class="fld"><label class="fld__label" for="set-name">Display name</label><input class="input" id="set-name" value="Riya Sharma"></div>
+                  <div class="fld"><label class="fld__label" for="set-role">Role</label><input class="input" id="set-role" value="Product designer"></div>
+                </form>
+                <form class="settings__panel" role="tabpanel" id="sp-2" aria-labelledby="st-2" hidden data-panel>
+                  <h3>Notifications</h3><p class="settings__sub">Choose what reaches your inbox.</p>
+                  <label class="switch settings__switch"><input type="checkbox" role="switch" checked>Deploy failures</label>
+                  <label class="switch settings__switch"><input type="checkbox" role="switch" checked>Comments on my work</label>
+                  <label class="switch settings__switch"><input type="checkbox" role="switch">Weekly summary</label>
+                  <label class="switch settings__switch"><input type="checkbox" role="switch">Product news</label>
+                </form>
+                <form class="settings__panel" role="tabpanel" id="sp-3" aria-labelledby="st-3" hidden data-panel>
+                  <h3>Billing</h3><p class="settings__sub">Pro plan · renews 1 November.</p>
+                  <div class="settings__plan"><strong>Pro · $20/month</strong><span>Visa •••• 4242</span></div>
+                  <div class="fld"><label class="fld__label" for="set-email">Invoice email</label><input class="input" id="set-email" type="email" value="billing@acme.co"></div>
+                </form>
+                <div class="savebar" data-savebar hidden><span>You have unsaved changes</span><button class="btn btn--ghost btn--sm" type="button" data-discard>Discard</button><button class="btn btn--primary btn--sm" type="button" data-save>Save changes</button></div>
+                <p class="settings__saved" role="status" data-saved></p>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Edit your name or flip a toggle to see the save bar. Use ↑ ↓ on the tabs.</p>
+      </section>
+
+      <!-- ============================ 06 · HALDEN MAIL ============================ -->
+      <section class="demo" id="s-mail" aria-labelledby="s-mail-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="s-mail-title">Halden <span>· Resizable mail sidebar</span></h2>
+            <p class="demo__desc">An email or messaging layout with folders, colour labels and unread counts. Drag the divider to resize the sidebar, or focus it and use the arrow keys. Double-click the divider to reset its width.</p>
+            <ul class="demo__tags" role="list"><li>Drag to resize</li><li>Keyboard resize</li><li>Folders &amp; labels</li><li>Compose</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 560px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">mail.halden.studio</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="mail" data-mail style="--side-w: 240px">
+              <aside class="mail__side" aria-label="Mailboxes">
+                <button class="btn mail__compose" type="button"><svg class="icon"><use href="#i-pen"/></svg><span>Compose</span></button>
+                <nav class="mail__folders" aria-label="Folders" data-folders>
+                  <a href="#" aria-current="page"><svg class="icon"><use href="#i-inbox"/></svg><span>Inbox</span><b>8</b></a>
+                  <a href="#"><svg class="icon"><use href="#i-star"/></svg><span>Starred</span></a>
+                  <a href="#"><svg class="icon"><use href="#i-send"/></svg><span>Sent</span></a>
+                  <a href="#"><svg class="icon"><use href="#i-file"/></svg><span>Drafts</span><b class="is-muted">2</b></a>
+                  <a href="#"><svg class="icon"><use href="#i-trash"/></svg><span>Trash</span></a>
+                </nav>
+                <p class="mail__label-title">Labels</p>
+                <nav class="mail__labels" aria-label="Labels">
+                  <a href="#"><i style="--c: oklch(65% 0.18 30)"></i><span>Clients</span></a>
+                  <a href="#"><i style="--c: oklch(65% 0.15 155)"></i><span>Projects</span></a>
+                  <a href="#"><i style="--c: oklch(65% 0.18 285)"></i><span>Invoices</span></a>
+                </nav>
+              </aside>
+              <div class="mail__resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" aria-valuemin="72" aria-valuemax="360" aria-valuenow="240" tabindex="0" data-resizer></div>
+              <div class="mail__list" tabindex="0" role="region" aria-label="Messages">
+                <article class="msg is-unread"><span class="avatar" style="--h: 30">IS</span><div><strong>Ingrid Sørensen</strong><p>Final logo files: looks wonderful, one tiny note on…</p></div><time>09:41</time></article>
+                <article class="msg is-unread"><span class="avatar" style="--h: 150">TA</span><div><strong>Tom Ashby</strong><p>Packaging proofs are back from the printer</p></div><time>08:15</time></article>
+                <article class="msg"><span class="avatar" style="--h: 260">LM</span><div><strong>Dr. Lea Moreau</strong><p>Museum launch: press preview confirmed for the 14th</p></div><time>Yesterday</time></article>
+                <article class="msg"><span class="avatar" style="--h: 210">KN</span><div><strong>Kai Nakamura</strong><p>Re: type pairing options for the app</p></div><time>Mon</time></article>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Drag the thin divider, or focus it and press ← →. Double-click to reset.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 012</strong> of 100 · The sidebar is the backbone of the dashboards and apps in Phase 4.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 013: Modals</span></p>
+    </div>
+  </footer>
+</body>
+</html>
