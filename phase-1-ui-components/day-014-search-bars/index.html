@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search bars · Day 014 · Thecore</title>
+  <meta name="description" content="Six search bars: shop autocomplete, travel booking search, expanding header search, filter-token search, live recipe search with spelling suggestions and an async help-centre search. Day 014 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-fill" viewBox="0 0 24 24"><path d="M17 17 7 7M7 15V7h8"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></symbol>
+    <symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to search bar">
+        <a href="#q-shop">01</a><a href="#q-travel">02</a><a href="#q-header">03</a><a href="#q-tokens">04</a><a href="#q-recipes">05</a><a href="#q-help">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 014 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Search bars</em></h1>
+      <p class="lead">
+        Six search bars that help people find things fast: suggestions as you type, recent searches, filters written
+        as words, spelling help and honest loading and error states. All of them are <strong>fully usable with the keyboard</strong>.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>search patterns</li>
+        <li><strong>Autocomplete</strong>as you type</li>
+        <li><strong>↑ ↓ ↵</strong>keyboard</li>
+        <li><strong>Did you mean</strong>spelling help</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · NOVA SHOP ============================ -->
+      <section class="demo" id="q-shop" aria-labelledby="q-shop-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="q-shop-title">Nova <span>· Shop autocomplete</span></h2>
+            <p class="demo__desc">The online-shop search. Before you type, it shows recent and trending searches. As you type, it suggests completions and real products with prices. A category picker narrows everything down.</p>
+            <ul class="demo__tags" role="list"><li>Combobox</li><li>Recent &amp; trending</li><li>Product previews</li><li>Category scope</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 560px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">nova-store.com</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="shop">
+              <header class="shop__bar">
+                <strong class="shop__logo">nova</strong>
+                <form class="shop-search" role="search" data-shop>
+                  <div class="select-wrap shop-search__scope">
+                    <label for="shop-scope" class="sr-only">Search in</label>
+                    <select id="shop-scope" data-scope><option value="">All</option><option>Shoes</option><option>Bags</option><option>Accessories</option></select>
+                  </div>
+                  <div class="shop-search__field">
+                    <label for="shop-q" class="sr-only">Search products</label>
+                    <input id="shop-q" type="search" role="combobox" aria-expanded="false" aria-controls="shop-list" aria-autocomplete="list" placeholder="Search trainers, totes, wallets…" autocomplete="off" data-q>
+                    <button class="shop-search__clear" type="button" aria-label="Clear search" hidden data-clear><svg class="icon"><use href="#i-x"/></svg></button>
+                  </div>
+                  <button class="shop-search__go" type="submit" aria-label="Search"><svg class="icon"><use href="#i-search"/></svg></button>
+                  <div class="pop shop-pop" id="shop-list" role="listbox" aria-label="Suggestions" hidden data-pop></div>
+                </form>
+                <span class="shop__bag" aria-hidden="true"><svg class="icon"><use href="#i-bag"/></svg></span>
+              </header>
+              <div class="shop__body" data-shop-body>
+                <p class="shop__result" aria-live="polite" data-shop-result>Popular this week</p>
+                <div class="mock-grid"><span></span><span></span><span></span><span></span></div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click the box to see recent searches, then type “run” or “leather”. Use ↑ ↓ and Enter, or → to fill in a suggestion.</p>
+      </section>
+
+      <!-- ============================ 02 · WANDER TRAVEL ============================ -->
+      <section class="demo" id="q-travel" aria-labelledby="q-travel-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="q-travel-title">Wander <span>· Travel booking search</span></h2>
+            <p class="demo__desc">The three-part search from hotel and holiday sites: where, when and who. Each part opens its own small panel, and finishing one moves you on to the next. On phones it stacks into a card.</p>
+            <ul class="demo__tags" role="list"><li>Segmented bar</li><li>Destination suggestions</li><li>Date chips</li><li>Guest steppers</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">wander.travel</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="travel">
+              <h3 class="travel__title">Find your next <em>escape</em></h3>
+              <form class="trip" role="search" aria-label="Find a stay" data-trip novalidate>
+                <div class="trip__part" data-part="where">
+                  <label class="trip__label" for="trip-where">Where</label>
+                  <input id="trip-where" class="trip__input" type="text" role="combobox" aria-expanded="false" aria-controls="trip-where-list" aria-autocomplete="list" placeholder="Search destinations" autocomplete="off" data-where>
+                  <div class="pop trip__pop" id="trip-where-list" role="listbox" aria-label="Destinations" hidden data-where-pop></div>
+                </div>
+                <div class="trip__part" data-part="when">
+                  <span class="trip__label" id="trip-when-l">When</span>
+                  <button class="trip__btn" type="button" aria-expanded="false" aria-controls="trip-when-pop" aria-labelledby="trip-when-l trip-when-v" data-when-btn><span id="trip-when-v" data-when-val>Add dates</span></button>
+                  <div class="pop trip__pop trip__pop--when" id="trip-when-pop" role="group" aria-label="Choose dates" hidden data-when-pop>
+                    <p class="pop__title">When are you going?</p>
+                    <div class="date-chips" role="radiogroup" aria-label="Dates" data-dates>
+                      <button type="button" role="radio" aria-checked="false" data-v="This weekend">This weekend</button>
+                      <button type="button" role="radio" aria-checked="false" data-v="Next week" tabindex="-1">Next week</button>
+                      <button type="button" role="radio" aria-checked="false" data-v="In November" tabindex="-1">In November</button>
+                      <button type="button" role="radio" aria-checked="false" data-v="I'm flexible" tabindex="-1">I'm flexible</button>
+                    </div>
+                    <div class="nights"><span>Nights</span><div class="mini-step" role="group" aria-label="Nights"><button type="button" data-step="nights" data-d="-1" aria-label="Fewer nights"><svg class="icon"><use href="#i-minus"/></svg></button><output data-out="nights" aria-live="polite">3</output><button type="button" data-step="nights" data-d="1" aria-label="More nights"><svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+                  </div>
+                </div>
+                <div class="trip__part" data-part="who">
+                  <span class="trip__label" id="trip-who-l">Who</span>
+                  <button class="trip__btn" type="button" aria-expanded="false" aria-controls="trip-who-pop" aria-labelledby="trip-who-l trip-who-v" data-who-btn><span id="trip-who-v" data-who-val>2 adults</span></button>
+                  <div class="pop trip__pop trip__pop--who" id="trip-who-pop" role="group" aria-label="Guests" hidden data-who-pop>
+                    <div class="guest"><div><strong>Adults</strong><small>Ages 13+</small></div><div class="mini-step" role="group" aria-label="Adults"><button type="button" data-step="adults" data-d="-1" aria-label="Fewer adults"><svg class="icon"><use href="#i-minus"/></svg></button><output data-out="adults" aria-live="polite">2</output><button type="button" data-step="adults" data-d="1" aria-label="More adults"><svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+                    <div class="guest"><div><strong>Children</strong><small>Ages 2–12</small></div><div class="mini-step" role="group" aria-label="Children"><button type="button" data-step="children" data-d="-1" aria-label="Fewer children"><svg class="icon"><use href="#i-minus"/></svg></button><output data-out="children" aria-live="polite">0</output><button type="button" data-step="children" data-d="1" aria-label="More children"><svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+                    <label class="check"><input type="checkbox" data-pets>Bringing a pet</label>
+                  </div>
+                </div>
+                <button class="trip__go" type="submit"><svg class="icon"><use href="#i-search"/></svg><span>Search</span></button>
+              </form>
+              <p class="trip__error" role="alert" data-trip-error></p>
+              <p class="trip__summary" aria-live="polite" data-trip-summary></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “li” in Where and pick a place. Dates open next, then guests. Press Search with Where empty to see the error.</p>
+      </section>
+
+      <!-- ============================ 03 · HALDEN HEADER ============================ -->
+      <section class="demo" id="q-header" aria-labelledby="q-header-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="q-header-title">Halden <span>· Expanding header search</span></h2>
+            <p class="demo__desc">For sites where search shouldn't crowd the menu. A search icon in the header grows into a full-width search field over the menu, with quick links. Press “/” to open it from anywhere in the demo and Esc to close it.</p>
+            <ul class="demo__tags" role="list"><li>Expands in place</li><li>“/” shortcut</li><li>Esc to close</li><li>Quick links</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 460px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="studio" data-studio>
+              <header class="studio__bar">
+                <strong class="studio__logo">Halden<span>.</span></strong>
+                <nav class="studio__nav" aria-label="Main" data-studio-nav>
+                  <a href="#">Work</a><a href="#">Studio</a><a href="#">Journal</a><a href="#">Contact</a>
+                </nav>
+                <form class="xsearch" role="search" data-xsearch>
+                  <label for="xs-q" class="sr-only">Search the site</label>
+                  <input id="xs-q" type="search" placeholder="Search projects, articles…" autocomplete="off" tabindex="-1" data-xs-input>
+                  <button class="xsearch__btn" type="button" aria-expanded="false" aria-controls="xs-panel" aria-label="Open search" aria-keyshortcuts="/" data-xs-toggle><svg class="icon icon--search"><use href="#i-search"/></svg><svg class="icon icon--x"><use href="#i-x"/></svg></button>
+                </form>
+              </header>
+              <div class="xsearch__panel" id="xs-panel" hidden data-xs-panel>
+                <p class="pop__title" data-xs-title>Popular</p>
+                <ul class="xsearch__links" role="list" data-xs-links></ul>
+              </div>
+              <div class="studio__hero">
+                <p>Brand &amp; digital studio · Copenhagen</p>
+                <h3>We make brands people <em>remember</em>.</h3>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click the search icon, or click inside the demo and press “/”. Type “brand”, then press Esc.</p>
+      </section>
+
+      <!-- ============================ 04 · LUMEN TOKENS ============================ -->
+      <section class="demo" id="q-tokens" aria-labelledby="q-tokens-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="q-tokens-title">Lumen <span>· Filter-token search</span></h2>
+            <p class="demo__desc">The power-user search from issue trackers and email. Type filters as words, like <code>status:open</code> or <code>owner:riya</code>, and they turn into chips. Suggestions help you write them, and the list filters live.</p>
+            <ul class="demo__tags" role="list"><li>key:value filters</li><li>Chips</li><li>Smart suggestions</li><li>Live results</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/issues</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="issues" data-issues>
+              <h3 class="issues__title">Issues</h3>
+              <div class="tsearch" data-tsearch>
+                <svg class="icon tsearch__icon"><use href="#i-search"/></svg>
+                <ul class="tsearch__chips" role="list" aria-label="Active filters" data-tchips></ul>
+                <label for="ts-q" class="sr-only">Filter issues</label>
+                <input id="ts-q" type="text" role="combobox" aria-expanded="false" aria-controls="ts-list" aria-autocomplete="list" aria-describedby="ts-help" placeholder="Filter, e.g. status:open owner:riya" autocomplete="off" spellcheck="false" data-tq>
+                <button class="tsearch__clear" type="button" hidden data-tclear>Clear</button>
+                <div class="pop tsearch__pop" id="ts-list" role="listbox" aria-label="Filter suggestions" hidden data-tpop></div>
+              </div>
+              <p class="tsearch__help" id="ts-help">Filters: <code>status:</code> <code>owner:</code> <code>label:</code> <code>priority:</code>. Other words search titles. Backspace removes the last chip.</p>
+              <p class="issues__count" aria-live="polite" data-tcount></p>
+              <ul class="issue-list" role="list" data-tlist></ul>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “st”, pick status, then pick open. Add “login” as a word, then press Backspace on the empty box.</p>
+      </section>
+
+      <!-- ============================ 05 · EMBER RECIPES ============================ -->
+      <section class="demo" id="q-recipes" aria-labelledby="q-recipes-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="q-recipes-title">Ember <span>· Live search with “Did you mean”</span></h2>
+            <p class="demo__desc">Results update as you type, with matching words highlighted. Sort by what matters, and when you misspell something (“risoto”), it offers the right word instead of an empty page.</p>
+            <ul class="demo__tags" role="list"><li>Search as you type</li><li>Highlighting</li><li>Spelling suggestions</li><li>Helpful empty state</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember.kitchen/recipes</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Recipe search preview">
+            <div class="recipes" data-recipes>
+              <div class="recipes__top">
+                <h3>Recipes</h3>
+                <form class="rsearch" role="search" data-rform>
+                  <svg class="icon"><use href="#i-search"/></svg>
+                  <label for="rs-q" class="sr-only">Search recipes</label>
+                  <input id="rs-q" type="search" placeholder="Search 24 recipes or ingredients" autocomplete="off" data-rq>
+                </form>
+                <div class="rsort">
+                  <label for="rs-sort">Sort</label>
+                  <div class="select-wrap"><select class="input" id="rs-sort" data-rsort><option value="relevance">Best match</option><option value="time">Quickest</option><option value="rating">Top rated</option></select></div>
+                </div>
+              </div>
+              <div class="quick" role="group" aria-label="Quick searches" data-quick>
+                <button type="button">pasta</button><button type="button">vegetarian</button><button type="button">under 30 min</button><button type="button">mushroom</button>
+              </div>
+              <p class="rstatus" aria-live="polite" data-rstatus></p>
+              <ul class="rlist" role="list" data-rlist></ul>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “risoto” or “chiken”, then press the suggestion. Try a quick search chip or change Sort.</p>
+      </section>
+
+      <!-- ============================ 06 · ATLAS HELP ============================ -->
+      <section class="demo" id="q-help" aria-labelledby="q-help-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="q-help-title">Atlas <span>· Help-centre search (async)</span></h2>
+            <p class="demo__desc">Real searches go to a server and take time. This one waits until you pause typing, shows a loading skeleton, ignores out-of-date answers, and handles errors with a Retry button. A microphone button appears in browsers that support voice input.</p>
+            <ul class="demo__tags" role="list"><li>Debounced</li><li>Loading skeleton</li><li>Error + retry</li><li>Voice input</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">help.atlas.dev</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Help centre preview">
+            <div class="help" data-help>
+              <p class="help__eyebrow">Atlas Help Centre</p>
+              <h3>How can we help?</h3>
+              <form class="hsearch" role="search" data-hform>
+                <svg class="icon"><use href="#i-search"/></svg>
+                <label for="hs-q" class="sr-only">Search help articles</label>
+                <input id="hs-q" type="search" placeholder="Search for answers, e.g. “custom domain”" autocomplete="off" data-hq>
+                <span class="hsearch__spin" aria-hidden="true" hidden data-hspin></span>
+                <button class="hsearch__mic" type="button" aria-label="Search by voice" aria-pressed="false" hidden data-hmic><svg class="icon"><use href="#i-mic"/></svg></button>
+              </form>
+              <p class="help__tip">Tip: search for <button type="button" class="link-btn" data-htry="error">error</button> to see what happens when the server fails.</p>
+              <div class="hresults" aria-live="polite" aria-busy="false" data-hresults></div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “domain” quickly and watch it wait for you to pause. Search “error”, then press Retry.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 014</strong> of 100 · Search is a conversation: suggest, forgive typos, and always explain what happened.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 015: Tables</span></p>
+    </div>
+  </footer>
+</body>
+</html>
