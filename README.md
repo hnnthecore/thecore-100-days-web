@@ -94,4 +94,9 @@ Then open `http://localhost:5500/phase-1-ui-components/day-001-navigation-bars/`
 | 008 | [FAQ Sections](phase-1-ui-components/day-008-faq/) | ✅ Done |
 | 009 | [Galleries](phase-1-ui-components/day-009-galleries/) | ✅ Done |
 | 010 | [Product Cards](phase-1-ui-components/day-010-product-cards/) | ✅ Done |
-| 011 | Dashboards | ⏳ Next |
+| 011 | [Dashboards](phase-1-ui-components/day-011-dashboards/) | ✅ Done |
+| 012 | [Sidebars](phase-1-ui-components/day-012-sidebars/) | ✅ Done |
+| 013 | [Modals](phase-1-ui-components/day-013-modals/) | ✅ Done |
+| 014 | [Search Bars](phase-1-ui-components/day-014-search-bars/) | ✅ Done |
+| 015 | [Tables](phase-1-ui-components/day-015-tables/) | ✅ Done |
+| 016 | Profile Pages | ⏳ Next |
