@@ -1,0 +1,563 @@
+/* ==========================================================================
+   Thecore · Day 011 · Dashboards
+   --------------------------------------------------------------------------
+   Shared: design-system (tokens, base, components, forms), showcase.
+   Local:  charts.js (mini SVG charts)
+
+   0. Dashboard foundation (panels, KPIs, chart styles)
+   1. Lumen     · SaaS analytics
+   2. Ember     · tonight's service
+   3. Forma     · agent pipeline
+   4. Forge     · member progress
+   5. Sentinel  · security operations
+   6. Nova      · online shop admin
+   ========================================================================== */
+
+/* ==========================================================================
+   0. FOUNDATION
+   ========================================================================== */
+.dash {
+  --c1: oklch(58% 0.2 285);
+  --c2: oklch(70% 0.05 270);
+  --c3: oklch(68% 0.14 200);
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  container-type: inline-size;
+  min-height: 100%;
+  padding: clamp(1rem, 3cqi, 1.75rem);
+  background: var(--color-bg);
+}
+
+:root[data-theme="dark"] .dash { --c1: oklch(72% 0.16 285); --c2: oklch(60% 0.04 270); }
+
+.dash__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.dash__head h3 { display: flex; align-items: center; gap: 0.5rem; font-size: clamp(1.3rem, 3cqi, 1.6rem); font-weight: 720; letter-spacing: -0.035em; }
+.dash__head h3 .icon { width: 1.3rem; height: 1.3rem; }
+.dash__head p { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+.panel {
+  min-width: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.panel__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+.panel__head h4 { font-size: var(--text-sm); font-weight: 650; }
+.panel__sub { font-size: var(--text-xs); color: var(--color-text-subtle); }
+
+code { padding: 0.1rem 0.35rem; border-radius: 5px; background: var(--color-surface-2); font-family: var(--font-mono); font-size: 0.9em; }
+
+/* ---------- Charts ---------- */
+.chart-box { position: relative; height: 180px; }
+.chart-box--tall { height: 240px; }
+.chart-box--donut { height: 170px; display: grid; place-items: center; }
+.chart { position: relative; }
+.chart svg { display: block; overflow: visible; }
+.chart-grid { stroke: var(--color-border); stroke-dasharray: 3 4; }
+.chart-axis { fill: var(--color-text-subtle); font-size: 10.5px; font-family: var(--font-sans); }
+.chart-line { fill: none; stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.chart-cursor { stroke: var(--color-border-strong); stroke-width: 1; }
+.chart-dot { stroke: var(--color-surface); stroke-width: 2.5; }
+.chart-bar { transition: opacity var(--dur-fast); cursor: default; }
+.chart:hover .chart-bar:not(:hover) { opacity: 0.55; }
+.chart-track { stroke: var(--color-surface-3); }
+.chart-seg { transition: stroke-width var(--dur-fast); cursor: default; }
+.chart-seg:hover { stroke-width: 20; }
+.chart--donut { display: grid; place-items: center; }
+.chart--donut > svg, .chart--donut > .chart-center { grid-area: 1 / 1; }
+.chart-center { display: grid; place-items: center; text-align: center; pointer-events: none; }
+.chart-center strong { font-size: var(--text-xl); font-weight: 750; letter-spacing: -0.03em; }
+.chart-center span { font-size: var(--text-2xs); color: var(--color-text-subtle); }
+
+.chart-tip {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  gap: 0.2rem;
+  min-width: 120px;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.chart-tip strong { font-weight: 650; }
+.chart-tip span { display: flex; align-items: center; gap: 0.35rem; color: var(--color-text-muted); }
+.chart-tip b { margin-left: auto; padding-left: 0.75rem; color: var(--color-text); font-variant-numeric: tabular-nums; }
+.chart-tip i { width: 8px; height: 8px; border-radius: 2px; }
+
+.legend { display: flex; align-items: center; gap: 0.4rem; font-size: var(--text-xs); color: var(--color-text-muted); }
+.legend i { width: 14px; height: 3px; margin-left: 0.4rem; border-radius: 2px; background: var(--c); }
+.legend i.is-dashed { background: repeating-linear-gradient(90deg, var(--c) 0 4px, transparent 4px 7px); }
+
+.delta { display: inline-flex; align-items: center; gap: 0.15rem; font-size: var(--text-xs); font-weight: 650; }
+.delta .icon { width: 0.8rem; height: 0.8rem; stroke-width: 2.5; }
+.delta--up { color: var(--color-success); }
+.delta--down { color: var(--color-danger); }
+
+
+/* ==========================================================================
+   1. LUMEN · SAAS ANALYTICS
+   ========================================================================== */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; }
+
+.kpi {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 0.5rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.kpi__label { font-size: var(--text-xs); color: var(--color-text-muted); }
+.kpi__value { font-size: var(--text-2xl); font-weight: 720; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.kpi .delta { align-self: start; justify-self: end; grid-row: 1; grid-column: 2; }
+.kpi__spark { grid-column: 1 / -1; height: 30px; margin-top: 0.35rem; }
+.kpi__spark svg { width: 100%; height: 100%; }
+
+.toptable { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.toptable th, .toptable td { padding: 0.45rem 0.35rem; text-align: left; }
+.toptable th { position: relative; font-weight: 500; }
+.toptable th span { position: relative; z-index: 1; font-family: var(--font-mono); font-size: var(--text-xs); }
+.toptable th::before { content: ""; position: absolute; inset: 3px auto 3px 0; width: calc(var(--p) * 100%); border-radius: var(--radius-sm); background: var(--color-accent-soft); }
+.toptable td { width: 5rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--color-text-muted); }
+
+@container (width < 720px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+
+/* ==========================================================================
+   2. EMBER · TONIGHT'S SERVICE (fixed warm dark)
+   ========================================================================== */
+.service {
+  color-scheme: dark;
+  --color-bg: oklch(16% 0.012 50);
+  --color-surface: oklch(20% 0.014 50);
+  --color-surface-2: oklch(24% 0.016 50);
+  --color-surface-3: oklch(30% 0.016 50);
+  --color-surface-raised: oklch(26% 0.016 50);
+  --color-text: oklch(94% 0.02 80);
+  --color-text-muted: oklch(78% 0.025 70);
+  --color-text-subtle: oklch(64% 0.025 65);
+  --color-border: oklch(100% 0 0 / 0.1);
+  --color-border-strong: oklch(100% 0 0 / 0.2);
+  --ember: oklch(74% 0.15 55);
+  color: var(--color-text);
+}
+
+.service__live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(75% 0.17 150); }
+.service__live i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: blink 1.4s steps(2, jump-none) infinite; }
+
+@keyframes blink { 50% { opacity: 0.25; } }
+
+.service__grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 1rem; }
+.service__hours { grid-column: 1 / -1; }
+
+.floor { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 0.6rem; }
+
+.table-btn {
+  display: grid;
+  place-items: center;
+  gap: 0.1rem;
+  height: 78px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  transition: background-color var(--dur-base), border-color var(--dur-base), color var(--dur-base), scale var(--dur-fast);
+}
+
+.table-btn:active { scale: 0.94; }
+.table-btn strong { font-size: var(--text-sm); color: var(--color-text); }
+.table-btn.is-round { border-radius: 999px; }
+.table-btn[data-state="seated"] { border-color: var(--ember); background: oklch(74% 0.15 55 / 0.16); color: var(--ember); }
+.table-btn[data-state="bill"] { border-color: oklch(75% 0.15 85); background: oklch(75% 0.15 85 / 0.14); color: oklch(85% 0.12 85); }
+.table-btn[data-state="reserved"] { border-style: dashed; color: var(--color-text-subtle); }
+
+.floor-legend { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: var(--text-xs); color: var(--color-text-muted); }
+.floor-legend b { color: var(--color-text); }
+
+@container (width < 720px) {
+  .service__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+
+/* ==========================================================================
+   3. FORMA · AGENT PIPELINE
+   ========================================================================== */
+.pipeline { --color-accent: oklch(55% 0.14 42); --color-accent-soft: oklch(55% 0.14 42 / 0.12); }
+:root[data-theme="dark"] .pipeline { --color-accent: oklch(72% 0.13 48); --color-accent-soft: oklch(72% 0.13 48 / 0.16); }
+
+.pipeline__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1rem; }
+.pipeline__wide { grid-column: 1 / -1; }
+
+.funnel { display: grid; gap: 0.5rem; }
+
+.funnel li {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 2.4rem;
+  padding: 0 0.85rem;
+  font-size: var(--text-sm);
+  isolation: isolate;
+}
+
+.funnel li::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: -1;
+  width: max(calc(var(--w) * 100%), 6px);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--color-accent), color-mix(in oklch, var(--color-accent) 60%, transparent));
+  opacity: 0.85;
+  transform-origin: left;
+  animation: grow 900ms var(--ease-out) both;
+}
+
+.funnel li:nth-child(2)::before { animation-delay: 100ms; }
+.funnel li:nth-child(3)::before { animation-delay: 200ms; }
+.funnel li:nth-child(4)::before { animation-delay: 300ms; }
+.funnel li[data-conv]::after { content: attr(data-conv) " ↓"; position: absolute; right: 3.5rem; font-size: var(--text-2xs); font-weight: 650; color: var(--color-text-subtle); }
+.funnel span { font-weight: 600; color: var(--color-text); }
+.funnel li:first-child span { color: #fff; }
+.funnel b { font-variant-numeric: tabular-nums; }
+
+@keyframes grow { from { scale: 0 1; } }
+
+.agenda { display: grid; gap: 0.35rem; }
+.agenda label { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.6rem; border-radius: var(--radius-md); font-size: var(--text-sm); cursor: pointer; transition: background-color var(--dur-fast); }
+.agenda label:hover { background: var(--color-surface-2); }
+.agenda input { width: 1.05rem; height: 1.05rem; accent-color: var(--color-accent); }
+.agenda strong { margin-right: 0.35rem; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent); }
+.agenda li:has(input:checked) span { color: var(--color-text-subtle); text-decoration: line-through; }
+
+@container (width < 720px) { .pipeline__grid { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* ==========================================================================
+   4. FORGE · MEMBER PROGRESS (fixed dark, lime)
+   ========================================================================== */
+.member {
+  color-scheme: dark;
+  --color-bg: oklch(13% 0.005 120);
+  --color-surface: oklch(18% 0.006 120);
+  --color-surface-2: oklch(22% 0.008 120);
+  --color-surface-3: oklch(27% 0.008 120);
+  --color-surface-raised: oklch(24% 0.008 120);
+  --color-text: oklch(97% 0.01 120);
+  --color-text-muted: oklch(78% 0.01 120);
+  --color-text-subtle: oklch(62% 0.01 120);
+  --color-border: oklch(100% 0 0 / 0.1);
+  --color-border-strong: oklch(100% 0 0 / 0.2);
+  --lime: oklch(91% 0.21 125);
+  color: var(--color-text);
+}
+
+.member__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
+.member__stats > div { display: grid; gap: 0.1rem; padding: 0.9rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
+.member__stats strong { font-family: "Anton", "Impact", sans-serif; font-size: 2rem; font-weight: 400; line-height: 1; color: var(--lime); }
+.member__stats small { font-size: var(--text-xs); color: var(--color-text-muted); }
+.member__flame .icon { width: 1.1rem; height: 1.1rem; color: oklch(75% 0.18 50); fill: currentColor; }
+
+.heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 1fr); gap: 4px; }
+
+.heat span {
+  aspect-ratio: 1;
+  min-width: 10px;
+  border-radius: 3px;
+  background: var(--color-surface-3);
+  transition: outline-color var(--dur-fast);
+  outline: 1px solid transparent;
+}
+
+.heat span[data-l="1"] { background: oklch(91% 0.21 125 / 0.3); }
+.heat span[data-l="2"] { background: oklch(91% 0.21 125 / 0.6); }
+.heat span[data-l="3"] { background: var(--lime); }
+.heat span:hover { outline-color: #fff; }
+
+.heat-legend { display: flex; align-items: center; gap: 3px; font-size: var(--text-2xs); color: var(--color-text-subtle); }
+.heat-legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--color-surface-3); }
+.heat-legend i:nth-child(2) { background: oklch(91% 0.21 125 / 0.3); }
+.heat-legend i:nth-child(3) { background: oklch(91% 0.21 125 / 0.6); }
+.heat-legend i:nth-child(4) { background: var(--lime); }
+
+.member__grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 1rem; }
+
+.next { display: flex; flex-direction: column; gap: 0.35rem; background: linear-gradient(160deg, oklch(91% 0.21 125 / 0.12), var(--color-surface)); }
+.next__label { display: flex; align-items: center; gap: 0.35rem; font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); }
+.next__label .icon { width: 0.95rem; height: 0.95rem; }
+.next h4 { font-size: var(--text-xl); font-weight: 750; }
+.next p:not(.next__label) { font-size: var(--text-sm); color: var(--color-text-muted); }
+.next__btn { margin-top: auto; border-radius: var(--radius-sm); background: oklch(91% 0.21 125 / 0.15); color: var(--lime); font-weight: 700; }
+.next__btn[aria-pressed="false"] { background: var(--lime); color: oklch(15% 0.02 125); }
+
+@container (width < 640px) {
+  .member__grid { grid-template-columns: minmax(0, 1fr); }
+  .member__stats strong { font-size: 1.5rem; }
+}
+
+
+/* ==========================================================================
+   5. SENTINEL · SECURITY OPERATIONS (fixed dark)
+   ========================================================================== */
+.soc {
+  color-scheme: dark;
+  --color-bg: oklch(14% 0.03 250);
+  --color-surface: oklch(18% 0.035 250);
+  --color-surface-2: oklch(22% 0.035 250);
+  --color-surface-3: oklch(27% 0.035 250);
+  --color-surface-raised: oklch(24% 0.035 250);
+  --color-text: oklch(96% 0.01 250);
+  --color-text-muted: oklch(76% 0.025 250);
+  --color-text-subtle: oklch(62% 0.03 250);
+  --color-border: oklch(100% 0 0 / 0.09);
+  --color-border-strong: oklch(100% 0 0 / 0.18);
+  --signal: oklch(84% 0.19 155);
+  --crit: oklch(68% 0.21 25);
+  --high: oklch(76% 0.17 55);
+  --med: oklch(84% 0.15 90);
+  --low: oklch(72% 0.1 240);
+  color: var(--color-text);
+}
+
+.soc .dash__head h3 .icon { color: var(--signal); }
+.soc__pause { border: 1px solid var(--color-border-strong); color: var(--color-text-muted); }
+.soc__pause .icon { width: 0.9rem; height: 0.9rem; }
+.soc__pause[aria-pressed="true"] { border-color: var(--signal); color: var(--signal); }
+
+.soc__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 1rem; }
+
+.alerts { display: grid; gap: 0.45rem; min-height: 200px; }
+
+.alert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--sev);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  font-size: var(--text-sm);
+  animation: alert-in var(--dur-slow) var(--ease-out);
+}
+
+.alert[data-sev="critical"] { --sev: var(--crit); }
+.alert[data-sev="high"] { --sev: var(--high); }
+.alert[data-sev="medium"] { --sev: var(--med); }
+.alert[data-sev="low"] { --sev: var(--low); }
+.alert.is-ack { opacity: 0.45; border-left-color: var(--color-border-strong); }
+
+@keyframes alert-in { from { opacity: 0; translate: 0 -8px; background: oklch(84% 0.19 155 / 0.12); } }
+
+.alert__sev { padding: 0.15rem 0.45rem; border-radius: var(--radius-sm); background: color-mix(in oklch, var(--sev) 18%, transparent); color: var(--sev); font-size: var(--text-2xs); font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+.alert__text { min-width: 0; }
+.alert__text strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.alert__text small { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-subtle); }
+
+.alert__ack {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.alert__ack:hover { border-color: var(--signal); color: var(--signal); }
+.alert.is-ack .alert__ack { border-color: transparent; color: var(--signal); }
+
+.sev-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 0.75rem; margin-top: 0.75rem; font-size: var(--text-xs); color: var(--color-text-muted); }
+.sev-legend li { display: flex; align-items: center; gap: 0.4rem; }
+.sev-legend i { width: 9px; height: 9px; border-radius: 2px; }
+.sev-legend b { margin-left: auto; color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+@container (width < 720px) { .soc__grid { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* ==========================================================================
+   6. NOVA · ONLINE SHOP ADMIN
+   ========================================================================== */
+.shopadmin__grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 1rem; }
+
+.tabs-mini { display: inline-flex; gap: 2px; padding: 2px; border-radius: var(--radius-md); background: var(--color-surface-2); }
+.tabs-mini button { padding: 0.25rem 0.6rem; border-radius: 7px; font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); }
+.tabs-mini button[aria-pressed="true"] { background: var(--color-surface-raised); color: var(--color-text); box-shadow: var(--shadow-xs); }
+
+.orders { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.orders th { padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--color-border); font-size: var(--text-xs); font-weight: 600; text-align: left; color: var(--color-text-subtle); }
+.orders td { padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--color-border); }
+.orders td:first-child { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+.orders td:nth-child(3) { font-variant-numeric: tabular-nums; }
+.orders tbody tr { animation: fade var(--dur-base) var(--ease-out); }
+
+@keyframes fade { from { opacity: 0; } }
+
+.status { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.15rem 0.55rem; border-radius: var(--radius-full); font-size: var(--text-2xs); font-weight: 700; }
+.status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status--pending { background: oklch(80% 0.14 80 / 0.16); color: oklch(60% 0.14 70); }
+.status--shipped { background: oklch(62% 0.16 155 / 0.14); color: var(--color-success); }
+.status--refunded { background: var(--color-surface-2); color: var(--color-text-subtle); }
+:root[data-theme="dark"] .status--pending { color: oklch(82% 0.13 85); }
+.orders__empty { padding: 1.5rem 0; font-size: var(--text-sm); text-align: center; color: var(--color-text-muted); }
+
+.stock { display: grid; gap: 0.75rem; }
+.stock li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.75rem; }
+.stock__icon { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-md); background: oklch(70% 0.15 60 / 0.15); color: oklch(62% 0.15 60); }
+.stock__icon .icon { width: 1.05rem; height: 1.05rem; }
+.stock strong { display: block; font-size: var(--text-sm); font-weight: 600; }
+.stock small { font-size: var(--text-xs); color: var(--color-text-subtle); }
+.stock__bar { display: block; height: 5px; margin: 0.3rem 0; overflow: hidden; border-radius: var(--radius-full); background: var(--color-surface-3); }
+.stock__bar i { display: block; height: 100%; width: calc(var(--p) * 100%); background: oklch(65% 0.18 45); transition: width var(--dur-slower) var(--ease-out), background-color var(--dur-base); }
+.stock li.is-ordered .stock__bar i { background: var(--color-success); }
+
+@container (width < 760px) { .shopadmin__grid { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* ==========================================================================
+   7. VIBRANT THEME (Day 011 onwards: bold colour per brand)
+   ========================================================================== */
+#d-analytics { --vh: 295; --vh2: 350; }
+#d-service   { --vh: 40;  --vh2: 15; }
+#d-pipeline  { --vh: 175; --vh2: 220; }
+#d-member    { --vh: 125; --vh2: 330; }
+#d-soc       { --vh: 200; --vh2: 155; }
+#d-shop      { --vh: 25;  --vh2: 350; }
+
+/* Shared: gradient headings, lifted panels */
+.dash__head h3 {
+  background: linear-gradient(100deg, var(--g1), var(--g2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dash__head h3 .icon { color: var(--g1); }
+
+/* ---------- 1. Lumen: electric violet & pink ---------- */
+.analytics {
+  --g1: oklch(55% 0.26 295); --g2: oklch(64% 0.25 350);
+  --c1: oklch(56% 0.26 295); --c2: oklch(70% 0.2 350); --c3: oklch(70% 0.16 205);
+  --color-accent: oklch(55% 0.26 295); --color-accent-soft: oklch(55% 0.26 295 / 0.14);
+  background:
+    radial-gradient(70% 60% at 0% 0%, oklch(80% 0.14 300), transparent 65%),
+    radial-gradient(55% 55% at 100% 5%, oklch(84% 0.12 350), transparent 65%),
+    radial-gradient(70% 70% at 85% 100%, oklch(86% 0.1 205), transparent 65%),
+    oklch(93% 0.04 300);
+}
+:root[data-theme="dark"] .analytics {
+  --g1: oklch(76% 0.18 295); --g2: oklch(80% 0.16 350);
+  --c1: oklch(74% 0.19 295); --c2: oklch(78% 0.16 350);
+  --color-accent: oklch(76% 0.18 295); --color-accent-soft: oklch(76% 0.18 295 / 0.2);
+  --color-surface: oklch(22% 0.05 290 / 0.75);
+  background:
+    radial-gradient(60% 50% at 0% 0%, oklch(35% 0.15 300 / 0.8), transparent 60%),
+    radial-gradient(50% 50% at 100% 10%, oklch(32% 0.14 350 / 0.7), transparent 60%),
+    oklch(15% 0.04 285);
+}
+.analytics .panel, .analytics .kpi { border-color: transparent; box-shadow: 0 12px 30px -16px oklch(45% 0.2 295 / 0.35); backdrop-filter: blur(6px); }
+.analytics .kpi { position: relative; overflow: hidden; }
+.analytics .kpi::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: linear-gradient(90deg, oklch(62% 0.24 var(--kh)), oklch(72% 0.2 calc(var(--kh) + 40))); }
+.analytics .kpi:nth-child(1) { --kh: 295; }
+.analytics .kpi:nth-child(2) { --kh: 350; }
+.analytics .kpi:nth-child(3) { --kh: 30; }
+.analytics .kpi:nth-child(4) { --kh: 200; }
+.analytics .kpi__value { color: oklch(40% 0.18 var(--kh)); }
+:root[data-theme="dark"] .analytics .kpi__value { color: oklch(85% 0.12 var(--kh)); }
+.analytics .toptable th::before { background: linear-gradient(90deg, oklch(62% 0.22 295 / 0.28), oklch(70% 0.2 350 / 0.22)); }
+
+/* ---------- 2. Ember: glowing coals ---------- */
+.service {
+  --g1: oklch(82% 0.17 70); --g2: oklch(68% 0.22 25);
+  --ember: oklch(76% 0.19 50);
+  background:
+    radial-gradient(55% 45% at 85% 0%, oklch(45% 0.17 35 / 0.55), transparent 65%),
+    radial-gradient(45% 45% at 0% 100%, oklch(38% 0.15 10 / 0.5), transparent 65%),
+    oklch(14% 0.02 40);
+}
+.service .panel { background: oklch(20% 0.025 40 / 0.75); border-color: oklch(76% 0.19 50 / 0.18); }
+.service .table-btn[data-state="seated"] { background: linear-gradient(160deg, oklch(76% 0.19 50 / 0.3), oklch(65% 0.22 25 / 0.2)); box-shadow: 0 0 18px -4px oklch(76% 0.19 50 / 0.6); }
+.service .table-btn[data-state="bill"] { box-shadow: 0 0 16px -6px oklch(85% 0.15 90 / 0.6); }
+
+/* ---------- 3. Forma: fresh teal & sky ---------- */
+.pipeline {
+  --g1: oklch(55% 0.15 175); --g2: oklch(58% 0.18 240);
+  --color-accent: oklch(55% 0.15 178); --color-accent-soft: oklch(55% 0.15 178 / 0.18);
+  background:
+    radial-gradient(70% 60% at 100% 0%, oklch(83% 0.12 210), transparent 65%),
+    radial-gradient(70% 70% at 0% 100%, oklch(86% 0.12 160), transparent 65%),
+    oklch(94% 0.04 190);
+}
+:root[data-theme="dark"] .pipeline {
+  --g1: oklch(80% 0.13 175); --g2: oklch(78% 0.13 230);
+  --color-accent: oklch(76% 0.13 178); --color-accent-soft: oklch(76% 0.13 178 / 0.2);
+  background: radial-gradient(60% 50% at 100% 0%, oklch(32% 0.09 200 / 0.8), transparent 60%), radial-gradient(60% 60% at 0% 100%, oklch(30% 0.08 160 / 0.7), transparent 60%), oklch(15% 0.025 200);
+}
+.pipeline .panel { border-color: transparent; box-shadow: 0 12px 30px -18px oklch(45% 0.12 200 / 0.4); }
+.funnel li:nth-child(1) { --fh: 175; }
+.funnel li:nth-child(2) { --fh: 200; }
+.funnel li:nth-child(3) { --fh: 240; }
+.funnel li:nth-child(4) { --fh: 285; }
+.funnel li::before { background: linear-gradient(90deg, oklch(62% 0.16 var(--fh)), oklch(72% 0.13 calc(var(--fh) + 25))); opacity: 1; }
+/* White labels only on bars wide enough to hold them */
+.funnel li:nth-child(-n+2) span { color: #fff; text-shadow: 0 1px 2px oklch(20% 0.05 220 / 0.35); }
+
+/* ---------- 4. Forge: neon lime & magenta ---------- */
+.member {
+  --g1: oklch(92% 0.21 125); --g2: oklch(80% 0.15 190);
+  background:
+    radial-gradient(50% 40% at 100% 0%, oklch(55% 0.2 330 / 0.4), transparent 65%),
+    radial-gradient(50% 45% at 0% 100%, oklch(60% 0.18 125 / 0.3), transparent 65%),
+    oklch(11% 0.01 260);
+}
+.member__stats > div { background: linear-gradient(160deg, oklch(22% 0.03 260), oklch(17% 0.01 260)); border-color: oklch(92% 0.21 125 / 0.18); }
+.member__stats > div:nth-child(2) strong { color: oklch(78% 0.2 330); }
+.member__stats > div:nth-child(3) strong { color: oklch(82% 0.14 200); }
+.member .panel { border-color: oklch(100% 0 0 / 0.08); }
+
+/* ---------- 5. Sentinel: cyber neon ---------- */
+.soc {
+  --g1: oklch(86% 0.15 190); --g2: oklch(84% 0.19 155);
+  background:
+    linear-gradient(oklch(100% 0 0 / 0.035) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(90deg, oklch(100% 0 0 / 0.035) 1px, transparent 1px) 0 0 / 28px 28px,
+    radial-gradient(60% 50% at 100% 0%, oklch(45% 0.15 230 / 0.55), transparent 65%),
+    radial-gradient(50% 50% at 0% 100%, oklch(45% 0.14 160 / 0.4), transparent 65%),
+    oklch(12% 0.03 250);
+}
+.soc .panel { background: oklch(17% 0.04 250 / 0.8); border-color: oklch(84% 0.19 155 / 0.15); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.04); }
+.soc .alert[data-sev="critical"] { box-shadow: 0 0 20px -8px var(--crit); }
+
+/* ---------- 6. Nova: sunset coral ---------- */
+.shopadmin {
+  --g1: oklch(64% 0.22 25); --g2: oklch(62% 0.24 350);
+  --c1: oklch(64% 0.22 25);
+  --color-accent: oklch(60% 0.22 25); --color-accent-soft: oklch(60% 0.22 25 / 0.14);
+  background:
+    radial-gradient(70% 60% at 0% 0%, oklch(86% 0.12 65), transparent 65%),
+    radial-gradient(70% 65% at 100% 100%, oklch(83% 0.12 350), transparent 65%),
+    oklch(94% 0.04 30);
+}
+:root[data-theme="dark"] .shopadmin {
+  --g1: oklch(78% 0.16 40); --g2: oklch(76% 0.18 350);
+  --c1: oklch(76% 0.17 35);
+  --color-accent: oklch(76% 0.16 30); --color-accent-soft: oklch(76% 0.16 30 / 0.2);
+  background: radial-gradient(60% 50% at 0% 0%, oklch(34% 0.1 50 / 0.8), transparent 60%), radial-gradient(60% 55% at 100% 100%, oklch(30% 0.12 350 / 0.75), transparent 60%), oklch(15% 0.025 30);
+}
+.shopadmin .panel { border-color: transparent; box-shadow: 0 12px 30px -18px oklch(50% 0.18 25 / 0.4); }
+.shopadmin .tabs-mini button[aria-pressed="true"] { background: linear-gradient(120deg, var(--g1), var(--g2)); color: #fff; }
+.stock li:nth-child(1) .stock__icon { background: oklch(70% 0.2 25 / 0.16); color: oklch(60% 0.22 25); }
+.stock li:nth-child(2) .stock__icon { background: oklch(70% 0.2 300 / 0.16); color: oklch(55% 0.22 300); }
+.stock li:nth-child(3) .stock__icon { background: oklch(75% 0.16 200 / 0.18); color: oklch(55% 0.15 210); }
+.stock__bar i { background: linear-gradient(90deg, oklch(65% 0.22 25), oklch(70% 0.2 350)); }

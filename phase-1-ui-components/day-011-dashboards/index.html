@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboards · Day 011 · Thecore</title>
+  <meta name="description" content="Six dashboards: SaaS analytics, restaurant service, estate-agent pipeline, gym member progress, security operations and e-commerce admin, with hand-built accessible charts. Day 011 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Anton&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="charts.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body class="is-vibrant">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="m5 15 7-7 7 7"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m19 9-7 7-7-7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4v16l14-8z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to dashboard">
+        <a href="#d-analytics">01</a><a href="#d-service">02</a><a href="#d-pipeline">03</a><a href="#d-member">04</a><a href="#d-soc">05</a><a href="#d-shop">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 011 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Dashboards</em></h1>
+      <p class="lead">
+        Six dashboards for six kinds of business: analytics, restaurant service, sales pipeline, fitness progress,
+        security operations and online-shop admin. The charts are <strong>hand-built and dependency-free</strong>,
+        with hover details and hidden data tables for screen readers.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>dashboards</li>
+        <li><strong>4</strong>chart types</li>
+        <li><strong>0</strong>chart libraries</li>
+        <li><strong>Live</strong>updating data</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · LUMEN ANALYTICS ============================ -->
+      <section class="demo" id="d-analytics" aria-labelledby="d-analytics-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="d-analytics-title">Lumen <span>· SaaS analytics</span></h2>
+            <p class="demo__desc">The classic product analytics overview: KPI cards with trend sparklines, a traffic chart comparing this period with the last one, and top pages with inline bars. Switching the date range recalculates everything.</p>
+            <ul class="demo__tags" role="list"><li>KPI cards</li><li>Period comparison</li><li>Hover crosshair</li><li>Date ranges</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 720px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/analytics</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Lumen analytics preview">
+            <div class="dash analytics" data-analytics>
+              <header class="dash__head">
+                <div><h3>Overview</h3><p data-range-label>Last 30 days vs previous 30 days</p></div>
+                <div class="segmented" role="radiogroup" aria-label="Date range">
+                  <label><input type="radio" name="range" value="7">7D</label>
+                  <label><input type="radio" name="range" value="30" checked>30D</label>
+                  <label><input type="radio" name="range" value="90">90D</label>
+                </div>
+              </header>
+              <div class="kpis" data-kpis></div>
+              <div class="panel">
+                <div class="panel__head"><h4>Visitors</h4><span class="legend"><i style="--c: var(--c1)"></i>This period <i style="--c: var(--c2)" class="is-dashed"></i>Previous</span></div>
+                <div class="chart-box chart-box--tall" data-traffic></div>
+              </div>
+              <div class="panel">
+                <div class="panel__head"><h4>Top pages</h4><span class="panel__sub">Unique visitors</span></div>
+                <table class="toptable" data-pages><caption class="sr-only">Top pages by unique visitors</caption><tbody></tbody></table>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the chart to compare days, then switch between 7D, 30D and 90D.</p>
+      </section>
+
+      <!-- ============================ 02 · EMBER SERVICE ============================ -->
+      <section class="demo" id="d-service" aria-labelledby="d-service-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="d-service-title">Ember <span>· Tonight's service</span></h2>
+            <p class="demo__desc">An operations screen for a restaurant floor. Covers by hour (the current hour highlighted), a live floor plan where staff tap a table to move it from free to seated to bill, and progress towards tonight's revenue target.</p>
+            <ul class="demo__tags" role="list"><li>Interactive floor plan</li><li>Covers by hour</li><li>Target ring</li><li>Live counts</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ops.ember-kitchen.co.uk/tonight</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Ember service preview">
+            <div class="dash service" data-service>
+              <header class="dash__head"><div><h3>Tonight's service</h3><p data-service-date></p></div><p class="service__live"><i></i>Live</p></header>
+              <div class="service__grid">
+                <div class="panel service__floor">
+                  <div class="panel__head"><h4>Floor</h4><span class="floor-legend" data-floor-legend></span></div>
+                  <div class="floor" data-floor role="group" aria-label="Tables. Activate a table to change its status."></div>
+                </div>
+                <div class="panel">
+                  <div class="panel__head"><h4>Revenue</h4><span class="panel__sub">Target £6,000</span></div>
+                  <div class="chart-box chart-box--donut" data-target></div>
+                </div>
+                <div class="panel service__hours">
+                  <div class="panel__head"><h4>Covers by hour</h4><span class="panel__sub" data-covers-total></span></div>
+                  <div class="chart-box" data-covers></div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click a table to cycle its status and watch the counts update.</p>
+      </section>
+
+      <!-- ============================ 03 · FORMA PIPELINE ============================ -->
+      <section class="demo" id="d-pipeline" aria-labelledby="d-pipeline-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="d-pipeline-title">Forma <span>· Agent pipeline</span></h2>
+            <p class="demo__desc">A small-business CRM home screen for an estate agent. It shows a sales funnel with the conversion rate between each stage, views per listing, and today's viewings, which can be ticked off as they happen.</p>
+            <ul class="demo__tags" role="list"><li>Conversion funnel</li><li>Listing performance</li><li>Today's agenda</li><li>Check-off tasks</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 660px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">crm.forma-estates.com</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forma pipeline preview">
+            <div class="dash pipeline" data-pipeline>
+              <header class="dash__head"><div><h3>Good morning, Sofie</h3><p>Q4 so far · 14 sales · €12.6M volume</p></div></header>
+              <div class="pipeline__grid">
+                <div class="panel">
+                  <div class="panel__head"><h4>Funnel this quarter</h4></div>
+                  <ol class="funnel" role="list">
+                    <li style="--w: 1"><span>Leads</span><b>412</b></li>
+                    <li style="--w: .46" data-conv="46%"><span>Viewings</span><b>189</b></li>
+                    <li style="--w: .15" data-conv="33%"><span>Offers</span><b>62</b></li>
+                    <li style="--w: .034" data-conv="23%"><span>Sales</span><b>14</b></li>
+                  </ol>
+                </div>
+                <div class="panel">
+                  <div class="panel__head"><h4>Today's viewings</h4><span class="panel__sub" data-agenda-left></span></div>
+                  <ul class="agenda" role="list" data-agenda>
+                    <li><label><input type="checkbox"><span><strong>09:30</strong> Villa Solvej · Lars Holm</span></label></li>
+                    <li><label><input type="checkbox"><span><strong>11:00</strong> Townhouse Linde · Maja K.</span></label></li>
+                    <li><label><input type="checkbox"><span><strong>13:30</strong> Penthouse Havn · video call</span></label></li>
+                    <li><label><input type="checkbox"><span><strong>16:00</strong> Valuation · Strandvejen 40</span></label></li>
+                  </ul>
+                </div>
+                <div class="panel pipeline__wide">
+                  <div class="panel__head"><h4>Views per listing (7 days)</h4><span class="panel__sub">Penthouse Havn leads</span></div>
+                  <div class="chart-box" data-listing-views></div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Tick off a viewing, and hover the bars for exact numbers.</p>
+      </section>
+
+      <!-- ============================ 04 · FORGE MEMBER ============================ -->
+      <section class="demo" id="d-member" aria-labelledby="d-member-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="d-member-title">Forge <span>· Member progress</span></h2>
+            <p class="demo__desc">A customer-facing dashboard that keeps gym members motivated. A 12-week activity heatmap like GitHub's, the current streak, a strength-progress chart, and the next booked class with a one-tap cancel.</p>
+            <ul class="demo__tags" role="list"><li>Activity heatmap</li><li>Streak counter</li><li>Progress chart</li><li>Booking card</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="false"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="true"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="tablet" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit/me</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Forge member preview">
+            <div class="dash member" data-member>
+              <header class="dash__head"><div><h3>Nice work, Jess</h3><p>You're in the top 10% of members this month.</p></div></header>
+              <div class="member__stats">
+                <div><span class="member__flame"><svg class="icon"><use href="#i-flame"/></svg></span><strong data-streak>0</strong><small>day streak</small></div>
+                <div><strong data-month-classes>0</strong><small>classes this month</small></div>
+                <div><strong>140 kg</strong><small>deadlift PB</small></div>
+              </div>
+              <div class="panel">
+                <div class="panel__head"><h4>Last 12 weeks</h4><span class="heat-legend" aria-hidden="true">Less <i></i><i></i><i></i><i></i> More</span></div>
+                <div class="heat" data-heat role="img"></div>
+              </div>
+              <div class="member__grid">
+                <div class="panel">
+                  <div class="panel__head"><h4>Deadlift</h4><span class="panel__sub">kg, best set</span></div>
+                  <div class="chart-box" data-lift></div>
+                </div>
+                <div class="panel next">
+                  <p class="next__label"><svg class="icon"><use href="#i-calendar"/></svg>Next class</p>
+                  <h4>HIIT Burn</h4>
+                  <p>Tomorrow · 07:00 · Studio 2 · Coach Maya</p>
+                  <button class="btn next__btn" type="button" aria-pressed="true" data-booking>Booked ✓ · Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the heatmap squares and the chart, then cancel and rebook the class.</p>
+      </section>
+
+      <!-- ============================ 05 · SENTINEL SOC ============================ -->
+      <section class="demo" id="d-soc" aria-labelledby="d-soc-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="d-soc-title">Sentinel <span>· Security operations</span></h2>
+            <p class="demo__desc">A live security console. New alerts stream in every few seconds (it pauses when off-screen or when you press pause), the severity breakdown updates as they arrive, and analysts acknowledge alerts with one click.</p>
+            <ul class="demo__tags" role="list"><li>Live alert feed</li><li>Acknowledge actions</li><li>Severity donut</li><li>Pause control</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">console.sentinel-security.io</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Sentinel operations preview">
+            <div class="dash soc" data-soc>
+              <header class="dash__head">
+                <div><h3><svg class="icon"><use href="#i-shield"/></svg>Operations</h3><p data-soc-summary></p></div>
+                <button class="btn btn--sm soc__pause" type="button" aria-pressed="false" data-soc-pause><svg class="icon"><use href="#i-pause"/></svg><span>Pause feed</span></button>
+              </header>
+              <div class="soc__grid">
+                <div class="panel soc__feed">
+                  <div class="panel__head"><h4>Open alerts</h4><span class="panel__sub" data-open-count></span></div>
+                  <ul class="alerts" role="log" aria-live="polite" aria-label="Alert feed" data-alerts></ul>
+                </div>
+                <div class="panel">
+                  <div class="panel__head"><h4>Severity (24h)</h4></div>
+                  <div class="chart-box chart-box--donut" data-severity></div>
+                  <ul class="sev-legend" role="list" data-sev-legend></ul>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Wait a few seconds for new alerts, acknowledge one, or pause the feed.</p>
+      </section>
+
+      <!-- ============================ 06 · NOVA SHOP ADMIN ============================ -->
+      <section class="demo" id="d-shop" aria-labelledby="d-shop-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="d-shop-title">Nova <span>· Online shop admin</span></h2>
+            <p class="demo__desc">An e-commerce back office: daily revenue with today highlighted, recent orders with status filters, and low-stock warnings with a one-click reorder. It's the admin side of the shop cards from Day 10.</p>
+            <ul class="demo__tags" role="list"><li>Revenue chart</li><li>Order status filters</li><li>Low-stock alerts</li><li>Reorder action</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">admin.norde.store</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Nova shop admin preview">
+            <div class="dash shopadmin" data-shopadmin>
+              <header class="dash__head"><div><h3>Store overview</h3><p>October · €24,930 revenue · 312 orders</p></div></header>
+              <div class="panel">
+                <div class="panel__head"><h4>Revenue per day</h4><span class="panel__sub">Today highlighted</span></div>
+                <div class="chart-box" data-revenue></div>
+              </div>
+              <div class="shopadmin__grid">
+                <div class="panel">
+                  <div class="panel__head"><h4>Recent orders</h4>
+                    <div class="tabs-mini" role="group" aria-label="Filter orders" data-order-filter>
+                      <button type="button" aria-pressed="true" data-status="all">All</button>
+                      <button type="button" aria-pressed="false" data-status="pending">Pending</button>
+                      <button type="button" aria-pressed="false" data-status="shipped">Shipped</button>
+                      <button type="button" aria-pressed="false" data-status="refunded">Refunded</button>
+                    </div>
+                  </div>
+                  <table class="orders">
+                    <caption class="sr-only">Recent orders</caption>
+                    <thead><tr><th scope="col">Order</th><th scope="col">Customer</th><th scope="col">Total</th><th scope="col">Status</th></tr></thead>
+                    <tbody data-orders>
+                      <tr data-status="pending"><td>#1047</td><td>Ida Berg</td><td>€178</td><td><span class="status status--pending">Pending</span></td></tr>
+                      <tr data-status="shipped"><td>#1046</td><td>Tom Ashby</td><td>€89</td><td><span class="status status--shipped">Shipped</span></td></tr>
+                      <tr data-status="shipped"><td>#1045</td><td>Mira Vance</td><td>€243</td><td><span class="status status--shipped">Shipped</span></td></tr>
+                      <tr data-status="refunded"><td>#1044</td><td>Jonas Lind</td><td>€54</td><td><span class="status status--refunded">Refunded</span></td></tr>
+                      <tr data-status="pending"><td>#1043</td><td>Ada Okafor</td><td>€129</td><td><span class="status status--pending">Pending</span></td></tr>
+                    </tbody>
+                  </table>
+                  <p class="orders__empty" data-orders-empty hidden>No orders with this status.</p>
+                </div>
+                <div class="panel">
+                  <div class="panel__head"><h4>Low stock</h4></div>
+                  <ul class="stock" role="list" data-stock>
+                    <li><span class="stock__icon"><svg class="icon"><use href="#i-box"/></svg></span><div><strong>Amphora vase · Sage</strong><span class="stock__bar" style="--p: .12"><i></i></span><small>3 left · sells ~2/day</small></div><button class="btn btn--sm btn--outline" type="button" data-reorder>Reorder</button></li>
+                    <li><span class="stock__icon"><svg class="icon"><use href="#i-box"/></svg></span><div><strong>Low bowl · Clay</strong><span class="stock__bar" style="--p: .2"><i></i></span><small>5 left · sells ~1/day</small></div><button class="btn btn--sm btn--outline" type="button" data-reorder>Reorder</button></li>
+                    <li><span class="stock__icon"><svg class="icon"><use href="#i-box"/></svg></span><div><strong>Tall bottle · Sage</strong><span class="stock__bar" style="--p: .32"><i></i></span><small>8 left · sells ~1/day</small></div><button class="btn btn--sm btn--outline" type="button" data-reorder>Reorder</button></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Filter orders by status, hover the revenue bars, and reorder a low-stock item.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 011</strong> of 100 · Charts are hand-built in <code>charts.js</code>; all figures are demo data.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 012: Sidebars</span></p>
+    </div>
+  </footer>
+</body>
+</html>

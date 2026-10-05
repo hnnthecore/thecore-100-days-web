@@ -401,3 +401,61 @@ kbd {
 
 .showcase-footer strong { color: var(--color-text); }
 .showcase-footer__next span { color: var(--color-accent); font-weight: 550; }
+
+/* ==========================================================================
+   Vibrant mode (opt-in): <body class="is-vibrant">
+   --------------------------------------------------------------------------
+   Used from Day 011 on. Pages without the class are unchanged.
+   Each .demo can set --vh / --vh2 (two hues) to colour its own chrome.
+   ========================================================================== */
+.is-vibrant {
+  --vibrant: linear-gradient(100deg, oklch(62% 0.25 350), oklch(70% 0.2 40) 35%, oklch(66% 0.22 300) 70%, oklch(68% 0.17 220));
+}
+
+.is-vibrant .intro::before {
+  inset: -2rem 0 auto;
+  height: 520px;
+  background:
+    radial-gradient(30% 45% at 25% 35%, oklch(70% 0.24 350 / 0.28), transparent 70%),
+    radial-gradient(30% 45% at 75% 25%, oklch(72% 0.18 210 / 0.28), transparent 70%),
+    radial-gradient(35% 45% at 55% 65%, oklch(80% 0.17 75 / 0.24), transparent 70%),
+    radial-gradient(30% 40% at 40% 15%, oklch(62% 0.25 295 / 0.22), transparent 70%);
+  filter: blur(8px);
+}
+
+.is-vibrant .intro h1 em { background: var(--vibrant); -webkit-background-clip: text; background-clip: text; }
+.is-vibrant .pill { background: var(--vibrant); color: #fff; }
+.is-vibrant .intro__stats strong { background: var(--vibrant); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.is-vibrant .demo { --vh: 295; --vh2: 350; }
+.is-vibrant .demo__index {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 1.6rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(120deg, oklch(62% 0.22 var(--vh)), oklch(68% 0.2 var(--vh2)));
+  color: #fff;
+}
+.is-vibrant .demo__tags li {
+  border-color: color-mix(in oklch, oklch(62% 0.2 var(--vh)) 35%, transparent);
+  background: color-mix(in oklch, oklch(62% 0.2 var(--vh)) 9%, var(--color-surface));
+  color: color-mix(in oklch, oklch(50% 0.2 var(--vh)) 70%, var(--color-text));
+}
+:root[data-theme="dark"] .is-vibrant .demo__tags li { color: color-mix(in oklch, oklch(80% 0.14 var(--vh)) 80%, var(--color-text)); }
+.is-vibrant .frame {
+  border-color: color-mix(in oklch, oklch(62% 0.2 var(--vh)) 30%, var(--color-border));
+  box-shadow:
+    0 30px 70px -35px oklch(55% 0.22 var(--vh) / 0.55),
+    0 20px 50px -40px oklch(65% 0.2 var(--vh2) / 0.5);
+}
+.is-vibrant .viewport-switch button[aria-pressed="true"] { background: linear-gradient(120deg, oklch(62% 0.22 var(--vh)), oklch(68% 0.2 var(--vh2))); color: #fff; }
+
+/* Gradient text helper for headings inside demos */
+.is-vibrant .grad-text {
+  background: linear-gradient(100deg, var(--g1, oklch(60% 0.25 295)), var(--g2, oklch(68% 0.22 350)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
