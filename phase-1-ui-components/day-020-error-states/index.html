@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error &amp; empty states · Day 020 · Thecore</title>
+  <meta name="description" content="Six error and empty states: a helpful 404, a server error with automatic retry, offline mode with queued changes, empty states, an access-request page and a dashboard that survives partial failure. Day 020 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></symbol>
+    <symbol id="i-retry" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+    <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M2 2l20 20M8.5 16.4a5 5 0 0 1 7 0M5 12.9a10 10 0 0 1 5.2-2.8M19 12.9a10 10 0 0 0-2.3-1.7M12 20h.01M1.4 9a15 15 0 0 1 4.3-2.7M22.6 9a15 15 0 0 0-11-3.9"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.6a10 10 0 0 1 14 0M8.5 16.1a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0M12 20h.01"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to state">
+        <a href="#e-404">01</a><a href="#e-500">02</a><a href="#e-offline">03</a><a href="#e-empty">04</a><a href="#e-403">05</a><a href="#e-partial">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 020 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Error</em> &amp; empty states</h1>
+      <p class="lead">
+        The screens nobody designs until something goes wrong. Six states that turn a dead end into a next step:
+        a helpful 404, a server error that retries itself, offline mode, empty screens, “you need access” and a dashboard
+        where <strong>one broken part doesn't break the rest</strong>.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>states</li>
+        <li><strong>Auto</strong>retry &amp; backoff</li>
+        <li><strong>Offline</strong>queue &amp; sync</li>
+        <li><strong>No</strong>dead ends</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · 404 ============================ -->
+      <section class="demo" id="e-404" aria-labelledby="e-404-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="e-404-title">Halden <span>· Helpful 404 page</span></h2>
+            <p class="demo__desc">A “page not found” that actually helps. It guesses what you meant from the broken address, offers a search and popular pages, and lets you report the broken link in one click. A little illustration follows your mouse.</p>
+            <ul class="demo__tags" role="list"><li>“Did you mean”</li><li>Search</li><li>Report link</li><li>Playful, not cute</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/wrok/nordlys-identty</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="404 page preview">
+            <div class="err err--404" data-404>
+              <div class="eyes" aria-hidden="true" data-eyes><span><i></i></span><span><i></i></span></div>
+              <p class="err__code">Error 404</p>
+              <h3>This page has wandered off.</h3>
+              <p class="err__lead">We couldn't find <code data-bad-path>/wrok/nordlys-identty</code>. It may have moved, or the link has a typo.</p>
+              <p class="dym" data-dym></p>
+              <form class="err__search" role="search" data-404-search>
+                <svg class="icon"><use href="#i-search"/></svg>
+                <label for="e404-q" class="sr-only">Search the site</label>
+                <input id="e404-q" type="search" placeholder="Search projects and articles" data-404-q>
+                <button class="btn btn--primary btn--sm" type="submit">Search</button>
+              </form>
+              <p class="err__result" aria-live="polite" data-404-result></p>
+              <nav class="err__links" aria-label="Popular pages">
+                <a href="#"><strong>Work</strong><span>Selected projects</span></a>
+                <a href="#"><strong>Studio</strong><span>Who we are</span></a>
+                <a href="#"><strong>Journal</strong><span>Notes on design</span></a>
+                <a href="#"><strong>Contact</strong><span>Start a project</span></a>
+              </nav>
+              <p class="err__foot"><a href="#" class="link-btn" data-home><svg class="icon"><use href="#i-arrow-left"/></svg>Back to the homepage</a> · <button type="button" class="link-btn" data-report>Report this broken link</button></p>
+              <p class="err__reported" role="status" data-reported></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Notice the “Did you mean” suggestion, move your mouse around, search “brand”, then report the link.</p>
+      </section>
+
+      <!-- ============================ 02 · 500 ============================ -->
+      <section class="demo" id="e-500" aria-labelledby="e-500-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="e-500-title">Atlas <span>· Server error with auto-retry</span></h2>
+            <p class="demo__desc">When the server fails, don't make people guess. It explains in plain words, retries by itself with growing waits (2 s, 4 s, 8 s…), shows a reference code support can look up, and links to the status page. It succeeds on the third try.</p>
+            <ul class="demo__tags" role="list"><li>Exponential backoff</li><li>Countdown</li><li>Copy error ID</li><li>Status link</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/projects/website/deployments</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Server error preview">
+            <div class="err err--500" data-500>
+              <div class="err__panel" data-500-error>
+                <span class="err__badge" aria-hidden="true"><svg class="icon"><use href="#i-cloud"/></svg></span>
+                <p class="err__code">Error 503 · Service unavailable</p>
+                <h3>Deployments are taking a short break</h3>
+                <p class="err__lead">Our servers are busy right now. Your projects and data are safe, and nothing you saved has been lost.</p>
+                <div class="retry" aria-live="polite" data-retry-status>
+                  <span class="retry__ring" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"/><circle cx="18" cy="18" r="15" data-ring/></svg></span>
+                  <span data-retry-text>Trying again in 2 s…</span>
+                </div>
+                <div class="err__actions">
+                  <button class="btn btn--primary" type="button" data-retry-now><svg class="icon"><use href="#i-retry"/></svg>Try now</button>
+                  <a class="btn btn--outline" href="#">Check status page</a>
+                </div>
+                <div class="errid">
+                  <span>Reference</span>
+                  <code data-err-id></code>
+                  <button type="button" class="errid__copy" aria-label="Copy reference code" data-copy-id><svg class="icon"><use href="#i-copy"/></svg></button>
+                </div>
+                <details class="err__tech"><summary>Technical details</summary><pre data-tech></pre></details>
+              </div>
+              <div class="err__ok" hidden tabindex="-1" data-500-ok>
+                <span class="err__badge err__badge--ok" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                <h3>We're back</h3>
+                <p class="err__lead">Deployments loaded after <span data-attempts></span> attempts.</p>
+                <ul class="deploys" role="list"><li><b>web-prod #482</b><span>Ready · 2 min ago</span></li><li><b>web-preview #481</b><span>Ready · 1 h ago</span></li><li><b>web-prod #480</b><span>Ready · Yesterday</span></li></ul>
+                <button class="link-btn" type="button" data-500-reset>Replay the error</button>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Wait and watch the waits grow, or press Try now. Copy the reference code. Replay it at the end.</p>
+      </section>
+
+      <!-- ============================ 03 · OFFLINE ============================ -->
+      <section class="demo" id="e-offline" aria-labelledby="e-offline-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="e-offline-title">Lumen <span>· Offline mode</span></h2>
+            <p class="demo__desc">Losing your connection shouldn't lose your work. While offline, the app keeps working, queues your changes and says so clearly. When you're back, it syncs everything and confirms. It reacts to your real connection too.</p>
+            <ul class="demo__tags" role="list"><li>online / offline events</li><li>Queued changes</li><li>Sync on reconnect</li><li>Clear status</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/tasks</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Offline mode preview">
+            <div class="offapp" data-offline>
+              <div class="netbar" role="status" aria-live="polite" data-netbar hidden></div>
+              <div class="offapp__head">
+                <h3>Today's tasks</h3>
+                <label class="switch sim"><input type="checkbox" role="switch" checked data-sim-online>Simulated connection</label>
+              </div>
+              <form class="addtask" data-addtask>
+                <label for="off-new" class="sr-only">New task</label>
+                <input class="input" id="off-new" placeholder="Add a task and press Enter" autocomplete="off" data-newtask>
+                <button class="btn btn--primary" type="submit"><svg class="icon"><use href="#i-plus"/></svg><span>Add</span></button>
+              </form>
+              <ul class="tasks" role="list" data-tasks></ul>
+              <p class="offapp__foot" data-syncinfo></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Turn the simulated connection off, add or tick a few tasks, then turn it back on and watch them sync.</p>
+      </section>
+
+      <!-- ============================ 04 · EMPTY ============================ -->
+      <section class="demo" id="e-empty" aria-labelledby="e-empty-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="e-empty-title">Forma <span>· Empty states</span></h2>
+            <p class="demo__desc">Three kinds of “nothing here”, each needing a different message. <em>First use</em> invites people to start (with templates). <em>No results</em> helps them loosen the search. <em>All done</em> celebrates. Switch between them with the tabs.</p>
+            <ul class="demo__tags" role="list"><li>First use</li><li>No results</li><li>All caught up</li><li>One clear action</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma.app/workspace</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Empty states preview">
+            <div class="empties" data-empties>
+              <div class="etabs" role="tablist" aria-label="Empty state examples">
+                <button type="button" role="tab" id="et-1" aria-controls="ep-1" aria-selected="true"><svg class="icon"><use href="#i-folder"/></svg>Projects</button>
+                <button type="button" role="tab" id="et-2" aria-controls="ep-2" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-search"/></svg>Search</button>
+                <button type="button" role="tab" id="et-3" aria-controls="ep-3" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-inbox"/></svg>Inbox</button>
+              </div>
+
+              <div class="epanel" role="tabpanel" id="ep-1" aria-labelledby="et-1" data-projects-panel>
+                <div class="empty" data-empty-projects>
+                  <div class="empty__art empty__art--folder" aria-hidden="true"><span></span><span></span></div>
+                  <h3>Start your first project</h3>
+                  <p>Projects keep listings, viewings and clients together. Start from scratch or use a template.</p>
+                  <div class="templates" role="group" aria-label="Templates">
+                    <button type="button" data-template="New listing"><strong>New listing</strong><small>Photos, details, viewings</small></button>
+                    <button type="button" data-template="Buyer search"><strong>Buyer search</strong><small>Criteria and shortlist</small></button>
+                    <button type="button" data-template="Open house"><strong>Open house</strong><small>Sign-ups and follow-ups</small></button>
+                  </div>
+                  <button class="btn btn--primary" type="button" data-template="Untitled project"><svg class="icon"><use href="#i-plus"/></svg>Blank project</button>
+                </div>
+                <ul class="plist" role="list" hidden data-plist></ul>
+              </div>
+
+              <div class="epanel" role="tabpanel" id="ep-2" aria-labelledby="et-2" hidden>
+                <div class="esearch">
+                  <div class="esearch__bar"><svg class="icon"><use href="#i-search"/></svg><span>3-bed house in Brighton under £350k with garden</span></div>
+                  <ul class="echips" role="list" aria-label="Active filters" data-echips>
+                    <li><button type="button" data-filter="3 beds">3 beds ×</button></li>
+                    <li><button type="button" data-filter="Brighton">Brighton ×</button></li>
+                    <li><button type="button" data-filter="Under £350k">Under £350k ×</button></li>
+                    <li><button type="button" data-filter="Garden">Garden ×</button></li>
+                  </ul>
+                </div>
+                <div class="empty empty--compact" data-noresults>
+                  <div class="empty__art empty__art--search" aria-hidden="true"><span></span><span></span></div>
+                  <h3 data-noresults-title>No homes match all 4 filters</h3>
+                  <p>Removing <strong>Under £350k</strong> would show <strong>12 homes</strong>. Removing <strong>Garden</strong> would show <strong>5</strong>.</p>
+                  <div class="empty__actions"><button class="btn btn--primary" type="button" data-filter="Under £350k">Remove price limit</button><button class="btn btn--ghost" type="button" data-save-search>Save search &amp; alert me</button></div>
+                  <p class="empty__msg" role="status" data-search-msg></p>
+                </div>
+              </div>
+
+              <div class="epanel" role="tabpanel" id="ep-3" aria-labelledby="et-3" hidden>
+                <div class="empty">
+                  <div class="empty__art empty__art--done" aria-hidden="true"><span></span><span></span><span></span></div>
+                  <h3>Inbox zero. Nice work!</h3>
+                  <p>You've replied to every enquiry. New messages will appear here.</p>
+                  <p class="streak"><strong>5-day</strong> streak of same-day replies</p>
+                  <button class="btn btn--outline" type="button" data-confetti>Celebrate</button>
+                </div>
+              </div>
+              <div class="confetti" aria-hidden="true" data-confetti-box></div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Pick a template to create a project, remove a filter in Search, and press Celebrate in Inbox.</p>
+      </section>
+
+      <!-- ============================ 05 · 403 ============================ -->
+      <section class="demo" id="e-403" aria-labelledby="e-403-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="e-403-title">Atlas <span>· “You need access”</span></h2>
+            <p class="demo__desc">Instead of a cold “403 Forbidden”, tell people whose page it is, which account they're using and how to get in. They can send an access request with a note, and the page shows it's pending. Or they can switch accounts.</p>
+            <ul class="demo__tags" role="list"><li>Who owns it</li><li>Request access</li><li>Pending state</li><li>Switch account</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/docs/q4-roadmap</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Access request preview">
+            <div class="err err--403" data-403>
+              <div class="err__panel err__panel--card">
+                <span class="err__badge err__badge--lock" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span>
+                <h3>You need access to “Q4 roadmap”</h3>
+                <p class="owner"><span class="avatar" style="--h:150" aria-hidden="true">TA</span><span>Owned by <strong>Tom Ashby</strong> in the <strong>Atlas Product</strong> team</span></p>
+                <form class="reqform" novalidate data-req-form>
+                  <label class="fld__label" for="req-msg">Add a note for Tom <span class="fld__optional">optional</span></label>
+                  <textarea class="input" id="req-msg" rows="3" maxlength="300" placeholder="e.g. I'm preparing the Q4 launch slides and need the dates." data-req-msg></textarea>
+                  <fieldset class="reqlevel"><legend class="fld__label">Access you need</legend>
+                    <div class="segmented"><label><input type="radio" name="level" value="view" checked>View</label><label><input type="radio" name="level" value="comment">Comment</label><label><input type="radio" name="level" value="edit">Edit</label></div>
+                  </fieldset>
+                  <button class="btn btn--primary btn--block" type="submit">Request access</button>
+                </form>
+                <div class="pending" hidden tabindex="-1" data-pending>
+                  <p class="pending__title"><span class="pulse" aria-hidden="true"></span>Request sent to Tom</p>
+                  <p data-pending-text></p>
+                  <ol class="steps" aria-label="Request progress"><li class="is-done">Requested</li><li class="is-current" aria-current="step">Waiting for Tom</li><li>Access granted</li></ol>
+                  <div class="pending__actions"><button class="btn btn--outline btn--sm" type="button" data-simulate-approve>Simulate Tom approving</button><button class="link-btn" type="button" data-cancel-req>Cancel request</button></div>
+                </div>
+                <p class="acct">Signed in as <strong data-acct>riya@freelance.dev</strong> · <button type="button" class="link-btn" data-switch>Switch account</button></p>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Write a note and request access, then simulate Tom approving. Switch account shows another path.</p>
+      </section>
+
+      <!-- ============================ 06 · PARTIAL ============================ -->
+      <section class="demo" id="e-partial" aria-labelledby="e-partial-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="e-partial-title">Ember <span>· Partial failure dashboard</span></h2>
+            <p class="demo__desc">Real apps load many things at once, and sometimes one fails. Here each widget loads on its own, shows a skeleton while it waits and handles its own error with a retry. One broken service never blanks the whole page.</p>
+            <ul class="demo__tags" role="list"><li>Independent loading</li><li>Skeletons</li><li>Per-widget retry</li><li>Stale data notice</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-pos.com/dashboard</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Partial failure preview">
+            <div class="pdash" data-partial>
+              <div class="pdash__head"><h3>Tonight at Ember</h3><button class="btn btn--outline btn--sm" type="button" data-reload-all><svg class="icon"><use href="#i-retry"/></svg>Reload all</button></div>
+              <div class="pgrid">
+                <section class="widget" aria-labelledby="w1-h" data-widget="sales" aria-busy="true"><h4 id="w1-h">Sales so far</h4><div class="widget__body" data-body></div></section>
+                <section class="widget" aria-labelledby="w2-h" data-widget="covers" aria-busy="true"><h4 id="w2-h">Covers</h4><div class="widget__body" data-body></div></section>
+                <section class="widget" aria-labelledby="w3-h" data-widget="delivery" aria-busy="true"><h4 id="w3-h">Delivery orders</h4><div class="widget__body" data-body></div></section>
+                <section class="widget widget--wide" aria-labelledby="w4-h" data-widget="reviews" aria-busy="true"><h4 id="w4-h">Latest reviews</h4><div class="widget__body" data-body></div></section>
+                <section class="widget" aria-labelledby="w5-h" data-widget="stock" aria-busy="true"><h4 id="w5-h">Low stock</h4><div class="widget__body" data-body></div></section>
+              </div>
+              <p class="sr-only" role="status" data-partial-live></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Watch widgets arrive one by one. Delivery fails (try Retry), and Reviews shows older saved data. Reload all to replay.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 020</strong> of 100 · Phase 1 complete: 20 days, 120 components. Every state designed, including the bad ones.</p>
+      <p class="showcase-footer__next">Next up · <span>Phase 2: Landing pages</span></p>
+    </div>
+  </footer>
+</body>
+</html>

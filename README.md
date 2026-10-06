@@ -99,4 +99,9 @@ Then open `http://localhost:5500/phase-1-ui-components/day-001-navigation-bars/`
 | 013 | [Modals](phase-1-ui-components/day-013-modals/) | ✅ Done |
 | 014 | [Search Bars](phase-1-ui-components/day-014-search-bars/) | ✅ Done |
 | 015 | [Tables](phase-1-ui-components/day-015-tables/) | ✅ Done |
-| 016 | Profile Pages | ⏳ Next |
+| 016 | [Profile Pages](phase-1-ui-components/day-016-profile-pages/) | ✅ Done |
+| 017 | [Notifications](phase-1-ui-components/day-017-notifications/) | ✅ Done |
+| 018 | [Feature Sections](phase-1-ui-components/day-018-feature-sections/) | ✅ Done |
+| 019 | [Calendars](phase-1-ui-components/day-019-calendars/) | ✅ Done |
+| 020 | [Error States](phase-1-ui-components/day-020-error-states/) | ✅ Done |
+| 021 | Landing Pages (Phase 2) | ⏳ Next |

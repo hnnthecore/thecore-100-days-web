@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feature sections · Day 018 · Thecore</title>
+  <meta name="description" content="Six feature sections: interactive bento grid, auto-advancing feature tabs, alternating service rows with count-up stats, before/after comparison slider, sticky scroll story and a searchable integrations grid. Day 018 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m7 4 13 8-13 8z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M18 10.5c0 4-6 3-10 6"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+    <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to section">
+        <a href="#f-bento">01</a><a href="#f-tabs">02</a><a href="#f-zigzag">03</a><a href="#f-compare">04</a><a href="#f-story">05</a><a href="#f-integrations">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 018 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Feature</em> sections</h1>
+      <p class="lead">
+        Six ways to show what a product or business does: a bento grid, auto-playing feature tabs, alternating service rows,
+        a before/after slider, a scroll story and an integrations directory. Each one <strong>shows the feature working</strong> instead of only describing it.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>section layouts</li>
+        <li><strong>Live</strong>mini demos</li>
+        <li><strong>Scroll</strong>storytelling</li>
+        <li><strong>Before/after</strong>slider</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · BENTO ============================ -->
+      <section class="demo" id="f-bento" aria-labelledby="f-bento-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="f-bento-title">Lumen <span>· Interactive bento grid</span></h2>
+            <p class="demo__desc">The bento layout from modern SaaS sites: tiles of different sizes, each a tiny working demo. A live chart, a privacy switch you can flip, a command you can “run” and a real-time collaborators stack.</p>
+            <ul class="demo__tags" role="list"><li>Bento layout</li><li>Working mini demos</li><li>Container queries</li><li>Hover glow</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.app/features</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Bento grid preview">
+            <section class="fsec fsec--dark" aria-labelledby="bento-h">
+              <p class="kicker">Why Lumen</p>
+              <h3 id="bento-h" class="fsec__title">Everything your team needs. <span>Nothing it doesn't.</span></h3>
+              <div class="bento" data-bento>
+                <article class="tile tile--wide">
+                  <div class="tile__text"><h4><svg class="icon"><use href="#i-chart"/></svg>Real-time analytics</h4><p>See visitors the second they arrive. No sampling, no delays.</p></div>
+                  <div class="live-chart" aria-hidden="true" data-live-chart></div>
+                  <p class="live-stat"><strong data-live-now>142</strong> people on your site right now</p>
+                </article>
+                <article class="tile">
+                  <h4><svg class="icon"><use href="#i-shield"/></svg>Privacy first</h4>
+                  <p>No cookies, no personal data. GDPR-friendly by default.</p>
+                  <label class="switch tile__switch"><input type="checkbox" role="switch" checked data-privacy>Anonymise IPs</label>
+                  <p class="tile__note" aria-live="polite" data-privacy-note>IP addresses are never stored.</p>
+                </article>
+                <article class="tile">
+                  <h4><svg class="icon"><use href="#i-bolt"/></svg>2 kB script</h4>
+                  <p>Lighter than a single icon. Your page speed stays perfect.</p>
+                  <div class="speed" aria-hidden="true"><span style="--w:6%">Lumen</span><span style="--w:64%">Others</span></div>
+                </article>
+                <article class="tile">
+                  <h4><svg class="icon"><use href="#i-code"/></svg>Install in one line</h4>
+                  <pre class="cmd"><code>npm i @lumen/track</code></pre>
+                  <button class="btn btn--sm tile__run" type="button" data-run>Run it</button>
+                  <p class="tile__note" aria-live="polite" data-run-out></p>
+                </article>
+                <article class="tile tile--tall">
+                  <h4><svg class="icon"><use href="#i-users"/></svg>Built for teams</h4>
+                  <p>Share dashboards, leave comments, see who's looking.</p>
+                  <ul class="avatars" role="list" aria-label="People viewing now" data-avatars></ul>
+                  <button class="btn btn--sm btn--ghost tile__invite" type="button" data-invite>+ Invite a teammate</button>
+                </article>
+                <article class="tile tile--wide tile--globe">
+                  <div class="tile__text"><h4><svg class="icon"><use href="#i-globe"/></svg>Hosted in the EU</h4><p>Your data never leaves Frankfurt and Dublin. 99.99% uptime over the last 12 months.</p></div>
+                  <p class="uptime"><strong data-count="99.99" data-decimals="2" data-suffix="%">0%</strong><span>uptime</span></p>
+                </article>
+              </div>
+            </section>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Flip the privacy switch, press “Run it” and invite a teammate. Move your mouse over the tiles.</p>
+      </section>
+
+      <!-- ============================ 02 · TABS ============================ -->
+      <section class="demo" id="f-tabs" aria-labelledby="f-tabs-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="f-tabs-title">Atlas <span>· Auto-playing feature tabs</span></h2>
+            <p class="demo__desc">A list of features on one side and a product preview on the other. It moves through the features by itself, with a progress line under the active one. It pauses when you hover, focus or press pause, and you can always pick a feature yourself.</p>
+            <ul class="demo__tags" role="list"><li>Auto-advance</li><li>Pause control</li><li>Tabs pattern</li><li>Mock screens</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Feature tabs preview">
+            <section class="fsec" aria-labelledby="ftabs-h" data-ftabs>
+              <p class="kicker">Ship faster</p>
+              <h3 id="ftabs-h" class="fsec__title">From commit to customers in minutes</h3>
+              <div class="ftabs">
+                <div class="ftabs__list">
+                  <div role="tablist" aria-label="Atlas features" aria-orientation="vertical">
+                    <button type="button" role="tab" id="ft-1" aria-controls="fp-1" aria-selected="true"><svg class="icon"><use href="#i-git"/></svg><span><strong>Push to deploy</strong><small>Every push builds and goes live, with zero config.</small></span><i class="ftabs__bar"></i></button>
+                    <button type="button" role="tab" id="ft-2" aria-controls="fp-2" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-eye"/></svg><span><strong>Preview every branch</strong><small>Share a live link for every pull request.</small></span><i class="ftabs__bar"></i></button>
+                    <button type="button" role="tab" id="ft-3" aria-controls="fp-3" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-chart"/></svg><span><strong>Watch performance</strong><small>Real-user speed scores after each release.</small></span><i class="ftabs__bar"></i></button>
+                    <button type="button" role="tab" id="ft-4" aria-controls="fp-4" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-shield"/></svg><span><strong>Roll back instantly</strong><small>One click back to any earlier version.</small></span><i class="ftabs__bar"></i></button>
+                  </div>
+                  <button class="ftabs__pause" type="button" aria-pressed="false" data-ftabs-pause><svg class="icon"><use href="#i-pause"/></svg><span>Pause</span></button>
+                </div>
+                <div class="ftabs__stage">
+                  <div role="tabpanel" id="fp-1" aria-labelledby="ft-1" class="screen">
+                    <div class="term" aria-hidden="true"><p><b>$</b> git push origin main</p><p class="muted">→ Building… 12 s</p><p class="muted">→ Uploading to 38 regions…</p><p class="ok">✓ Live at atlas-web.app in 31 s</p></div>
+                    <p class="sr-only">Terminal: git push origin main, built in 12 seconds, live in 31 seconds.</p>
+                  </div>
+                  <div role="tabpanel" id="fp-2" aria-labelledby="ft-2" class="screen" hidden>
+                    <div class="pr" aria-hidden="true"><p class="pr__title"><span class="pr__badge">Open</span> Redesign pricing page <span class="muted">#219</span></p><div class="pr__bot"><span class="avatar" style="--h:285">A</span><div><strong>atlas-bot</strong><p>Preview ready: <u>pricing-redesign.atlas.app</u></p></div></div><div class="pr__thumb"></div></div>
+                    <p class="sr-only">Pull request 219 with a comment from atlas-bot: preview ready.</p>
+                  </div>
+                  <div role="tabpanel" id="fp-3" aria-labelledby="ft-3" class="screen" hidden>
+                    <div class="scores" aria-hidden="true"><div class="ring" style="--v:98"><b>98</b><small>Performance</small></div><div class="ring" style="--v:100"><b>100</b><small>Accessibility</small></div><div class="ring" style="--v:95"><b>95</b><small>Best practices</small></div></div>
+                    <p class="sr-only">Scores: performance 98, accessibility 100, best practices 95.</p>
+                  </div>
+                  <div role="tabpanel" id="fp-4" aria-labelledby="ft-4" class="screen" hidden>
+                    <ol class="history" aria-hidden="true"><li class="is-current"><b>v42</b> Fix checkout copy <small>2 min ago</small><span>Current</span></li><li><b>v41</b> New pricing page <small>1 h ago</small><span class="rb">Roll back</span></li><li><b>v40</b> Faster images <small>Yesterday</small><span class="rb">Roll back</span></li></ol>
+                    <p class="sr-only">Deployment history with a roll back button for each earlier version.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Watch it advance on its own, then hover to pause, or pick a feature (↑ ↓ keys work too).</p>
+      </section>
+
+      <!-- ============================ 03 · ZIGZAG ============================ -->
+      <section class="demo" id="f-zigzag" aria-labelledby="f-zigzag-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="f-zigzag-title">Halden <span>· Alternating service rows</span></h2>
+            <p class="demo__desc">The classic zig-zag layout for agencies and service businesses: picture left, text right, then swapped. Rows fade in as you scroll, and the results count up when they come into view.</p>
+            <ul class="demo__tags" role="list"><li>Zig-zag layout</li><li>Scroll reveal</li><li>Count-up stats</li><li>Reduced-motion safe</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/services</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Service rows preview" data-zz-root>
+            <section class="fsec fsec--paper" aria-labelledby="zz-h">
+              <p class="kicker">What we do</p>
+              <h3 id="zz-h" class="fsec__title fsec__title--serif">Three things, done <em>properly</em>.</h3>
+              <div class="zz">
+                <article class="zz__row" data-reveal>
+                  <div class="zz__art zz__art--brand" aria-hidden="true"><span></span><span></span><span></span></div>
+                  <div class="zz__text">
+                    <p class="zz__num">01</p>
+                    <h4>Brand identity</h4>
+                    <p>Names, logos and visual systems that still feel right in ten years. We start with your story, not the font menu.</p>
+                    <ul class="ticks" role="list"><li>Strategy workshop</li><li>Logo &amp; type system</li><li>Brand guidelines</li></ul>
+                    <p class="zz__stat"><strong data-count="40" data-suffix="+">0</strong> brands launched since 2015</p>
+                  </div>
+                </article>
+                <article class="zz__row zz__row--flip" data-reveal>
+                  <div class="zz__art zz__art--web" aria-hidden="true"><span></span><span></span><span></span></div>
+                  <div class="zz__text">
+                    <p class="zz__num">02</p>
+                    <h4>Websites</h4>
+                    <p>Fast, accessible sites your team can update without calling us. Built on the platform that fits you, not the one we like.</p>
+                    <ul class="ticks" role="list"><li>UX &amp; content design</li><li>Design system</li><li>Development &amp; CMS</li></ul>
+                    <p class="zz__stat"><strong data-count="98" data-suffix="/100">0</strong> average performance score</p>
+                  </div>
+                </article>
+                <article class="zz__row" data-reveal>
+                  <div class="zz__art zz__art--pack" aria-hidden="true"><span></span><span></span><span></span></div>
+                  <div class="zz__text">
+                    <p class="zz__num">03</p>
+                    <h4>Packaging</h4>
+                    <p>Boxes, labels and bags people keep. Designed with printers from day one, so what you approve is what arrives.</p>
+                    <ul class="ticks" role="list"><li>Structure &amp; materials</li><li>Print-ready artwork</li><li>Press checks</li></ul>
+                    <p class="zz__stat"><strong data-count="2.4" data-decimals="1" data-suffix="M">0</strong> boxes printed last year</p>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Scroll inside the preview: rows fade in and the numbers count up once.</p>
+      </section>
+
+      <!-- ============================ 04 · COMPARE ============================ -->
+      <section class="demo" id="f-compare" aria-labelledby="f-compare-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="f-compare-title">Forma <span>· Before / after slider</span></h2>
+            <p class="demo__desc">Show the difference instead of describing it, which works brilliantly for renovations, cleaning, photo editing and redesigns. Drag the handle (or use the arrow keys) to compare, and read the improvements alongside.</p>
+            <ul class="demo__tags" role="list"><li>Drag to compare</li><li>Keyboard slider</li><li>Labelled sides</li><li>Results list</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 620px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma-interiors.com/projects/kitchen</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Before and after preview">
+            <section class="fsec" aria-labelledby="cmp-h">
+              <p class="kicker">Project · Victorian terrace, Bristol</p>
+              <h3 id="cmp-h" class="fsec__title">A dark kitchen, now the brightest room</h3>
+              <div class="compare-wrap">
+                <figure class="compare" data-compare style="--pos:50%">
+                  <div class="room room--after" aria-hidden="true"><span class="win"></span><span class="isl"></span><span class="pend"></span><span class="pend pend--2"></span><span class="cab"></span><span class="plant"></span></div>
+                  <div class="room room--before" aria-hidden="true"><span class="win"></span><span class="isl"></span><span class="cab"></span></div>
+                  <span class="compare__tag compare__tag--before" aria-hidden="true">Before</span>
+                  <span class="compare__tag compare__tag--after" aria-hidden="true">After</span>
+                  <div class="compare__handle" role="slider" tabindex="0" aria-label="Compare before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="Half before, half after" data-handle><span aria-hidden="true">‹ ›</span></div>
+                  <figcaption class="sr-only">The kitchen before the renovation was dark, with small windows and dated cabinets. After: a wide glazed wall, a pale island, pendant lights and plants.</figcaption>
+                </figure>
+                <ul class="results" role="list">
+                  <li><strong>3×</strong>more daylight with a full-width glazed wall</li>
+                  <li><strong>+9 m²</strong>by removing the old pantry wall</li>
+                  <li><strong>A-rated</strong>appliances and underfloor heating</li>
+                  <li><strong>11 weeks</strong>from first visit to first dinner</li>
+                </ul>
+              </div>
+              <div class="compare-quick" role="group" aria-label="Jump to"><button type="button" data-jump="0">Before</button><button type="button" data-jump="50">Half</button><button type="button" data-jump="100">After</button></div>
+            </section>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Drag the round handle, click anywhere on the picture, or focus the handle and use ← → (Home / End jump).</p>
+      </section>
+
+      <!-- ============================ 05 · STORY ============================ -->
+      <section class="demo" id="f-story" aria-labelledby="f-story-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="f-story-title">Nova <span>· Sticky scroll story</span></h2>
+            <p class="demo__desc">Steps scroll on the left while one picture stays pinned on the right and changes to match the step you're reading, the storytelling style used on product launch pages. On phones the picture sits above each step instead.</p>
+            <ul class="demo__tags" role="list"><li>position: sticky</li><li>Step tracking</li><li>Progress dots</li><li>Mobile fallback</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">nova-store.com/how-it-works</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Scroll story preview" data-story-root>
+            <section class="fsec story" aria-labelledby="story-h" data-story>
+              <div class="story__intro"><p class="kicker">How it works</p><h3 id="story-h" class="fsec__title">From click to doorstep in four steps</h3></div>
+              <div class="story__grid">
+                <ol class="story__steps">
+                  <li class="step is-active" data-step="0"><span class="step__pic" aria-hidden="true" data-pic="0"></span><p class="step__n">Step 1</p><h4>Pick your size, risk-free</h4><p>Our fit finder compares your usual size across 40 brands. Not right? Swap it free.</p></li>
+                  <li class="step" data-step="1"><span class="step__pic" aria-hidden="true" data-pic="1"></span><p class="step__n">Step 2</p><h4>Packed the same day</h4><p>Order before 2 pm and it leaves our Leeds warehouse that afternoon, in plastic-free packaging.</p></li>
+                  <li class="step" data-step="2"><span class="step__pic" aria-hidden="true" data-pic="2"></span><p class="step__n">Step 3</p><h4>Track it to your door</h4><p>Live tracking with a one-hour delivery window, and change the day if plans change.</p></li>
+                  <li class="step" data-step="3"><span class="step__pic" aria-hidden="true" data-pic="3"></span><p class="step__n">Step 4</p><h4>Love it, or return it</h4><p>100 days to decide. Print-free QR returns at 4,000 drop-off points.</p></li>
+                </ol>
+                <div class="story__stage" aria-hidden="true">
+                  <div class="stage" data-stage="0">
+                    <div class="pic pic--0"><span class="shoe"></span><span class="size">UK 8 · Perfect fit</span></div>
+                    <div class="pic pic--1"><span class="boxx"></span><span class="tape"></span></div>
+                    <div class="pic pic--2"><span class="map"></span><span class="pin"></span><span class="route"></span></div>
+                    <div class="pic pic--3"><span class="heart"></span><span class="qr"></span></div>
+                  </div>
+                  <ol class="dots"><li></li><li></li><li></li><li></li></ol>
+                </div>
+              </div>
+              <div class="story__end"><a class="btn btn--primary" href="#">Start shopping <svg class="icon"><use href="#i-arrow-right"/></svg></a></div>
+            </section>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Scroll inside the preview: the picture on the right follows the step you're reading. Try Mobile too.</p>
+      </section>
+
+      <!-- ============================ 06 · INTEGRATIONS ============================ -->
+      <section class="demo" id="f-integrations" aria-labelledby="f-integrations-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="f-integrations-title">Ember <span>· Integrations directory</span></h2>
+            <p class="demo__desc">“Does it work with what we already use?” This answers it. Search and filter by category to find a tool, and if it's missing, the empty state lets you request it instead of leaving you at a dead end.</p>
+            <ul class="demo__tags" role="list"><li>Search + categories</li><li>Live count</li><li>Request form</li><li>Popular badges</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember-pos.com/integrations</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Integrations preview">
+            <section class="fsec" aria-labelledby="int-h" data-integrations>
+              <p class="kicker">Integrations</p>
+              <h3 id="int-h" class="fsec__title">Plays nicely with your kitchen</h3>
+              <p class="fsec__lead">Ember POS connects with the delivery, accounting and booking tools restaurants already use.</p>
+              <div class="int-tools">
+                <label class="int-search"><svg class="icon"><use href="#i-search"/></svg><span class="sr-only">Search integrations</span><input type="search" placeholder="Search 24 integrations" data-int-q></label>
+                <div class="int-cats" role="group" aria-label="Categories" data-int-cats></div>
+              </div>
+              <p class="int-count" aria-live="polite" data-int-count></p>
+              <ul class="int-grid" role="list" data-int-grid></ul>
+              <form class="int-request" hidden data-int-request novalidate>
+                <p><strong>Can't find <span data-int-missing></span>?</strong> Tell us and we'll let you know when it's ready.</p>
+                <div class="int-request__row">
+                  <label class="sr-only" for="int-email">Your email</label>
+                  <input class="input" id="int-email" type="email" placeholder="you@restaurant.com" autocomplete="email" data-int-email>
+                  <button class="btn btn--primary" type="submit">Request it</button>
+                </div>
+                <p class="int-request__msg" role="status" data-int-msg></p>
+              </form>
+            </section>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Pick a category, search “pay”, then search for something missing like “Toast” to see the request form.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 018</strong> of 100 · Show the feature working, and the description can be short.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 019: Calendars &amp; date pickers</span></p>
+    </div>
+  </footer>
+</body>
+</html>

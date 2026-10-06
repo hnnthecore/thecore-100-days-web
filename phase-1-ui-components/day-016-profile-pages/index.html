@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile pages · Day 016 · Thecore</title>
+  <meta name="description" content="Six profile pages: creator profile, professional CV, edit profile with live preview, freelancer marketplace profile, developer profile with contribution graph and a doctor profile with appointment booking. Day 016 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-repo" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M8 7h8"/></symbol>
+    <symbol id="i-fork" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="18" cy="5" r="2.5"/><circle cx="12" cy="19" r="2.5"/><path d="M6 7.5v1a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-1M12 11.5v5"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to profile">
+        <a href="#p-creator">01</a><a href="#p-cv">02</a><a href="#p-edit">03</a><a href="#p-freelancer">04</a><a href="#p-dev">05</a><a href="#p-doctor">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 016 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Profile pages</em></h1>
+      <p class="lead">
+        Six profiles for six kinds of people: a creator, a job seeker, someone editing their own account, a freelancer,
+        a developer and a doctor. Each one answers the visitor's real question:
+        <strong>who is this, can I trust them, and what can I do next?</strong>
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>profile types</li>
+        <li><strong>Live</strong>edit preview</li>
+        <li><strong>Booking</strong>built in</li>
+        <li><strong>Tabs</strong>&amp; timelines</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · CREATOR ============================ -->
+      <section class="demo" id="p-creator" aria-labelledby="p-creator-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="p-creator-title">Mira Okafor <span>· Creator profile</span></h2>
+            <p class="demo__desc">The social-media style profile for photographers, artists and influencers. A cover image, a follow button that updates the count, highlights, and tabs for posts, about and saved.</p>
+            <ul class="demo__tags" role="list"><li>Follow toggle</li><li>Tabs</li><li>Photo grid</li><li>Like on posts</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">lumen.social/@mira.okafor</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Creator profile preview">
+            <article class="creator" data-creator>
+              <div class="creator__cover" aria-hidden="true"></div>
+              <div class="creator__wrap">
+                <header class="creator__head">
+                  <span class="creator__avatar" aria-hidden="true">MO</span>
+                  <div class="creator__id">
+                    <h3>Mira Okafor <svg class="icon verified" role="img" aria-label="Verified"><use href="#i-check"/></svg></h3>
+                    <p>@mira.okafor · Photographer</p>
+                  </div>
+                  <div class="creator__actions">
+                    <button class="btn btn--primary follow" type="button" aria-pressed="false" data-follow><span data-follow-label>Follow</span></button>
+                    <button class="btn btn--outline" type="button" aria-label="Message Mira"><svg class="icon"><use href="#i-msg"/></svg></button>
+                  </div>
+                </header>
+                <p class="creator__bio">Light, people and quiet places. Shooting editorial & travel between Lagos and Lisbon. Prints available ↓</p>
+                <ul class="creator__meta" role="list">
+                  <li><svg class="icon"><use href="#i-pin"/></svg>Lisbon, Portugal</li>
+                  <li><svg class="icon"><use href="#i-link"/></svg><a href="#">miraokafor.studio</a></li>
+                </ul>
+                <dl class="creator__stats">
+                  <div><dt>Posts</dt><dd>248</dd></div>
+                  <div><dt>Followers</dt><dd data-followers>12,480</dd></div>
+                  <div><dt>Following</dt><dd>312</dd></div>
+                </dl>
+                <ul class="highlights" role="list" aria-label="Highlights">
+                  <li><span style="--h:30"></span>Lisbon</li><li><span style="--h:200"></span>Coast</li><li><span style="--h:330"></span>Portraits</li><li><span style="--h:90"></span>Prints</li><li><span style="--h:260"></span>BTS</li>
+                </ul>
+                <div class="ptabs" role="tablist" aria-label="Profile sections" data-tabs>
+                  <button type="button" role="tab" id="cr-t1" aria-controls="cr-p1" aria-selected="true"><svg class="icon"><use href="#i-grid"/></svg>Posts</button>
+                  <button type="button" role="tab" id="cr-t2" aria-controls="cr-p2" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-user"/></svg>About</button>
+                  <button type="button" role="tab" id="cr-t3" aria-controls="cr-p3" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-bookmark"/></svg>Saved</button>
+                </div>
+                <div role="tabpanel" id="cr-p1" aria-labelledby="cr-t1" tabindex="0">
+                  <ul class="posts" role="list" data-posts></ul>
+                </div>
+                <div role="tabpanel" id="cr-p2" aria-labelledby="cr-t2" tabindex="0" hidden>
+                  <dl class="about-list">
+                    <div><dt>Specialities</dt><dd>Editorial, travel, portraits</dd></div>
+                    <div><dt>Camera</dt><dd>Leica Q2 · Fujifilm GFX 50R</dd></div>
+                    <div><dt>Clients</dt><dd>Monocle, Kinfolk, Aesop, Airbnb</dd></div>
+                    <div><dt>Joined</dt><dd>March 2019</dd></div>
+                  </dl>
+                </div>
+                <div role="tabpanel" id="cr-p3" aria-labelledby="cr-t3" tabindex="0" hidden>
+                  <p class="empty"><svg class="icon"><use href="#i-bookmark"/></svg><strong>Only Mira can see saved posts</strong>Saved posts are private.</p>
+                </div>
+              </div>
+            </article>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Press Follow, like a photo with its heart, and switch tabs (← → keys work too).</p>
+      </section>
+
+      <!-- ============================ 02 · CV ============================ -->
+      <section class="demo" id="p-cv" aria-labelledby="p-cv-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="p-cv-title">Sofia Lindqvist <span>· Professional profile</span></h2>
+            <p class="demo__desc">A LinkedIn-style profile or online CV. An “Open to work” badge, an experience timeline that expands for older roles, skills colleagues can endorse, language levels and one-click email copy.</p>
+            <ul class="demo__tags" role="list"><li>Experience timeline</li><li>Show more</li><li>Endorse skills</li><li>Copy email</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">sofialindqvist.design</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Professional profile preview">
+            <article class="cv" data-cv>
+              <header class="cv__head">
+                <span class="cv__avatar" aria-hidden="true">SL<i class="cv__otw" title="Open to work"></i></span>
+                <div>
+                  <p class="cv__badge"><span></span>Open to work · Senior product designer roles</p>
+                  <h3>Sofia Lindqvist</h3>
+                  <p class="cv__role">Senior Product Designer · Design systems &amp; fintech</p>
+                  <p class="cv__loc"><svg class="icon"><use href="#i-pin"/></svg>Stockholm · Remote across Europe</p>
+                </div>
+                <div class="cv__actions">
+                  <button class="btn btn--primary" type="button" data-copy-email="sofia@lindqvist.design"><svg class="icon"><use href="#i-mail"/></svg><span>Copy email</span></button>
+                  <a class="btn btn--outline" href="#">Portfolio</a>
+                </div>
+              </header>
+              <div class="cv__grid">
+                <div class="cv__main">
+                  <section class="cv__card" aria-labelledby="cv-about">
+                    <h4 id="cv-about">About</h4>
+                    <p>I design calm, trustworthy products for complicated money problems. Nine years across banking, payments and B2B SaaS; the last four leading design systems used by 60+ engineers.</p>
+                  </section>
+                  <section class="cv__card" aria-labelledby="cv-exp">
+                    <h4 id="cv-exp">Experience</h4>
+                    <ol class="xp" data-xp>
+                      <li><span class="xp__logo" style="--h:150">K</span><div><strong>Lead Product Designer</strong><p>Klarna · Stockholm</p><small>2022 – now · 4 yrs</small><p class="xp__text">Leads the design system (Bubble UI) across 14 product teams; cut new-feature design time by 30%.</p></div></li>
+                      <li><span class="xp__logo" style="--h:260">S</span><div><strong>Senior Product Designer</strong><p>Spotify · Stockholm</p><small>2019 – 2022 · 3 yrs</small><p class="xp__text">Shaped creator payouts and the artist analytics dashboard.</p></div></li>
+                      <li data-older hidden><span class="xp__logo" style="--h:30">N</span><div><strong>Product Designer</strong><p>Nordea · Copenhagen</p><small>2017 – 2019 · 2 yrs</small><p class="xp__text">Redesigned mobile onboarding; app-store rating rose from 3.1 to 4.5.</p></div></li>
+                      <li data-older hidden><span class="xp__logo" style="--h:200">I</span><div><strong>UX Designer</strong><p>IKEA Digital · Malmö</p><small>2015 – 2017 · 2 yrs</small><p class="xp__text">Room-planner research and prototyping.</p></div></li>
+                    </ol>
+                    <button class="link-btn" type="button" aria-expanded="false" data-more>Show 2 earlier roles</button>
+                  </section>
+                  <section class="cv__card" aria-labelledby="cv-edu">
+                    <h4 id="cv-edu">Education</h4>
+                    <p class="edu"><svg class="icon"><use href="#i-cap"/></svg><span><strong>MSc Interaction Design</strong><br><span class="muted">Malmö University · 2013 – 2015</span></span></p>
+                  </section>
+                </div>
+                <aside class="cv__side">
+                  <section class="cv__card" aria-labelledby="cv-skills">
+                    <h4 id="cv-skills">Skills</h4>
+                    <ul class="skills" role="list" data-skills></ul>
+                  </section>
+                  <section class="cv__card" aria-labelledby="cv-lang">
+                    <h4 id="cv-lang">Languages</h4>
+                    <ul class="langs" role="list">
+                      <li><span>Swedish</span><meter min="0" max="5" value="5" aria-label="Swedish level">Native</meter><small>Native</small></li>
+                      <li><span>English</span><meter min="0" max="5" value="5" aria-label="English level">Fluent</meter><small>Fluent</small></li>
+                      <li><span>German</span><meter min="0" max="5" value="3" aria-label="German level">Good</meter><small>Good</small></li>
+                    </ul>
+                  </section>
+                </aside>
+              </div>
+              <p class="sr-only" role="status" data-cv-status></p>
+            </article>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Endorse a skill (+), show the earlier roles, and press Copy email.</p>
+      </section>
+
+      <!-- ============================ 03 · EDIT PROFILE ============================ -->
+      <section class="demo" id="p-edit" aria-labelledby="p-edit-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="p-edit-title">Atlas <span>· Edit profile with live preview</span></h2>
+            <p class="demo__desc">The “edit your profile” screen. Upload a photo (it stays on your device), pick a username and see straight away whether it's free, write a bio with a character counter, and choose an accent colour. The card on the right updates as you type.</p>
+            <ul class="demo__tags" role="list"><li>Photo preview</li><li>Username check</li><li>Live preview</li><li>Character counter</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/settings/profile</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Edit profile preview">
+            <div class="editor" data-editor>
+              <form class="editor__form" novalidate data-edit-form>
+                <h3>Edit profile</h3>
+                <div class="photo">
+                  <span class="photo__img" data-photo aria-hidden="true">RS</span>
+                  <div>
+                    <label class="btn btn--outline btn--sm photo__btn"><svg class="icon"><use href="#i-camera"/></svg>Upload photo<input type="file" accept="image/*" class="sr-only" data-photo-input></label>
+                    <button class="btn btn--ghost btn--sm" type="button" data-photo-remove hidden>Remove</button>
+                    <p class="fld__hint" data-photo-hint>JPG or PNG, up to 5 MB. Stays on your device in this demo.</p>
+                  </div>
+                </div>
+                <div class="fld"><label class="fld__label" for="ed-name">Display name</label><input class="input" id="ed-name" value="Riya Sharma" maxlength="40" data-bind="name"></div>
+                <div class="fld">
+                  <label class="fld__label" for="ed-user">Username</label>
+                  <div class="input-prefix"><span>atlas.dev/</span><input class="input" id="ed-user" value="riya" autocomplete="off" spellcheck="false" aria-describedby="ed-user-msg" data-user></div>
+                  <p class="fld__hint user-msg" id="ed-user-msg" aria-live="polite" data-user-msg>That's your current username.</p>
+                </div>
+                <div class="fld"><label class="fld__label" for="ed-role">Headline</label><input class="input" id="ed-role" value="Product designer at Atlas" maxlength="60" data-bind="role"></div>
+                <div class="fld">
+                  <label class="fld__label" for="ed-bio">Bio <span class="fld__counter" data-counter aria-hidden="true"></span></label>
+                  <textarea class="input" id="ed-bio" rows="3" maxlength="160" aria-describedby="ed-bio-count" data-bind="bio">Designing calm tools for busy teams. Plants, ceramics and long walks.</textarea>
+                  <p class="sr-only" id="ed-bio-count" aria-live="polite" data-counter-sr></p>
+                </div>
+                <fieldset class="fld swatches">
+                  <legend class="fld__label">Profile colour</legend>
+                  <div data-swatches>
+                    <label style="--h:285"><input type="radio" name="accent" value="285" checked><span class="sr-only">Violet</span></label>
+                    <label style="--h:200"><input type="radio" name="accent" value="200"><span class="sr-only">Teal</span></label>
+                    <label style="--h:150"><input type="radio" name="accent" value="150"><span class="sr-only">Green</span></label>
+                    <label style="--h:40"><input type="radio" name="accent" value="40"><span class="sr-only">Orange</span></label>
+                    <label style="--h:350"><input type="radio" name="accent" value="350"><span class="sr-only">Pink</span></label>
+                  </div>
+                </fieldset>
+                <div class="editor__actions">
+                  <button class="btn btn--ghost" type="button" data-reset>Reset</button>
+                  <button class="btn btn--primary" type="submit" data-save>Save profile</button>
+                </div>
+                <p class="editor__saved" role="status" data-saved></p>
+              </form>
+              <aside class="editor__preview" aria-label="Live preview">
+                <p class="editor__label">Live preview</p>
+                <div class="pcard" data-pcard style="--h:285">
+                  <div class="pcard__cover"></div>
+                  <span class="pcard__avatar" data-p-photo>RS</span>
+                  <strong data-p="name">Riya Sharma</strong>
+                  <small>atlas.dev/<span data-p="user">riya</span></small>
+                  <p class="pcard__role" data-p="role">Product designer at Atlas</p>
+                  <p class="pcard__bio" data-p="bio">Designing calm tools for busy teams. Plants, ceramics and long walks.</p>
+                  <span class="pcard__btn" aria-hidden="true">Follow</span>
+                </div>
+              </aside>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Try usernames “admin” or “tom” (taken) and “riya.designs” (free). Upload any image and pick a colour.</p>
+      </section>
+
+      <!-- ============================ 04 · FREELANCER ============================ -->
+      <section class="demo" id="p-freelancer" aria-labelledby="p-freelancer-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="p-freelancer-title">Kai Nakamura <span>· Freelancer profile</span></h2>
+            <p class="demo__desc">A marketplace profile built to win clients. A rating breakdown, packages to compare (Basic, Standard, Premium), real reviews you can mark as helpful, and a hire card that stays in view as you scroll.</p>
+            <ul class="demo__tags" role="list"><li>Rating breakdown</li><li>Package tabs</li><li>Helpful reviews</li><li>Sticky hire card</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forma.work/kai-nakamura</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Freelancer profile preview">
+            <article class="gig" data-gig>
+              <div class="gig__main">
+                <header class="gig__head">
+                  <span class="gig__avatar" aria-hidden="true">KN<i></i></span>
+                  <div>
+                    <h3>Kai Nakamura</h3>
+                    <p>Motion designer · Logo animation &amp; explainers</p>
+                    <p class="gig__rating"><span class="stars" style="--r:4.9" aria-hidden="true"></span><strong>4.9</strong> <span class="muted">(128 reviews) · Top rated · Tokyo, replies in 1 h</span></p>
+                  </div>
+                </header>
+                <div class="gig__reel" aria-hidden="true"><span></span><span></span><span></span></div>
+                <section aria-labelledby="g-rev">
+                  <h4 id="g-rev">Reviews</h4>
+                  <div class="breakdown">
+                    <div class="breakdown__score"><strong>4.9</strong><span class="stars" style="--r:4.9" aria-hidden="true"></span><small>128 reviews</small></div>
+                    <ul class="breakdown__bars" role="list">
+                      <li><span>5 stars</span><meter min="0" max="128" value="117" aria-label="5 stars: 117 reviews"></meter><small>117</small></li>
+                      <li><span>4 stars</span><meter min="0" max="128" value="8" aria-label="4 stars: 8 reviews"></meter><small>8</small></li>
+                      <li><span>3 stars</span><meter min="0" max="128" value="2" aria-label="3 stars: 2 reviews"></meter><small>2</small></li>
+                      <li><span>2 stars</span><meter min="0" max="128" value="1" aria-label="2 stars: 1 review"></meter><small>1</small></li>
+                      <li><span>1 star</span><meter min="0" max="128" value="0" aria-label="1 star: 0 reviews"></meter><small>0</small></li>
+                    </ul>
+                  </div>
+                  <ul class="reviews" role="list" data-reviews></ul>
+                </section>
+              </div>
+              <aside class="hire" aria-label="Hire Kai">
+                <div class="ptabs ptabs--pkg" role="tablist" aria-label="Packages" data-pkg-tabs>
+                  <button type="button" role="tab" aria-selected="false" tabindex="-1" data-pkg="0" id="pk-0" aria-controls="pk-panel">Basic</button>
+                  <button type="button" role="tab" aria-selected="true" data-pkg="1" id="pk-1" aria-controls="pk-panel">Standard</button>
+                  <button type="button" role="tab" aria-selected="false" tabindex="-1" data-pkg="2" id="pk-2" aria-controls="pk-panel">Premium</button>
+                </div>
+                <div class="hire__body" role="tabpanel" id="pk-panel" aria-labelledby="pk-1" data-pkg-panel></div>
+                <button class="btn btn--primary btn--block" type="button" data-hire>Continue</button>
+                <button class="btn btn--ghost btn--block" type="button">Contact Kai</button>
+                <p class="hire__msg" role="status" data-hire-msg></p>
+              </aside>
+            </article>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Compare the three packages, mark a review as helpful and press Continue.</p>
+      </section>
+
+      <!-- ============================ 05 · DEVELOPER ============================ -->
+      <section class="demo" id="p-dev" aria-labelledby="p-dev-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="p-dev-title">Arjun Mehta <span>· Developer profile</span></h2>
+            <p class="demo__desc">The GitHub-style profile developers use as their CV. A year of contributions as a heatmap (hover any day), pinned projects you can star, the languages they use and the badges they've earned.</p>
+            <ul class="demo__tags" role="list"><li>Contribution graph</li><li>Year switcher</li><li>Star projects</li><li>Language bar</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 700px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">codehub.dev/arjunm</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Developer profile preview">
+            <article class="dev" data-dev>
+              <aside class="dev__side">
+                <span class="dev__avatar" aria-hidden="true">AM</span>
+                <h3>Arjun Mehta</h3>
+                <p class="dev__handle">arjunm · he/him</p>
+                <p>Building developer tools in TypeScript & Rust. Maintainer of <a href="#">tiny-router</a>.</p>
+                <p class="dev__meta"><svg class="icon"><use href="#i-pin"/></svg>Bengaluru</p>
+                <p class="dev__meta"><svg class="icon"><use href="#i-globe"/></svg><a href="#">arjun.dev</a></p>
+                <p class="dev__follow"><strong>2.1k</strong> followers · <strong>184</strong> following</p>
+                <h4>Achievements</h4>
+                <ul class="badges" role="list">
+                  <li title="Pull Shark: 128 merged pull requests"><span style="--h:200">🦈</span><span class="sr-only">Pull Shark: 128 merged pull requests</span></li>
+                  <li title="Starstruck: a project with 1,000+ stars"><span style="--h:60">⭐</span><span class="sr-only">Starstruck: a project with 1,000+ stars</span></li>
+                  <li title="Quickdraw: closed an issue within 5 minutes"><span style="--h:20">⚡</span><span class="sr-only">Quickdraw: closed an issue within 5 minutes</span></li>
+                  <li title="Arctic Code Vault contributor"><span style="--h:230">❄️</span><span class="sr-only">Arctic Code Vault contributor</span></li>
+                </ul>
+              </aside>
+              <div class="dev__main">
+                <h4>Pinned</h4>
+                <ul class="repos" role="list" data-repos></ul>
+                <div class="contrib">
+                  <div class="contrib__head">
+                    <h4 data-contrib-title></h4>
+                    <div class="segmented" role="radiogroup" aria-label="Year"><label><input type="radio" name="year" value="2026" checked>2026</label><label><input type="radio" name="year" value="2025">2025</label></div>
+                  </div>
+                  <div class="contrib__scroll" tabindex="0" role="region" aria-label="Contribution graph, scrolls sideways">
+                    <div class="heat" role="img" data-heat></div>
+                  </div>
+                  <div class="contrib__foot"><span data-heat-tip aria-live="polite">Hover or focus the graph to see a day.</span><span class="legend" aria-hidden="true">Less <i data-l="0"></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i> More</span></div>
+                </div>
+                <h4>Languages</h4>
+                <div class="langbar" role="img" aria-label="TypeScript 48%, Rust 27%, Go 12%, CSS 8%, Other 5%"><span style="--w:48%;--c:oklch(60% 0.15 250)"></span><span style="--w:27%;--c:oklch(62% 0.15 40)"></span><span style="--w:12%;--c:oklch(70% 0.12 200)"></span><span style="--w:8%;--c:oklch(60% 0.18 300)"></span><span style="--w:5%;--c:oklch(70% 0.02 270)"></span></div>
+                <ul class="langkey" role="list" aria-hidden="true"><li style="--c:oklch(60% 0.15 250)">TypeScript 48%</li><li style="--c:oklch(62% 0.15 40)">Rust 27%</li><li style="--c:oklch(70% 0.12 200)">Go 12%</li><li style="--c:oklch(60% 0.18 300)">CSS 8%</li><li style="--c:oklch(70% 0.02 270)">Other 5%</li></ul>
+              </div>
+            </article>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Hover the contribution squares, switch the year, and star a pinned project.</p>
+      </section>
+
+      <!-- ============================ 06 · DOCTOR ============================ -->
+      <section class="demo" id="p-doctor" aria-labelledby="p-doctor-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="p-doctor-title">Dr. Lea Moreau <span>· Doctor profile &amp; booking</span></h2>
+            <p class="demo__desc">For clinics, salons, tutors and any business that takes appointments. Credentials that build trust, then booking right on the profile: choose a day, a free time and in-person or video, then confirm.</p>
+            <ul class="demo__tags" role="list"><li>Trust signals</li><li>Day &amp; time picker</li><li>Visit type</li><li>Confirmation</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">sentinel-health.fr/dr-lea-moreau</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Doctor profile preview">
+            <article class="doc" data-doc>
+              <div class="doc__info">
+                <header class="doc__head">
+                  <span class="doc__avatar" aria-hidden="true">LM</span>
+                  <div>
+                    <h3>Dr. Lea Moreau</h3>
+                    <p>General practitioner · Family medicine</p>
+                    <p class="doc__rating"><span class="stars" style="--r:4.8" aria-hidden="true"></span><strong>4.8</strong> <span class="muted">· 312 patient reviews</span></p>
+                  </div>
+                </header>
+                <ul class="trust" role="list">
+                  <li><svg class="icon"><use href="#i-shield"/></svg><span><strong>Verified</strong> by the medical council</span></li>
+                  <li><svg class="icon"><use href="#i-briefcase"/></svg><span><strong>14 years</strong> in practice</span></li>
+                  <li><svg class="icon"><use href="#i-globe"/></svg><span>French, English, Spanish</span></li>
+                </ul>
+                <h4>About</h4>
+                <p class="doc__text">Calm, thorough family doctor with a special interest in women's health and preventive care. Same-week appointments, and video consultations for follow-ups.</p>
+                <h4>Treats</h4>
+                <ul class="treats" role="list"><li>Check-ups</li><li>Women's health</li><li>Vaccinations</li><li>Allergies</li><li>Chronic conditions</li><li>Travel medicine</li></ul>
+                <h4>Practice</h4>
+                <p class="doc__addr"><svg class="icon"><use href="#i-home"/></svg><span>Cabinet Oberkampf · 5 Rue Oberkampf, 75011 Paris<br><span class="muted">Step-free access · Metro Filles du Calvaire</span></span></p>
+              </div>
+              <aside class="book" aria-labelledby="bk-title" data-book>
+                <h4 id="bk-title">Book an appointment</h4>
+                <div class="book__steps" data-book-form>
+                  <fieldset>
+                    <legend>Visit type</legend>
+                    <div class="vtype">
+                      <label><input type="radio" name="vtype" value="In person" checked><svg class="icon"><use href="#i-home"/></svg>In person</label>
+                      <label><input type="radio" name="vtype" value="Video"><svg class="icon"><use href="#i-video"/></svg>Video</label>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>Day</legend>
+                    <div class="days" data-days></div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>Time <span class="muted" data-slot-count></span></legend>
+                    <div class="slots" data-slots></div>
+                  </fieldset>
+                  <button class="btn btn--primary btn--block" type="button" disabled data-book-btn>Choose a time</button>
+                </div>
+                <div class="booked" data-booked hidden tabindex="-1">
+                  <span class="booked__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                  <strong>You're booked!</strong>
+                  <p data-booked-text></p>
+                  <button class="link-btn" type="button" data-rebook>Change appointment</button>
+                </div>
+              </aside>
+            </article>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Pick Video, choose a day and a time, then confirm. Greyed-out times are already taken.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 016</strong> of 100 · A good profile answers: who is this, can I trust them, what can I do next?</p>
+      <p class="showcase-footer__next">Next up · <span>Day 017: Notifications &amp; alerts</span></p>
+    </div>
+  </footer>
+</body>
+</html>

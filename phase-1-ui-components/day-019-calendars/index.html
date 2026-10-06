@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendars · Day 019 · Thecore</title>
+  <meta name="description" content="Six calendars and date pickers: accessible date picker, date range picker with presets, month calendar with events, week schedule, fare calendar and an add-to-calendar event card. Day 019 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to calendar">
+        <a href="#c-picker">01</a><a href="#c-range">02</a><a href="#c-month">03</a><a href="#c-week">04</a><a href="#c-fares">05</a><a href="#c-event">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 019 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Calendars</em> &amp; date pickers</h1>
+      <p class="lead">
+        Six ways to pick and show dates: a fully keyboard-accessible date picker, a hotel-style range picker, a team month calendar,
+        a week schedule, a fare calendar and an “add to calendar” event card. All built on <strong>plain JavaScript dates, with no library</strong>.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>calendar patterns</li>
+        <li><strong>Keyboard</strong>grid navigation</li>
+        <li><strong>Ranges</strong>&amp; presets</li>
+        <li><strong>.ics</strong>export</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · DATE PICKER ============================ -->
+      <section class="demo" id="c-picker" aria-labelledby="c-picker-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="c-picker-title">Atlas <span>· Accessible date picker</span></h2>
+            <p class="demo__desc">Type a date, or open the calendar. It follows the WAI-ARIA date picker pattern: arrow keys move by day and week, Page Up/Down by month (Shift for year), Home/End to the week's ends, and Enter picks. Past dates and weekends can be blocked.</p>
+            <ul class="demo__tags" role="list"><li>Type or pick</li><li>Full keyboard grid</li><li>Disabled dates</li><li>Smart parsing</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/projects/new</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="cpage cpage--narrow">
+              <h3>New project</h3>
+              <form class="pform" novalidate data-pform>
+                <div class="fld"><label class="fld__label" for="pp-name">Project name</label><input class="input" id="pp-name" value="Website relaunch"></div>
+                <div class="fld datefield" data-datepicker>
+                  <label class="fld__label" for="pp-date">Launch date</label>
+                  <div class="datefield__box">
+                    <input class="input" id="pp-date" placeholder="e.g. 24/11/2026 or “next friday”" autocomplete="off" aria-describedby="pp-date-hint" data-date-input>
+                    <button class="datefield__btn" type="button" aria-label="Choose launch date" aria-haspopup="dialog" aria-expanded="false" data-date-open><svg class="icon"><use href="#i-cal"/></svg></button>
+                  </div>
+                  <p class="fld__hint" id="pp-date-hint" aria-live="polite" data-date-hint>Weekdays only, from tomorrow. Type a date or use the calendar.</p>
+                  <div class="dp" role="dialog" aria-modal="true" aria-label="Choose launch date" hidden data-dp>
+                    <div class="dp__head">
+                      <button type="button" class="dp__nav" aria-label="Previous month" data-dp-prev><svg class="icon"><use href="#i-left"/></svg></button>
+                      <h4 class="dp__title" aria-live="polite" data-dp-title></h4>
+                      <button type="button" class="dp__nav" aria-label="Next month" data-dp-next><svg class="icon"><use href="#i-right"/></svg></button>
+                    </div>
+                    <table class="dp__grid" role="grid" data-dp-grid><thead><tr data-dp-dow></tr></thead><tbody data-dp-body></tbody></table>
+                    <div class="dp__foot"><button type="button" class="link-btn" data-dp-today>Next available day</button><button type="button" class="btn btn--ghost btn--sm" data-dp-cancel>Cancel</button></div>
+                  </div>
+                </div>
+                <button class="btn btn--primary" type="submit">Create project</button>
+                <p class="pform__msg" role="status" data-pform-msg></p>
+              </form>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Type “next friday”, “tomorrow” or “24/12”, or press the calendar button and use the arrow keys.</p>
+      </section>
+
+      <!-- ============================ 02 · RANGE ============================ -->
+      <section class="demo" id="c-range" aria-labelledby="c-range-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="c-range-title">Wander <span>· Date range picker</span></h2>
+            <p class="demo__desc">The hotel-style check-in / check-out picker: two months side by side, the range previews as you hover, the nights are counted for you, and presets fill common ranges in one click. Booked-out days can't be inside a stay.</p>
+            <ul class="demo__tags" role="list"><li>Two months</li><li>Hover preview</li><li>Presets</li><li>Blocked dates</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">wander.travel/stays/casa-alfama</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Range picker preview">
+            <div class="cpage" data-range>
+              <div class="range__top">
+                <div><h3>Casa Alfama</h3><p class="muted">Lisbon · from €140 / night</p></div>
+                <div class="range__fields">
+                  <div class="range__field" data-which="start"><span>Check-in</span><strong data-start-out>Add date</strong></div>
+                  <div class="range__field" data-which="end"><span>Check-out</span><strong data-end-out>Add date</strong></div>
+                </div>
+              </div>
+              <div class="presets" role="group" aria-label="Quick picks" data-presets>
+                <button type="button" data-preset="weekend">This weekend</button>
+                <button type="button" data-preset="next-weekend">Next weekend</button>
+                <button type="button" data-preset="week">A week from Monday</button>
+                <button type="button" data-preset="clear">Clear</button>
+              </div>
+              <div class="range__cal">
+                <button type="button" class="dp__nav range__prev" aria-label="Earlier months" data-range-prev><svg class="icon"><use href="#i-left"/></svg></button>
+                <div class="range__months" data-range-months></div>
+                <button type="button" class="dp__nav range__next" aria-label="Later months" data-range-next><svg class="icon"><use href="#i-right"/></svg></button>
+              </div>
+              <div class="range__summary">
+                <p aria-live="polite" data-range-summary>Choose your check-in date.</p>
+                <button class="btn btn--primary" type="button" disabled data-range-book>Reserve</button>
+              </div>
+              <p class="range__legend" aria-hidden="true"><i class="lg-booked"></i>Booked</p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click a check-in day, hover to preview the stay, then click a check-out day. Try a preset.</p>
+      </section>
+
+      <!-- ============================ 03 · MONTH ============================ -->
+      <section class="demo" id="c-month" aria-labelledby="c-month-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="c-month-title">Lumen <span>· Team month calendar</span></h2>
+            <p class="demo__desc">The calendar view of an app. Colour-coded events, “+2 more” when a day is busy, today highlighted, and quick add: click any day, type an event and press Enter. On phones it becomes a dot calendar with an agenda list.</p>
+            <ul class="demo__tags" role="list"><li>Month grid</li><li>Quick add</li><li>Category filters</li><li>Agenda on mobile</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/calendar</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Month calendar preview">
+            <div class="cpage" data-month>
+              <div class="mcal__bar">
+                <h3 data-month-title></h3>
+                <div class="mcal__nav">
+                  <button type="button" class="btn btn--outline btn--sm" data-month-today>Today</button>
+                  <button type="button" class="dp__nav" aria-label="Previous month" data-month-prev><svg class="icon"><use href="#i-left"/></svg></button>
+                  <button type="button" class="dp__nav" aria-label="Next month" data-month-next><svg class="icon"><use href="#i-right"/></svg></button>
+                </div>
+                <div class="cats" role="group" aria-label="Show categories" data-cats>
+                  <label style="--c:var(--ev-team)"><input type="checkbox" value="team" checked>Team</label>
+                  <label style="--c:var(--ev-client)"><input type="checkbox" value="client" checked>Clients</label>
+                  <label style="--c:var(--ev-launch)"><input type="checkbox" value="launch" checked>Launches</label>
+                </div>
+              </div>
+              <div class="mcal" role="grid" aria-labelledby="mcal-label" data-mcal>
+                <span class="sr-only" id="mcal-label" data-mcal-label></span>
+              </div>
+              <div class="agenda" aria-live="polite" data-agenda></div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click an empty part of a day to add an event, untick a category, and switch to Mobile for the agenda view.</p>
+      </section>
+
+      <!-- ============================ 04 · WEEK ============================ -->
+      <section class="demo" id="c-week" aria-labelledby="c-week-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="c-week-title">Halden <span>· Week schedule</span></h2>
+            <p class="demo__desc">A week laid out by the hour, like Google or Outlook calendar. Weekdays get more room than the weekend. Events sit at their real times and lengths, overlapping meetings share the space, and a red line shows the current time. Click any event for its details.</p>
+            <ul class="demo__tags" role="list"><li>Time grid</li><li>Overlap layout</li><li>Now line</li><li>Event details</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 640px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/schedule</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="cpage cpage--week" data-week>
+              <div class="week__bar"><h3 data-week-title></h3><div class="mcal__nav"><button type="button" class="dp__nav" aria-label="Previous week" data-week-prev><svg class="icon"><use href="#i-left"/></svg></button><button type="button" class="btn btn--outline btn--sm" data-week-today>This week</button><button type="button" class="dp__nav" aria-label="Next week" data-week-next><svg class="icon"><use href="#i-right"/></svg></button></div></div>
+              <div class="week" tabindex="0" role="region" aria-label="Week schedule" data-week-scroll>
+                <div class="week__grid" data-week-grid></div>
+              </div>
+              <div class="evpop" role="dialog" aria-labelledby="evpop-title" hidden data-evpop>
+                <button class="evpop__close" type="button" aria-label="Close details" data-evpop-close><svg class="icon"><use href="#i-x"/></svg></button>
+                <h4 id="evpop-title" data-evpop-title></h4>
+                <p data-evpop-when></p>
+                <p data-evpop-where></p>
+                <p class="muted" data-evpop-who></p>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Click an event for details (Esc closes). The red line marks the current time (shown between 08:00 and 19:00).</p>
+      </section>
+
+      <!-- ============================ 05 · FARES ============================ -->
+      <section class="demo" id="c-fares" aria-labelledby="c-fares-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="c-fares-title">Nova Air <span>· Fare calendar</span></h2>
+            <p class="demo__desc">“When is it cheapest?” Each day shows its fare, colour-coded from cheapest to most expensive, sold-out days are crossed out, and the lowest price of the month is starred. Pick a day to see the flights.</p>
+            <ul class="demo__tags" role="list"><li>Price per day</li><li>Colour scale</li><li>Cheapest highlight</li><li>Sold-out days</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 660px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">nova-air.com/fares/lhr-lis</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Fare calendar preview">
+            <div class="cpage" data-fares>
+              <div class="fares__top">
+                <div><p class="route"><strong>London</strong> <svg class="icon"><use href="#i-plane"/></svg> <strong>Lisbon</strong></p><p class="muted">One way · 1 adult · Economy</p></div>
+                <div class="mcal__nav"><button type="button" class="dp__nav" aria-label="Previous month" data-fares-prev><svg class="icon"><use href="#i-left"/></svg></button><h3 data-fares-title></h3><button type="button" class="dp__nav" aria-label="Next month" data-fares-next><svg class="icon"><use href="#i-right"/></svg></button></div>
+              </div>
+              <div class="fares__legend" aria-hidden="true"><span><i class="lv lv--0"></i>Cheapest</span><span><i class="lv lv--1"></i>Low</span><span><i class="lv lv--2"></i>Average</span><span><i class="lv lv--3"></i>High</span></div>
+              <div class="fares" role="grid" aria-labelledby="fares-label" data-fares-grid><span class="sr-only" id="fares-label" data-fares-label></span></div>
+              <div class="flights" aria-live="polite" data-flights><p class="muted">Pick a day to see flights.</p></div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Find the ★ cheapest day, pick it, then compare with next month. Arrow keys work in the grid.</p>
+      </section>
+
+      <!-- ============================ 06 · EVENT ============================ -->
+      <section class="demo" id="c-event" aria-labelledby="c-event-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="c-event-title">Ember <span>· Event card &amp; add to calendar</span></h2>
+            <p class="demo__desc">For events, classes and webinars: a date badge, the time shown in your own time zone (switchable), a live countdown, and “Add to calendar” for Google, Outlook or any calendar app via a real .ics file.</p>
+            <ul class="demo__tags" role="list"><li>Time-zone aware</li><li>Countdown</li><li>Google / Outlook links</li><li>.ics download</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember.kitchen/events/supper-club</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Event card preview">
+            <div class="cpage cpage--event" data-event>
+              <article class="event">
+                <div class="event__art" aria-hidden="true"><span></span></div>
+                <div class="event__body">
+                  <div class="event__head">
+                    <p class="datebadge" aria-hidden="true"><span data-ev-mon></span><strong data-ev-day></strong><small data-ev-dow></small></p>
+                    <div>
+                      <p class="kicker">Supper club</p>
+                      <h3>Autumn harvest: a six-course tasting menu</h3>
+                    </div>
+                  </div>
+                  <ul class="event__facts" role="list">
+                    <li><svg class="icon"><use href="#i-cal"/></svg><span data-ev-date></span></li>
+                    <li><svg class="icon"><use href="#i-clock"/></svg><span data-ev-time></span></li>
+                    <li><svg class="icon"><use href="#i-pin"/></svg><span>Ember Kitchen, 14 Hoxton Square, London</span></li>
+                  </ul>
+                  <div class="tz">
+                    <label for="ev-tz"><svg class="icon"><use href="#i-globe"/></svg>Show times in</label>
+                    <div class="select-wrap"><select class="input" id="ev-tz" data-ev-tz></select></div>
+                  </div>
+                  <p class="countdown" aria-live="off" data-ev-countdown></p>
+                  <div class="event__actions">
+                    <div class="addcal" data-addcal>
+                      <button class="btn btn--primary" type="button" aria-expanded="false" aria-controls="addcal-menu" data-addcal-btn><svg class="icon"><use href="#i-plus"/></svg>Add to calendar<svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                      <ul class="addcal__menu" id="addcal-menu" role="list" hidden data-addcal-menu>
+                        <li><a href="#" target="_blank" rel="noopener" data-cal="google">Google Calendar</a></li>
+                        <li><a href="#" target="_blank" rel="noopener" data-cal="outlook">Outlook.com</a></li>
+                        <li><button type="button" data-cal="ics"><svg class="icon"><use href="#i-download"/></svg>Apple / other (.ics)</button></li>
+                      </ul>
+                    </div>
+                    <p class="event__seats"><strong>8</strong> of 24 seats left · £75</p>
+                  </div>
+                  <p class="event__msg" role="status" data-ev-msg></p>
+                </div>
+              </article>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Change the time zone and watch the time update. Open “Add to calendar”; the .ics option downloads a real file.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 019</strong> of 100 · Dates are hard. Build them on plain local dates and test the edges.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 020: Error &amp; empty states</span></p>
+    </div>
+  </footer>
+</body>
+</html>

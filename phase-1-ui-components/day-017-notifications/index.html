@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notifications · Day 017 · Thecore</title>
+  <meta name="description" content="Six notification patterns: toast system, notification centre, inline alerts, announcement banners, notification preferences with push permission and an upload progress tray. Day 017 of Thecore's 100 Days of Web Development.">
+  <meta name="theme-color" content="#f9f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121219" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235b3fd9'/%3E%3Cpath d='M10 11h12M16 11v11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('thecore-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../../packages/design-system/tokens.css">
+  <link rel="stylesheet" href="../../packages/design-system/base.css">
+  <link rel="stylesheet" href="../../packages/design-system/components.css">
+  <link rel="stylesheet" href="../../packages/design-system/forms.css">
+  <link rel="stylesheet" href="../../packages/showcase/showcase.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../packages/showcase/showcase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m7 4 13 8-13 8z"/></symbol>
+    <symbol id="i-retry" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-phone-msg" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M10 6h4"/></symbol>
+    <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  </svg>
+
+  <header class="showcase-header">
+    <div class="container showcase-header__inner">
+      <a class="showcase-brand" href="../../index.html">
+        <span class="showcase-brand__mark" aria-hidden="true">T</span>
+        Thecore <small>/ 100 Days</small>
+      </a>
+      <nav class="showcase-toc" aria-label="Jump to pattern">
+        <a href="#n-toasts">01</a><a href="#n-centre">02</a><a href="#n-alerts">03</a><a href="#n-banners">04</a><a href="#n-prefs">05</a><a href="#n-uploads">06</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="icon icon--moon"><use href="#i-moon"/></svg>
+        <svg class="icon icon--sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro container">
+      <p class="eyebrow"><span class="pill">Day 017 / 100</span> Phase 1 · UI Components</p>
+      <h1><em>Notifications</em> &amp; alerts</h1>
+      <p class="lead">
+        Six ways to tell people what just happened, without nagging. Quick toasts, a notification centre,
+        inline alerts, site banners, notification preferences and progress for long tasks. Every message is
+        <strong>announced to screen readers</strong> and can be dismissed.
+      </p>
+      <ul class="intro__stats" role="list">
+        <li><strong>6</strong>notification patterns</li>
+        <li><strong>Live</strong>regions</li>
+        <li><strong>Undo</strong>&amp; retry</li>
+        <li><strong>Pause</strong>on hover</li>
+      </ul>
+    </section>
+
+    <div class="container">
+
+      <!-- ============================ 01 · TOASTS ============================ -->
+      <section class="demo" id="n-toasts" aria-labelledby="n-toasts-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">01</p>
+            <h2 class="demo__title" id="n-toasts-title">Lumen <span>· Toast system</span></h2>
+            <p class="demo__desc">Small messages that appear, stack and leave on their own. A progress line shows the time left, and it pauses while you hover or focus a toast. Toasts can carry an Undo, follow a slow task from “Saving…” to “Saved”, and be swiped away.</p>
+            <ul class="demo__tags" role="list"><li>Stacking</li><li>Pause on hover</li><li>Promise toast</li><li>Swipe to dismiss</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 560px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">app.lumen.app/projects</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="npage" data-toast-demo>
+              <h3>Try a toast</h3>
+              <p class="npage__lead">Each button triggers the kind of message a real app sends.</p>
+              <div class="trigger-grid">
+                <button class="trig" type="button" data-toast="success"><svg class="icon"><use href="#i-check"/></svg><span><strong>Success</strong><small>Project saved</small></span></button>
+                <button class="trig" type="button" data-toast="error"><svg class="icon"><use href="#i-alert"/></svg><span><strong>Error</strong><small>Payment failed, with retry</small></span></button>
+                <button class="trig" type="button" data-toast="undo"><svg class="icon"><use href="#i-x"/></svg><span><strong>Undo</strong><small>Archive a project</small></span></button>
+                <button class="trig" type="button" data-toast="promise"><svg class="icon"><use href="#i-retry"/></svg><span><strong>Promise</strong><small>Saving… → Saved</small></span></button>
+              </div>
+              <div class="pos" role="radiogroup" aria-label="Toast position">
+                <span>Position</span>
+                <div class="segmented"><label><input type="radio" name="tpos" value="br" checked>Bottom right</label><label><input type="radio" name="tpos" value="bc">Bottom centre</label><label><input type="radio" name="tpos" value="tr">Top right</label></div>
+              </div>
+              <ul class="projects" role="list" data-projects></ul>
+            </div>
+            <section class="toaster" data-toaster data-pos="br" aria-label="Notifications">
+              <ol class="toaster__list" data-toast-list></ol>
+            </section>
+            <div class="sr-only" role="status" aria-live="polite" data-live-polite></div>
+            <div class="sr-only" role="alert" aria-live="assertive" data-live-assertive></div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Fire several toasts quickly to see them stack. Hover one to pause it, drag it sideways to dismiss it.</p>
+      </section>
+
+      <!-- ============================ 02 · CENTRE ============================ -->
+      <section class="demo" id="n-centre" aria-labelledby="n-centre-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">02</p>
+            <h2 class="demo__title" id="n-centre-title">Atlas <span>· Notification centre</span></h2>
+            <p class="demo__desc">The bell in an app header. An unread badge, a panel grouped into Today and Earlier, tabs for All and Mentions, “Mark all as read”, and new notifications that arrive live while you watch.</p>
+            <ul class="demo__tags" role="list"><li>Unread badge</li><li>Grouped by day</li><li>Mark as read</li><li>Live arrivals</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">atlas.dev/dashboard</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="appbar-page" data-centre>
+              <header class="appbar">
+                <strong>Atlas</strong>
+                <nav aria-label="Main"><a href="#" aria-current="page">Dashboard</a><a href="#">Deployments</a><a href="#">Team</a></nav>
+                <div class="bell">
+                  <button class="bell__btn" type="button" aria-expanded="false" aria-controls="ncentre" data-bell><svg class="icon"><use href="#i-bell"/></svg><span class="bell__badge" data-badge></span><span class="sr-only" data-bell-label></span></button>
+                  <div class="ncentre" id="ncentre" role="region" aria-label="Notifications" hidden data-panel>
+                    <div class="ncentre__head">
+                      <h3>Notifications</h3>
+                      <button class="link-btn" type="button" data-mark-all>Mark all as read</button>
+                    </div>
+                    <div class="ncentre__tabs" role="tablist" aria-label="Filter notifications" data-ntabs>
+                      <button type="button" role="tab" aria-selected="true" aria-controls="nlist" data-f="all">All</button>
+                      <button type="button" role="tab" aria-selected="false" aria-controls="nlist" tabindex="-1" data-f="mention">Mentions</button>
+                      <button type="button" role="tab" aria-selected="false" aria-controls="nlist" tabindex="-1" data-f="unread">Unread</button>
+                    </div>
+                    <div class="ncentre__list" id="nlist" role="tabpanel" data-nlist></div>
+                    <div class="ncentre__foot"><label class="switch"><input type="checkbox" role="switch" checked data-live-toggle>Live updates</label><a href="#n-prefs">Settings</a></div>
+                  </div>
+                </div>
+                <span class="avatar" style="--h:265" aria-hidden="true">RS</span>
+              </header>
+              <div class="appbar-page__body"><div class="mock-cards"><span></span><span></span><span></span><span class="wide"></span></div></div>
+              <div class="sr-only" role="status" aria-live="polite" data-centre-live></div>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Open the bell, click a notification to mark it read, switch tabs. Leave it open: a new one arrives every few seconds.</p>
+      </section>
+
+      <!-- ============================ 03 · INLINE ALERTS ============================ -->
+      <section class="demo" id="n-alerts" aria-labelledby="n-alerts-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">03</p>
+            <h2 class="demo__title" id="n-alerts-title">Halden <span>· Inline alerts</span></h2>
+            <p class="demo__desc">Alerts that live inside the page, next to what they're about. Four tones (info, success, warning, error), each with its own icon so colour is never the only signal. Some have actions, some expandable details, and the form shows an error summary that links to each field.</p>
+            <ul class="demo__tags" role="list"><li>4 tones + icons</li><li>Actions</li><li>Expandable details</li><li>Error summary</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">halden.studio/account/billing</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Inline alerts preview">
+            <div class="npage npage--narrow" data-alerts>
+              <h3>Billing</h3>
+              <div class="alert alert--info" data-alert>
+                <svg class="icon alert__icon" aria-hidden="true"><use href="#i-info"/></svg>
+                <div class="alert__body"><p class="alert__title">Prices are changing on 1 January</p><p>Pro moves from £20 to £24 a month. Your current price is locked for 12 months.</p></div>
+                <button class="alert__close" type="button" aria-label="Dismiss: Prices are changing" data-dismiss><svg class="icon"><use href="#i-x"/></svg></button>
+              </div>
+              <div class="alert alert--success" data-alert>
+                <svg class="icon alert__icon" aria-hidden="true"><use href="#i-check"/></svg>
+                <div class="alert__body"><p class="alert__title">Payment received</p><p>£240.00 for the annual Pro plan. A receipt is on its way to billing@halden.studio.</p></div>
+                <button class="alert__close" type="button" aria-label="Dismiss: Payment received" data-dismiss><svg class="icon"><use href="#i-x"/></svg></button>
+              </div>
+              <div class="alert alert--warning" data-alert>
+                <svg class="icon alert__icon" aria-hidden="true"><use href="#i-warn"/></svg>
+                <div class="alert__body">
+                  <p class="alert__title">Your card expires next month</p>
+                  <p>Visa ending 4242 expires 11/26. Update it to avoid any interruption.</p>
+                  <div class="alert__actions"><button class="btn btn--sm alert__btn" type="button" data-update-card>Update card</button><button class="btn btn--ghost btn--sm" type="button" data-dismiss>Remind me later</button></div>
+                </div>
+              </div>
+              <div class="alert alert--error" data-alert>
+                <svg class="icon alert__icon" aria-hidden="true"><use href="#i-alert"/></svg>
+                <div class="alert__body">
+                  <p class="alert__title">2 invoices failed to sync with Xero</p>
+                  <details class="alert__details"><summary>Show details</summary>
+                    <ul role="list"><li><code>INV-2044</code> Tax rate “Zero rated EC” not found in Xero.</li><li><code>INV-2046</code> Contact “Studio Moreau” is archived.</li></ul>
+                  </details>
+                  <div class="alert__actions"><button class="btn btn--sm alert__btn" type="button" data-retry-sync>Retry sync</button></div>
+                </div>
+              </div>
+
+              <form class="bform" novalidate data-bform>
+                <h4>Billing details</h4>
+                <div class="error-summary" role="alert" tabindex="-1" hidden data-summary>
+                  <p class="alert__title">Please fix 0 problems</p>
+                  <ul role="list" data-summary-list></ul>
+                </div>
+                <div class="fld"><label class="fld__label" for="bf-name">Company name</label><input class="input" id="bf-name" name="name" required data-msg="Enter your company name"><p class="fld__error" id="bf-name-e" hidden></p></div>
+                <div class="fld"><label class="fld__label" for="bf-vat">VAT number <span class="fld__optional">optional</span></label><input class="input" id="bf-vat" name="vat" placeholder="GB123456789" data-pattern="^(GB)?\d{9}$" data-msg="VAT numbers look like GB123456789"><p class="fld__error" id="bf-vat-e" hidden></p></div>
+                <div class="fld"><label class="fld__label" for="bf-email">Invoice email</label><input class="input" id="bf-email" name="email" type="email" required data-msg="Enter an email address like name@company.com"><p class="fld__error" id="bf-email-e" hidden></p></div>
+                <button class="btn btn--primary" type="submit">Save billing details</button>
+              </form>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Dismiss an alert, open the error details, press Retry sync, then submit the empty form and use the summary links.</p>
+      </section>
+
+      <!-- ============================ 04 · BANNERS ============================ -->
+      <section class="demo" id="n-banners" aria-labelledby="n-banners-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">04</p>
+            <h2 class="demo__title" id="n-banners-title">Nova <span>· Announcement banners</span></h2>
+            <p class="demo__desc">Site-wide messages above the header: a sale with a live countdown, a planned-maintenance notice and a rotating announcement bar. Dismissed banners stay dismissed when you come back.</p>
+            <ul class="demo__tags" role="list"><li>Live countdown</li><li>Remembered dismiss</li><li>Rotating messages</li><li>Pause control</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 560px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">nova-store.com</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="store" data-banners>
+              <div class="ticker" role="region" aria-roledescription="announcement bar" aria-label="Announcements">
+                <p class="ticker__msg" aria-live="off" data-ticker></p>
+                <button class="ticker__pause" type="button" aria-pressed="false" aria-label="Pause announcements" data-ticker-pause><svg class="icon"><use href="#i-pause"/></svg></button>
+              </div>
+              <div class="banner banner--sale" role="region" aria-label="Sale" data-banner="sale">
+                <svg class="icon" aria-hidden="true"><use href="#i-gift"/></svg>
+                <p><strong>Autumn sale: 30% off everything.</strong> Ends in <span class="countdown" data-countdown aria-hidden="true"></span><span class="sr-only" data-countdown-sr></span></p>
+                <a class="banner__cta" href="#">Shop the sale</a>
+                <button class="banner__close" type="button" aria-label="Dismiss sale banner" data-close-banner><svg class="icon"><use href="#i-x"/></svg></button>
+              </div>
+              <div class="banner banner--maint" role="region" aria-label="Planned maintenance" data-banner="maint">
+                <svg class="icon" aria-hidden="true"><use href="#i-tool"/></svg>
+                <p>Checkout will be unavailable on <strong>Sunday 12 Oct, 02:00–03:00 BST</strong> for planned maintenance.</p>
+                <button class="banner__close" type="button" aria-label="Dismiss maintenance notice" data-close-banner><svg class="icon"><use href="#i-x"/></svg></button>
+              </div>
+              <header class="store__bar"><strong>nova</strong><nav aria-label="Shop"><a href="#">New in</a><a href="#">Shoes</a><a href="#">Bags</a><a href="#">Sale</a></nav></header>
+              <div class="store__hero"><h3>Made to walk further.</h3><p>New autumn collection, now in store.</p></div>
+              <p class="store__reset"><button class="link-btn" type="button" data-reset-banners>Bring dismissed banners back</button></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Dismiss a banner and reload the page: it stays hidden. Pause the rotating bar at the top.</p>
+      </section>
+
+      <!-- ============================ 05 · PREFERENCES ============================ -->
+      <section class="demo" id="n-prefs" aria-labelledby="n-prefs-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">05</p>
+            <h2 class="demo__title" id="n-prefs-title">Forge <span>· Notification preferences</span></h2>
+            <p class="demo__desc">Let people choose what reaches them and how. A grid of topics × channels (email, push, SMS), quiet hours, and a polite pre-permission card that only asks the browser for push permission when you press the button.</p>
+            <ul class="demo__tags" role="list"><li>Topic × channel grid</li><li>Soft permission ask</li><li>Real browser notification</li><li>Quiet hours</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 680px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">forge.fit/settings/notifications</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="0" role="region" aria-label="Notification preferences preview">
+            <div class="npage npage--forge" data-prefs>
+              <h3>Notifications</h3>
+              <div class="pushcard" data-pushcard>
+                <span class="pushcard__icon" aria-hidden="true"><svg class="icon"><use href="#i-bell"/></svg></span>
+                <div>
+                  <strong data-push-title>Never miss a class change</strong>
+                  <p data-push-text>Turn on browser notifications and we'll tell you when a class you booked moves or a spot opens up.</p>
+                </div>
+                <div class="pushcard__actions">
+                  <button class="btn btn--primary btn--sm" type="button" data-push-enable>Turn on</button>
+                  <button class="btn btn--ghost btn--sm" type="button" data-push-later>Not now</button>
+                </div>
+              </div>
+              <div class="twrap">
+                <table class="matrix">
+                  <caption class="sr-only">Choose which channels each topic uses</caption>
+                  <thead><tr><th scope="col">Topic</th><th scope="col"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Email</th><th scope="col"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>Push</th><th scope="col"><svg class="icon" aria-hidden="true"><use href="#i-phone-msg"/></svg>SMS</th></tr></thead>
+                  <tbody data-matrix></tbody>
+                </table>
+              </div>
+              <fieldset class="quiet">
+                <legend><label class="switch"><input type="checkbox" role="switch" checked data-quiet>Quiet hours</label></legend>
+                <p class="quiet__text">No push or SMS between</p>
+                <div class="quiet__times" data-quiet-times>
+                  <label><span class="sr-only">From</span><input class="input" type="time" value="22:00" data-from></label>
+                  <span aria-hidden="true">–</span>
+                  <label><span class="sr-only">To</span><input class="input" type="time" value="07:00" data-to></label>
+                </div>
+              </fieldset>
+              <p class="prefs__saved" role="status" data-prefs-status></p>
+            </div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Tick and untick channels (changes save automatically), or press Turn on to see the real browser permission prompt.</p>
+      </section>
+
+      <!-- ============================ 06 · UPLOADS ============================ -->
+      <section class="demo" id="n-uploads" aria-labelledby="n-uploads-title">
+        <div class="demo__head">
+          <div>
+            <p class="demo__index">06</p>
+            <h2 class="demo__title" id="n-uploads-title">Ember <span>· Upload progress tray</span></h2>
+            <p class="demo__desc">For long tasks that keep going while you work: a tray in the corner, like Google Drive's. Each file shows progress and time left, and can be paused, cancelled or retried. The tray collapses to a summary, and failures are explained.</p>
+            <ul class="demo__tags" role="list"><li>Progress + ETA</li><li>Pause / cancel</li><li>Error + retry</li><li>Collapsible tray</li></ul>
+          </div>
+          <div class="viewport-switch" role="group" aria-label="Preview width">
+            <button type="button" data-viewport="desktop" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg><span class="sr-only">Desktop</span></button>
+            <button type="button" data-viewport="tablet" aria-pressed="false"><svg class="icon"><use href="#i-tablet"/></svg><span class="sr-only">Tablet</span></button>
+            <button type="button" data-viewport="mobile" aria-pressed="false"><svg class="icon"><use href="#i-phone"/></svg><span class="sr-only">Mobile</span></button>
+          </div>
+        </div>
+        <div class="frame" data-frame data-viewport="desktop" style="--frame-h: 600px">
+          <div class="frame__chrome" aria-hidden="true"><span class="frame__dots"><i></i><i></i><i></i></span><span class="frame__url">ember.kitchen/media</span></div>
+          <div class="frame__viewport"><div class="frame__scroller" data-scroll-root tabindex="-1">
+            <div class="npage" data-uploads>
+              <h3>Menu photos</h3>
+              <p class="npage__lead">Upload photos for this season's menu. Nothing leaves your computer in this demo.</p>
+              <label class="drop" data-drop>
+                <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+                <strong>Choose files or drop them here</strong>
+                <small>Your own files work, or use the sample set below.</small>
+                <input type="file" multiple class="sr-only" data-files>
+              </label>
+              <button class="btn btn--outline btn--sm" type="button" data-sample>Upload 5 sample photos</button>
+            </div>
+            <section class="tray" aria-labelledby="tray-title" hidden data-tray>
+              <header class="tray__head">
+                <h4 id="tray-title" data-tray-title>Uploading</h4>
+                <button class="tray__btn" type="button" aria-expanded="true" aria-controls="tray-list" aria-label="Collapse uploads" data-tray-toggle><svg class="icon"><use href="#i-chevron-down"/></svg></button>
+                <button class="tray__btn" type="button" aria-label="Close uploads" data-tray-close><svg class="icon"><use href="#i-x"/></svg></button>
+              </header>
+              <div class="tray__summary" data-tray-summary></div>
+              <ul class="tray__list" id="tray-list" role="list" data-tray-list></ul>
+            </section>
+            <div class="sr-only" role="status" aria-live="polite" data-upload-live></div>
+          </div></div>
+        </div>
+        <p class="demo__hint"><svg class="icon"><use href="#i-mouse"/></svg> Upload the samples. One fails on purpose, so press Retry. Pause another, then collapse the tray.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="showcase-footer">
+    <div class="container showcase-footer__inner">
+      <p><strong>Day 017</strong> of 100 · Tell people what happened, what it means and what they can do next.</p>
+      <p class="showcase-footer__next">Next up · <span>Day 018: Feature sections</span></p>
+    </div>
+  </footer>
+</body>
+</html>
