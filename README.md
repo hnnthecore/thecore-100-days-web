@@ -104,4 +104,9 @@ Then open `http://localhost:5500/phase-1-ui-components/day-001-navigation-bars/`
 | 018 | [Feature Sections](phase-1-ui-components/day-018-feature-sections/) | ✅ Done |
 | 019 | [Calendars](phase-1-ui-components/day-019-calendars/) | ✅ Done |
 | 020 | [Error States](phase-1-ui-components/day-020-error-states/) | ✅ Done |
-| 021 | Landing Pages (Phase 2) | ⏳ Next |
+| 021 | [Sol y Sal](phase-2-landing-pages/site/day-021-restaurant/) | ✅ Done |
+| 022 | [Forno Rosso](phase-2-landing-pages/site/day-022-pizzeria/) | ✅ Done |
+| 023 | [Northgate Motorworks](phase-2-landing-pages/site/day-023-workshop/) | ✅ Done |
+| 024 | [Halden & Rowe](phase-2-landing-pages/site/day-024-construction/) | ✅ Done |
+| 025 | [Pace Logistics](phase-2-landing-pages/site/day-025-transport/) | ✅ Done |
+| 026 | Hair Salon | ⏳ Next |

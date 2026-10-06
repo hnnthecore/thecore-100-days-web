@@ -1,0 +1,309 @@
+---
+/**
+ * Day 022 · Pizzeria landing page · “Forno Rosso”, a Neapolitan pizzeria with delivery.
+ * Six signature sections: Hero · Classics · Build your own · Dough journey · Delivery & deals · Reviews & find us.
+ * Mood: 1960s Italian poster: tomato red, cream, basil; tall condensed Anton type; checkerboards.
+ */
+import '@fontsource/anton';
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/dm-sans/wght-italic.css';
+import Landing from '../../layouts/Landing.astro';
+import Pizza from '../../components/day-022/Pizza.astro';
+import '../../days/day-022/styles.css';
+
+const CLASSICS = [
+  { id: 'margherita', name: 'Margherita', desc: 'San Marzano tomato, fior di latte, basil, olive oil', price: 9.5, toppings: ['mozzarella', 'basil'], tags: ['V'], seed: 11 },
+  { id: 'diavola', name: 'Diavola', desc: 'Spicy salami, fior di latte, chilli oil', price: 12, toppings: ['mozzarella', 'pepperoni'], tags: ['🌶'], seed: 12 },
+  { id: 'funghi', name: 'Funghi', desc: 'Wild mushrooms, fior di latte, thyme', price: 11, toppings: ['mozzarella', 'mushroom'], tags: ['V'], seed: 13, sauce: 'bianca' as const },
+  { id: 'nduja', name: '’Nduja & hot honey', desc: 'Calabrian ’nduja, fior di latte, hot honey, rocket', price: 13, toppings: ['mozzarella', 'nduja', 'rocket'], tags: ['🌶', 'New'], seed: 14 },
+  { id: 'ortolana', name: 'Ortolana', desc: 'Peppers, olives, mushrooms, basil', price: 12, toppings: ['mozzarella', 'pepper', 'olive', 'mushroom'], tags: ['V'], seed: 15 },
+  { id: 'marinara', name: 'Marinara', desc: 'Tomato, garlic, oregano, olive oil. The original vegan pizza', price: 8, toppings: ['basil'], tags: ['VG'], seed: 16 },
+];
+
+const TOPPINGS = [
+  { id: 'mozzarella', name: 'Fior di latte', price: 1.5 },
+  { id: 'basil', name: 'Basil', price: 0.5 },
+  { id: 'pepperoni', name: 'Spicy salami', price: 2 },
+  { id: 'mushroom', name: 'Mushrooms', price: 1.5 },
+  { id: 'olive', name: 'Olives', price: 1.5 },
+  { id: 'pepper', name: 'Roast peppers', price: 1.5 },
+  { id: 'nduja', name: '’Nduja', price: 2.5 },
+  { id: 'rocket', name: 'Rocket', price: 1 },
+  { id: 'pineapple', name: 'Pineapple', price: 1.5 },
+];
+
+const DOUGH = [
+  { h: '0h', title: 'Mix', text: 'Caputo “00” flour, sea salt, a pinch of yeast and cold water. That’s all.' },
+  { h: '2h', title: 'Rest', text: 'The dough relaxes at room temperature so the gluten can line up.' },
+  { h: '24h', title: 'Cold prove', text: 'A day in the fridge builds flavour and those big, airy bubbles.' },
+  { h: '46h', title: 'Ball', text: 'Shaped by hand into 270 g balls, then left to wake up.' },
+  { h: '48h', title: '90 seconds', text: 'Stretched by hand and blistered at 485 °C in our wood-fired oven.' },
+];
+
+const REVIEWS = [
+  { q: 'Leopard-spotted crust, soupy middle, exactly like Naples. The ’nduja one is outrageous.', who: 'Marco B.', stars: 5 },
+  { q: 'Built my own with pineapple and they didn’t judge me. Arrived hot in 22 minutes.', who: 'Hannah K.', stars: 5 },
+  { q: 'The best Marinara in London, and it happens to be vegan.', who: 'Sam O.', stars: 5 },
+];
+---
+<Landing
+  title="Forno Rosso · Neapolitan pizza, wood-fired in Hackney"
+  description="48-hour dough, 485 °C wood oven, 90 seconds. Order Neapolitan pizza for delivery or collection from Forno Rosso, Hackney. (Day 022 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#d8381e"
+  icon="🍕"
+  day={22}
+>
+  <div class="fr">
+    <!-- =========================== HEADER =========================== -->
+    <header class="fr-header" data-header>
+      <div class="fr-wrap flex flex-wrap items-center justify-between gap-x-4 py-3 md:h-20 md:flex-nowrap md:py-0">
+        <a href="#top" class="fr-logo" aria-label="Forno Rosso, home"><span class="fr-logo__mark" aria-hidden="true">FR</span><span>Forno Rosso</span></a>
+        <nav aria-label="Main" class="order-last -mx-5 w-[calc(100%+2.5rem)] overflow-x-auto px-5 pt-3 md:order-none md:mx-0 md:w-auto md:overflow-visible md:p-0">
+          <ul class="flex gap-6 whitespace-nowrap text-sm font-bold uppercase tracking-[0.14em] md:gap-7">
+            <li><a href="#classics">Pizzas</a></li><li><a href="#build">Build your own</a></li><li><a href="#dough">Our dough</a></li><li><a href="#delivery">Delivery</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="fr-cartbtn" aria-haspopup="dialog" aria-controls="fr-cart" data-cart-open>
+          <span aria-hidden="true">🛵</span><span class="hidden sm:inline">Your order</span>
+          <b class="fr-cartbtn__count" data-cart-count>0</b>
+          <span class="sr-only" data-cart-label>, 0 items</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="fr-hero" aria-labelledby="hero-title">
+        <div class="fr-wrap grid grid-cols-1 items-center gap-10 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:py-20">
+          <div class="relative z-10">
+            <p class="fr-stamp">Est. 1961 · Hackney</p>
+            <h1 id="hero-title" class="fr-display mt-6">
+              <span class="block">Pizza</span>
+              <span class="block fr-display__outline">Napoletana</span>
+              <span class="block text-(--basil)">in 90 sec.</span>
+            </h1>
+            <p class="mt-6 max-w-lg text-lg leading-relaxed">
+              48-hour dough, San Marzano tomatoes and a 485 °C wood-fired oven. Delivered hot across East London, or picked up from the counter.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a class="fr-btn fr-btn--red" href="#classics">Order now</a>
+              <a class="fr-btn fr-btn--cream" href="#build">Build your own</a>
+            </div>
+            <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm font-bold uppercase tracking-[0.12em]" role="list">
+              <li class="fr-pill">⏱ 25 min delivery</li><li class="fr-pill">🔥 485 °C oven</li><li class="fr-pill">🌱 Vegan options</li>
+            </ul>
+          </div>
+          <div class="fr-hero__art" aria-hidden="true">
+            <div class="fr-sunburst"></div>
+            <div class="fr-board"><Pizza toppings={['mozzarella', 'basil', 'pepperoni']} seed={1} class="fr-hero__pizza" /></div>
+            <span class="fr-sticker fr-sticker--a">Since<br /><b>1961</b></span>
+            <span class="fr-sticker fr-sticker--b">Hot &amp;<br /><b>fresh</b></span>
+          </div>
+        </div>
+        <div class="fr-checker" aria-hidden="true"></div>
+      </section>
+
+      <!-- =========================== 2 · CLASSICS =========================== -->
+      <section id="classics" class="fr-classics" aria-labelledby="classics-title">
+        <div class="fr-wrap py-20">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <h2 id="classics-title" class="fr-h2">Le classiche</h2>
+            <p class="max-w-sm">Six pizzas we'd never take off the menu. All 12-inch, all made to order.</p>
+          </div>
+          <ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {CLASSICS.map((p) => (
+              <li class="fr-card">
+                <div class="fr-card__art"><Pizza toppings={p.toppings} sauce={p.sauce ?? 'rossa'} seed={p.seed} class="fr-card__pizza" /></div>
+                <div class="fr-card__body">
+                  <div class="flex items-start justify-between gap-3">
+                    <h3 class="fr-h3">{p.name}</h3>
+                    <p class="fr-price">£{p.price.toFixed(2)}</p>
+                  </div>
+                  <p class="mt-1 text-[15px] leading-relaxed opacity-80">{p.desc}</p>
+                  <div class="mt-4 flex items-center justify-between gap-3">
+                    <ul class="flex gap-1.5" role="list">{p.tags.map((t) => <li class="fr-tag">{t === 'V' ? <>V<span class="sr-only"> vegetarian</span></> : t === 'VG' ? <>VG<span class="sr-only"> vegan</span></> : t === '🌶' ? <><span aria-hidden="true">🌶</span><span class="sr-only">spicy</span></> : t}</li>)}</ul>
+                    <button type="button" class="fr-add" data-add={p.id} data-name={p.name} data-price={p.price} aria-label={`Add ${p.name} to your order, £${p.price.toFixed(2)}`}>
+                      <span aria-hidden="true">+</span> Add
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · BUILD YOUR OWN =========================== -->
+      <section id="build" class="fr-build" aria-labelledby="build-title">
+        <div class="fr-wrap grid grid-cols-1 items-center gap-12 py-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+          <div class="fr-build__stage">
+            <div class="fr-build__plate" data-plate data-size="m">
+              <Pizza seed={2} class="fr-build__pizza" toppings={[]} />
+            </div>
+            <p class="fr-build__name" aria-live="polite" data-pizza-name>La Semplice</p>
+          </div>
+          <form class="fr-builder" data-builder novalidate>
+            <h2 id="build-title" class="fr-h2">Make it yours</h2>
+            <p class="mt-2">Pick a base, a size and up to five toppings. Watch it come together.</p>
+
+            <fieldset class="mt-7">
+              <legend class="fr-label">Base</legend>
+              <div class="fr-seg">
+                <label><input type="radio" name="sauce" value="rossa" checked /><span>Rossa <small>tomato</small></span></label>
+                <label><input type="radio" name="sauce" value="bianca" /><span>Bianca <small>no tomato</small></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="mt-6">
+              <legend class="fr-label">Size</legend>
+              <div class="fr-seg">
+                <label><input type="radio" name="size" value="s" data-price="8" /><span>10″ <small>£8</small></span></label>
+                <label><input type="radio" name="size" value="m" data-price="10" checked /><span>12″ <small>£10</small></span></label>
+                <label><input type="radio" name="size" value="l" data-price="12" /><span>14″ <small>£12</small></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="mt-6">
+              <legend class="fr-label">Toppings <span class="font-normal opacity-70" data-top-count>(0 of 5)</span></legend>
+              <div class="fr-tops">
+                {TOPPINGS.map((t) => (
+                  <label class="fr-top">
+                    <input type="checkbox" name="topping" value={t.id} data-price={t.price} />
+                    <span><b>{t.name}</b><small>+£{t.price.toFixed(2)}</small></span>
+                  </label>
+                ))}
+              </div>
+              <p class="mt-3 min-h-6 text-sm font-bold text-(--tomato)" aria-live="polite" data-top-msg></p>
+            </fieldset>
+
+            <div class="fr-builder__foot">
+              <p><span class="text-sm uppercase tracking-[0.14em] opacity-70">Your pizza</span><b class="fr-builder__price" data-build-price>£10.00</b></p>
+              <button class="fr-btn fr-btn--red" type="submit">Add to order</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · DOUGH =========================== -->
+      <section id="dough" class="fr-dough" aria-labelledby="dough-title">
+        <div class="fr-wrap py-20">
+          <h2 id="dough-title" class="fr-h2 text-(--cream)">48 hours. <span class="text-(--mustard)">90 seconds.</span></h2>
+          <p class="mt-3 max-w-xl text-(--cream)/80">Great pizza is mostly patience. Here's what happens to every ball of dough before it reaches you.</p>
+          <ol class="fr-steps mt-12" data-steps>
+            {DOUGH.map((d, i) => (
+              <li class="fr-step" style={`--i:${i}`}>
+                <span class="fr-step__h">{d.h}</span>
+                <h3 class="fr-h3 mt-4 text-(--cream)">{d.title}</h3>
+                <p class="mt-2 text-(--cream)/75">{d.text}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="fr-progress" aria-hidden="true"><i data-dough-bar></i></div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · DELIVERY & DEALS =========================== -->
+      <section id="delivery" class="fr-delivery" aria-labelledby="delivery-title">
+        <div class="fr-wrap grid grid-cols-1 gap-8 py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+          <div class="fr-panel">
+            <h2 id="delivery-title" class="fr-h2">Do we deliver to you?</h2>
+            <p class="mt-2">Enter your postcode and we'll tell you the time and fee.</p>
+            <form class="mt-6 flex flex-wrap gap-3" data-postcode novalidate>
+              <label for="pc" class="sr-only">Your postcode</label>
+              <input id="pc" class="fr-input flex-1" placeholder="e.g. E8 3PB" autocomplete="postal-code" aria-describedby="pc-result" data-pc-input />
+              <button class="fr-btn fr-btn--red" type="submit">Check</button>
+            </form>
+            <div id="pc-result" class="fr-result" aria-live="polite" data-pc-result></div>
+            <ul class="mt-6 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.12em]" role="list" aria-label="Try these">
+              {['E8 3PB', 'N1 7GU', 'E5 0LL', 'SW1A 1AA'].map((p) => <li><button type="button" class="fr-pill fr-pill--btn" data-try={p}>{p}</button></li>)}
+            </ul>
+          </div>
+          <div class="grid gap-5">
+            <article class="fr-deal fr-deal--mustard">
+              <p class="fr-deal__k">Every Tuesday</p>
+              <h3 class="fr-h3">2 for £20</h3>
+              <p>Any two classics. Collection or delivery.</p>
+            </article>
+            <article class="fr-deal fr-deal--basil">
+              <p class="fr-deal__k">Pizza of the month</p>
+              <h3 class="fr-h3">Zucca &amp; salvia</h3>
+              <p>Roast pumpkin, sage butter, smoked scamorza. Ends in <b data-month-left></b>.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · REVIEWS & FIND US =========================== -->
+      <section id="visit" class="fr-visit" aria-labelledby="visit-title">
+        <div class="fr-wrap py-20">
+          <h2 id="visit-title" class="fr-h2 text-center">Grazie mille!</h2>
+          <p class="text-center">4.8 ★ from 3,600 orders</p>
+          <ul class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3" role="list">
+            {REVIEWS.map((r, i) => (
+              <li class="fr-review" style={`--r:${(i - 1) * 2}deg`}>
+                <p class="text-xl tracking-[0.2em] text-(--tomato)" aria-label={`${r.stars} out of 5 stars`}>{'★'.repeat(r.stars)}</p>
+                <blockquote class="mt-3 text-lg leading-snug">“{r.q}”</blockquote>
+                <p class="mt-4 text-sm font-bold uppercase tracking-[0.14em]">{r.who}</p>
+              </li>
+            ))}
+          </ul>
+          <div class="fr-findus mt-14">
+            <div>
+              <h3 class="fr-h3">Find us</h3>
+              <address class="mt-2 not-italic leading-relaxed">188 Mare Street, Hackney<br />London E8 3RD</address>
+              <p class="mt-2">Counter collection · 12:00–23:00 daily</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a class="fr-btn fr-btn--cream" href="tel:+442070000001">020 7000 0001</a>
+              <a class="fr-btn fr-btn--red" href="#classics">Order online</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="fr-footer">
+      <div class="fr-checker" aria-hidden="true"></div>
+      <div class="fr-wrap flex flex-wrap items-center justify-between gap-4 py-8 text-sm">
+        <p class="fr-logo"><span class="fr-logo__mark" aria-hidden="true">FR</span><span>Forno Rosso</span></p>
+        <p class="opacity-80">Forno Rosso is a fictional pizzeria made for Thecore's 100 Days of Web (Day 022). Orders are not real.</p>
+      </div>
+    </footer>
+
+    <!-- =========================== CART DRAWER =========================== -->
+    <div class="fr-cart" id="fr-cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden data-cart>
+      <div class="fr-cart__backdrop" data-cart-close></div>
+      <div class="fr-cart__panel">
+        <header class="flex items-center justify-between gap-3">
+          <h2 id="cart-title" class="fr-h3">Your order</h2>
+          <button type="button" class="fr-x" aria-label="Close your order" data-cart-close>✕</button>
+        </header>
+        <div data-cart-view="items">
+          <ul class="fr-lines" role="list" data-lines></ul>
+          <p class="fr-empty" data-cart-empty>Your order is empty. <a href="#classics" data-cart-close>Pick a pizza</a> to start.</p>
+          <dl class="fr-totals" data-totals hidden>
+            <div><dt>Subtotal</dt><dd data-subtotal></dd></div>
+            <div><dt>Delivery</dt><dd data-delivery></dd></div>
+            <div class="fr-totals__grand"><dt>Total</dt><dd data-total></dd></div>
+          </dl>
+          <p class="text-sm opacity-75" data-free-hint></p>
+          <button class="fr-btn fr-btn--red mt-4 w-full justify-center" type="button" data-checkout hidden>Place order (demo)</button>
+        </div>
+        <div data-cart-view="track" hidden tabindex="-1">
+          <p class="fr-deal__k">Order <span data-order-ref></span></p>
+          <h3 class="fr-h3 mt-1">It's happening! 🍕</h3>
+          <ol class="fr-track" data-track>
+            <li>Order received</li><li>In the oven (90 seconds!)</li><li>Out for delivery</li><li>Buon appetito!</li>
+          </ol>
+          <p class="mt-4 text-sm opacity-75">Demo only: no order was placed and nothing will arrive, sadly.</p>
+          <button class="fr-btn fr-btn--cream mt-4" type="button" data-new-order>Start a new order</button>
+        </div>
+      </div>
+    </div>
+    <div class="fr-toast" role="status" aria-live="polite" data-toast></div>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-022/script';
+</script>

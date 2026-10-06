@@ -1,0 +1,124 @@
+---
+/**
+ * Sol y Sal · hand-built flat illustrations (no image files, no licences).
+ * Outline colour and palette come from CSS custom properties on the page.
+ */
+interface Props { name: string; class?: string; label?: string }
+const { name, class: className = '', label } = Astro.props;
+const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' };
+---
+<svg viewBox="0 0 120 120" class={className} {...a11y} fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  {name === 'taco' && (
+    <g>
+      <path d="M14 82a46 46 0 0 1 92 0Z" fill="var(--marigold)" />
+      <path d="M24 78a36 36 0 0 1 72 0" stroke-dasharray="2 9" />
+      <circle cx="38" cy="58" r="9" fill="var(--agave)" />
+      <circle cx="56" cy="50" r="10" fill="var(--agave-2)" />
+      <circle cx="76" cy="54" r="9" fill="var(--agave)" />
+      <circle cx="48" cy="62" r="5" fill="var(--chili)" />
+      <circle cx="68" cy="60" r="5" fill="var(--chili)" />
+      <path d="M40 46c6-4 10-4 14 0M62 42c6-4 10-4 14 0" stroke="var(--pink)" stroke-width="3.5" />
+    </g>
+  )}
+  {name === 'elote' && (
+    <g>
+      <path d="M58 104 66 88" stroke-width="5" stroke="var(--wood)" />
+      <path d="M50 22c16-4 30 8 28 28L68 90c-6 6-18 4-22-4L36 46c-2-12 4-22 14-24Z" fill="var(--marigold)" />
+      <path d="M44 40l30 6M42 52l30 6M44 64l26 6M48 76l20 4M54 28l-6 50M64 28l-4 56" stroke-width="2" />
+      <path d="M40 38c8 4 4 12 14 12s6 10 16 8" stroke="var(--cream)" stroke-width="5" />
+      <circle cx="52" cy="62" r="2" fill="var(--chili)" stroke="none" /><circle cx="62" cy="44" r="2" fill="var(--chili)" stroke="none" /><circle cx="60" cy="72" r="2" fill="var(--chili)" stroke="none" />
+    </g>
+  )}
+  {name === 'guac' && (
+    <g>
+      <path d="M30 40 18 22M44 34l-4-22M80 36l8-22" stroke-width="3" fill="var(--marigold)" />
+      <path d="M26 44 14 20l20 14ZM42 38 38 10l14 26ZM78 38l10-26 4 28Z" fill="var(--marigold)" />
+      <path d="M20 58c0-14 18-22 40-22s40 8 40 22" fill="var(--agave-2)" />
+      <circle cx="46" cy="48" r="3" fill="var(--chili)" stroke="none" /><circle cx="66" cy="44" r="3" fill="var(--cream)" stroke="none" /><circle cx="74" cy="52" r="3" fill="var(--chili)" stroke="none" />
+      <path d="M14 58h92l-10 30c-4 10-14 16-24 16H48c-10 0-20-6-24-16Z" fill="var(--terracotta)" />
+      <path d="M28 74h64" stroke="var(--cream)" stroke-dasharray="6 6" />
+    </g>
+  )}
+  {name === 'churros' && (
+    <g>
+      <path d="M30 90 48 18M48 92 60 16M66 92l12-74" stroke-width="12" stroke="var(--ink)" />
+      <path d="M30 90 48 18M48 92 60 16M66 92l12-74" stroke-width="7" stroke="var(--marigold)" />
+      <path d="M36 70l8-30M54 76l4-34M72 76l8-34" stroke="var(--wood)" stroke-width="1.5" />
+      <path d="M22 80h56l-6 24H28Z" fill="var(--pink)" />
+      <path d="M80 76c10 0 16 4 16 12s-6 16-16 16h-8V76Z" fill="var(--cacao)" />
+      <path d="M82 84c4 0 6 2 6 4" stroke="var(--cream)" />
+    </g>
+  )}
+  {name === 'marg' && (
+    <g>
+      <path d="M22 28h76L64 66v26h16v8H40v-8h16V66Z" fill="var(--lime)" />
+      <path d="M22 28h76" stroke-width="7" stroke="var(--cream)" />
+      <path d="M28 34h64" stroke="var(--agave)" stroke-width="2" />
+      <circle cx="92" cy="26" r="14" fill="var(--agave-2)" />
+      <path d="M92 12v28M78 26h28M82 16l20 20M102 16 82 36" stroke-width="1.6" />
+      <path d="M40 16 56 46" stroke="var(--pink)" stroke-width="4" />
+    </g>
+  )}
+  {name === 'mezcal' && (
+    <g>
+      <path d="M34 50h52l-6 46c-1 6-6 10-12 10H52c-6 0-11-4-12-10Z" fill="var(--cream)" />
+      <path d="M38 66h44l-3 28c-1 5-5 8-10 8H51c-5 0-9-3-10-8Z" fill="var(--marigold)" stroke="none" />
+      <path d="M34 50h52l-6 46c-1 6-6 10-12 10H52c-6 0-11-4-12-10Z" />
+      <path d="M70 46a16 16 0 0 1 32 0Z" fill="var(--orange)" />
+      <path d="M86 46V32M78 44l-4-8M94 44l4-8" stroke-width="1.6" />
+      <path d="M30 30c6-10 14-14 22-12" stroke="var(--chili)" stroke-width="4" />
+      <circle cx="24" cy="36" r="5" fill="var(--chili)" />
+    </g>
+  )}
+  {name === 'bowl' && (
+    <g>
+      <ellipse cx="60" cy="60" rx="48" ry="18" fill="var(--cream)" />
+      <circle cx="40" cy="56" r="10" fill="var(--chili)" /><circle cx="60" cy="52" r="11" fill="var(--agave-2)" /><circle cx="80" cy="56" r="10" fill="var(--marigold)" />
+      <path d="M50 64c4 4 16 4 20 0" stroke="var(--pink)" stroke-width="4" />
+      <path d="M12 60c0 22 22 40 48 40s48-18 48-40" fill="var(--cobalt)" />
+      <path d="M24 78h72M30 88h60" stroke="var(--cream)" stroke-dasharray="4 7" />
+    </g>
+  )}
+  {name === 'tostada' && (
+    <g>
+      <circle cx="60" cy="60" r="44" fill="var(--marigold)" />
+      <circle cx="60" cy="60" r="34" fill="var(--cream)" stroke-dasharray="3 8" />
+      <path d="M38 52c6-6 14-6 20 0s14 6 20 0" stroke="var(--orange)" stroke-width="7" />
+      <circle cx="44" cy="70" r="7" fill="var(--agave-2)" /><circle cx="64" cy="74" r="6" fill="var(--chili)" /><circle cx="78" cy="64" r="5" fill="var(--pink)" />
+    </g>
+  )}
+  {name === 'sun' && (
+    <g>
+      <circle cx="60" cy="60" r="26" fill="var(--marigold)" />
+      {Array.from({ length: 12 }, (_, i) => {
+        const r = (i * Math.PI) / 6;
+        return <path d={`M${60 + Math.cos(r) * 34} ${60 + Math.sin(r) * 34}L${60 + Math.cos(r) * 50} ${60 + Math.sin(r) * 50}`} stroke-width="6" stroke="var(--orange)" />;
+      })}
+      <circle cx="52" cy="56" r="3" fill="var(--ink)" /><circle cx="68" cy="56" r="3" fill="var(--ink)" />
+      <path d="M50 66c6 6 14 6 20 0" />
+    </g>
+  )}
+  {name === 'cactus' && (
+    <g>
+      <path d="M50 108V40c0-12 20-12 20 0v68Z" fill="var(--agave)" />
+      <path d="M50 74H38c-8 0-10-6-10-12V50c0-8 12-8 12 0v12h10M70 64h12V44c0-8 12-8 12 0v16c0 8-4 12-12 12H70" fill="var(--agave)" />
+      <path d="M60 40v10M60 60v10M60 80v10" stroke="var(--cream)" stroke-width="2" />
+      <circle cx="60" cy="30" r="6" fill="var(--pink)" />
+      <path d="M36 108h48" stroke-width="5" stroke="var(--terracotta)" />
+    </g>
+  )}
+  {name === 'chili' && (
+    <g>
+      <path d="M30 34c26-8 56 4 62 40 2 12-8 14-14 4-12-22-30-28-48-24Z" fill="var(--chili)" />
+      <path d="M30 34c-6-6-6-14 2-20" stroke="var(--agave)" stroke-width="5" />
+      <path d="M48 36c12 0 26 8 32 24" stroke="var(--cream)" stroke-width="2.5" />
+    </g>
+  )}
+  {name === 'agave' && (
+    <g>
+      <path d="M60 104C40 80 38 50 60 14c22 36 20 66 0 90Z" fill="var(--agave)" />
+      <path d="M58 104C30 94 14 72 12 44c26 10 40 32 46 60ZM62 104c28-10 44-32 46-60-26 10-40 32-46 60Z" fill="var(--agave-2)" />
+      <path d="M60 30v66" stroke="var(--cream)" stroke-width="2" />
+    </g>
+  )}
+</svg>

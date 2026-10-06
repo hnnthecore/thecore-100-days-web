@@ -1,0 +1,75 @@
+---
+/**
+ * Halden & Rowe · isometric building generator.
+ * A building is a stack of floors; each floor is its own <g class="iso-floor">
+ * so CSS can “build” it floor by floor. Pure geometry, no image files.
+ *
+ *   x → right-down, y → left-down, z → up   (30° isometric projection)
+ */
+interface Props {
+  w?: number; d?: number; floors?: number; fh?: number;
+  material?: 'stone' | 'glass' | 'brick' | 'timber';
+  crane?: boolean; class?: string; label?: string; ground?: boolean;
+}
+const { w = 4, d = 3, floors = 6, fh = 1.15, material = 'stone', crane = false, class: className = '', label, ground = true } = Astro.props;
+
+const U = 26;
+const C = Math.cos(Math.PI / 6);
+const P = (x: number, y: number, z: number) => [(x - y) * U * C, (x + y) * U * 0.5 - z * U];
+const pts = (...p: number[][]) => p.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+const poly = (...c: [number, number, number][]) => pts(...c.map(([x, y, z]) => P(x, y, z)));
+
+const PAL = {
+  stone: { top: '#efe9df', left: '#ddd5c7', right: '#c3b9a8', win: '#2b3a4a', frame: '#f7f3ec' },
+  glass: { top: '#dfe8ef', left: '#9fb7c9', right: '#6f8ea6', win: '#cfe3f1', frame: '#e8f0f6' },
+  brick: { top: '#e9c9b2', left: '#c9775a', right: '#a65a41', win: '#2a2f36', frame: '#f1e2d6' },
+  timber: { top: '#efdcbc', left: '#d4a66b', right: '#b4844c', win: '#2d3436', frame: '#f6ead6' },
+}[material];
+
+const H = floors * fh;
+// Bounds for the viewBox (include crane and ground plane).
+const corners = [P(0, 0, 0), P(w, 0, 0), P(0, d, 0), P(w, d, 0), P(0, 0, H + (crane ? 4 : 0.5)), P(w + 1.5, d + 1.5, 0), P(-1.5, -1.5, 0), P(w + 1.5, -1.5, 0), P(-1.5, d + 1.5, 0)];
+const minX = Math.min(...corners.map((c) => c[0])) - 10;
+const maxX = Math.max(...corners.map((c) => c[0])) + 10;
+const minY = Math.min(...corners.map((c) => c[1])) - 10;
+const maxY = Math.max(...corners.map((c) => c[1])) + 10;
+
+const winX = Array.from({ length: w }, (_, i) => i);
+const winY = Array.from({ length: d }, (_, i) => i);
+const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' };
+---
+<svg viewBox={`${minX} ${minY} ${maxX - minX} ${maxY - minY}`} class={className} {...a11y}>
+  {ground && <polygon class="iso-ground" points={poly([-1.5, -1.5, 0], [w + 1.5, -1.5, 0], [w + 1.5, d + 1.5, 0], [-1.5, d + 1.5, 0])} />}
+  {Array.from({ length: floors }, (_, f) => {
+    const z0 = f * fh;
+    const z1 = z0 + fh;
+    const ground = f === 0;
+    return (
+      <g class="iso-floor" style={`--i:${f}`}>
+        <polygon points={poly([w, 0, z0], [w, d, z0], [w, d, z1], [w, 0, z1])} fill={PAL.right} />
+        <polygon points={poly([0, d, z0], [w, d, z0], [w, d, z1], [0, d, z1])} fill={PAL.left} />
+        {winX.map((i) => {
+          const a = i + 0.18; const b = i + 0.82; const lo = z0 + (ground ? 0.05 : 0.28); const hi = z1 - 0.22;
+          return <polygon points={poly([a, d, lo], [b, d, lo], [b, d, hi], [a, d, hi])} fill={PAL.win} stroke={PAL.frame} stroke-width="0.8" />;
+        })}
+        {winY.map((i) => {
+          const a = i + 0.2; const b = i + 0.8; const lo = z0 + 0.28; const hi = z1 - 0.22;
+          return <polygon points={poly([w, a, lo], [w, b, lo], [w, b, hi], [w, a, hi])} fill={PAL.win} opacity="0.85" stroke={PAL.frame} stroke-width="0.8" />;
+        })}
+        <polygon class="iso-slab" points={poly([0, 0, z1], [w, 0, z1], [w, d, z1], [0, d, z1])} fill={PAL.top} />
+      </g>
+    );
+  })}
+  <polygon class="iso-roof" style={`--i:${floors}`} points={poly([0.3, 0.3, H + 0.02], [w - 0.3, 0.3, H + 0.02], [w - 0.3, d - 0.3, H + 0.02], [0.3, d - 0.3, H + 0.02])} fill="none" stroke={PAL.right} stroke-width="1.2" />
+  {crane && (
+    <g class="iso-crane" style={`--i:${floors}`}>
+      <polyline points={pts(P(-1, -1, 0), P(-1, -1, H + 3.2))} />
+      <polyline points={pts(P(-1, -1, H + 3.2), P(w + 1.2, -1, H + 3.2))} />
+      <polyline points={pts(P(-1, -1, H + 3.2), P(-2.4, -1, H + 3.2))} />
+      <polyline points={pts(P(-1, -1, H + 4), P(w + 1.2, -1, H + 3.2))} class="iso-crane__tie" />
+      <polyline points={pts(P(-1, -1, H + 4), P(-2.4, -1, H + 3.2))} class="iso-crane__tie" />
+      <polyline points={pts(P(w * 0.7, -1, H + 3.2), P(w * 0.7, -1, H + 1.2))} class="iso-crane__cable" />
+      <rect x={P(w * 0.7, -1, H + 1.2)[0] - 5} y={P(w * 0.7, -1, H + 1.2)[1]} width="10" height="7" class="iso-crane__load" />
+    </g>
+  )}
+</svg>

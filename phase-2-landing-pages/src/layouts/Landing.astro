@@ -1,0 +1,58 @@
+---
+/**
+ * Shared shell for every Phase 2 landing page.
+ * Pages pass their own title, description, theme colour and favicon emoji.
+ */
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/fraunces/wght-italic.css';
+import '@fontsource-variable/bricolage-grotesque';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  themeColor: string;
+  icon: string;
+  day: number;
+  lang?: string;
+}
+const { title, description, themeColor, icon, day, lang = 'en' } = Astro.props;
+const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${icon}</text></svg>`)}`;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={themeColor} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href={favicon} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="sr-only-focusable rounded-full bg-black px-4 py-2 font-semibold text-white" href="#main">Skip to content</a>
+    <slot />
+    <a
+      class="thecore-badge"
+      href="../../../index.html"
+      aria-label={`Thecore 100 Days of Web, day ${day}. Back to all projects`}
+    ><span aria-hidden="true">T</span> Day {String(day).padStart(3, '0')} · Thecore</a>
+    <style is:global>
+      .thecore-badge {
+        position: fixed; left: 1rem; bottom: 1rem; z-index: 60;
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.4rem 0.8rem 0.4rem 0.4rem; border-radius: 999px;
+        background: oklch(18% 0.02 280 / 0.85); color: #fff; backdrop-filter: blur(10px);
+        font: 600 12px/1 var(--font-sans); letter-spacing: 0.02em; text-decoration: none;
+        box-shadow: 0 8px 24px -8px oklch(0% 0 0 / 0.5);
+        transition: transform 0.3s var(--ease-spring);
+      }
+      .thecore-badge:hover { transform: translateY(-2px); }
+      .thecore-badge span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); font-size: 11px; }
+    </style>
+  </body>
+</html>

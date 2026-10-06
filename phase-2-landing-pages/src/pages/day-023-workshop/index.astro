@@ -1,0 +1,350 @@
+---
+/**
+ * Day 023 · Mechanical workshop landing page · “Northgate Motorworks”, an independent specialist in Leeds.
+ * Six signature sections: Hero (diagnostic car) · Services · Instant quote · Digital health check · Why us & reviews · Book a service.
+ * Mood: dark, precise, technical. Graphite + off-white + one signal-orange accent; Archivo (wide) + Inter.
+ */
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/inter';
+import Landing from '../../layouts/Landing.astro';
+import '../../days/day-023/styles.css';
+
+const SERVICES = [
+  { id: 'mot', name: 'MOT test', from: 54.85, time: '45 min', text: 'Class 4 MOT with free retest within 10 working days.', icon: 'M6 12l4 4 8-9' },
+  { id: 'interim', name: 'Interim service', from: 159, time: '1.5 h', text: 'Oil & filter, 40-point check, fluids topped up.', icon: 'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z' },
+  { id: 'full', name: 'Full service', from: 319, time: '3 h', text: 'Manufacturer-schedule service, keeps your warranty.', icon: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z' },
+  { id: 'brakes', name: 'Brakes', from: 289, time: '2 h', text: 'Front pads and discs, measured, photographed and explained.', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8z' },
+  { id: 'clutch', name: 'Clutch', from: 799, time: '1 day', text: 'Clutch and flywheel replacement with OE-quality parts.', icon: 'M4 12h16M12 4v16M7 7l10 10M17 7 7 17' },
+  { id: 'diag', name: 'Diagnostics', from: 64, time: '1 h', text: 'Dash light on? Dealer-level scan tools and a clear report.', icon: 'M3 12h4l2-5 4 10 2-5h6' },
+];
+
+const QUOTE_SERVICES = [
+  { id: 'mot', name: 'MOT', labour: 0.75, parts: 0, fixed: 54.85 },
+  { id: 'interim', name: 'Interim service', labour: 1.2, parts: 48 },
+  { id: 'full', name: 'Full service', labour: 2.4, parts: 96 },
+  { id: 'brakes', name: 'Front pads & discs', labour: 1.6, parts: 138 },
+  { id: 'clutch', name: 'Clutch kit', labour: 5.5, parts: 285 },
+  { id: 'diag', name: 'Diagnostic check', labour: 0.7, parts: 0 },
+];
+
+const EXTRAS = [
+  { id: 'fluid', name: 'Brake fluid change', price: 49 },
+  { id: 'aircon', name: 'Air-con regas', price: 79 },
+  { id: 'wipers', name: 'Wiper blades (pair)', price: 28 },
+];
+
+type Check = { id: string; name: string; status: 'red' | 'amber' | 'green'; reading: string; note: string; price?: number };
+const CHECKS: Check[] = [
+  { id: 'pads-f', name: 'Front brake pads', status: 'red', reading: '2.1 mm', note: 'Below the 3 mm limit. Replace now to protect the discs.', price: 164 },
+  { id: 'tyre-ns', name: 'Nearside rear tyre', status: 'amber', reading: '2.4 mm', note: 'Legal (1.6 mm) but wet grip is reduced. Replace within 3 months.', price: 112 },
+  { id: 'wipers', name: 'Wiper blades', status: 'amber', reading: 'Smearing', note: 'Rubber has perished. Cheap fix, big visibility gain.', price: 28 },
+  { id: 'coolant', name: 'Coolant', status: 'amber', reading: '−18 °C', note: 'Protection fine for now; top up before winter.', price: 24 },
+  { id: 'battery', name: 'Battery', status: 'green', reading: '12.6 V · 82%', note: 'Healthy.' },
+  { id: 'pads-r', name: 'Rear brake pads', status: 'green', reading: '7.8 mm', note: 'Plenty left.' },
+  { id: 'lights', name: 'Lights & indicators', status: 'green', reading: 'All OK', note: 'All working.' },
+  { id: 'suspension', name: 'Suspension & steering', status: 'green', reading: 'No play', note: 'No knocks or leaks.' },
+];
+
+const REVIEWS = [
+  { q: 'They sent photos of my worn brake pads with measurements before doing anything. First garage I’ve truly trusted.', who: 'Rachel M.', car: '2018 Audi A3' },
+  { q: 'Quote was £8 under what they said online. Car collected from my office and back by 5.', who: 'Dev P.', car: '2021 Tesla Model 3' },
+  { q: 'Dealer wanted £1,350 for the clutch. Northgate did it for £860 with OE parts and a 12-month warranty.', who: 'Owen T.', car: '2016 Ford Focus ST' },
+];
+---
+<Landing
+  title="Northgate Motorworks · Independent car servicing & repairs, Leeds"
+  description="Fixed-price servicing, MOTs and repairs with a photo health check on every car. Instant online quotes, free collection, 12-month guarantee. (Day 023 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#0b0c0e"
+  icon="🔧"
+  day={23}
+>
+  <div class="nm">
+    <!-- =========================== HEADER =========================== -->
+    <header class="nm-header" data-header>
+      <div class="nm-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="nm-logo" aria-label="Northgate Motorworks, home">
+          <svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 21V11l12 10V11" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="square"/></svg>
+          <span>Northgate<b>Motorworks</b></span>
+        </a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-8 text-sm text-(--muted)">
+            <li><a href="#services">Services</a></li><li><a href="#quote">Instant quote</a></li><li><a href="#health">Health check</a></li><li><a href="#why">Why us</a></li>
+          </ul>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="tel:+441130000000" class="nm-btn nm-btn--ghost hidden sm:inline-flex">0113 000 0000</a>
+          <a href="#book" class="nm-btn nm-btn--accent whitespace-nowrap"><span class="sm:hidden">Book</span><span class="hidden sm:inline">Book a service</span></a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="nm-hero" aria-labelledby="hero-title">
+        <div class="nm-wrap grid grid-cols-1 items-center gap-12 pt-14 pb-20 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:pt-24">
+          <div>
+            <p class="nm-eyebrow"><span class="nm-dot"></span>Independent specialist · Leeds LS7</p>
+            <h1 id="hero-title" class="nm-display mt-6">Precision servicing for cars that <span class="text-(--accent)">matter.</span></h1>
+            <p class="mt-6 max-w-xl text-lg leading-relaxed text-(--muted)">Dealer-level diagnostics without dealer prices. Every job is fixed-price, photographed and explained, so you approve exactly what you pay for.</p>
+            <div class="mt-9 flex flex-wrap gap-3">
+              <a href="#quote" class="nm-btn nm-btn--accent nm-btn--lg">Get an instant quote</a>
+              <a href="#health" class="nm-btn nm-btn--ghost nm-btn--lg">See a sample report</a>
+            </div>
+            <dl class="nm-stats mt-12">
+              <div><dt>Google rating</dt><dd>4.9<small>/5</small></dd></div>
+              <div><dt>Cars looked after</dt><dd data-count="8400">8,400</dd></div>
+              <div><dt>Parts & labour guarantee</dt><dd>12<small> mo</small></dd></div>
+            </dl>
+          </div>
+
+          <div class="nm-scan" aria-hidden="true">
+            <div class="nm-scan__grid"></div>
+            <svg viewBox="0 0 800 340" class="nm-car">
+              <path pathLength="1" class="nm-car__line" d="M60 250H135A62 62 0 0 1 255 250H558A62 62 0 0 1 682 250H756V205Q752 176 720 168L640 150Q585 92 520 90L380 92Q300 105 235 160L95 182Q62 190 60 215Z" />
+              <path pathLength="1" class="nm-car__line nm-car__line--thin" d="M262 158Q310 112 385 104L470 102V158ZM485 102H520Q575 106 615 152L485 158Z" />
+              <path pathLength="1" class="nm-car__line nm-car__line--thin" d="M470 160V242M300 200h40M520 200h40M712 178l34 8M64 200l20-4" />
+              {[195, 620].map((cx) => (
+                <g>
+                  <circle pathLength="1" class="nm-car__line" cx={cx} cy="250" r="48" />
+                  <circle pathLength="1" class="nm-car__line nm-car__line--thin" cx={cx} cy="250" r="30" />
+                  {[0, 72, 144, 216, 288].map((a) => <line pathLength="1" class="nm-car__line nm-car__line--thin" x1={cx} y1="250" x2={cx + Math.cos((a * Math.PI) / 180) * 30} y2={250 + Math.sin((a * Math.PI) / 180) * 30} />)}
+                </g>
+              ))}
+              <line x1="20" y1="300" x2="780" y2="300" class="nm-car__ground" />
+              <line x1="0" y1="0" x2="0" y2="340" class="nm-car__sweep" />
+            </svg>
+            <div class="nm-callout nm-callout--1"><i></i><span><b>Front pads</b>2.1 mm · replace</span></div>
+            <div class="nm-callout nm-callout--2"><i></i><span><b>Engine oil</b>Life 12%</span></div>
+            <div class="nm-callout nm-callout--3"><i></i><span><b>Rear tyres</b>4.2 mm · OK</span></div>
+            <p class="nm-scan__status"><span class="nm-dot"></span>Live scan · 0 fault codes</p>
+          </div>
+        </div>
+        <div class="nm-marquee" aria-label="Makes we specialise in">
+          <ul>{['Volkswagen', 'Audi', 'BMW', 'Mercedes-Benz', 'Ford', 'Toyota', 'Škoda', 'Volvo', 'Tesla', 'Mini'].map((m) => <li>{m}</li>)}</ul>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · SERVICES =========================== -->
+      <section id="services" class="nm-section" aria-labelledby="services-title">
+        <div class="nm-wrap">
+          <div class="nm-head">
+            <p class="nm-eyebrow">01 · Services</p>
+            <h2 id="services-title" class="nm-h2">Everything your car needs, under one roof.</h2>
+          </div>
+          <ul class="nm-services" role="list">
+            {SERVICES.map((s) => (
+              <li class="nm-service">
+                <svg viewBox="0 0 24 24" class="nm-service__icon" aria-hidden="true"><path d={s.icon} /></svg>
+                <h3 class="mt-6 text-xl font-semibold">{s.name}</h3>
+                <p class="mt-2 text-(--muted)">{s.text}</p>
+                <div class="mt-6 flex items-end justify-between gap-3">
+                  <p><span class="block text-xs uppercase tracking-[0.16em] text-(--muted)">From</span><span class="nm-price">£{s.from % 1 ? s.from.toFixed(2) : s.from}</span><span class="ml-2 text-sm text-(--muted)">· {s.time}</span></p>
+                  <a href="#quote" class="nm-arrow" data-quote-for={s.id} aria-label={`Get a quote for ${s.name}`}>→</a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · INSTANT QUOTE =========================== -->
+      <section id="quote" class="nm-section nm-section--panel" aria-labelledby="quote-title">
+        <div class="nm-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div>
+            <p class="nm-eyebrow">02 · Instant quote</p>
+            <h2 id="quote-title" class="nm-h2">A real price in 20 seconds. No phone calls.</h2>
+            <p class="mt-4 max-w-md text-(--muted)">Enter your registration. We look up the exact engine and parts, then price the job with our published labour rate of £85/h.</p>
+
+            <form class="mt-8" data-lookup novalidate>
+              <label for="reg" class="nm-label">Registration</label>
+              <div class="nm-plate">
+                <span class="nm-plate__gb" aria-hidden="true">UK</span>
+                <input id="reg" autocomplete="off" spellcheck="false" maxlength="8" placeholder="AB19 XYZ" aria-describedby="reg-msg" data-reg />
+                <button type="submit" class="nm-plate__go">Find my car</button>
+              </div>
+              <p id="reg-msg" class="mt-3 min-h-6 text-sm" aria-live="polite" data-reg-msg></p>
+              <p class="mt-1 text-sm text-(--muted)">Try a demo car: <button type="button" class="nm-link" data-try-reg="AB19 XYZ">AB19 XYZ</button> or <button type="button" class="nm-link" data-try-reg="LS21 KTE">LS21 KTE</button></p>
+            </form>
+
+            <div class="nm-vehicle" hidden data-vehicle>
+              <p class="text-xs uppercase tracking-[0.18em] text-(--muted)">Vehicle found</p>
+              <p class="mt-1 text-2xl font-semibold" data-veh-name></p>
+              <p class="text-(--muted)" data-veh-spec></p>
+            </div>
+          </div>
+
+          <form class="nm-quote" data-quote novalidate aria-labelledby="quote-title" inert>
+            <fieldset>
+              <legend class="nm-label">Choose a job</legend>
+              <div class="nm-jobs">
+                {QUOTE_SERVICES.map((q, i) => (
+                  <label><input type="radio" name="job" value={q.id} data-labour={q.labour} data-parts={q.parts} data-fixed={q.fixed ?? ''} checked={i === 1} /><span>{q.name}</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset class="mt-6">
+              <legend class="nm-label">Add-ons</legend>
+              <div class="grid gap-2">
+                {EXTRAS.map((x) => <label class="nm-check"><input type="checkbox" name="extra" value={x.id} data-price={x.price} /><span>{x.name}</span><b>+£{x.price}</b></label>)}
+              </div>
+            </fieldset>
+            <dl class="nm-breakdown mt-6" aria-live="polite" data-breakdown>
+              <div><dt>Parts</dt><dd data-b="parts">–</dd></div>
+              <div><dt>Labour <span data-b="hours"></span></dt><dd data-b="labour">–</dd></div>
+              <div><dt>Add-ons</dt><dd data-b="extras">–</dd></div>
+              <div><dt>VAT 20%</dt><dd data-b="vat">–</dd></div>
+              <div class="nm-breakdown__total"><dt>Total, fixed price</dt><dd data-b="total">–</dd></div>
+            </dl>
+            <p class="mt-3 text-sm text-(--muted)" data-b="note">Enter your registration to unlock your price.</p>
+            <a href="#book" class="nm-btn nm-btn--accent mt-6 w-full justify-center" data-book-quote>Book this job</a>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · HEALTH CHECK =========================== -->
+      <section id="health" class="nm-section" aria-labelledby="health-title">
+        <div class="nm-wrap">
+          <div class="nm-head">
+            <p class="nm-eyebrow">03 · Digital health check</p>
+            <h2 id="health-title" class="nm-h2">See what we see. Approve only what you want.</h2>
+            <p class="mt-4 max-w-2xl text-(--muted)">Every car gets a 40-point inspection with photos and measurements sent to your phone. Here's a real-style example: try approving and declining the work.</p>
+          </div>
+          <div class="nm-report" data-report>
+            <aside class="nm-report__summary">
+              <p class="text-xs uppercase tracking-[0.18em] text-(--muted)">Report · 14 Oct</p>
+              <p class="mt-1 text-2xl font-semibold">2019 VW Golf 1.5 TSI</p>
+              <p class="nm-plate nm-plate--sm mt-3"><span class="nm-plate__gb" aria-hidden="true">UK</span><span>AB19 XYZ</span></p>
+              <div class="nm-ring" style="--p:0.75" role="img" aria-label="Health score 75 out of 100"><span><b>75</b>/100</span></div>
+              <ul class="nm-legend" role="list">
+                <li><i class="is-red"></i><b data-c="red">1</b> urgent</li>
+                <li><i class="is-amber"></i><b data-c="amber">3</b> advisory</li>
+                <li><i class="is-green"></i><b data-c="green">4</b> passed</li>
+              </ul>
+              <div class="nm-approve">
+                <p class="text-sm text-(--muted)">Approved work</p>
+                <p class="nm-price" aria-live="polite" data-approved>£0</p>
+                <button type="button" class="nm-btn nm-btn--accent mt-4 w-full justify-center" data-send-approval disabled>Send approval</button>
+                <p class="mt-3 min-h-5 text-sm text-(--ok)" role="status" data-approval-msg></p>
+              </div>
+            </aside>
+            <div>
+              <div class="nm-filter" role="tablist" aria-label="Filter results" data-filter>
+                <button type="button" role="tab" aria-selected="true" data-f="all">All 8</button>
+                <button type="button" role="tab" aria-selected="false" tabindex="-1" data-f="red">Urgent</button>
+                <button type="button" role="tab" aria-selected="false" tabindex="-1" data-f="amber">Advisory</button>
+                <button type="button" role="tab" aria-selected="false" tabindex="-1" data-f="green">Passed</button>
+              </div>
+              <ul class="nm-checks" role="list" data-checks>
+                {CHECKS.map((c) => (
+                  <li class={`nm-checkitem is-${c.status}`} data-status={c.status} data-id={c.id}>
+                    <span class="nm-checkitem__photo" aria-hidden="true"><span>{c.status === 'green' ? '✓' : c.status === 'red' ? '!' : '•'}</span></span>
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-baseline gap-x-3"><h3 class="font-semibold">{c.name}</h3><span class="nm-reading">{c.reading}</span></div>
+                      <p class="mt-1 text-sm text-(--muted)">{c.note}</p>
+                    </div>
+                    {c.price ? (
+                      <div class="nm-decide" role="group" aria-label={`${c.name}, £${c.price}`}>
+                        <span class="nm-decide__price">£{c.price}</span>
+                        <button type="button" aria-pressed="false" data-decide="yes" data-price={c.price}>Approve</button>
+                        <button type="button" aria-pressed="false" data-decide="no">Decline</button>
+                      </div>
+                    ) : <span class="nm-pass">Passed</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · WHY US & REVIEWS =========================== -->
+      <section id="why" class="nm-section nm-section--panel" aria-labelledby="why-title">
+        <div class="nm-wrap">
+          <div class="nm-head">
+            <p class="nm-eyebrow">04 · Why Northgate</p>
+            <h2 id="why-title" class="nm-h2">The garage you'd recommend to your mum.</h2>
+          </div>
+          <ul class="nm-promises" role="list">
+            <li><b>Fixed price</b><span>The quote is the bill. If we find more, we ask first, with photos.</span></li>
+            <li><b>12-month guarantee</b><span>On parts and labour, nationwide, unlimited miles.</span></li>
+            <li><b>Free collection</b><span>Within 5 miles of LS7, from home or work, and back by 6 pm.</span></li>
+            <li><b>Keeps your warranty</b><span>Manufacturer-schedule servicing with OE-quality parts.</span></li>
+          </ul>
+          <ul class="nm-reviews" role="list">
+            {REVIEWS.map((r) => (
+              <li class="nm-review">
+                <p class="text-(--accent)" aria-label="5 out of 5 stars">★★★★★</p>
+                <blockquote class="mt-4 text-lg leading-relaxed">“{r.q}”</blockquote>
+                <p class="mt-5 text-sm"><b>{r.who}</b> <span class="text-(--muted)">· {r.car}</span></p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · BOOK =========================== -->
+      <section id="book" class="nm-section" aria-labelledby="book-title">
+        <div class="nm-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+          <div>
+            <p class="nm-eyebrow">05 · Book</p>
+            <h2 id="book-title" class="nm-h2">Pick a day. We'll handle the rest.</h2>
+            <form class="nm-book mt-8" data-book novalidate>
+              <p class="nm-booking-job" data-booking-job>Job: <b>Interim service</b> <span class="text-(--muted)">(change it in the quote above)</span></p>
+              <fieldset class="mt-6"><legend class="nm-label">Drop-off day</legend><div class="nm-days" data-days></div></fieldset>
+              <fieldset class="mt-6">
+                <legend class="nm-label">How should we get your car?</legend>
+                <div class="nm-jobs nm-jobs--2">
+                  <label><input type="radio" name="how" value="drop" checked /><span>I'll drop it off <small>08:00–09:30</small></span></label>
+                  <label><input type="radio" name="how" value="collect" /><span>Collect it for free <small>within 5 miles</small></span></label>
+                </div>
+              </fieldset>
+              <div class="mt-4" hidden data-collect>
+                <label class="nm-label" for="bk-pc">Collection postcode</label>
+                <input id="bk-pc" class="nm-input" autocomplete="postal-code" placeholder="LS7 3AB" aria-describedby="bk-pc-msg" />
+                <p id="bk-pc-msg" class="mt-2 min-h-5 text-sm" aria-live="polite" data-pc-msg></p>
+              </div>
+              <label class="nm-switch mt-6"><input type="checkbox" role="switch" data-courtesy /><span>Courtesy car <small data-courtesy-left>(2 left that day)</small></span></label>
+              <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div><label class="nm-label" for="bk-name">Name</label><input id="bk-name" class="nm-input" autocomplete="name" data-req aria-describedby="bk-name-e" /><p id="bk-name-e" class="nm-err" hidden>Please add your name.</p></div>
+                <div><label class="nm-label" for="bk-phone">Mobile</label><input id="bk-phone" class="nm-input" type="tel" autocomplete="tel" data-req aria-describedby="bk-phone-e" /><p id="bk-phone-e" class="nm-err" hidden>We text your health check here, so please add a valid UK mobile.</p></div>
+              </div>
+              <button class="nm-btn nm-btn--accent nm-btn--lg mt-8" type="submit">Confirm booking</button>
+              <p class="mt-3 min-h-5 font-semibold text-(--bad)" role="alert" data-book-err></p>
+            </form>
+            <div class="nm-done" hidden tabindex="-1" data-done>
+              <p class="nm-eyebrow"><span class="nm-dot"></span>Booked</p>
+              <p class="mt-3 text-3xl font-semibold" data-done-title></p>
+              <p class="mt-3 text-(--muted)" data-done-text></p>
+              <p class="mt-3 text-sm text-(--muted)">Demo only: no booking was made and no text will be sent.</p>
+              <button type="button" class="nm-btn nm-btn--ghost mt-6" data-rebook>Book another</button>
+            </div>
+          </div>
+          <aside class="nm-info" aria-label="Contact and opening hours">
+            <div class="nm-map" aria-hidden="true"><span class="nm-map__pin"></span></div>
+            <div class="p-7">
+              <h3 class="text-xl font-semibold">Northgate Motorworks</h3>
+              <address class="mt-2 not-italic text-(--muted)">Unit 4, Chapeltown Works<br />Leeds LS7 3AB</address>
+              <table class="nm-hours mt-6 w-full"><caption class="sr-only">Opening hours</caption><tbody>
+                <tr><th scope="row">Mon–Fri</th><td>07:45 – 18:00</td></tr>
+                <tr><th scope="row">Saturday</th><td>08:00 – 13:00</td></tr>
+                <tr><th scope="row">Sunday</th><td>Closed</td></tr>
+              </tbody></table>
+              <p class="mt-6 flex items-center gap-2 text-sm" aria-live="polite" data-open-now></p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="nm-footer">
+      <div class="nm-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm text-(--muted)">
+        <p>© Northgate Motorworks, a fictional garage created for Thecore's 100 Days of Web (Day 023). Quotes and reports are demo content.</p>
+        <p>Labour rate £85/h + VAT · Prices shown include VAT</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-023/script';
+</script>
