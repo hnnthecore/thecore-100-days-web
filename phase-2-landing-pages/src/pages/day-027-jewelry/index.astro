@@ -1,0 +1,271 @@
+---
+/**
+ * Day 027 · Jewellery store landing page · “Maison Aurelle”, fine jewellery & bespoke rings in London (fictional).
+ * Six signature sections: Hero · Shop the collection · Ring designer · The 4Cs guide · The atelier · Private appointments.
+ * Mood: quiet luxury. Ivory, near-black green, champagne gold; Cormorant display + Jost. All jewellery is drawn in code (art.ts).
+ */
+import '@fontsource-variable/cormorant';
+import '@fontsource-variable/cormorant/wght-italic.css';
+import '@fontsource-variable/jost';
+import Landing from '../../layouts/Landing.astro';
+import { ring, earrings, necklace, bracelet } from '../../days/day-027/art';
+import '../../days/day-027/styles.css';
+
+const PIECES = [
+  { id: 'p1', name: 'Aurelle Solitaire', type: 'rings', price: 5200, metal: 'yellow', stone: 'diamond', shape: 'round', setting: 'solitaire', carat: 1.0, note: '1.00 ct round diamond' },
+  { id: 'p2', name: 'Halo Oval', type: 'rings', price: 6900, metal: 'white', stone: 'diamond', shape: 'oval', setting: 'halo', carat: 1.2, note: '1.20 ct oval, pavé halo' },
+  { id: 'p3', name: 'Trinity', type: 'rings', price: 7800, metal: 'rose', stone: 'diamond', shape: 'round', setting: 'three', carat: 0.9, note: 'Three-stone, 1.60 ct total' },
+  { id: 'p4', name: 'Sapphire Baguette', type: 'rings', price: 3400, metal: 'white', stone: 'sapphire', shape: 'emerald', setting: 'solitaire', carat: 1.4, note: '1.40 ct Ceylon sapphire' },
+  { id: 'p5', name: 'Lumière Drops', type: 'earrings', price: 2400, metal: 'yellow', stone: 'diamond', shape: 'oval', setting: 'solitaire', carat: 0.6, note: '0.60 ct pair, drop' },
+  { id: 'p6', name: 'Verdant Studs', type: 'earrings', price: 1950, metal: 'rose', stone: 'emerald', shape: 'round', setting: 'solitaire', carat: 0.5, note: 'Colombian emeralds' },
+  { id: 'p7', name: 'Ember Pendant', type: 'necklaces', price: 2100, metal: 'rose', stone: 'ruby', shape: 'oval', setting: 'solitaire', carat: 0.8, note: 'Burmese ruby, 45 cm chain' },
+  { id: 'p8', name: 'Rivière Bracelet', type: 'bracelets', price: 6400, metal: 'white', stone: 'diamond', shape: 'round', setting: 'solitaire', carat: 3.0, note: '3.00 ct total, tennis' },
+];
+const draw = (p: (typeof PIECES)[number]) => {
+  const o = { metal: p.metal as any, stone: p.stone as any, shape: p.shape as any, label: `${p.name}, ${p.note}` };
+  return p.type === 'rings' ? ring({ ...o, setting: p.setting as any, carat: p.carat }) : p.type === 'earrings' ? earrings(o) : p.type === 'necklaces' ? necklace(o) : bracelet(o);
+};
+const FILTERS = [['all', 'All'], ['rings', 'Rings'], ['earrings', 'Earrings'], ['necklaces', 'Necklaces'], ['bracelets', 'Bracelets']];
+const heroRing = ring({ metal: 'yellow', stone: 'diamond', shape: 'round', setting: 'halo', carat: 1.6 });
+const designerRing = ring({ metal: 'yellow', stone: 'diamond', shape: 'round', setting: 'solitaire', carat: 1.0, label: 'Your ring design' });
+
+const STEPS = [
+  { n: '01', t: 'Sketch', d: 'We draw your design by hand, then model it in 3D so you can see every angle before anything is made.' },
+  { n: '02', t: 'Cast', d: 'Recycled 18ct gold or platinum is cast in the studio, never outsourced, never mass-produced.' },
+  { n: '03', t: 'Set', d: 'Each stone is set under a microscope. Prongs are cut to fit that one stone.' },
+  { n: '04', t: 'Polish', d: 'Seven stages of hand polishing, from matt to mirror. This part cannot be hurried.' },
+  { n: '05', t: 'Certify', d: 'Every diamond over 0.30 ct comes with a GIA report, and every piece is insured for its first year.' },
+];
+---
+<Landing
+  title="Maison Aurelle · Fine jewellery & bespoke rings, London"
+  description="Handmade fine jewellery and bespoke engagement rings. Design your ring, learn the 4Cs and book a private viewing. (Day 027 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#0f1a17"
+  icon="💍"
+  day={27}
+>
+  <div class="ma" data-pieces={JSON.stringify(PIECES)}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="ma-header" data-header>
+      <div class="ma-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="ma-logo" aria-label="Maison Aurelle, home"><span aria-hidden="true">◆</span> Maison <em>Aurelle</em></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-6 xl:gap-9 text-[13px] font-medium tracking-[0.14em] uppercase">
+            <li><a href="#shop">Collection</a></li><li><a href="#design">Design a ring</a></li><li><a href="#guide">The 4Cs</a></li><li><a href="#atelier">Atelier</a></li>
+          </ul>
+        </nav>
+        <div class="flex items-center gap-3">
+          <button type="button" class="ma-saved" data-saved-btn aria-label="Saved pieces: 0"><span aria-hidden="true">♥</span> <b data-saved-count>0</b></button>
+          <a href="#visit" class="ma-btn ma-btn--line hidden sm:inline-flex">Book a viewing</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="ma-hero" aria-labelledby="hero-title">
+        <div class="ma-wrap grid grid-cols-1 items-center gap-10 py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:py-24">
+          <div>
+            <p class="ma-eyebrow">Fine jewellery · Hatton Garden, London</p>
+            <h1 id="hero-title" class="ma-display mt-7">Made once. <em>Worn always.</em></h1>
+            <p class="mt-8 max-w-md text-lg leading-relaxed opacity-75">Handmade in our London atelier from recycled gold and certified stones. Choose a piece, or design one with us from scratch.</p>
+            <div class="mt-10 flex flex-wrap items-center gap-4">
+              <a href="#design" class="ma-btn ma-btn--gold">Design your ring</a>
+              <a href="#shop" class="ma-btn ma-btn--line ma-btn--onDark">View the collection</a>
+            </div>
+            <ul class="ma-trust mt-14" role="list"><li>Free insured delivery</li><li>30-day returns</li><li>Lifetime care</li></ul>
+          </div>
+          <div class="ma-stage" aria-hidden="true">
+            <div class="ma-stage__ring" set:html={heroRing} />
+            <span class="ma-spark ma-spark--1">✦</span><span class="ma-spark ma-spark--2">✦</span><span class="ma-spark ma-spark--3">✦</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · SHOP =========================== -->
+      <section id="shop" class="ma-section" aria-labelledby="shop-title">
+        <div class="ma-wrap">
+          <div class="ma-head"><p class="ma-eyebrow">The collection</p><h2 id="shop-title" class="ma-h2">Pieces to <em>keep.</em></h2></div>
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="ma-filters" role="group" aria-label="Filter by type" data-filters>
+              {FILTERS.map(([k, label], i) => <button type="button" data-filter={k} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}
+              <button type="button" data-filter="saved" aria-pressed="false">♥ Saved</button>
+            </div>
+            <p class="text-sm opacity-60" aria-live="polite" data-shop-count></p>
+          </div>
+          <ul class="ma-grid mt-8" role="list" data-grid>
+            {PIECES.map((p) => (
+              <li class="ma-piece" data-piece={p.id} data-type={p.type}>
+                <div class="ma-piece__art">
+                  <div set:html={draw(p)} data-art />
+                  <button type="button" class="ma-heart" data-heart aria-pressed="false" aria-label={`Save ${p.name}`}>♥</button>
+                </div>
+                <h3 class="ma-piece__name">{p.name}</h3>
+                <p class="ma-piece__note">{p.note}</p>
+                <div class="ma-piece__foot">
+                  <p class="ma-piece__price" data-price>£{p.price.toLocaleString('en-GB')}</p>
+                  <div class="ma-swatches" role="radiogroup" aria-label={`Metal for ${p.name}`}>
+                    {(['yellow', 'rose', 'white'] as const).map((m) => <button type="button" role="radio" class={`ma-sw ma-sw--${m}`} data-metal={m} aria-checked={m === p.metal ? 'true' : 'false'} aria-label={m === 'yellow' ? 'Yellow gold' : m === 'rose' ? 'Rose gold' : 'Platinum'} />)}
+                  </div>
+                </div>
+                <p class="ma-piece__metal" data-metal-name aria-live="polite"></p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-8 hidden text-center opacity-60" data-empty>You haven’t saved anything yet. Tap the heart on a piece you love.</p>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · DESIGN =========================== -->
+      <section id="design" class="ma-section ma-section--dark" aria-labelledby="design-title">
+        <div class="ma-wrap">
+          <div class="ma-head"><p class="ma-eyebrow ma-eyebrow--gold">Bespoke</p><h2 id="design-title" class="ma-h2">Design your <em>ring.</em></h2></div>
+          <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+            <div class="ma-preview">
+              <div class="ma-preview__art" data-ring-art set:html={designerRing} />
+              <p class="ma-preview__price"><span class="text-sm opacity-60">Estimated price</span><b data-d-price>£0</b></p>
+              <p class="ma-preview__sum" aria-live="polite" data-d-sum></p>
+            </div>
+            <form class="ma-designer" data-designer novalidate>
+              <fieldset><legend>Setting</legend>
+                <div class="ma-opts">
+                  <label><input type="radio" name="setting" value="solitaire" checked /><span>Solitaire</span></label>
+                  <label><input type="radio" name="setting" value="halo" /><span>Halo</span></label>
+                  <label><input type="radio" name="setting" value="three" /><span>Three-stone</span></label>
+                </div>
+              </fieldset>
+              <fieldset><legend>Metal</legend>
+                <div class="ma-opts">
+                  <label><input type="radio" name="metal" value="yellow" checked /><span><i class="ma-sw ma-sw--yellow"></i>Yellow gold</span></label>
+                  <label><input type="radio" name="metal" value="rose" /><span><i class="ma-sw ma-sw--rose"></i>Rose gold</span></label>
+                  <label><input type="radio" name="metal" value="white" /><span><i class="ma-sw ma-sw--white"></i>Platinum</span></label>
+                </div>
+              </fieldset>
+              <fieldset><legend>Stone</legend>
+                <div class="ma-opts">
+                  <label><input type="radio" name="stone" value="diamond" checked /><span>Diamond</span></label>
+                  <label><input type="radio" name="stone" value="sapphire" /><span>Sapphire</span></label>
+                  <label><input type="radio" name="stone" value="emerald" /><span>Emerald</span></label>
+                  <label><input type="radio" name="stone" value="ruby" /><span>Ruby</span></label>
+                </div>
+              </fieldset>
+              <fieldset><legend>Shape</legend>
+                <div class="ma-opts">
+                  <label><input type="radio" name="shape" value="round" checked /><span>Round</span></label>
+                  <label><input type="radio" name="shape" value="oval" /><span>Oval</span></label>
+                  <label><input type="radio" name="shape" value="emerald" /><span>Emerald cut</span></label>
+                </div>
+              </fieldset>
+              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div><label class="ma-label" for="d-carat">Carat <b data-d-carat>1.0</b> ct</label><input id="d-carat" type="range" min="0.5" max="3" step="0.1" value="1" class="ma-range" name="carat" /></div>
+                <div><label class="ma-label" for="d-size">Ring size (UK)</label><select id="d-size" class="ma-input" name="size"></select></div>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6">
+                <p class="text-sm opacity-60">Made to order in about 3 weeks. Final price confirmed after your stone is chosen.</p>
+                <a href="#visit" class="ma-btn ma-btn--gold" data-request>Request this design</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · THE 4Cs =========================== -->
+      <section id="guide" class="ma-section" aria-labelledby="guide-title">
+        <div class="ma-wrap grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div class="ma-lab">
+            <div class="ma-lab__stone" data-stone aria-hidden="true"></div>
+            <p class="ma-lab__sum" aria-live="polite" data-lab-sum></p>
+          </div>
+          <div>
+            <p class="ma-eyebrow">Diamond guide</p>
+            <h2 id="guide-title" class="ma-h2 mt-4">The 4Cs, <em>felt, not memorised.</em></h2>
+            <form class="mt-8 grid gap-7" data-fourc>
+              <div>
+                <div class="ma-row"><label for="c-carat">Carat</label><b data-v="carat"></b></div>
+                <input id="c-carat" class="ma-range ma-range--ink" type="range" min="0.25" max="3" step="0.05" value="1" data-c="carat" />
+                <p class="ma-help" data-h="carat"></p>
+              </div>
+              <div>
+                <div class="ma-row"><label for="c-cut">Cut</label><b data-v="cut"></b></div>
+                <input id="c-cut" class="ma-range ma-range--ink" type="range" min="0" max="2" step="1" value="2" data-c="cut" />
+                <p class="ma-help" data-h="cut"></p>
+              </div>
+              <div>
+                <div class="ma-row"><label for="c-colour">Colour</label><b data-v="colour"></b></div>
+                <input id="c-colour" class="ma-range ma-range--ink" type="range" min="0" max="6" step="1" value="2" data-c="colour" />
+                <p class="ma-help" data-h="colour"></p>
+              </div>
+              <div>
+                <div class="ma-row"><label for="c-clarity">Clarity</label><b data-v="clarity"></b></div>
+                <input id="c-clarity" class="ma-range ma-range--ink" type="range" min="0" max="4" step="1" value="2" data-c="clarity" />
+                <p class="ma-help" data-h="clarity"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · ATELIER =========================== -->
+      <section id="atelier" class="ma-section ma-section--ivory2" aria-labelledby="atelier-title">
+        <div class="ma-wrap">
+          <div class="ma-head"><p class="ma-eyebrow">The atelier</p><h2 id="atelier-title" class="ma-h2">Five steps. <em>Forty hours.</em></h2></div>
+          <ol class="ma-steps">
+            {STEPS.map((s) => (
+              <li class="ma-step" data-reveal>
+                <span class="ma-step__n">{s.n}</span>
+                <h3 class="ma-step__t">{s.t}</h3>
+                <p>{s.d}</p>
+              </li>
+            ))}
+          </ol>
+          <ul class="ma-badges" role="list">
+            <li><b>100%</b>recycled gold & platinum</li>
+            <li><b>GIA</b>certified diamonds</li>
+            <li><b>5 yrs</b>of free cleaning & checks</li>
+            <li><b>Lifetime</b>resizing & repair</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · VISIT =========================== -->
+      <section id="visit" class="ma-section ma-section--dark" aria-labelledby="visit-title">
+        <div class="ma-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <div>
+            <p class="ma-eyebrow ma-eyebrow--gold">Private appointments</p>
+            <h2 id="visit-title" class="ma-h2 mt-4">Come and <em>see them.</em></h2>
+            <p class="mt-6 max-w-sm text-lg leading-relaxed opacity-75">One hour, one room, a glass of something cold and a jeweller who has nowhere else to be.</p>
+            <address class="mt-8 not-italic leading-relaxed opacity-90">27 Greville Street<br />Hatton Garden, London EC1N 8SU<br /><span class="opacity-60">Tuesday to Saturday · by appointment</span></address>
+          </div>
+          <form class="ma-form" data-visit novalidate>
+            <fieldset><legend>I would like</legend>
+              <div class="ma-opts">
+                <label><input type="radio" name="kind" value="Private viewing" checked /><span>A private viewing</span></label>
+                <label><input type="radio" name="kind" value="Bespoke consultation" /><span>A bespoke consultation</span></label>
+                <label><input type="radio" name="kind" value="Valuation" /><span>A valuation</span></label>
+              </div>
+            </fieldset>
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div><label class="ma-label" for="v-date">Preferred date</label><input id="v-date" type="date" class="ma-input" data-req aria-describedby="v-date-e" /><p id="v-date-e" class="ma-err" hidden>Choose a Tuesday to Saturday in the future.</p></div>
+              <div><label class="ma-label" for="v-time">Time</label><select id="v-time" class="ma-input"><option>10:00</option><option>11:30</option><option>13:00</option><option>14:30</option><option>16:00</option></select></div>
+              <div><label class="ma-label" for="v-name">Name</label><input id="v-name" class="ma-input" autocomplete="name" data-req aria-describedby="v-name-e" /><p id="v-name-e" class="ma-err" hidden>Please add your name.</p></div>
+              <div><label class="ma-label" for="v-email">Email</label><input id="v-email" type="email" class="ma-input" autocomplete="email" data-req aria-describedby="v-email-e" /><p id="v-email-e" class="ma-err" hidden>Enter an email like name@example.com.</p></div>
+              <div class="sm:col-span-2"><label class="ma-label" for="v-note">Tell us what you have in mind <span class="opacity-60">(optional)</span></label><textarea id="v-note" class="ma-input min-h-24" data-note></textarea></div>
+            </div>
+            <div class="flex flex-wrap items-center gap-4"><button type="submit" class="ma-btn ma-btn--gold">Request appointment</button><p class="ma-ok" role="status" data-visit-ok></p></div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ma-footer">
+      <div class="ma-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="ma-logo"><span aria-hidden="true">◆</span> Maison <em>Aurelle</em></p>
+        <p>A fictional jeweller created for Thecore's 100 Days of Web (Day 027). Prices and pieces are demo content.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-027/script';
+</script>

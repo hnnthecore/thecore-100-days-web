@@ -1,0 +1,276 @@
+---
+/**
+ * Day 035 · Car dealership landing page · “Apex Motor Group”, approved used cars in the East Midlands (fictional).
+ * Six signature sections: Hero + colour studio · Stock & compare · Finance calculator · Part-exchange valuation · 100-point check · Book a test drive.
+ * Mood: clean showroom. Off-white, ink black and signal red; racing-stripe accents; Inter + JetBrains Mono.
+ */
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import Landing from '../../layouts/Landing.astro';
+import { car } from '../../days/day-035/art';
+import '../../days/day-035/styles.css';
+
+const CARS = [
+  { id: 'golf', make: 'Volkswagen', model: 'Golf 1.5 TSI', year: 2021, body: 'hatch', fuel: 'Petrol', price: 17995, miles: 22400, gear: 'Manual', color: '#3f6fb5', colorName: 'Atlantic Blue', spec: '48 mpg' },
+  { id: 'm3', make: 'Tesla', model: 'Model 3 Long Range', year: 2022, body: 'saloon', fuel: 'Electric', price: 28450, miles: 15100, gear: 'Automatic', color: '#e9ecef', colorName: 'Pearl White', spec: '358 mile range' },
+  { id: 'rav4', make: 'Toyota', model: 'RAV4 Hybrid Design', year: 2021, body: 'suv', fuel: 'Hybrid', price: 26995, miles: 31200, gear: 'Automatic', color: '#a9afb7', colorName: 'Lunar Silver', spec: '51 mpg' },
+  { id: '3t', make: 'BMW', model: '320d Touring M Sport', year: 2020, body: 'estate', fuel: 'Diesel', price: 23750, miles: 38400, gear: 'Automatic', color: '#4a4f57', colorName: 'Mineral Grey', spec: '57 mpg' },
+  { id: 'tt', make: 'Audi', model: 'TT Coupe 45 TFSI', year: 2019, body: 'coupe', fuel: 'Petrol', price: 21495, miles: 41300, gear: 'Automatic', color: '#c8312f', colorName: 'Tango Red', spec: '38 mpg' },
+  { id: 'niro', make: 'Kia', model: 'e-Niro 64 kWh', year: 2022, body: 'suv', fuel: 'Electric', price: 27995, miles: 12400, gear: 'Automatic', color: '#53606b', colorName: 'Steel Grey', spec: '282 mile range' },
+  { id: 'fiesta', make: 'Ford', model: 'Fiesta ST-Line', year: 2020, body: 'hatch', fuel: 'Petrol', price: 11495, miles: 28100, gear: 'Manual', color: '#d4262a', colorName: 'Race Red', spec: '52 mpg' },
+  { id: 'v60', make: 'Volvo', model: 'V60 Recharge T6', year: 2021, body: 'estate', fuel: 'Hybrid', price: 31950, miles: 24500, gear: 'Automatic', color: '#3b5878', colorName: 'Denim Blue', spec: '33 miles electric' },
+  { id: 'cclass', make: 'Mercedes-Benz', model: 'C 220 d AMG Line', year: 2019, body: 'saloon', fuel: 'Diesel', price: 19250, miles: 52300, gear: 'Automatic', color: '#1b1c20', colorName: 'Obsidian Black', spec: '55 mpg' },
+];
+const BODIES = [['all', 'All'], ['hatch', 'Hatchback'], ['suv', 'SUV'], ['saloon', 'Saloon'], ['estate', 'Estate'], ['coupe', 'Coupe']];
+const FUELS = ['All', 'Petrol', 'Diesel', 'Hybrid', 'Electric'];
+const CHECKS = [
+  ['Engine & exhaust', 14, ['Oil and filter condition', 'Cold-start and idle behaviour', 'Exhaust and emissions test', 'Belt and hose inspection']],
+  ['Transmission', 8, ['Clutch bite point or gearbox adaptation', 'Gear changes under load', 'Driveshaft and joints', 'Fluid level and condition']],
+  ['Brakes', 10, ['Disc and pad thickness measured', 'Brake fluid moisture test', 'Handbrake and parking assist', 'ABS warning self-test']],
+  ['Suspension & steering', 9, ['Shock absorbers and springs', 'Tracking and alignment', 'Wheel bearings', 'Steering rack play']],
+  ['Electrics', 16, ['Full diagnostic scan', 'All lights, indicators and wipers', 'Battery health test', 'Infotainment and driver aids']],
+  ['Bodywork', 12, ['Paint depth reading on every panel', 'Underbody and sills for rust', 'Glass and mirrors', 'Panel gaps and previous repairs']],
+  ['Interior', 14, ['Seat, belt and airbag checks', 'Air-conditioning performance', 'Trim and carpets condition', 'All keys and fobs present']],
+  ['History & documents', 17, ['Full HPI check: no finance, theft or write-off', 'Mileage verification', 'Service history validated', 'V5C registration document checked']],
+] as const;
+---
+<Landing
+  title="Apex Motor Group · Approved used cars, East Midlands"
+  description="Approved used cars with a 100-point check, 12-month warranty and 7-day returns. Compare cars, calculate finance, value your part-exchange and book a test drive. (Day 035 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#0d0d0f"
+  icon="🚗"
+  day={35}
+>
+  <div class="ax" data-cars={JSON.stringify(CARS)}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="ax-header" data-header>
+      <div class="ax-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="ax-logo" aria-label="Apex Motor Group, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0d0d0f" /><path d="M6 24 16 7l10 17" fill="none" stroke="#e8262b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /></svg><span>APEX<small>MOTOR GROUP</small></span></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-8 text-sm font-semibold">
+            <li><a href="#stock">Used cars</a></li><li><a href="#finance">Finance</a></li><li><a href="#partex">Part-exchange</a></li><li><a href="#check">Our promise</a></li>
+          </ul>
+        </nav>
+        <a href="#drive" class="ax-btn ax-btn--red whitespace-nowrap">Book a test drive</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="ax-hero" aria-labelledby="hero-title">
+        <div class="ax-wrap py-14 lg:py-20">
+          <div class="grid grid-cols-1 items-end gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+            <div>
+              <p class="ax-eyebrow"><i></i>Approved used · 100-point checked</p>
+              <h1 id="hero-title" class="ax-display mt-6">Good cars. <span class="ax-red">Honestly</span> sold.</h1>
+            </div>
+            <p class="max-w-md text-lg leading-relaxed text-(--muted)">Every car is HPI-checked, mechanically inspected and backed by a 12-month warranty and 7-day returns. See it, drive it, finance it, all online.</p>
+          </div>
+
+          <div class="ax-studio">
+            <div class="ax-studio__stage" data-hero-car></div>
+            <div class="ax-studio__ctrl">
+              <div>
+                <span class="ax-label" id="s-body">Body style</span>
+                <div class="ax-seg" role="group" aria-labelledby="s-body" data-hero-body>
+                  {BODIES.slice(1).map(([k, l], i) => <button type="button" data-b={k} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+                </div>
+              </div>
+              <div>
+                <span class="ax-label" id="s-col">Colour: <b data-hero-colname>Atlantic Blue</b></span>
+                <div class="ax-sw" role="group" aria-labelledby="s-col" data-hero-colors>
+                  {[['#3f6fb5', 'Atlantic Blue'], ['#c8312f', 'Tango Red'], ['#e9ecef', 'Pearl White'], ['#4a4f57', 'Mineral Grey'], ['#1b1c20', 'Obsidian Black'], ['#2e7d5b', 'Racing Green']].map(([c, n], i) => <button type="button" style={`--c:${c}`} data-c={c} data-n={n} aria-pressed={i === 0 ? 'true' : 'false'} aria-label={n} />)}
+                </div>
+              </div>
+              <a href="#stock" class="ax-btn ax-btn--ink ax-btn--lg" data-see-body>See matching cars →</a>
+            </div>
+          </div>
+          <dl class="ax-kpis"><div><dt>Cars in stock</dt><dd>128</dd></div><div><dt>Average rating</dt><dd>4.8★</dd></div><div><dt>Warranty</dt><dd>12 mo</dd></div><div><dt>Money-back return</dt><dd>7 days</dd></div></dl>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · STOCK =========================== -->
+      <section id="stock" class="ax-section" aria-labelledby="stock-title">
+        <div class="ax-wrap">
+          <div class="ax-head"><p class="ax-eyebrow"><i></i>In stock now</p><h2 id="stock-title" class="ax-h2">Find your next <span class="ax-red">car.</span></h2></div>
+          <form class="ax-filters" data-filters novalidate>
+            <div class="ax-chips" role="group" aria-label="Body style" data-body-filter>
+              {BODIES.map(([k, l], i) => <button type="button" data-body={k} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+            </div>
+            <div class="ax-filters__row">
+              <div><label for="f-fuel">Fuel</label><select id="f-fuel" class="ax-input">{FUELS.map((f) => <option>{f}</option>)}</select></div>
+              <div><label for="f-price">Max price: <b data-price-out>£35,000</b></label><input id="f-price" class="ax-range" type="range" min="10000" max="35000" step="500" value="35000" /></div>
+              <div><label for="f-sort">Sort by</label><select id="f-sort" class="ax-input"><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="miles">Lowest mileage</option><option value="year">Newest</option></select></div>
+            </div>
+          </form>
+          <p class="ax-count" aria-live="polite" data-count></p>
+          <ul class="ax-grid" role="list" data-grid>
+            {CARS.map((c) => (
+              <li class="ax-card" data-car={c.id}>
+                <div class="ax-card__art" set:html={car(c.body as any, c.color, `${c.make} ${c.model} in ${c.colorName}`)} />
+                <div class="ax-card__body">
+                  <p class="ax-card__make">{c.make} · {c.year}</p>
+                  <h3 class="ax-card__model">{c.model}</h3>
+                  <ul class="ax-specs ax-mono" role="list"><li>{c.miles.toLocaleString('en-GB')} mi</li><li>{c.fuel}</li><li>{c.gear}</li><li>{c.spec}</li></ul>
+                  <div class="ax-card__foot">
+                    <p class="ax-card__price">£{c.price.toLocaleString('en-GB')}</p>
+                    <p class="ax-card__pm ax-mono" data-pm></p>
+                  </div>
+                  <div class="ax-card__actions">
+                    <label class="ax-cmp"><input type="checkbox" data-cmp={c.id} /><span>Compare</span></label>
+                    <a href="#drive" class="ax-btn ax-btn--line ax-btn--sm" data-drive={c.id}>Test drive</a>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p class="ax-empty" data-empty hidden>No cars match those filters. Try a higher budget or a different fuel type.</p>
+          <div class="ax-cmpbar" data-cmpbar hidden>
+            <p aria-live="polite"><b data-cmp-n>0</b> of 3 selected to compare</p>
+            <div class="flex gap-2"><button type="button" class="ax-btn ax-btn--line ax-btn--sm" data-cmp-clear>Clear</button><button type="button" class="ax-btn ax-btn--red ax-btn--sm" data-cmp-open disabled>Compare</button></div>
+          </div>
+        </div>
+        <dialog class="ax-dialog" data-dialog aria-labelledby="cmp-title">
+          <div class="ax-dialog__head"><h3 id="cmp-title">Side by side</h3><button type="button" class="ax-x" data-dialog-close aria-label="Close comparison">✕</button></div>
+          <div class="ax-dialog__body" data-cmp-table></div>
+        </dialog>
+      </section>
+
+      <!-- =========================== 3 · FINANCE =========================== -->
+      <section id="finance" class="ax-section ax-section--ink" aria-labelledby="finance-title">
+        <div class="ax-wrap">
+          <div class="ax-head"><p class="ax-eyebrow ax-eyebrow--light"><i></i>Finance calculator</p><h2 id="finance-title" class="ax-h2">What will it <span class="ax-red">cost a month?</span></h2></div>
+          <form class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]" data-fin novalidate>
+            <div class="ax-panel">
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2"><label for="fi-car">Car</label><select id="fi-car" class="ax-input ax-input--dark">{CARS.map((c) => <option value={c.id}>{c.make} {c.model} · £{c.price.toLocaleString('en-GB')}</option>)}</select></div>
+                <fieldset class="sm:col-span-2"><legend>Finance type</legend>
+                  <div class="ax-opts">
+                    <label><input type="radio" name="ftype" value="hp" checked /><span>Hire Purchase <small>own it at the end</small></span></label>
+                    <label><input type="radio" name="ftype" value="pcp" /><span>PCP <small>lower monthly, final payment</small></span></label>
+                  </div>
+                </fieldset>
+              </div>
+              <div><div class="ax-row"><label for="fi-dep">Deposit</label><b data-dep-out>£2,000</b></div><input id="fi-dep" class="ax-range" type="range" min="0" max="10000" step="250" value="2000" /></div>
+              <div><div class="ax-row"><label for="fi-term">Term</label><b data-term-out>48 months</b></div><input id="fi-term" class="ax-range" type="range" min="24" max="60" step="12" value="48" /></div>
+              <div><div class="ax-row"><label for="fi-apr">Representative APR</label><b data-apr-out>7.9%</b></div><input id="fi-apr" class="ax-range" type="range" min="0" max="14.9" step="0.1" value="7.9" /></div>
+            </div>
+            <div class="ax-result" aria-live="polite">
+              <p class="ax-result__k">Your monthly payment</p>
+              <p class="ax-result__big"><b data-monthly>£0</b><span>/month</span></p>
+              <div class="ax-donut-wrap">
+                <svg viewBox="0 0 120 120" class="ax-donut" aria-hidden="true"><circle cx="60" cy="60" r="46" fill="none" stroke="#2a2a30" stroke-width="18" /><circle data-seg="dep" cx="60" cy="60" r="46" fill="none" stroke="#8a8f99" stroke-width="18" pathLength="100" /><circle data-seg="prin" cx="60" cy="60" r="46" fill="none" stroke="#e8262b" stroke-width="18" pathLength="100" /><circle data-seg="int" cx="60" cy="60" r="46" fill="none" stroke="#ffb020" stroke-width="18" pathLength="100" /></svg>
+                <ul class="ax-legend ax-mono" role="list"><li><i style="background:#8a8f99"></i>Deposit <b data-l-dep></b></li><li><i style="background:#e8262b"></i>Car cost <b data-l-prin></b></li><li><i style="background:#ffb020"></i>Interest <b data-l-int></b></li></ul>
+              </div>
+              <dl class="ax-result__rows"><div><dt>Total payable</dt><dd data-total></dd></div><div data-balloon-row hidden><dt>Final payment (optional)</dt><dd data-balloon></dd></div></dl>
+              <a href="#drive" class="ax-btn ax-btn--red ax-btn--lg w-full" data-fin-go>Test drive this car</a>
+              <p class="ax-fine">Representative example for illustration only. Finance subject to status, over-18s. Not a credit offer.</p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · PART-EX =========================== -->
+      <section id="partex" class="ax-section" aria-labelledby="partex-title">
+        <div class="ax-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div>
+            <p class="ax-eyebrow"><i></i>Part-exchange</p>
+            <h2 id="partex-title" class="ax-h2 mt-4">What’s your car <span class="ax-red">worth?</span></h2>
+            <p class="mt-6 max-w-sm text-lg leading-relaxed text-(--muted)">Get a guaranteed valuation in 30 seconds. We’ll honour it for 7 days, and subtract nothing for “admin”.</p>
+            <ul class="ax-bullets" role="list"><li>Guaranteed for 7 days</li><li>We handle the finance settlement</li><li>Collection available</li></ul>
+          </div>
+          <form class="ax-vform" data-val novalidate>
+            <div class="ax-plate"><span aria-hidden="true">GB</span><input id="v-reg" aria-label="Registration number" class="ax-plate__in" placeholder="AB21 CDE" maxlength="8" autocomplete="off" spellcheck="false" aria-describedby="v-reg-e" /></div>
+            <p class="ax-err" id="v-reg-e" hidden>Enter a registration like AB21 CDE.</p>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div><label for="v-miles">Mileage</label><input id="v-miles" class="ax-input" type="number" min="0" max="250000" step="500" value="30000" inputmode="numeric" /></div>
+              <div><label for="v-cond">Condition</label><select id="v-cond" class="ax-input"><option value="1">Excellent, like new</option><option value="0.94" selected>Good, normal wear</option><option value="0.85">Fair, some marks</option><option value="0.72">Poor, needs work</option></select></div>
+            </div>
+            <label class="ax-check"><input type="checkbox" id="v-sh" checked /><span>Full service history</span></label>
+            <button type="submit" class="ax-btn ax-btn--ink ax-btn--lg w-full">Value my car</button>
+            <div class="ax-val" data-val-out hidden aria-live="polite">
+              <p class="ax-val__car ax-mono" data-val-car></p>
+              <p class="ax-val__k">We’ll give you</p>
+              <p class="ax-val__big" data-val-range></p>
+              <p class="ax-val__note" data-val-note></p>
+              <a href="#drive" class="ax-btn ax-btn--red" data-val-go>Use this in my test drive booking</a>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · CHECK =========================== -->
+      <section id="check" class="ax-section ax-section--grey" aria-labelledby="check-title">
+        <div class="ax-wrap">
+          <div class="ax-head"><p class="ax-eyebrow"><i></i>Our promise</p><h2 id="check-title" class="ax-h2">100 points. <span class="ax-red">No shortcuts.</span></h2></div>
+          <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]">
+            <div class="ax-ring" data-ring>
+              <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#dcdcd6" stroke-width="10" /><circle data-ring-arc cx="60" cy="60" r="52" fill="none" stroke="#e8262b" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)" /></svg>
+              <p class="ax-ring__n"><b data-ring-n>0</b><span>point check</span></p>
+            </div>
+            <div>
+              <div class="ax-acc">
+                {CHECKS.map(([name, n, items], i) => (
+                  <details name="check" open={i === 0}>
+                    <summary><span>{name}</span><b class="ax-mono">{n} checks</b><i style={`--w:${n * 5}%`} aria-hidden="true"></i></summary>
+                    <ul role="list">{items.map((it) => <li>{it}</li>)}</ul>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+          <ul class="ax-promises" role="list"><li><b>12 months</b>warranty included</li><li><b>7 days</b>no-quibble returns</li><li><b>1 year</b>roadside assistance</li><li><b>Full HPI</b>history report free</li></ul>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · DRIVE =========================== -->
+      <section id="drive" class="ax-section" aria-labelledby="drive-title">
+        <div class="ax-wrap">
+          <div class="ax-head"><p class="ax-eyebrow"><i></i>Test drive</p><h2 id="drive-title" class="ax-h2">Take it for a <span class="ax-red">spin.</span></h2></div>
+          <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+            <form class="ax-card2" data-book novalidate>
+              <div class="ax-fields">
+                <div class="sm:col-span-2"><label for="d-car">Which car?</label><select id="d-car" class="ax-input">{CARS.map((c) => <option value={c.id}>{c.year} {c.make} {c.model}</option>)}</select></div>
+                <fieldset class="sm:col-span-2"><legend>Day</legend><div class="ax-days" data-days></div></fieldset>
+                <fieldset class="sm:col-span-2"><legend>Time</legend><div class="ax-slots" data-slots></div></fieldset>
+                <div><label for="d-name">Full name</label><input id="d-name" class="ax-input" autocomplete="name" data-req aria-describedby="d-name-e" /><p class="ax-err" id="d-name-e" hidden>Please add your name.</p></div>
+                <div><label for="d-phone">Mobile</label><input id="d-phone" type="tel" class="ax-input" autocomplete="tel" data-req aria-describedby="d-phone-e" /><p class="ax-err" id="d-phone-e" hidden>Enter a phone number with at least 10 digits.</p></div>
+                <div class="sm:col-span-2"><label for="d-email">Email</label><input id="d-email" type="email" class="ax-input" autocomplete="email" data-req aria-describedby="d-email-e" /><p class="ax-err" id="d-email-e" hidden>Enter an email like name@example.com.</p></div>
+                <div class="sm:col-span-2"><label for="d-note">Anything to add? <span class="opacity-60">(optional)</span></label><textarea id="d-note" class="ax-input min-h-20" data-note></textarea></div>
+                <label class="ax-check sm:col-span-2"><input type="checkbox" data-licence /><span>I hold a full UK or EU driving licence and will bring it with me.</span></label>
+                <p class="ax-err sm:col-span-2" id="d-licence-e" hidden>Please confirm you hold a valid licence.</p>
+              </div>
+              <p class="ax-err mt-4" role="alert" data-book-err hidden></p>
+              <button type="submit" class="ax-btn ax-btn--red ax-btn--lg mt-6">Book my test drive</button>
+            </form>
+            <aside class="ax-sum" data-sum>
+              <div class="ax-sum__art" data-sum-art></div>
+              <h3 data-sum-name></h3>
+              <dl><div><dt>Price</dt><dd data-sum-price></dd></div><div><dt>When</dt><dd data-sum-when>Not chosen</dd></div><div><dt>Part-ex</dt><dd data-sum-px>Not added</dd></div></dl>
+              <p class="ax-sum__note">Showroom: Unit 4, Trent Valley Park, Nottingham. Free parking, free coffee.</p>
+            </aside>
+            <div class="ax-done lg:col-span-2" data-done hidden tabindex="-1">
+              <div class="ax-done__ico" aria-hidden="true">🏁</div>
+              <h3 class="ax-h2" style="max-width:none">You’re booked in, <span class="ax-red" data-done-name></span>.</h3>
+              <p class="mt-3 text-lg" data-done-text></p>
+              <p class="ax-ref ax-mono mt-6">Reference <b data-ref></b></p>
+              <button type="button" class="ax-btn ax-btn--ink mt-8" data-again>Book another</button>
+              <p class="mt-4 text-sm opacity-60">Demo only: nothing was sent.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ax-footer">
+      <div class="ax-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="ax-logo !text-white"><span>APEX<small>MOTOR GROUP</small></span></p>
+        <p>A fictional dealership created for Thecore's 100 Days of Web (Day 035). Cars, prices and finance are demo content, not an offer.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-035/script';
+</script>

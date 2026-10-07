@@ -109,4 +109,14 @@ Then open `http://localhost:5500/phase-1-ui-components/day-001-navigation-bars/`
 | 023 | [Northgate Motorworks](phase-2-landing-pages/site/day-023-workshop/) | ✅ Done |
 | 024 | [Halden & Rowe](phase-2-landing-pages/site/day-024-construction/) | ✅ Done |
 | 025 | [Pace Logistics](phase-2-landing-pages/site/day-025-transport/) | ✅ Done |
-| 026 | Hair Salon | ⏳ Next |
+| 026 | [Atelier Vesper](phase-2-landing-pages/site/day-026-hair-salon/) | ✅ Done |
+| 027 | [Maison Aurelle](phase-2-landing-pages/site/day-027-jewelry/) | ✅ Done |
+| 028 | [Stackwell](phase-2-landing-pages/site/day-028-it-company/) | ✅ Done |
+| 029 | [Ironveil](phase-2-landing-pages/site/day-029-cybersecurity/) | ✅ Done |
+| 030 | [Rival Athletic Club](phase-2-landing-pages/site/day-030-gym/) | ✅ Done |
+| 031 | [The Saltmarsh](phase-2-landing-pages/site/day-031-hotel/) | ✅ Done |
+| 032 | [Lemon & Linen](phase-2-landing-pages/site/day-032-cleaning/) | ✅ Done |
+| 033 | [Voltline Electrical](phase-2-landing-pages/site/day-033-electrician/) | ✅ Done |
+| 034 | [Copperline Plumbing & Heating](phase-2-landing-pages/site/day-034-plumber/) | ✅ Done |
+| 035 | [Apex Motor Group](phase-2-landing-pages/site/day-035-car-dealership/) | ✅ Done |
+| 036 | Real Estate | ⏳ Next |

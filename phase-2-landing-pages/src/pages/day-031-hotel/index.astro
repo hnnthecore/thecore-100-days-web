@@ -1,0 +1,234 @@
+---
+/**
+ * Day 031 · Hotel landing page · “The Saltmarsh”, a 24-room boutique hotel on the north Norfolk coast (fictional).
+ * Six signature sections: Hero + availability search · Rooms · Rate calendar · Plan your stay · Guest reviews · Reserve.
+ * Mood: calm coastal. Sand, sea-glass, deep teal and brass; Newsreader + Figtree.
+ */
+import '@fontsource-variable/newsreader';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '@fontsource-variable/figtree';
+import Landing from '../../layouts/Landing.astro';
+import { room, view } from '../../days/day-031/art';
+import '../../days/day-031/styles.css';
+
+const ROOMS = [
+  { id: 'garden', name: 'Garden Nook', view: 'garden', size: 22, sleeps: 2, bed: 'Double bed', price: 145, tone: '#e8ecdc', accent: '#9bb38a', king: false, text: 'A snug retreat on the ground floor with its own sheltered patio.' },
+  { id: 'court', name: 'Courtyard Double', view: 'courtyard', size: 26, sleeps: 2, bed: 'King bed', price: 175, tone: '#f1e3d6', accent: '#c98a6b', king: true, text: 'Warm brick, string lights and a rain shower the size of a phone box.' },
+  { id: 'marsh', name: 'Marsh View King', view: 'marsh', size: 30, sleeps: 2, bed: 'King bed', price: 215, tone: '#f0e6d8', accent: '#a9b9a0', king: true, text: 'Wake up to reeds, wading birds and a low gold sun over the saltmarsh.' },
+  { id: 'sea', name: 'Sea View Suite', view: 'sea', size: 42, sleeps: 3, bed: 'King bed + sofa bed', price: 295, tone: '#e1ecee', accent: '#5f9fb1', king: true, text: 'A separate sitting area and a bath positioned for the best view in the house.' },
+  { id: 'loft', name: 'Dune Family Loft', view: 'dunes', size: 48, sleeps: 4, bed: 'King + 2 single beds', price: 330, tone: '#f5ead3', accent: '#dcc08a', king: true, text: 'Two sleeping levels, a window seat, and the beach at the bottom of the lane.' },
+  { id: 'light', name: 'The Lighthouse', view: 'sea', size: 60, sleeps: 2, bed: 'Super-king bed', price: 480, tone: '#dfe7ef', accent: '#2f5565', king: true, text: 'Our top-floor suite: wrap-around windows, private terrace and a freestanding tub.' },
+];
+const EXTRAS = {
+  dine: [
+    { id: 'breakfast', name: 'Breakfast basket', price: 18, unit: 'pn', text: 'Warm pastries, local eggs and coffee, delivered to your door each morning.' },
+    { id: 'supper', name: 'Seafood supper', price: 48, unit: 'pp', text: 'Three courses of the day’s catch at the Saltmarsh table.' },
+    { id: 'hamper', name: 'Beach picnic hamper', price: 32, unit: 'pp', text: 'Crab sandwiches, samphire salad and something cold.' },
+    { id: 'chef', name: 'Chef’s table', price: 95, unit: 'pp', text: 'A seven-course tasting menu at the pass, wine pairing optional.' },
+  ],
+  spa: [
+    { id: 'seaweed', name: 'Seaweed bath ritual', price: 55, unit: 'pp', text: 'A 45-minute soak in warm, mineral-rich seaweed.' },
+    { id: 'massage', name: '60-minute massage', price: 85, unit: 'pp', text: 'Deep tissue or aromatherapy, your choice.' },
+    { id: 'tub', name: 'Sauna & hot tub evening', price: 25, unit: 'pp', text: 'Private wood-fired hot tub under the stars.' },
+    { id: 'yoga', name: 'Dune-top yoga', price: 15, unit: 'pp', text: 'Sunrise class on the dunes. Mats provided.' },
+  ],
+  explore: [
+    { id: 'seals', name: 'Seal-spotting boat trip', price: 22, unit: 'pp', text: 'Ninety minutes out to Blakeney Point, with a guide.' },
+    { id: 'bikes', name: 'Bike hire', price: 18, unit: 'pn', text: 'Hybrid bikes, helmets and a map of the coast path.' },
+    { id: 'walk', name: 'Guided marsh walk', price: 15, unit: 'pp', text: 'Tide, birds and the stories behind them.' },
+    { id: 'stars', name: 'Stargazing evening', price: 20, unit: 'pp', text: 'One of England’s darkest skies, with telescopes and hot chocolate.' },
+  ],
+};
+const TABS = [['dine', 'Dine'], ['spa', 'Spa'], ['explore', 'Explore']] as const;
+const RATINGS = [['Cleanliness', 4.9], ['Location', 5.0], ['Service', 4.9], ['Food', 4.8], ['Value', 4.6]];
+const REVIEWS = [
+  { n: 'Eleanor & Tom', t: 'Anniversary weekend', q: 'We left the car for three days. Walked to the beach, ate oysters, slept like logs. The breakfast basket at the door is genius.' },
+  { n: 'Raj P.', t: 'Solo retreat', q: 'The hot tub at night with nothing but the stars and the sound of the marsh. I came home properly rested for the first time in a year.' },
+  { n: 'The Okafor family', t: 'Half-term', q: 'The Dune Loft was perfect for four of us. Staff remembered the kids’ names by day two and found them a crab line.' },
+];
+const sceneId = 'hero';
+const hv = view('sea', sceneId);
+---
+<Landing
+  title="The Saltmarsh · Boutique coastal hotel, Norfolk"
+  description="A 24-room boutique hotel on the north Norfolk coast. Check availability, see prices by date, plan your stay and reserve online. (Day 031 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#1e3b44"
+  icon="🏨"
+  day={31}
+>
+  <div class="hl" data-rooms={JSON.stringify(ROOMS.map(({ id, name, sleeps, price }) => ({ id, name, sleeps, price })))} data-extras={JSON.stringify([...EXTRAS.dine, ...EXTRAS.spa, ...EXTRAS.explore])}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="hl-header" data-header>
+      <div class="hl-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="hl-logo" aria-label="The Saltmarsh, home">The <em>Saltmarsh</em></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-9 text-[15px] font-medium">
+            <li><a href="#rooms">Rooms</a></li><li><a href="#rates">Rates</a></li><li><a href="#stay">Plan your stay</a></li><li><a href="#guests">Guests</a></li>
+          </ul>
+        </nav>
+        <a href="#reserve" class="hl-btn hl-btn--brass whitespace-nowrap">Reserve</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="hl-hero" aria-labelledby="hero-title">
+        <div class="hl-wrap grid grid-cols-1 items-center gap-12 pt-12 pb-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-16">
+          <div>
+            <p class="hl-eyebrow">24 rooms · North Norfolk coast</p>
+            <h1 id="hero-title" class="hl-display mt-6">Where the marsh <em>meets the sea.</em></h1>
+            <p class="mt-6 max-w-lg text-lg leading-relaxed text-(--muted)">A small, slow hotel at the edge of the saltmarsh. Big windows, bigger skies, and a kitchen that cooks what the boats bring in.</p>
+
+            <form class="hl-search" data-search novalidate>
+              <div><label for="h-in">Arrive</label><input id="h-in" type="date" class="hl-input" /></div>
+              <div><label for="h-out">Depart</label><input id="h-out" type="date" class="hl-input" /></div>
+              <div>
+                <span id="g-l">Guests</span>
+                <div class="hl-stepper" role="group" aria-labelledby="g-l"><button type="button" aria-label="Fewer guests" data-g="-1">−</button><output data-guests aria-live="polite">2</output><button type="button" aria-label="More guests" data-g="1">+</button></div>
+              </div>
+              <button type="submit" class="hl-btn hl-btn--sea">Check rooms</button>
+            </form>
+            <p class="hl-searchmsg" aria-live="polite" data-search-msg></p>
+          </div>
+          <div class="hl-window" aria-hidden="true">
+            <svg viewBox="0 0 160 124" preserveAspectRatio="xMidYMid slice">
+              <defs set:html={hv.defs + '<clipPath id="wclip"><path d="M0 124V80a80 80 0 0 1 160 0v44z"/></clipPath>'} />
+              <g clip-path="url(#wclip)" transform="translate(0 24)" set:html={hv.body} />
+              <path d="M0 124V80a80 80 0 0 1 160 0v44z" fill="none" stroke="#fff" stroke-width="5" />
+              <path d="M80 0v124M0 80h160" stroke="#fff" stroke-width="2.5" />
+            </svg>
+            <p class="hl-window__tag">Sea View Suite · from £295</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · ROOMS =========================== -->
+      <section id="rooms" class="hl-section" aria-labelledby="rooms-title">
+        <div class="hl-wrap">
+          <div class="hl-head"><p class="hl-eyebrow">Rooms & suites</p><h2 id="rooms-title" class="hl-h2">Six ways to <em>wake up here.</em></h2></div>
+          <p class="hl-avail" aria-live="polite" data-avail></p>
+          <ul class="hl-rooms" role="list">
+            {ROOMS.map((r) => (
+              <li class="hl-room" data-room={r.id}>
+                <div class="hl-room__img" set:html={room(r.view as any, r.tone, r.accent, r.king, `Illustration of the ${r.name}`)} />
+                <div class="hl-room__body">
+                  <h3 class="hl-room__name">{r.name}</h3>
+                  <p class="hl-room__meta">{r.size} m² · sleeps {r.sleeps} · {r.bed}</p>
+                  <p class="hl-room__text">{r.text}</p>
+                  <div class="hl-room__foot">
+                    <p class="hl-room__price"><b data-room-price>£{r.price}</b><small data-room-note>from, per night</small></p>
+                    <button type="button" class="hl-btn hl-btn--sea" data-pick={r.id}>Select</button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · RATES =========================== -->
+      <section id="rates" class="hl-section hl-section--sea" aria-labelledby="rates-title">
+        <div class="hl-wrap">
+          <div class="hl-head"><p class="hl-eyebrow hl-eyebrow--light">Rate calendar</p><h2 id="rates-title" class="hl-h2">Find the <em>best nights.</em></h2></div>
+          <div class="hl-calhead">
+            <p class="hl-calhelp" aria-live="polite" data-cal-help>Pick your arrival date, then your departure date. Prices show the lowest room rate.</p>
+            <div class="hl-legend" aria-hidden="true"><i class="l1"></i>Best value<i class="l2"></i><i class="l3"></i><i class="l4"></i>Peak</div>
+          </div>
+          <div class="hl-cals" data-cals></div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · STAY =========================== -->
+      <section id="stay" class="hl-section" aria-labelledby="stay-title">
+        <div class="hl-wrap">
+          <div class="hl-head"><p class="hl-eyebrow">Plan your stay</p><h2 id="stay-title" class="hl-h2">Add the <em>good bits.</em></h2></div>
+          <div class="hl-tabs" role="tablist" aria-label="Experiences" data-tabs>
+            {TABS.map(([k, l], i) => <button type="button" role="tab" id={`xt-${k}`} aria-controls={`xp-${k}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{l}</button>)}
+          </div>
+          {TABS.map(([k], i) => (
+            <div role="tabpanel" id={`xp-${k}`} aria-labelledby={`xt-${k}`} hidden={i !== 0}>
+              <ul class="hl-extras" role="list">
+                {EXTRAS[k].map((x) => (
+                  <li class="hl-extra">
+                    <div><h3>{x.name}</h3><p>{x.text}</p></div>
+                    <p class="hl-extra__price">£{x.price}<small>{x.unit === 'pp' ? ' per person' : ' per night'}</small></p>
+                    <button type="button" class="hl-add" data-extra={x.id} aria-pressed="false">Add to stay</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p class="hl-extras__sum" aria-live="polite" data-extras-sum></p>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · GUESTS =========================== -->
+      <section id="guests" class="hl-section hl-section--glass" aria-labelledby="guests-title">
+        <div class="hl-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <div>
+            <p class="hl-eyebrow">Guest reviews</p>
+            <h2 id="guests-title" class="hl-h2 mt-4">4.9 from <em>1,284 stays.</em></h2>
+            <ul class="hl-bars" role="list">
+              {RATINGS.map(([n, v]) => <li><span>{n}</span><i style={`--w:${(Number(v) / 5) * 100}%`}></i><b>{Number(v).toFixed(1)}</b></li>)}
+            </ul>
+          </div>
+          <div>
+            <ul class="hl-reviews" role="list">
+              {REVIEWS.map((r) => <li class="hl-review"><blockquote>“{r.q}”</blockquote><p><b>{r.n}</b> · {r.t}</p></li>)}
+            </ul>
+            <ul class="hl-near" role="list" aria-label="Getting around">
+              <li><b>4 min</b>walk to the beach</li><li><b>12 min</b>ferry to Blakeney Point</li><li><b>40 min</b>from King’s Lynn station</li><li><b>2 h 15</b>from London King’s Cross</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · RESERVE =========================== -->
+      <section id="reserve" class="hl-section" aria-labelledby="reserve-title">
+        <div class="hl-wrap">
+          <div class="hl-head"><p class="hl-eyebrow">Reserve</p><h2 id="reserve-title" class="hl-h2">Almost <em>there.</em></h2></div>
+          <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]" data-reserve>
+            <form class="hl-form" data-form novalidate>
+              <p class="hl-form__lock" data-lock>Choose a room above to complete your reservation.</p>
+              <fieldset class="hl-fields" data-fields disabled>
+                <div><label for="r-name">Full name</label><input id="r-name" class="hl-input" autocomplete="name" data-req aria-describedby="r-name-e" /><p class="hl-err" id="r-name-e" hidden>Please add your name.</p></div>
+                <div><label for="r-email">Email</label><input id="r-email" type="email" class="hl-input" autocomplete="email" data-req aria-describedby="r-email-e" /><p class="hl-err" id="r-email-e" hidden>Enter an email like name@example.com.</p></div>
+                <div><label for="r-phone">Phone</label><input id="r-phone" type="tel" class="hl-input" autocomplete="tel" data-req aria-describedby="r-phone-e" /><p class="hl-err" id="r-phone-e" hidden>Enter a phone number with at least 10 digits.</p></div>
+                <div><label for="r-time">Arrival time</label><select id="r-time" class="hl-input"><option>Before 3 pm</option><option selected>3 pm – 6 pm</option><option>6 pm – 9 pm</option><option>After 9 pm</option></select></div>
+                <div class="sm:col-span-2"><label for="r-note">Special requests <span class="opacity-60">(optional)</span></label><textarea id="r-note" class="hl-input min-h-24" placeholder="Celebrating something? Dietary needs? A dog?"></textarea></div>
+                <button type="submit" class="hl-btn hl-btn--brass hl-btn--lg sm:col-span-2">Confirm reservation</button>
+              </fieldset>
+            </form>
+            <aside class="hl-sum" aria-label="Your stay" data-sum>
+              <h3 class="hl-sum__t">Your stay</h3>
+              <p class="hl-sum__room" data-sum-room>No room selected</p>
+              <p class="hl-sum__dates" data-sum-dates></p>
+              <ul class="hl-sum__lines" role="list" data-sum-lines></ul>
+              <p class="hl-sum__total"><span>Total, incl. VAT</span><b data-sum-total>£0</b></p>
+              <p class="hl-sum__dep" data-sum-dep></p>
+            </aside>
+            <div class="hl-done lg:col-span-2" data-done hidden tabindex="-1">
+              <div class="hl-done__ico" aria-hidden="true">✓</div>
+              <h3 class="hl-h2" style="max-width:none">See you by the sea, <em data-done-name></em>.</h3>
+              <p class="mt-3 text-lg" data-done-text></p>
+              <p class="hl-ref mt-6">Booking reference <b data-ref></b></p>
+              <button type="button" class="hl-btn hl-btn--sea mt-8" data-again>Plan another stay</button>
+              <p class="mt-4 text-sm opacity-60">Demo only: nothing was sent or charged.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="hl-footer">
+      <div class="hl-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="hl-logo">The <em>Saltmarsh</em></p>
+        <p>A fictional hotel created for Thecore's 100 Days of Web (Day 031). Rooms, rates and reviews are demo content.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-031/script';
+</script>

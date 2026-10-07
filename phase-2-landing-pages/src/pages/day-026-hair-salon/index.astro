@@ -1,0 +1,298 @@
+---
+/**
+ * Day 026 · Hair salon landing page · “Atelier Vesper”, an independent hair studio in London (fictional).
+ * Six signature sections: Hero · Service menu · Stylists · Transformations (before/after) · Booking · Visit & reviews.
+ * Mood: soft editorial luxury. Cream, blush, clay and aubergine; Instrument Serif display + DM Sans.
+ */
+import '@fontsource/instrument-serif';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource-variable/dm-sans';
+import Landing from '../../layouts/Landing.astro';
+import Hair from '../../components/day-026/Hair.astro';
+import '../../days/day-026/styles.css';
+
+const SERVICES = [
+  { id: 'cut', name: 'Cut & finish', items: [
+    { id: 'sig', name: 'Signature cut & blow-dry', price: 68, mins: 75, note: 'Consultation, wash, precision cut, finish' },
+    { id: 'restyle', name: 'Restyle cut', price: 85, mins: 90, note: 'A change of shape, with a longer consultation' },
+    { id: 'fringe', name: 'Fringe trim', price: 15, mins: 15, note: 'Complimentary between cuts for regulars' },
+    { id: 'blow', name: 'Blow-dry', price: 38, mins: 45, note: 'Smooth, bouncy or sleek' },
+  ] },
+  { id: 'colour', name: 'Colour', items: [
+    { id: 'root', name: 'Root tint', price: 72, mins: 90, note: 'Up to 4 cm regrowth' },
+    { id: 'full', name: 'Full colour', price: 110, mins: 120, note: 'Single-process, root to tip' },
+    { id: 'balayage', name: 'Balayage', price: 185, mins: 180, note: 'Hand-painted, with a gloss to finish' },
+    { id: 'gloss', name: 'Gloss toner', price: 48, mins: 40, note: 'Shine and tone refresh' },
+  ] },
+  { id: 'care', name: 'Care', items: [
+    { id: 'bond', name: 'Bond repair treatment', price: 45, mins: 30, note: 'Rebuilds hair after lightening' },
+    { id: 'scalp', name: 'Scalp ritual', price: 40, mins: 40, note: 'Exfoliate, massage, steam' },
+    { id: 'keratin', name: 'Keratin smoothing', price: 220, mins: 150, note: 'Frizz-free for up to 12 weeks' },
+    { id: 'deep', name: 'Deep conditioning', price: 30, mins: 20, note: 'Add to any service' },
+  ] },
+  { id: 'bridal', name: 'Bridal', items: [
+    { id: 'trial', name: 'Bridal trial', price: 90, mins: 90, note: 'Plan the look, photos included' },
+    { id: 'day', name: 'Wedding-day style', price: 180, mins: 120, note: 'At the studio or on location' },
+    { id: 'guest', name: 'Guest up-do', price: 75, mins: 60, note: 'Polished and photo-ready' },
+    { id: 'party', name: 'Bridal party, per person', price: 95, mins: 75, note: 'Book 3 or more and save 10%' },
+  ] },
+];
+
+const STYLISTS = [
+  { id: 'noor', name: 'Noor Haddad', role: 'Founder & colour director', since: 2011, tags: ['Balayage', 'Blonding', 'Colour correction'], quote: 'Colour should look like you, only more so.', look: 'long', hair: '#6B3A2A', tip: '#D9A66B', bg: '#EBD3C6', skin: '#D9A07F' },
+  { id: 'theo', name: 'Theo Marsh', role: 'Senior stylist', since: 2015, tags: ['Precision cuts', 'Bobs', 'Gents'], quote: 'A good cut grows out beautifully.', look: 'pixie', hair: '#2B1625', bg: '#D8DEC9', skin: '#EFC9B0' },
+  { id: 'imani', name: 'Imani Cole', role: 'Curl & texture specialist', since: 2017, tags: ['Curly cuts', 'Natural textures', 'Protective styles'], quote: 'Your curls are not a problem to solve.', look: 'curls', hair: '#2A1A15', bg: '#F0D9A8', skin: '#A86B4C' },
+  { id: 'lea', name: 'Léa Fontaine', role: 'Bridal & up-do artist', since: 2019, tags: ['Bridal', 'Up-dos', 'Event styling'], quote: 'Calm hands make a calm morning.', look: 'wave', hair: '#B07A4A', tip: '#E1B98A', bg: '#E3D3E9', skin: '#F0CDB5' },
+];
+
+const CASES = [
+  { id: 'bal', title: 'Balayage', who: 'Noor', time: '3 h', before: { look: 'long', hair: '#3a2418', tip: '#3a2418' }, after: { look: 'long', hair: '#5a3524', tip: '#E2B57A' }, text: 'From flat brunette to a sun-lit finish, painted by hand so the grow-out stays soft.' },
+  { id: 'pixie', title: 'Pixie restyle', who: 'Theo', time: '90 min', before: { look: 'long', hair: '#2B1625', tip: '#2B1625' }, after: { look: 'pixie', hair: '#2B1625', tip: '#2B1625' }, text: 'Twelve inches off, shaped around cheekbones with a textured, easy-to-style crop.' },
+  { id: 'gloss', title: 'Copper gloss', who: 'Noor', time: '2 h', before: { look: 'bob', hair: '#7a5a48', tip: '#7a5a48' }, after: { look: 'bob', hair: '#B5532F', tip: '#C8683C' }, text: 'A warm copper gloss on a precision bob. Shine you can see from across the room.' },
+];
+
+const REVIEWS = [
+  { name: 'Priya S.', text: 'Noor listened for ten minutes before touching a brush. Best balayage I have ever had, and no brassiness at week 8.', service: 'Balayage' },
+  { name: 'Daniel R.', text: 'Theo has been cutting my hair for six years. Never rushed, never a bad day, never a bad cut.', service: 'Cut & finish' },
+  { name: 'Amara O.', text: 'First stylist who has cut my curls dry and talked me through why. I finally get what to do with them.', service: 'Curly cut' },
+];
+
+const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday', '10:00 – 19:00'], ['Thursday', '10:00 – 20:00'], ['Friday', '10:00 – 19:00'], ['Saturday', '09:00 – 17:00'], ['Sunday', '11:00 – 16:00']];
+---
+<Landing
+  title="Atelier Vesper · Independent hair studio, London"
+  description="Cut, colour, curls and bridal at an independent London hair studio. Choose your services and stylist, then book online. (Day 026 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#2b1625"
+  icon="✂️"
+  day={26}
+>
+  <div class="av" data-services={JSON.stringify(SERVICES)} data-stylists={JSON.stringify(STYLISTS.map((s) => ({ id: s.id, name: s.name })))} data-cases={JSON.stringify(Object.fromEntries(CASES.map((c) => [c.id, c.text])))}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="av-header" data-header>
+      <div class="av-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="av-logo" aria-label="Atelier Vesper, home"><span>Atelier</span> <em>Vesper</em></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-9 text-[15px] font-medium">
+            <li><a href="#menu">Menu</a></li><li><a href="#team">Stylists</a></li><li><a href="#work">Work</a></li><li><a href="#visit">Visit</a></li>
+          </ul>
+        </nav>
+        <a href="#book" class="av-btn av-btn--plum">Book online</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="av-hero" aria-labelledby="hero-title">
+        <div class="av-wrap grid grid-cols-1 items-center gap-12 pt-12 pb-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-16">
+          <div>
+            <p class="av-eyebrow">Independent hair studio · Shoreditch, London</p>
+            <h1 id="hero-title" class="av-display mt-6">Hair that looks like <em>you</em>, on your best day.</h1>
+            <p class="mt-7 max-w-lg text-lg leading-relaxed text-(--muted)">Four specialists, one unhurried chair. Every visit begins with a proper conversation and ends with hair you know how to wear.</p>
+            <div class="mt-9 flex flex-wrap items-center gap-4">
+              <a href="#book" class="av-btn av-btn--clay av-btn--lg">Book an appointment</a>
+              <a href="#menu" class="av-link">See the menu →</a>
+            </div>
+            <p class="av-next mt-10" aria-live="polite"><span class="av-dot"></span><span data-next>Checking the diary…</span></p>
+          </div>
+          <div class="av-arches" aria-hidden="true">
+            <div class="av-arch av-arch--a"><Hair look="long" hair="#6B3A2A" tip="#D9A66B" bg="#EBD3C6" skin="#D9A07F" /></div>
+            <div class="av-arch av-arch--b"><Hair look="curls" hair="#2A1A15" bg="#F0D9A8" skin="#A86B4C" /></div>
+            <div class="av-arch av-arch--c"><Hair look="pixie" hair="#2B1625" bg="#D8DEC9" skin="#EFC9B0" /></div>
+            <p class="av-stamp"><b>4.9</b><span>★ from 1,280 reviews</span></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · MENU =========================== -->
+      <section id="menu" class="av-section" aria-labelledby="menu-title">
+        <div class="av-wrap">
+          <div class="av-head"><p class="av-eyebrow">The menu</p><h2 id="menu-title" class="av-h2">Honest prices. <em>Add what you like.</em></h2></div>
+          <div class="av-tabs" role="tablist" aria-label="Service categories" data-mtabs>
+            {SERVICES.map((c, i) => <button type="button" role="tab" id={`mt-${c.id}`} aria-controls={`mp-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{c.name}</button>)}
+          </div>
+          {SERVICES.map((c, i) => (
+            <div role="tabpanel" id={`mp-${c.id}`} aria-labelledby={`mt-${c.id}`} class="av-menu" hidden={i !== 0}>
+              <ul role="list">
+                {c.items.map((s) => (
+                  <li class="av-item">
+                    <div>
+                      <h3 class="av-item__name">{s.name}</h3>
+                      <p class="av-item__note">{s.note} · {s.mins >= 60 ? `${Math.floor(s.mins / 60)} h${s.mins % 60 ? ` ${s.mins % 60} min` : ''}` : `${s.mins} min`}</p>
+                    </div>
+                    <span class="av-item__dots" aria-hidden="true"></span>
+                    <span class="av-item__price">£{s.price}</span>
+                    <button type="button" class="av-add" data-add={s.id} aria-pressed="false" aria-label={`Add ${s.name} to my booking`}><span aria-hidden="true">+</span></button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div class="av-basket" data-basket hidden>
+            <p aria-live="polite"><b data-basket-count>0</b> selected · <b data-basket-total>£0</b> · <span data-basket-time></span></p>
+            <a href="#book" class="av-btn av-btn--clay">Continue to booking</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · STYLISTS =========================== -->
+      <section id="team" class="av-section av-section--blush" aria-labelledby="team-title">
+        <div class="av-wrap">
+          <div class="av-head"><p class="av-eyebrow">The team</p><h2 id="team-title" class="av-h2">Four specialists. <em>One standard.</em></h2></div>
+          <ul class="av-team" role="list">
+            {STYLISTS.map((s) => (
+              <li class="av-person">
+                <div class="av-person__img"><Hair look={s.look as any} hair={s.hair} tip={s.tip} bg={s.bg} skin={s.skin} label={`Illustrated portrait of ${s.name}`} /></div>
+                <h3 class="av-person__name">{s.name}</h3>
+                <p class="av-person__role">{s.role} · since {s.since}</p>
+                <p class="av-person__quote">“{s.quote}”</p>
+                <ul class="av-tags" role="list">{s.tags.map((t) => <li>{t}</li>)}</ul>
+                <button type="button" class="av-link av-person__book" data-pick-stylist={s.id}>Book with {s.name.split(' ')[0]} →</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · WORK =========================== -->
+      <section id="work" class="av-section" aria-labelledby="work-title">
+        <div class="av-wrap grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+          <div>
+            <p class="av-eyebrow">Transformations</p>
+            <h2 id="work-title" class="av-h2 mt-4">Before, after, <em>and everything between.</em></h2>
+            <div class="av-cases mt-8" role="group" aria-label="Choose a transformation" data-cases>
+              {CASES.map((c, i) => (
+                <button type="button" class="av-case" data-case={c.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+                  <b>{c.title}</b><span>{c.who} · {c.time}</span>
+                </button>
+              ))}
+            </div>
+            <p class="mt-6 max-w-md text-lg leading-relaxed text-(--muted)" aria-live="polite" data-case-text>{CASES[0].text}</p>
+          </div>
+          <div>
+            <div class="av-compare" data-compare style="--pos:50%">
+              {CASES.map((c, i) => (
+                <div class="av-compare__set" data-set={c.id} hidden={i !== 0}>
+                  <div class="av-compare__layer"><Hair look={c.before.look as any} hair={c.before.hair} tip={c.before.tip} bg="#E9E0D6" /></div>
+                  <div class="av-compare__layer av-compare__layer--after"><Hair look={c.after.look as any} hair={c.after.hair} tip={c.after.tip} bg="#EBD3C6" /></div>
+                </div>
+              ))}
+              <span class="av-compare__tag av-compare__tag--l">Before</span><span class="av-compare__tag av-compare__tag--r">After</span>
+              <span class="av-compare__handle" aria-hidden="true"><i>⇆</i></span>
+            </div>
+            <label class="sr-only" for="cmp">Reveal before and after</label>
+            <input id="cmp" type="range" min="0" max="100" value="50" class="av-range" data-range aria-valuetext="50% after" />
+            <p class="mt-3 text-center text-sm text-(--muted)">Drag, or use the slider. Illustrations stand in for client photos.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · BOOKING =========================== -->
+      <section id="book" class="av-section av-section--plum" aria-labelledby="book-title">
+        <div class="av-wrap">
+          <div class="av-head"><p class="av-eyebrow av-eyebrow--light">Book online</p><h2 id="book-title" class="av-h2">Three steps. <em>No phone call.</em></h2></div>
+          <div class="av-book grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
+            <form class="av-card" data-book novalidate>
+              <ol class="av-steps" aria-label="Booking progress">
+                <li data-stepper="1" class="is-now"><span>1</span> Services</li>
+                <li data-stepper="2"><span>2</span> Stylist & time</li>
+                <li data-stepper="3"><span>3</span> Your details</li>
+              </ol>
+
+              <div data-step="1">
+                <h3 class="av-step-title">What are we doing today?</h3>
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2" data-service-list></div>
+              </div>
+
+              <div data-step="2" hidden>
+                <h3 class="av-step-title">With whom, and when?</h3>
+                <fieldset class="av-field"><legend>Stylist</legend>
+                  <div class="av-pills" data-stylist-list></div>
+                </fieldset>
+                <fieldset class="av-field"><legend>Day</legend>
+                  <div class="av-days" data-day-list></div>
+                </fieldset>
+                <fieldset class="av-field"><legend>Time</legend>
+                  <div class="av-slots" data-slot-list></div>
+                  <p class="mt-2 text-sm" data-slot-msg aria-live="polite"></p>
+                </fieldset>
+              </div>
+
+              <div data-step="3" hidden>
+                <h3 class="av-step-title">Nearly there.</h3>
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div><label class="av-label" for="b-name">Full name</label><input id="b-name" class="av-input" autocomplete="name" data-req aria-describedby="b-name-e" /><p id="b-name-e" class="av-err" hidden>Please add your name.</p></div>
+                  <div><label class="av-label" for="b-phone">Mobile number</label><input id="b-phone" class="av-input" type="tel" autocomplete="tel" data-req aria-describedby="b-phone-e" /><p id="b-phone-e" class="av-err" hidden>Enter a UK mobile like 07700 900123.</p></div>
+                  <div class="sm:col-span-2"><label class="av-label" for="b-email">Email</label><input id="b-email" class="av-input" type="email" autocomplete="email" data-req aria-describedby="b-email-e" /><p id="b-email-e" class="av-err" hidden>Enter an email like name@example.com.</p></div>
+                  <div class="sm:col-span-2"><label class="av-label" for="b-note">Anything we should know? <span class="opacity-60">(optional)</span></label><textarea id="b-note" class="av-input min-h-24" placeholder="Allergies, inspiration, how you usually wear it…"></textarea></div>
+                </div>
+                <p class="mt-4 text-sm opacity-70">A £15 deposit is taken at the studio and comes off your bill. Free changes up to 24 hours before.</p>
+              </div>
+
+              <p class="av-err mt-4" role="alert" data-step-err hidden></p>
+              <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
+                <button type="button" class="av-btn av-btn--ghost" data-back hidden>← Back</button>
+                <button type="submit" class="av-btn av-btn--clay av-btn--lg ml-auto" data-next-btn>Continue →</button>
+              </div>
+            </form>
+
+            <aside class="av-summary" aria-label="Your booking" data-summary>
+              <h3 class="av-summary__title">Your booking</h3>
+              <ul class="av-summary__list" role="list" data-sum-list><li class="opacity-60">Nothing selected yet.</li></ul>
+              <dl class="av-summary__meta">
+                <div><dt>With</dt><dd data-sum-who>Any stylist</dd></div>
+                <div><dt>When</dt><dd data-sum-when>Not chosen</dd></div>
+                <div><dt>Duration</dt><dd data-sum-time>–</dd></div>
+              </dl>
+              <p class="av-summary__total"><span>Total</span><b data-sum-total>£0</b></p>
+            </aside>
+
+            <div class="av-done lg:col-span-2" data-done hidden tabindex="-1">
+              <div class="av-done__tick" aria-hidden="true">✓</div>
+              <h3 class="av-h2" style="max-width:none">You’re booked in, <em data-done-name></em>.</h3>
+              <p class="mt-3 text-lg" data-done-text></p>
+              <p class="av-ref mt-6">Reference <b data-done-ref></b></p>
+              <button type="button" class="av-btn av-btn--ghost mt-8" data-again>Make another booking</button>
+              <p class="mt-4 text-sm opacity-60">Demo only: nothing was sent or stored.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · VISIT & REVIEWS =========================== -->
+      <section id="visit" class="av-section" aria-labelledby="visit-title">
+        <div class="av-wrap">
+          <div class="av-head"><p class="av-eyebrow">Visit</p><h2 id="visit-title" class="av-h2">Come and <em>sit down.</em></h2></div>
+          <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+            <div class="av-visit">
+              <p class="av-open" aria-live="polite"><span class="av-dot" data-open-dot></span><b data-open-text>Checking…</b></p>
+              <address class="mt-5 not-italic leading-relaxed">14 Cheshire Row<br />Shoreditch, London E1 6QX<br /><span class="text-(--muted)">2 minutes from the station</span></address>
+              <table class="av-hours mt-6"><caption class="sr-only">Opening hours</caption><tbody>
+                {HOURS.map(([d, h], i) => <tr data-day={(i + 1) % 7}><th scope="row">{d}</th><td>{h}</td></tr>)}
+              </tbody></table>
+            </div>
+            <ul class="av-reviews" role="list">
+              {REVIEWS.map((r) => (
+                <li class="av-review">
+                  <p class="av-stars" aria-label="5 out of 5 stars">★★★★★</p>
+                  <blockquote>“{r.text}”</blockquote>
+                  <p class="av-review__by"><b>{r.name}</b> · {r.service}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="av-footer">
+      <div class="av-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="av-logo"><span>Atelier</span> <em>Vesper</em></p>
+        <p>A fictional studio created for Thecore's 100 Days of Web (Day 026). Prices, reviews and people are demo content.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-026/script';
+</script>
