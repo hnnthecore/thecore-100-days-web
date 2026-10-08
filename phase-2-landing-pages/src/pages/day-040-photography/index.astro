@@ -8,7 +8,21 @@ import '@fontsource-variable/bodoni-moda';
 import '@fontsource-variable/bodoni-moda/wght-italic.css';
 import '@fontsource-variable/hanken-grotesk';
 import Landing from '../../layouts/Landing.astro';
-import { photo } from '../../days/day-040/art';
+import { Image } from 'astro:assets';
+import shot01 from '../../assets/day-040/shot-01.jpg';
+import shot02 from '../../assets/day-040/shot-02.jpg';
+import shot03 from '../../assets/day-040/shot-03.jpg';
+import shot04 from '../../assets/day-040/shot-04.jpg';
+import shot05 from '../../assets/day-040/shot-05.jpg';
+import shot06 from '../../assets/day-040/shot-06.jpg';
+import shot07 from '../../assets/day-040/shot-07.jpg';
+import shot08 from '../../assets/day-040/shot-08.jpg';
+import shot09 from '../../assets/day-040/shot-09.jpg';
+import shot10 from '../../assets/day-040/shot-10.jpg';
+import shot11 from '../../assets/day-040/shot-11.jpg';
+import shot12 from '../../assets/day-040/shot-12.jpg';
+const PHOTOS: Record<number, any> = { 1: shot01, 2: shot02, 3: shot03, 4: shot04, 5: shot05, 6: shot06, 7: shot07, 8: shot08, 9: shot09, 10: shot10, 11: shot11, 12: shot12 };
+const ALTS: Record<number, string> = {"1":"A bride and groom posing by a birch tree in a garden","2":"A woman in a black camisole lit by soft studio light","3":"A snowy Dolomites peak at twilight under a half moon","4":"Coffee, a croissant and white flowers on a cafe table seen from above","5":"A bride walking away through a garden in black and white","6":"White Santorini buildings above the Aegean Sea","7":"A bearded man in a cap in warm window light","8":"A blue blouse, scarf and boots arranged flat on a woven rug","9":"A couple sharing a moment under a wedding veil by roses","10":"A man in sunglasses and a tan jacket at golden hour by the harbour","11":"A busy souk in Marrakech with colourful stalls","12":"Over-ear headphones on a dark textured background"};
 import '../../days/day-040/styles.css';
 
 const SHOTS = [
@@ -95,7 +109,7 @@ const STEPS = [
             {SHOTS.map((s) => (
               <li class="hc-shot" data-shot={s.id} data-cat={s.cat}>
                 <button type="button" class="hc-shot__btn" data-open={s.id} aria-label={`Open ${s.title}, ${s.place}`}>
-                  <span class="hc-shot__img" style={`aspect-ratio:${s.ratio}`} set:html={photo(s.kind as any, s.v)} />
+                  <span class="hc-shot__img" style={`aspect-ratio:${s.ratio}`}><Image src={PHOTOS[s.id]} alt={ALTS[s.id]} width={900} class="hc-shot__photo" data-photo /></span>
                   <span class="hc-shot__cap"><b>{s.title}</b><small>{s.place}</small></span>
                 </button>
               </li>

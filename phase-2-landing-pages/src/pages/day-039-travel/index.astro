@@ -7,6 +7,17 @@
 import '@fontsource-variable/unbounded';
 import '@fontsource-variable/dm-sans';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import ph_lisbon from '../../assets/day-039/lisbon.jpg';
+import ph_santorini from '../../assets/day-039/santorini.jpg';
+import ph_kyoto from '../../assets/day-039/kyoto.jpg';
+import ph_banff from '../../assets/day-039/banff.jpg';
+import ph_marrakech from '../../assets/day-039/marrakech.jpg';
+import ph_bali from '../../assets/day-039/bali.jpg';
+import ph_serengeti from '../../assets/day-039/serengeti.jpg';
+import ph_reykjavik from '../../assets/day-039/reykjavik.jpg';
+const PHOTOS: Record<string, any> = { lisbon: ph_lisbon, santorini: ph_santorini, kyoto: ph_kyoto, banff: ph_banff, marrakech: ph_marrakech, bali: ph_bali, serengeti: ph_serengeti, reykjavik: ph_reykjavik };
+const ALTS: Record<string, string> = {"lisbon":"A sunlit Lisbon street with tram tracks and historic buildings","santorini":"White clifftop houses above the deep blue Aegean in Santorini","kyoto":"A red wooden pagoda against the sky in Kyoto","banff":"Snow-capped mountains above pine forest near Banff","marrakech":"A narrow terracotta alley in the Marrakech medina","bali":"Green terraced rice paddies in Bali","serengeti":"Wildebeest and zebras on the golden Serengeti plain","reykjavik":"Green northern lights over an Icelandic mountain"};
 import { scene } from '../../days/day-039/art';
 import '../../days/day-039/styles.css';
 
@@ -89,7 +100,7 @@ const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'
           <ul class="wf-grid" role="list" data-grid>
             {DEST.map((d) => (
               <li class="wf-card" data-dest-id={d.id}>
-                <div class="wf-card__art" set:html={scene(d.scene as any, `Illustration of ${d.name}, ${d.country}`)} />
+                <div class="wf-card__art"><Image src={PHOTOS[d.id]} alt={ALTS[d.id]} width={800} class="wf-card__photo" /></div>
                 <span class="wf-card__badge" data-badge hidden></span>
                 <div class="wf-card__body">
                   <p class="wf-card__country">{d.country} · {d.flight} h flight</p>

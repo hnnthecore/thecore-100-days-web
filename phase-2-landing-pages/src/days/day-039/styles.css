@@ -205,3 +205,8 @@ textarea.wf-input { height: auto; padding-block: 0.8rem; }
 
 /* Layout fixes found in the audit (text must never spill out of its box) */
 html .wf-slot { grid-template-columns: 5.8rem minmax(0, 1fr) auto; }
+
+/* Real photography (replaces the first round of illustrations) */
+html .wf-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale 0.8s var(--ease-out-expo); }
+html .wf-card:hover .wf-card__photo { scale: 1.07; }
+@media (prefers-reduced-motion: reduce) { html .wf-card__photo { transition: none; } }

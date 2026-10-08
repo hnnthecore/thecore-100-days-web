@@ -34,3 +34,18 @@ Everything revolves around one trip. Choosing “Plan this trip” on a card set
 ## Notes
 
 Wayfarer is a fictional company. Destinations, prices and experts are demo content, and nothing is sent or booked.
+
+## Photography
+
+The eight destination cards use real photographs from Pexels (free to use, no attribution required), stored in `src/assets/day-039/` and converted to WebP at build time. I rejected a Lisbon photo that showed a drinks-brand tram. The trip matcher and itinerary builder stay as interface.
+
+| Destination | Pexels photo |
+| --- | --- |
+| Lisbon | https://www.pexels.com/photo/a-street-with-tram-rails-25294225/ |
+| Santorini | https://www.pexels.com/photo/28000940/ |
+| Kyoto | https://www.pexels.com/photo/26946364/ |
+| Banff | https://www.pexels.com/photo/16665444/ |
+| Marrakech | https://www.pexels.com/photo/7808145/ |
+| Bali | https://www.pexels.com/photo/34136177/ |
+| Serengeti | https://www.pexels.com/photo/33650529/ |
+| Reykjavik | https://www.pexels.com/photo/31291321/ |

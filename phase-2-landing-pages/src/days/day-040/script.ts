@@ -3,7 +3,7 @@
  * Aperture / depth-of-field demo · filterable portfolio with a native-dialog lightbox · package pricing · scroll-driven process line ·
  * turnaround dates · availability calendar · enquiry form.
  */
-import { photo, type Kind } from './art';
+type Kind = string;
 
 type Shot = { id: number; kind: Kind; v: number; cat: string; title: string; place: string; ratio: string; lens: string; f: number; shutter: string; iso: number };
 
@@ -68,7 +68,8 @@ function showShot(i: number) {
   const img = $('[data-lb-img]');
   img.style.setProperty('--r', s.ratio);
   img.style.setProperty('--rn', String(w / h));
-  img.innerHTML = photo(s.kind, s.v, `${s.title}, ${s.place}`);
+  const src = $<HTMLImageElement>(`[data-shot="${s.id}"] [data-photo]`);
+  img.innerHTML = `<img class="hc-lb__photo" src="${src.currentSrc || src.src}" alt="${src.alt}" />`;
   $('[data-lb-title]').textContent = s.title;
   $('[data-lb-place]').textContent = s.place;
   $('[data-lb-exif]').textContent = `${s.lens} · f/${s.f} · ${s.shutter} s · ISO ${s.iso}`;

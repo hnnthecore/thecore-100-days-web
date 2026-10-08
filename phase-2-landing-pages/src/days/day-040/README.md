@@ -31,3 +31,7 @@ A wedding and portrait photography studio in Bristol (fictional), and **the last
 ## Notes
 
 Halide & Co. is a fictional studio. Photographs, prices and availability are demo content, and nothing is sent.
+
+## Photography
+
+All twelve portfolio frames, and the lightbox that opens them, now use real photographs from Pexels (free to use, no attribution required), stored in `src/assets/day-040/` and converted to WebP at build time. The lightbox reuses the already-loaded grid image. Pexels IDs: 33051785, 34921744, 11043095, 34052564, 17967333, 28000962, 14811342, 31871752, 35557003, 14030694, 36209321, 3721941 (in frame order). Look them up at `https://www.pexels.com/photo/<id>/`.
