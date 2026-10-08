@@ -43,3 +43,7 @@ The three arches in the hero use real photographs from Unsplash (free for commer
 | Arch 1 | Blow-dry with a round brush | https://unsplash.com/photos/FkAZqQJTbXM |
 | Arch 2 | Hair wash at the basin | https://unsplash.com/photos/Md_DhaFsnCQ |
 | Arch 3 | Salon floor with arched mirrors (black and white) | https://unsplash.com/photos/_Fy7Kq0w6OI |
+
+### Team portraits
+
+The four stylist portraits are stock photos from Pexels (free to use) standing in for the fictional team. Pexels IDs: 20781288, 36712860, 18003350, 9331274. The before/after slider keeps its drawn hair because it needs matched before and after photos of one client, which stock libraries rarely offer.

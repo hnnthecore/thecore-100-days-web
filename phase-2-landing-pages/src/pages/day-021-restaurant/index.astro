@@ -6,6 +6,23 @@
  */
 import Landing from '../../layouts/Landing.astro';
 import Illo from '../../components/day-021/Illo.astro';
+import dish01 from '../../assets/day-021/dish-01.jpg';
+import dish02 from '../../assets/day-021/dish-02.jpg';
+import dish03 from '../../assets/day-021/dish-03.jpg';
+import dish04 from '../../assets/day-021/dish-04.jpg';
+import dish05 from '../../assets/day-021/dish-05.jpg';
+import dish06 from '../../assets/day-021/dish-06.jpg';
+import dish07 from '../../assets/day-021/dish-07.jpg';
+import dish08 from '../../assets/day-021/dish-08.jpg';
+import dish09 from '../../assets/day-021/dish-09.jpg';
+import dish10 from '../../assets/day-021/dish-10.jpg';
+import dish11 from '../../assets/day-021/dish-11.jpg';
+import dish12 from '../../assets/day-021/dish-12.jpg';
+import dish13 from '../../assets/day-021/dish-13.jpg';
+import dish14 from '../../assets/day-021/dish-14.jpg';
+import dish15 from '../../assets/day-021/dish-15.jpg';
+import dish16 from '../../assets/day-021/dish-16.jpg';
+const DISH_PHOTOS = [dish01, dish02, dish03, dish04, dish05, dish06, dish07, dish08, dish09, dish10, dish11, dish12, dish13, dish14, dish15, dish16];
 import { Image } from 'astro:assets';
 import photoTacos from '../../assets/day-021/tacos-plate.jpg';
 import photoSpread from '../../assets/day-021/table-guacamole.jpg';
@@ -174,9 +191,9 @@ const HOURS = [
           <div id="menu-panel" role="tabpanel" aria-labelledby="tab-tacos" class="mt-10" data-menu-panel>
             <p class="sr-only" aria-live="polite" data-menu-count></p>
             <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
-              {DISHES.map((d) => (
+              {DISHES.map((d, di) => (
                 <li class="sys-dish" data-dish data-cat={d.cat} data-tags={d.tags.join(' ')} data-heat={d.heat} hidden={d.cat !== 'tacos'} style={`--tint:${d.tint}`}>
-                  <div class="sys-dish__art"><Illo name={d.illo} class="size-24" /></div>
+                  <div class="sys-dish__art"><Image src={DISH_PHOTOS[di]} alt={d.name} width={200} class="sys-dish__photo" /></div>
                   <div class="min-w-0 flex-1">
                     <div class="flex items-baseline justify-between gap-3">
                       <h3 class="font-display text-2xl font-semibold">{d.name}</h3>

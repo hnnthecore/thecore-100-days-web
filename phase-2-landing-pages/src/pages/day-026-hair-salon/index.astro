@@ -13,6 +13,11 @@ import { Image } from 'astro:assets';
 import photoDry from '../../assets/day-026/blowdry.jpg';
 import photoWash from '../../assets/day-026/cut.jpg';
 import photoStudio from '../../assets/day-026/interior.jpg';
+import stNoor from '../../assets/day-026/stylist-noor.jpg';
+import stTheo from '../../assets/day-026/stylist-theo.jpg';
+import stImani from '../../assets/day-026/stylist-imani.jpg';
+import stLea from '../../assets/day-026/stylist-lea.jpg';
+const STYLIST_PHOTOS: Record<string, any> = { noor: stNoor, theo: stTheo, imani: stImani, lea: stLea };
 import '../../days/day-026/styles.css';
 
 const SERVICES = [
@@ -145,7 +150,7 @@ const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday
           <ul class="av-team" role="list">
             {STYLISTS.map((s) => (
               <li class="av-person">
-                <div class="av-person__img"><Hair look={s.look as any} hair={s.hair} tip={s.tip} bg={s.bg} skin={s.skin} label={`Illustrated portrait of ${s.name}`} /></div>
+                <div class="av-person__img"><Image src={STYLIST_PHOTOS[s.id]} alt={`Portrait of ${s.name}`} width={600} class="av-person__photo" /></div>
                 <h3 class="av-person__name">{s.name}</h3>
                 <p class="av-person__role">{s.role} · since {s.since}</p>
                 <p class="av-person__quote">“{s.quote}”</p>

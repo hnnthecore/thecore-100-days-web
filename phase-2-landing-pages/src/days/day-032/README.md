@@ -39,3 +39,7 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | Band, large | Woman mopping a living room | https://unsplash.com/photos/YWS51jdrfdA |
 | Band | Vacuuming a sofa cushion | https://unsplash.com/photos/5TXz228u4eo |
 | Band | White kitchen | https://unsplash.com/photos/nTqR3B3dp-Q |
+
+### Team photo
+
+The team section now opens with a real team photograph from Pexels (https://www.pexels.com/photo/6195121/). The four portrait placeholders stay because the cleaners are fictional, and a stock photo of one named person would be misleading.

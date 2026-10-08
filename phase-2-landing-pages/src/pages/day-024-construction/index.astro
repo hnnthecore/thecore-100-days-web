@@ -10,6 +10,15 @@ import Landing from '../../layouts/Landing.astro';
 import Iso from '../../components/day-024/Iso.astro';
 import { Image } from 'astro:assets';
 import photoFrame from '../../assets/day-024/worker-frame.jpg';
+import proj_wharf from '../../assets/day-024/proj-wharf.jpg';
+import proj_atlas from '../../assets/day-024/proj-atlas.jpg';
+import proj_oak from '../../assets/day-024/proj-oak.jpg';
+import proj_chapel from '../../assets/day-024/proj-chapel.jpg';
+import proj_mews from '../../assets/day-024/proj-mews.jpg';
+import proj_lab from '../../assets/day-024/proj-lab.jpg';
+const PROJ_PHOTOS: Record<string, any> = { wharf: proj_wharf, atlas: proj_atlas, oak: proj_oak, chapel: proj_chapel, mews: proj_mews, lab: proj_lab };
+const SECTOR_PHOTO: Record<string, string> = { residential: 'wharf', commercial: 'atlas', education: 'oak', heritage: 'chapel' };
+const PHOTO_ALT: Record<string, string> = {"wharf":"Brick apartment blocks with balconies on both sides of a canal","atlas":"A glass office facade with black mullions","oak":"A school building clad in vertical timber","chapel":"A whitewashed stone chapel with a cross against a blue sky","mews":"A cobbled mews lined with brick houses and climbing plants","lab":"A glass and steel tower rising above the street"};
 import photoCrane from '../../assets/day-024/crane.jpg';
 import photoBuild from '../../assets/day-024/concrete-build.jpg';
 import photoRebar from '../../assets/day-024/rebar.jpg';
@@ -112,7 +121,7 @@ const TYPES = [
                 <ul class="hr-points mt-7" role="list">{s.points.map((p) => <li>{p}</li>)}</ul>
                 <p class="hr-sector__stat"><b>{s.stat[0]}</b>{s.stat[1]}</p>
               </div>
-              <div class="hr-sector__art"><Iso {...s.iso} class="w-full" /></div>
+              <div class="hr-sector__art"><Image src={PROJ_PHOTOS[SECTOR_PHOTO[s.id]]} alt={PHOTO_ALT[SECTOR_PHOTO[s.id]]} width={900} class="hr-photo" /></div>
             </div>
           ))}
         </div>
@@ -133,7 +142,7 @@ const TYPES = [
             {PROJECTS.map((p) => (
               <li class="hr-project" data-sector={p.sector}>
                 <button type="button" class="hr-project__btn" data-open={p.id} aria-haspopup="dialog">
-                  <span class="hr-project__art"><Iso {...p.iso} class="w-full" /></span>
+                  <span class="hr-project__art"><Image src={PROJ_PHOTOS[p.id]} alt={PHOTO_ALT[p.id]} width={700} class="hr-photo" /></span>
                   <span class="hr-project__meta"><span>{p.place} · {p.year}</span><span>{p.value}</span></span>
                   <span class="hr-project__name">{p.name}</span>
                   <span class="hr-project__more" aria-hidden="true">View case study →</span>
@@ -144,7 +153,7 @@ const TYPES = [
         </div>
         {PROJECTS.map((p) => (
           <dialog class="hr-dialog" id={`dlg-${p.id}`} aria-labelledby={`dlg-${p.id}-t`}>
-            <div class="hr-dialog__art"><Iso {...p.iso} class="w-full" /></div>
+            <div class="hr-dialog__art"><Image src={PROJ_PHOTOS[p.id]} alt={PHOTO_ALT[p.id]} width={900} class="hr-photo" /></div>
             <div class="hr-dialog__body">
               <form method="dialog"><button class="hr-close" aria-label="Close case study">✕</button></form>
               <p class="hr-eyebrow">{SECTORS.find((s) => s.id === p.sector)?.name} · {p.place}</p>

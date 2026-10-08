@@ -250,3 +250,6 @@ html .sys-collage__arch .sys-collage__img { width: 100%; height: 100%; object-fi
 html .sys-collage__card { overflow: hidden; padding: 0; aspect-ratio: 1; }
 html .sys-collage__card .sys-collage__img { width: 100%; height: 100%; object-fit: cover; display: block; }
 html .sys-collage__card--1 { width: 34%; }
+html .sys-dish__art { overflow: hidden; }
+html .sys-dish__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s var(--ease-spring); }
+html .sys-dish:hover .sys-dish__photo { transform: scale(1.1); }

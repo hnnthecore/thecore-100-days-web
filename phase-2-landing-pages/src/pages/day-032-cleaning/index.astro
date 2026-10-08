@@ -10,6 +10,7 @@ import { Image } from 'astro:assets';
 import photoMop from '../../assets/day-032/mop.jpg';
 import photoVac from '../../assets/day-032/vacuum.jpg';
 import photoKitchen from '../../assets/day-032/kitchen.jpg';
+import photoTeam from '../../assets/day-032/team.jpg';
 import '../../days/day-032/styles.css';
 
 const SERVICES = [
@@ -214,6 +215,7 @@ const FAQ = [
             <div><dt>Re-clean requests</dt><dd data-count="0.8" data-dec="1" data-suffix="%">0</dd></div>
             <div><dt>Staff retention</dt><dd data-count="91" data-suffix="%">0</dd></div>
           </dl>
+          <figure class="ll-teamphoto"><Image src={photoTeam} alt="Three Lemon & Linen cleaners in orange overalls standing in a freshly cleaned living room" width={1200} /></figure>
           <ul class="ll-team" role="list">
             {TEAM.map((t) => (
               <li class="ll-person">

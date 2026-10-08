@@ -40,3 +40,7 @@ The hero and the "How we work" section use real photographs from Unsplash (free 
 | Structure | Concrete frame under construction | https://unsplash.com/photos/PlBsJ5MybGc |
 | Groundworks | Site manager on a rebar grid | https://unsplash.com/photos/dSjrv4w1g1Q |
 | Lifting | Tower crane at dusk | https://unsplash.com/photos/ESZRBtkQ_f8 |
+
+### Project photos
+
+The four sector panels, the six project cards and the project pop-ups now use real building photographs from Pexels (free to use) instead of isometric drawings. They are close stand-ins for each fictional project. Pexels IDs: wharf 17987656, atlas 39521475, oak 18513513, chapel 31533227, mews 35937701, lab 30624890.
