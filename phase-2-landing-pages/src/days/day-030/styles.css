@@ -158,6 +158,8 @@
 .rv-day ul { display: grid; gap: 0.5rem; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid #d8d3c9; font-size: 0.88rem; }
 .rv-day li { display: flex; justify-content: space-between; gap: 0.5rem; }
 .rv-day li span:last-child { font-weight: 800; white-space: nowrap; }
+.rv-day li span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.rv-day li:only-child span { white-space: normal; font-weight: 600; line-height: 1.5; }
 .rv-day--rest { background: transparent; border-style: dashed; border-color: #b9b3a8; }
 .rv-day--rest .rv-day__t { color: #8a847a; }
 .rv-day--hot { background: var(--ink); color: #fff; }
