@@ -10,6 +10,11 @@ import Landing from '../../layouts/Landing.astro';
 import { Image } from 'astro:assets';
 import photoExam from '../../assets/day-037/exam.jpg';
 import photoTable from '../../assets/day-037/table.jpg';
+import avDog from '../../assets/day-037/pet-dog.jpg';
+import avCat from '../../assets/day-037/pet-cat.jpg';
+import avRabbit from '../../assets/day-037/pet-rabbit.jpg';
+import avBeagle from '../../assets/day-037/pet-beagle.jpg';
+const VET_PETS = [avDog, avCat, avRabbit, avBeagle];
 import { pet } from '../../days/day-037/art';
 import '../../days/day-037/styles.css';
 
@@ -192,7 +197,7 @@ const VETS = [
           <ul class="vt-team" role="list">
             {VETS.map((v, i) => (
               <li class="vt-vet" data-vet={v.id} data-skills={v.skills.join(' ')}>
-                <div class="vt-vet__av" style={`background:${['#ffe3b5', '#dfe6f5', '#fde1e5', '#d5ecdc'][i]}`} set:html={pet((['dog', 'cat', 'rabbit', 'dog'] as const)[i], `Portrait for ${v.name}`)} />
+                <div class="vt-vet__av" style={`background:${['#ffe3b5', '#dfe6f5', '#fde1e5', '#d5ecdc'][i]}`} ><Image src={VET_PETS[i]} alt={`${v.name}'s patient of the week`} width={160} class="vt-vet__photo" /></div>
                 <h3>{v.name}</h3>
                 <p class="vt-vet__role">{v.role}</p>
                 <p class="vt-vet__text">{v.text}</p>

@@ -39,3 +39,7 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | --- | --- | --- |
 | Band, left | Vet examining a dachshund | https://unsplash.com/photos/e4f87NzUJsU |
 | Band, right | Fur trim on an examination table | https://unsplash.com/photos/I3KxEBS6iOc |
+
+### Pet photos
+
+The hero pet picker, the booking summary and the team avatars now show real animal photographs from Pexels (free to use): golden retriever 30810890, cat 39497325, rabbit 34451824, beagle 38010. The hero and booking photos are embedded in the script so they work from disk. The symptom checker keeps its own artwork.

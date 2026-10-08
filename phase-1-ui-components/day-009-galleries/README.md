@@ -21,7 +21,7 @@ python -m http.server 5500
 
 ## About the images
 
-Everything in `images/` is a lightweight SVG illustration (40 files, about 150 KB in total), so the demo needs no photo downloads or licences. To use real photos, replace a file with one of the same name, or change the `src`/`href`. For real photography, add `loading="lazy"` and responsive `srcset` sizes. The illustrations are small enough to load immediately.
+The menu wall (`dish-01` to `dish-06`) and the property viewer (`room-01` to `room-06`) use real photographs from Pexels (free to use, no attribution required), resized to 900 px squares and 1200 × 800 px JPEGs. Pexels IDs: dishes 19503834, 29905004, 6065696, 5638533, 13893991, 33335365; rooms 33537442, 13327415, 3935326, 34313330, 6934177, 25568737. The other galleries keep lightweight SVG illustrations on purpose: the portfolio and screenshots are fictional design work, the ring viewer swaps nine colour variants, and the before/after slider needs a matched pair of photos of one room. To use your own photos, replace a file with one of the same name, or change the `src`/`href`, and add `loading="lazy"` and responsive `srcset` sizes.
 
 ## Notable details
 

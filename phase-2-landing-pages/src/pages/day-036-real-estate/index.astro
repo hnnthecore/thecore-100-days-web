@@ -10,6 +10,16 @@ import '@fontsource-variable/plus-jakarta-sans';
 import Landing from '../../layouts/Landing.astro';
 import { Image } from 'astro:assets';
 import photoLiving from '../../assets/day-036/hero-living.jpg';
+import listing_s1 from '../../assets/day-036/listing-s1.jpg';
+import listing_s2 from '../../assets/day-036/listing-s2.jpg';
+import listing_s3 from '../../assets/day-036/listing-s3.jpg';
+import listing_s4 from '../../assets/day-036/listing-s4.jpg';
+import listing_s5 from '../../assets/day-036/listing-s5.jpg';
+import listing_r1 from '../../assets/day-036/listing-r1.jpg';
+import listing_r2 from '../../assets/day-036/listing-r2.jpg';
+import listing_r3 from '../../assets/day-036/listing-r3.jpg';
+import listing_r4 from '../../assets/day-036/listing-r4.jpg';
+const LISTING_PHOTOS: Record<string, any> = { s1: listing_s1, s2: listing_s2, s3: listing_s3, s4: listing_s4, s5: listing_s5, r1: listing_r1, r2: listing_r2, r3: listing_r3, r4: listing_r4 };
 import { home } from '../../days/day-036/art';
 import '../../days/day-036/styles.css';
 
@@ -99,7 +109,7 @@ const HOODS = [
             <ul class="ll-list" role="list" data-list>
               {PROPS.map((p) => (
                 <li class="ll-prop" data-prop={p.id} data-mode={p.mode} tabindex="-1">
-                  <div class="ll-prop__img" set:html={home(p.kind as any, p.wall, p.roof, `Illustration of the ${p.title} in ${p.area}`)} />
+                  <div class="ll-prop__img"><Image src={LISTING_PHOTOS[p.id]} alt={`${p.title} in ${p.area}`} width={700} class="ll-prop__photo" /></div>
                   {p.tag && <span class={`ll-prop__tag${p.tag === 'Let agreed' ? ' is-let' : ''}`}>{p.tag}</span>}
                   <button type="button" class="ll-heart" data-heart={p.id} aria-pressed="false" aria-label={`Save ${p.title}, ${p.area}`}>♥</button>
                   <div class="ll-prop__body">

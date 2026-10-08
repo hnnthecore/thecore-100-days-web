@@ -3,6 +3,11 @@
  * Open-now status · animated pet picker · life-stage care timeline · symptom triage · feeding maths · vet finder · booking.
  */
 import { pet, type Pet } from './art';
+import dogPhoto from '../../assets/day-037/pet-dog.jpg?inline';
+import catPhoto from '../../assets/day-037/pet-cat.jpg?inline';
+import rabbitPhoto from '../../assets/day-037/pet-rabbit.jpg?inline';
+const PHOTO: Record<Pet, string> = { dog: dogPhoto, cat: catPhoto, rabbit: rabbitPhoto };
+const petPhoto = (p: Pet, alt: string) => `<img class="vt-petphoto" src="${PHOTO[p]}" alt="${alt}" width="640" height="640" />`;
 
 type Step = [string, string, string];
 
@@ -40,7 +45,7 @@ function setHero(p: Pet) {
   heroPet = p;
   const stage = $('[data-pet-stage]');
   stage.style.setProperty('--bg', BG[p]);
-  stage.innerHTML = pet(p, `Illustration of a friendly ${p}`);
+  stage.innerHTML = petPhoto(p, `A friendly ${p}`);
   $('[data-pet-tip]').textContent = TIPS[p];
   $$('[data-pet-pick] button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pet === p)));
 }
@@ -187,7 +192,7 @@ function paintBook() {
   paintDays(); paintSlots();
   const av = $('[data-sum-av]');
   av.style.setProperty('--bg', BG[sp]);
-  av.innerHTML = pet(sp, `Illustration of a ${sp}`);
+  av.innerHTML = petPhoto(sp, `A ${sp}`);
   $('[data-sum-name]').textContent = name || 'Your pet';
   $('[data-sum-why]').textContent = $<HTMLSelectElement>('#b-why').value;
   $('[data-sum-vet]').textContent = VETNAME[$<HTMLSelectElement>('#b-vet').value] ?? 'First available';

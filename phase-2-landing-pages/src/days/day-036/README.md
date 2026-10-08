@@ -37,3 +37,7 @@ The hero arch uses a real photograph from Unsplash (free for commercial use, no 
 | Use | Photo | Source |
 | --- | --- | --- |
 | Hero arch | Bright living room with a vaulted ceiling | https://unsplash.com/photos/QQ6xmTXXFZ8 |
+
+### Listing photos
+
+All nine listing cards now use real photographs from Pexels (free to use), chosen to match each property type. Pexels IDs: s1 3639504, s2 7377669, s3 32711440, s4 17987656, s5 34099360, r1 12625643, r2 4655752, r3 10628470, r4 280222. The valuation summary keeps a drawn house because it changes with the form.

@@ -221,3 +221,8 @@ html .vt-band__text { display: grid; align-content: center; gap: 1rem; padding: 
 html .vt-band__big { font-family: "Fraunces Variable", serif; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.1; color: var(--pine); font-weight: 700; }
 html .vt-band__text p:last-child { color: var(--muted, #4d6358); line-height: 1.6; }
 @media (max-width: 800px) { html .vt-band { grid-template-columns: 1fr 1fr; } html .vt-band__text { grid-column: 1 / -1; order: -1; } }
+html .vt-petphoto { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+html .vt-pets__stage { overflow: hidden; }
+html .vt-vet__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+html .vt-vet__av { display: block; }
+html [data-sum-av] .vt-petphoto { border-radius: 0; }
