@@ -228,3 +228,11 @@ textarea.cp-input { height: auto; padding-block: 0.8rem; }
 
 /* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
 html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(3) { color: #15110d !important; }
+
+/* Real photography (replaces the first round of illustrations) */
+html .cp-band { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; padding-block: 3rem; }
+html .cp-band figure { position: relative; margin: 0; overflow: hidden; min-height: 20rem; border-radius: 1.5rem; }
+html .cp-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+html .cp-band figure:nth-child(2) img { object-position: 60% 40%; }
+html .cp-band figcaption { position: absolute; left: 0.9rem; bottom: 0.9rem; padding: 0.4rem 0.95rem; border-radius: 999px; background: var(--cream); color: var(--teal); font-weight: 700; font-size: 0.9rem; }
+@media (max-width: 760px) { html .cp-band { grid-template-columns: 1fr; } html .cp-band figure { min-height: 14rem; } }

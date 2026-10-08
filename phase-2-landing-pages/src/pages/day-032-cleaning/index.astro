@@ -6,6 +6,10 @@
  */
 import '@fontsource-variable/outfit';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoMop from '../../assets/day-032/mop.jpg';
+import photoVac from '../../assets/day-032/vacuum.jpg';
+import photoKitchen from '../../assets/day-032/kitchen.jpg';
 import '../../days/day-032/styles.css';
 
 const SERVICES = [
@@ -108,6 +112,12 @@ const FAQ = [
           </form>
         </div>
       </section>
+
+      <div class="ll-wrap ll-band">
+        <figure class="ll-band__main"><Image src={photoMop} alt="A woman in yellow gloves mopping the wooden floor of a bright living room" width={1400} /><figcaption>Eco products, always</figcaption></figure>
+        <figure><Image src={photoVac} alt="A cleaner in a green polo shirt vacuuming a grey sofa cushion" width={800} /><figcaption>Upholstery refresh</figcaption></figure>
+        <figure><Image src={photoKitchen} alt="A bright white kitchen with a gas hob and marble worktops" width={800} /><figcaption>Kitchens that gleam</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · SERVICES =========================== -->
       <section id="services" class="ll-section" aria-labelledby="services-title">

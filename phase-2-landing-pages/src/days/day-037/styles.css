@@ -211,3 +211,13 @@ textarea.vt-input { height: auto; padding-block: 0.8rem; }
   .vt-bowl [data-bowl-fill] { transition: none; }
 }
 }
+
+/* Real photography (replaces the first round of illustrations) */
+html .vt-band { display: grid; grid-template-columns: 1fr 0.8fr 1fr; gap: 1rem; align-items: stretch; padding-bottom: 4rem; }
+html .vt-band figure { position: relative; margin: 0; overflow: hidden; border-radius: 2rem; aspect-ratio: 4 / 5; }
+html .vt-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+html .vt-band figcaption { position: absolute; left: 0.9rem; bottom: 0.9rem; padding: 0.4rem 0.95rem; border-radius: 999px; background: var(--sun); color: var(--pine); font-weight: 800; font-size: 0.9rem; }
+html .vt-band__text { display: grid; align-content: center; gap: 1rem; padding: 1rem; }
+html .vt-band__big { font-family: "Fraunces Variable", serif; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.1; color: var(--pine); font-weight: 700; }
+html .vt-band__text p:last-child { color: var(--muted, #4d6358); line-height: 1.6; }
+@media (max-width: 800px) { html .vt-band { grid-template-columns: 1fr 1fr; } html .vt-band__text { grid-column: 1 / -1; order: -1; } }

@@ -6,6 +6,9 @@
  */
 import '@fontsource-variable/bricolage-grotesque';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoTrap from '../../assets/day-034/pipe-wall.jpg';
+import photoCabinet from '../../assets/day-034/cabinet.jpg';
 import '../../days/day-034/styles.css';
 
 const PRICES = {
@@ -94,6 +97,11 @@ const REVIEWS = [['Hannah, Clifton', 'Burst pipe at 11 pm, Dan was here in 50 mi
           </div>
         </div>
       </section>
+
+      <div class="cp-wrap cp-band">
+        <figure class="cp-band__main"><Image src={photoTrap} alt="A plumber reaching under a kitchen sink to fit a white waste pipe" width={1400} /><figcaption>Fixed prices, no call-out surprises</figcaption></figure>
+        <figure><Image src={photoCabinet} alt="A plumber checking the waste trap and valves in a sink cabinet" width={800} /><figcaption>Tidy, careful work</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · PRICES =========================== -->
       <section id="prices" class="cp-section" aria-labelledby="prices-title">

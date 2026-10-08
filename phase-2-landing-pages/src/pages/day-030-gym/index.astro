@@ -7,6 +7,9 @@
 import '@fontsource/anton';
 import '@fontsource-variable/archivo';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoFloor from '../../assets/day-030/floor.jpg';
+import photoDumbbells from '../../assets/day-030/dumbbells.jpg';
 import '../../days/day-030/styles.css';
 
 const PLANS = [
@@ -64,6 +67,11 @@ const MEMBERS = [
         </div>
         <div class="rv-ticker" aria-hidden="true"><div class="rv-ticker__track"><span>STRENGTH ✦ SPEED ✦ SWEAT ✦ SPIRIT ✦ STRENGTH ✦ SPEED ✦ SWEAT ✦ SPIRIT ✦ </span><span>STRENGTH ✦ SPEED ✦ SWEAT ✦ SPIRIT ✦ STRENGTH ✦ SPEED ✦ SWEAT ✦ SPIRIT ✦ </span></div></div>
       </section>
+
+      <div class="rv-wrap rv-band">
+        <figure class="rv-band__main"><Image src={photoFloor} alt="A long rack of dumbbells in a bright gym with a member training in the background" width={1400} /><figcaption>Free weights up to 60 kg</figcaption></figure>
+        <figure class="rv-band__side"><Image src={photoDumbbells} alt="Rubber dumbbells lined up on a rack, close up" width={700} /><figcaption>Open 5 am to 11 pm</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · CLASSES =========================== -->
       <section id="classes" class="rv-section" aria-labelledby="classes-title">

@@ -31,3 +31,12 @@ A managed-security provider for UK businesses (fictional). The brief to myself: 
 ## Notes
 
 Ironveil is a fictional company. Figures, clients and the phone number are demo content, and nothing is sent.
+
+## Photography
+
+The photo band above the live SOC feed uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-029/` and converted to WebP at build time. I skipped a server-rack photo that showed visible equipment brand names. The threat radar, attack simulator and phishing quiz stay as interface.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Server room with rows of cabinets | https://unsplash.com/photos/aWslrFhs1w4 |
+| Band, small | Technician working on server equipment | https://unsplash.com/photos/ufT32_VFS-I |

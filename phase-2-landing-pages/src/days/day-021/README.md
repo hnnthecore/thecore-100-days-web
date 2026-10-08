@@ -35,3 +35,14 @@ Plus a sticky header that turns solid on scroll, highlights the section you're r
 
 - Fictional business: reviews, publications, phone and email are demo content, and no booking is really made.
 - Opening status uses Europe/London time, so it's correct wherever the visitor is.
+
+## Photography
+
+The hero, menu banner and story collage use real photographs from Unsplash (free to use commercially, no attribution required). They are stored in `src/assets/day-021/` and converted to WebP at build time.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Hero | Tacos with lime being squeezed over them | https://unsplash.com/photos/lP5MCM6nZ5A |
+| Menu banner | Tray of tacos, three salsas, guacamole and rice on tiled table | https://unsplash.com/photos/w9LdceJSEu8 |
+| Story arch | Blue agave on a hillside | https://unsplash.com/photos/BELTT96NYmA |
+| Story card | Close-up of beef tacos | https://unsplash.com/photos/z_PfaGzeN9E |

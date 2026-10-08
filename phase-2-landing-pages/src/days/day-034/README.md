@@ -30,3 +30,12 @@ A plumbing and heating firm serving Bristol and Bath (fictional). The brief to m
 ## Notes
 
 Copperline is a fictional business. Prices, engineers and reviews are demo content, and nothing is sent.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-034/` and converted to WebP at build time. I skipped a photo that showed a tool brand. The price basket, boiler advisor and leak calculator stay as interface.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Plumber fitting a waste pipe under a sink | https://unsplash.com/photos/c314Gh8dXAo |
+| Band, small | Plumber checking the trap and valves | https://unsplash.com/photos/wzIjLL4KB-4 |

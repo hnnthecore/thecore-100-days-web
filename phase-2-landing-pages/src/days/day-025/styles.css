@@ -198,3 +198,11 @@ textarea.pl-input { height: auto; padding-block: 0.8rem; }
   .pl-fleet i::before { animation: none; }
 }
 }
+
+/* Real photography (replaces the first round of illustrations) */
+html .pl-band { display: grid; grid-template-columns: 1.6fr 1fr 0.8fr; gap: 1rem; padding-block: 0 4rem; }
+html .pl-band figure { position: relative; margin: 0; overflow: hidden; border-radius: 1.25rem; min-height: 18rem; }
+html .pl-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+html .pl-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.6rem 1.1rem 0.9rem; font-weight: 700; color: #fff; background: linear-gradient(transparent, rgb(8 16 40 / 0.8)); }
+html .pl-band figcaption b { color: var(--lime, #c6f432); }
+@media (max-width: 800px) { html .pl-band { grid-template-columns: 1fr; } html .pl-band figure { min-height: 14rem; } }

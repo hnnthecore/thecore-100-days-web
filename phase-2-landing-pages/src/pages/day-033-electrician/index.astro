@@ -6,6 +6,9 @@
  */
 import '@fontsource-variable/sora';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoWiring from '../../assets/day-033/wiring.jpg';
+import photoPanel from '../../assets/day-033/panel.jpg';
 import '../../days/day-033/styles.css';
 
 const SPOTS = [
@@ -73,6 +76,11 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
           </div>
         </div>
       </section>
+
+      <div class="ev-wrap ev-band">
+        <figure class="ev-band__main"><Image src={photoWiring} alt="An electrician in a yellow hard hat and gloves fitting a wall switch" width={1400} /><figcaption>Qualified, insured, local</figcaption></figure>
+        <figure><Image src={photoPanel} alt="Gloved hands testing a consumer unit with a multimeter" width={900} /><figcaption>Every circuit tested</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · HOUSE TOUR =========================== -->
       <section id="jobs" class="ev-section" aria-labelledby="jobs-title">

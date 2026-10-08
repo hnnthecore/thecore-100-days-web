@@ -162,3 +162,13 @@
   .ma-js .ma-step { opacity: 1; translate: 0 0; transition: none; }
 }
 }
+
+/* Real photography (replaces the first round of illustrations) */
+html .ma-stage__photo { position: relative; z-index: 1; width: 78%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 1px solid rgb(226 201 140 / 0.55); box-shadow: 0 30px 60px rgb(0 0 0 / 0.5); animation: ma-float 7s ease-in-out infinite; }
+html .ma-craft { display: grid; grid-template-columns: 0.8fr 1fr 1fr; gap: 1rem; margin-bottom: 3rem; }
+html .ma-craft figure { position: relative; margin: 0; overflow: hidden; border-radius: 1rem; aspect-ratio: 4 / 5; }
+html .ma-craft figure:nth-child(n+2) { aspect-ratio: 1; align-self: end; }
+html .ma-craft img { width: 100%; height: 100%; object-fit: cover; display: block; }
+html .ma-craft figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem 1rem 0.8rem; color: #fff; font-weight: 500; letter-spacing: 0.02em; background: linear-gradient(transparent, rgb(10 20 15 / 0.75)); }
+@media (max-width: 700px) { html .ma-craft { grid-template-columns: 1fr; } html .ma-craft figure, html .ma-craft figure:nth-child(n+2) { aspect-ratio: 4 / 3; } }
+@media (prefers-reduced-motion: reduce) { html .ma-stage__photo { animation: none; } }

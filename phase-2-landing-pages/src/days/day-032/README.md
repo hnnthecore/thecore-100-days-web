@@ -29,3 +29,13 @@ Work hours come from `(bedrooms × 0.9 + bathrooms × 0.7 + 1.5) × service fact
 ## Notes
 
 Lemon & Linen is a fictional business. Prices, people and reviews are demo content, and nothing is sent or charged.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-032/` and converted to WebP at build time. I skipped a photo that showed a real cleaning-product brand on the bottle. The instant quote and booking tools stay as interface, and the team cards keep portrait placeholders because the staff are fictional.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Woman mopping a living room | https://unsplash.com/photos/YWS51jdrfdA |
+| Band | Vacuuming a sofa cushion | https://unsplash.com/photos/5TXz228u4eo |
+| Band | White kitchen | https://unsplash.com/photos/nTqR3B3dp-Q |

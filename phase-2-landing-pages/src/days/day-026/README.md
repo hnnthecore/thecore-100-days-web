@@ -33,3 +33,13 @@ An independent hair studio in London (fictional). The brief to myself: **soft ed
 ## Notes
 
 Atelier Vesper is a fictional business. Prices, reviews and people are demo content, and nothing is sent or stored.
+
+## Photography
+
+The three arches in the hero use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-026/` and converted to WebP at build time. I skipped photos that showed a real salon name or hair-product brands. The team and gallery sections keep their drawn heads for now.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Arch 1 | Blow-dry with a round brush | https://unsplash.com/photos/FkAZqQJTbXM |
+| Arch 2 | Hair wash at the basin | https://unsplash.com/photos/Md_DhaFsnCQ |
+| Arch 3 | Salon floor with arched mirrors (black and white) | https://unsplash.com/photos/_Fy7Kq0w6OI |

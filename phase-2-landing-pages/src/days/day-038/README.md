@@ -30,3 +30,13 @@ A small-batch speciality roaster with a café, in Sheffield (fictional). The bri
 ## Notes
 
 Ember & Oak is a fictional business. Coffees, prices and orders are demo content, and nothing is charged or sent.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-038/` and converted to WebP at build time. The roast dial, the coffee bag illustrations, the brew timer and the quiz stay as interface because they are live and carry the fictional Ember & Oak labels.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Scooping roasted beans from the cooling tray | https://unsplash.com/photos/YC6RVdoTtIk |
+| Band | Beans in the roaster drum | https://unsplash.com/photos/_7CVm353m7A |
+| Band | Hand holding roasted beans over a pan | https://unsplash.com/photos/rKYRJu0n06Y |

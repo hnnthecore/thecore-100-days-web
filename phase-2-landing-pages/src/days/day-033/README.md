@@ -31,3 +31,12 @@ Domestic and emergency electricians in the West Midlands (fictional). The brief 
 ## Notes
 
 Voltline is a fictional business. Prices, engineers and ETAs are demo content, and nothing is sent. The safety advice is general guidance; in an emergency, always call 999.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-033/` and converted to WebP at build time. I skipped photos that showed brand logos on equipment, helmets and clothing. The bolt, house tour, triage and EV calculator stay as interface.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Electrician fitting a wall switch | https://unsplash.com/photos/_2AlIm-F6pw |
+| Band, small | Testing a consumer unit | https://unsplash.com/photos/PkHf7BUWbtk |

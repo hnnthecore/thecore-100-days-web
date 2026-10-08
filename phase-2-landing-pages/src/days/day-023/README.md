@@ -33,3 +33,13 @@ The “from” prices on the service cards are verified against the quote engine
 ## Notes
 
 Fictional business: registrations, vehicles, prices and reviews are demo data. No real lookup or booking happens.
+
+## Photography
+
+The hero scan panel and the "Why Northgate" section use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-023/` and converted to WebP at build time. I did not use two photos that showed real car and oil brands.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Hero scan background and first photo | Mechanic inspecting an engine | https://unsplash.com/photos/bEGTsOCnHro |
+| Tyres | Gloved hands checking a tyre | https://unsplash.com/photos/9uHal2Dd9aE |
+| Hands-on work | Hand with a spanner over an engine | https://unsplash.com/photos/Fd6osyVbtG4 |

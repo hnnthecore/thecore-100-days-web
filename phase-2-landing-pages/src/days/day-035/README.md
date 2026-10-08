@@ -30,3 +30,7 @@ An approved-used car dealer in the East Midlands (fictional). The brief to mysel
 ## Notes
 
 Apex is a fictional dealership. Cars, prices and finance figures are demo content and not a credit offer. Nothing is sent.
+
+## Photography
+
+I kept the drawn cars on this page on purpose. The colour studio and stock cards change body style and colour live, which a photograph cannot do, and every real car photo I found showed a manufacturer badge or showroom brand name (SEAT, Nissan, Mazda and others), which would clash with the fictional "Apex Motor Group". Add dealer-supplied photos of the actual stock when the real business provides them.

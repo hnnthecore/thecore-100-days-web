@@ -30,3 +30,13 @@ A UK road-freight and distribution company (fictional). The brief to myself: mak
 ## Notes
 
 Pace Logistics is a fictional business. All tracking, prices, jobs and figures are demo content, and nothing is sent.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-025/` and converted to WebP at build time. I skipped two photos that showed real company names (a truck mudflap and a forklift).
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Road | White lorry on a motorway | https://unsplash.com/photos/ZhNYKwjRMh4 |
+| Warehouse | Warehouse with blue and orange racking | https://unsplash.com/photos/jcav1COVvOc |
+| Delivery | Parcel being handed over | https://unsplash.com/photos/BFdSCxmqvYc |

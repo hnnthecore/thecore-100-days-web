@@ -8,6 +8,13 @@ import '@fontsource-variable/newsreader';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '@fontsource-variable/figtree';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import pHero from '../../assets/day-031/hero-art.jpg';
+import pGarden from '../../assets/day-031/garden.jpg';
+import pCourt from '../../assets/day-031/court.jpg';
+import pMarsh from '../../assets/day-031/marsh.jpg';
+import pSea from '../../assets/day-031/seaview.jpg';
+const ROOM_PHOTOS: Record<string, any> = { garden: pGarden, court: pCourt, marsh: pMarsh, sea: pSea, loft: pHero, light: pSea };
 import { room, view } from '../../days/day-031/art';
 import '../../days/day-031/styles.css';
 
@@ -91,12 +98,7 @@ const hv = view('sea', sceneId);
             <p class="hl-searchmsg" aria-live="polite" data-search-msg></p>
           </div>
           <div class="hl-window" aria-hidden="true">
-            <svg viewBox="0 0 160 124" preserveAspectRatio="xMidYMid slice">
-              <defs set:html={hv.defs + '<clipPath id="wclip"><path d="M0 124V80a80 80 0 0 1 160 0v44z"/></clipPath>'} />
-              <g clip-path="url(#wclip)" transform="translate(0 24)" set:html={hv.body} />
-              <path d="M0 124V80a80 80 0 0 1 160 0v44z" fill="none" stroke="#fff" stroke-width="5" />
-              <path d="M80 0v124M0 80h160" stroke="#fff" stroke-width="2.5" />
-            </svg>
+            <Image src={pSea} alt="Twin beds in a bright room with a sea view" width={800} class="hl-window__photo" loading="eager" />
             <p class="hl-window__tag">Sea View Suite · from £295</p>
           </div>
         </div>
@@ -110,7 +112,7 @@ const hv = view('sea', sceneId);
           <ul class="hl-rooms" role="list">
             {ROOMS.map((r) => (
               <li class="hl-room" data-room={r.id}>
-                <div class="hl-room__img" set:html={room(r.view as any, r.tone, r.accent, r.king, `Illustration of the ${r.name}`)} />
+                <div class="hl-room__img"><Image src={ROOM_PHOTOS[r.id]} alt={`The ${r.name}`} width={800} class={`hl-room__photo hl-room__photo--${r.id}`} /></div>
                 <div class="hl-room__body">
                   <h3 class="hl-room__name">{r.name}</h3>
                   <p class="hl-room__meta">{r.size} m² · sleeps {r.sleeps} · {r.bed}</p>

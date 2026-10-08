@@ -7,6 +7,10 @@
 import '@fontsource-variable/syne';
 import '@fontsource-variable/figtree';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoScoop from '../../assets/day-038/scoop.jpg';
+import photoRoaster from '../../assets/day-038/roaster.jpg';
+import photoHand from '../../assets/day-038/pan.jpg';
 import { bag, ROAST_COLORS } from '../../days/day-038/art';
 import '../../days/day-038/styles.css';
 
@@ -79,6 +83,12 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
           </div>
         </div>
       </section>
+
+      <div class="eo-wrap eo-band">
+        <figure class="eo-band__main"><Image src={photoScoop} alt="A roaster scooping freshly roasted coffee beans from the cooling tray" width={1400} /><figcaption>Roasted twice a week</figcaption></figure>
+        <figure><Image src={photoRoaster} alt="Roasted coffee beans turning in the roaster drum under a warm light" width={800} /><figcaption>Small batches</figcaption></figure>
+        <figure><Image src={photoHand} alt="A hand holding a few roasted coffee beans above a pan full of beans" width={900} /><figcaption>Checked by hand</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · BEANS =========================== -->
       <section id="beans" class="eo-section" aria-labelledby="beans-title">

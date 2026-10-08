@@ -8,6 +8,11 @@ import '@fontsource-variable/space-grotesk';
 import '@fontsource/instrument-serif/400-italic.css';
 import Landing from '../../layouts/Landing.astro';
 import Iso from '../../components/day-024/Iso.astro';
+import { Image } from 'astro:assets';
+import photoFrame from '../../assets/day-024/worker-frame.jpg';
+import photoCrane from '../../assets/day-024/crane.jpg';
+import photoBuild from '../../assets/day-024/concrete-build.jpg';
+import photoRebar from '../../assets/day-024/rebar.jpg';
 import '../../days/day-024/styles.css';
 
 const SECTORS = [
@@ -77,7 +82,7 @@ const TYPES = [
             </div>
           </div>
           <div class="hr-hero__art">
-            <Iso w={5} d={4} floors={9} material="glass" crane class="hr-rise" label="Isometric drawing of a nine-storey glass building under construction, with a tower crane" />
+            <Image src={photoFrame} alt="A builder in a yellow hard hat working on a timber frame against a blue sky" width={1000} class="hr-hero__photo" loading="eager" />
             <p class="hr-tag hr-tag--a" aria-hidden="true"><b>L09</b> Topping out</p>
             <p class="hr-tag hr-tag--b" aria-hidden="true"><b>96 wk</b> On programme</p>
           </div>
@@ -161,6 +166,11 @@ const TYPES = [
             <p class="hr-eyebrow">03 · How we work</p>
             <h2 id="process-title" class="hr-h2 mt-4">One team from <em>first sketch</em> to final key.</h2>
             <p class="mt-5 max-w-md text-lg leading-relaxed text-(--ink-2)">Design &amp; build means one contract, one point of contact and one team that owns every risk, so problems get solved, not passed on.</p>
+          </div>
+          <div class="hr-process-photos lg:col-span-2">
+            <figure><Image src={photoBuild} alt="A concrete frame building under construction with steel props and scaffolding" width={700} /><figcaption>Structure</figcaption></figure>
+            <figure><Image src={photoRebar} alt="A site manager walking across a grid of steel reinforcement bars" width={900} /><figcaption>Groundworks</figcaption></figure>
+            <figure><Image src={photoCrane} alt="A tower crane against a warm evening sky" width={700} /><figcaption>Lifting</figcaption></figure>
           </div>
           <div class="hr-steps-wrap" data-steps>
           <span class="hr-steps__line" aria-hidden="true"><i data-steps-fill></i></span>

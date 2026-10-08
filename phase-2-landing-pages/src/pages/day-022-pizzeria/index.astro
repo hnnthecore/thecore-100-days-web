@@ -9,6 +9,11 @@ import '@fontsource-variable/dm-sans';
 import '@fontsource-variable/dm-sans/wght-italic.css';
 import Landing from '../../layouts/Landing.astro';
 import Pizza from '../../components/day-022/Pizza.astro';
+import { Image } from 'astro:assets';
+import photoHero from '../../assets/day-022/pizza-hero.jpg';
+import photoOven from '../../assets/day-022/wood-oven.jpg';
+import photoBall from '../../assets/day-022/dough-hold.jpg';
+import photoStretch from '../../assets/day-022/dough-knead.jpg';
 import '../../days/day-022/styles.css';
 
 const CLASSICS = [
@@ -95,7 +100,7 @@ const REVIEWS = [
           </div>
           <div class="fr-hero__art" aria-hidden="true">
             <div class="fr-sunburst"></div>
-            <div class="fr-board"><Pizza toppings={['mozzarella', 'basil', 'pepperoni']} seed={1} class="fr-hero__pizza" /></div>
+            <div class="fr-board"><Image src={photoHero} alt="A Neapolitan margherita with charred crust, mozzarella and fresh basil" width={900} class="fr-hero__photo" loading="eager" /></div>
             <span class="fr-sticker fr-sticker--a">Since<br /><b>1961</b></span>
             <span class="fr-sticker fr-sticker--b">Hot &amp;<br /><b>fresh</b></span>
           </div>
@@ -189,6 +194,11 @@ const REVIEWS = [
         <div class="fr-wrap py-20">
           <h2 id="dough-title" class="fr-h2 text-(--cream)">48 hours. <span class="text-(--mustard)">90 seconds.</span></h2>
           <p class="mt-3 max-w-xl text-(--cream)/80">Great pizza is mostly patience. Here's what happens to every ball of dough before it reaches you.</p>
+          <div class="fr-dough__photos">
+            <figure><Image src={photoBall} alt="A baker holding a floured ball of proved pizza dough" width={600} /><figcaption>Proved for 48 hours</figcaption></figure>
+            <figure><Image src={photoStretch} alt="Hands stretching pizza dough on a floured bench" width={900} /><figcaption>Stretched by hand</figcaption></figure>
+            <figure><Image src={photoOven} alt="A margherita pizza leaving a wood-fired oven with flames behind it" width={900} /><figcaption>90 seconds at 485 °C</figcaption></figure>
+          </div>
           <ol class="fr-steps mt-12" data-steps>
             {DOUGH.map((d, i) => (
               <li class="fr-step" style={`--i:${i}`}>

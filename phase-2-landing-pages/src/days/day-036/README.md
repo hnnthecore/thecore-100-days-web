@@ -29,3 +29,11 @@ The page is one connected tool. The hero search, the affordability result, the a
 ## Notes
 
 Latch & Lane is a fictional agency. Properties, prices and estimates are demo content, not valuations or mortgage advice. Nothing is sent.
+
+## Photography
+
+The hero arch uses a real photograph from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-036/` and converted to WebP at build time. I rejected several "interior" photos because they were 3D renders, not photographs. The listing cards and map keep their drawn houses because nine listings need nine matching photos, which should come from the agency's real properties.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Hero arch | Bright living room with a vaulted ceiling | https://unsplash.com/photos/QQ6xmTXXFZ8 |

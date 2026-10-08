@@ -29,3 +29,14 @@ A design & build contractor in London (fictional). The brief to myself: look lik
 ## Notes
 
 Fictional business: projects, clients, quotes and figures are demo content. Estimates are illustrative, and no enquiry is sent.
+
+## Photography
+
+The hero and the "How we work" section use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-024/` and converted to WebP at build time. The isometric drawings of the projects stay, because they are architectural drawings, not photographs.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Hero | Builder on a timber frame | https://unsplash.com/photos/X1P1_EDNnok |
+| Structure | Concrete frame under construction | https://unsplash.com/photos/PlBsJ5MybGc |
+| Groundworks | Site manager on a rebar grid | https://unsplash.com/photos/dSjrv4w1g1Q |
+| Lifting | Tower crane at dusk | https://unsplash.com/photos/ESZRBtkQ_f8 |

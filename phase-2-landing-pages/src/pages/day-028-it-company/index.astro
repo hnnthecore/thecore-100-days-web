@@ -7,6 +7,9 @@
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoOffice from '../../assets/day-028/office-open.jpg';
+import photoFloor from '../../assets/day-028/office-plan.jpg';
 import '../../days/day-028/styles.css';
 
 const SERVICES = [
@@ -90,6 +93,11 @@ const QUIZ = [
           </div>
         </div>
       </section>
+
+      <div class="sw-wrap sw-band">
+        <figure class="sw-band__main"><Image src={photoOffice} alt="A bright open-plan office with people working at desks and monitors" width={1400} /><figcaption><b>38 engineers</b> on your side, in the UK</figcaption></figure>
+        <figure class="sw-band__side"><Image src={photoFloor} alt="A quiet office floor with glass-panelled desks and a long corridor" width={900} /><figcaption>On-site visits when it matters</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · SERVICES =========================== -->
       <section id="services" class="sw-section" aria-labelledby="services-title">

@@ -9,6 +9,11 @@ import '@fontsource-variable/cormorant/wght-italic.css';
 import '@fontsource-variable/jost';
 import Landing from '../../layouts/Landing.astro';
 import { ring, earrings, necklace, bracelet } from '../../days/day-027/art';
+import { Image } from 'astro:assets';
+import photoHalo from '../../assets/day-027/ring-black.jpg';
+import photoPink from '../../assets/day-027/ring-pink.jpg';
+import photoSolitaire from '../../assets/day-027/ring-teal.jpg';
+import photoHand from '../../assets/day-027/hand-rings.jpg';
 import '../../days/day-027/styles.css';
 
 const PIECES = [
@@ -76,7 +81,7 @@ const STEPS = [
             <ul class="ma-trust mt-14" role="list"><li>Free insured delivery</li><li>30-day returns</li><li>Lifetime care</li></ul>
           </div>
           <div class="ma-stage" aria-hidden="true">
-            <div class="ma-stage__ring" set:html={heroRing} />
+            <Image src={photoHalo} alt="A diamond halo engagement ring with a rose-gold setting on black" width={900} class="ma-stage__photo" loading="eager" />
             <span class="ma-spark ma-spark--1">✦</span><span class="ma-spark ma-spark--2">✦</span><span class="ma-spark ma-spark--3">✦</span>
           </div>
         </div>
@@ -209,6 +214,11 @@ const STEPS = [
       <section id="atelier" class="ma-section ma-section--ivory2" aria-labelledby="atelier-title">
         <div class="ma-wrap">
           <div class="ma-head"><p class="ma-eyebrow">The atelier</p><h2 id="atelier-title" class="ma-h2">Five steps. <em>Forty hours.</em></h2></div>
+          <div class="ma-craft">
+            <figure><Image src={photoHand} alt="A hand wearing two diamond rings, one pear-shaped and one emerald-cut" width={700} /><figcaption>Worn, not displayed</figcaption></figure>
+            <figure><Image src={photoPink} alt="A rose-gold ring with a pink gemstone surrounded by small diamonds" width={800} /><figcaption>Coloured stones, ethically sourced</figcaption></figure>
+            <figure><Image src={photoSolitaire} alt="A classic six-claw diamond solitaire on teal fabric" width={800} /><figcaption>The classic solitaire</figcaption></figure>
+          </div>
           <ol class="ma-steps">
             {STEPS.map((s) => (
               <li class="ma-step" data-reveal>

@@ -8,6 +8,8 @@ import '@fontsource-variable/playfair-display';
 import '@fontsource-variable/playfair-display/wght-italic.css';
 import '@fontsource-variable/plus-jakarta-sans';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoLiving from '../../assets/day-036/hero-living.jpg';
 import { home } from '../../days/day-036/art';
 import '../../days/day-036/styles.css';
 
@@ -72,7 +74,7 @@ const HOODS = [
             <dl class="ll-stats"><div><dt>Average days to sell</dt><dd>24</dd></div><div><dt>Asking price achieved</dt><dd>98.6%</dd></div><div><dt>Five-star reviews</dt><dd>1,940</dd></div></dl>
           </div>
           <div class="ll-arch" aria-hidden="true">
-            <div class="ll-arch__img" set:html={home('house', '#efe3cf', '#3d5a80')} />
+            <div class="ll-arch__img"><Image src={photoLiving} alt="" width={800} class="ll-arch__photo" loading="eager" /></div>
             <p class="ll-arch__card"><b>Just listed</b><span>Didsbury · 4 bed · £695,000</span></p>
           </div>
         </div>

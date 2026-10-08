@@ -7,6 +7,10 @@
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoRoad from '../../assets/day-025/semi-road.jpg';
+import photoWarehouse from '../../assets/day-025/shelving.jpg';
+import photoHandover from '../../assets/day-025/handover.jpg';
 import { HUBS, ROUTES, hub, curve } from '../../days/day-025/data';
 import '../../days/day-025/styles.css';
 
@@ -99,6 +103,12 @@ const JOBS = [
           </div>
         </div>
       </section>
+
+      <div class="pl-wrap pl-band">
+        <figure class="pl-band__main"><Image src={photoRoad} alt="A white articulated lorry travelling along a motorway at sunset" width={1400} /><figcaption><b>412</b> trucks on the road right now</figcaption></figure>
+        <figure class="pl-band__side"><Image src={photoWarehouse} alt="A large warehouse with tall blue and orange pallet racking" width={900} /><figcaption>Warehousing in Leeds, Birmingham and Bristol</figcaption></figure>
+        <figure class="pl-band__side"><Image src={photoHandover} alt="A courier handing a parcel to a customer" width={600} /><figcaption>Signed for and photographed</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · SERVICES =========================== -->
       <section id="services" class="pl-section" aria-labelledby="services-title">

@@ -7,6 +7,10 @@
 import '@fontsource-variable/archivo/wdth.css';
 import '@fontsource-variable/inter';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoMechanic from '../../assets/day-023/mechanic-hero.jpg';
+import photoTyre from '../../assets/day-023/tyre.jpg';
+import photoWrench from '../../assets/day-023/wrench.jpg';
 import '../../days/day-023/styles.css';
 
 const SERVICES = [
@@ -98,6 +102,7 @@ const REVIEWS = [
           </div>
 
           <div class="nm-scan" aria-hidden="true">
+            <Image src={photoMechanic} alt="" width={1000} class="nm-scan__photo" loading="eager" />
             <div class="nm-scan__grid"></div>
             <svg viewBox="0 0 800 340" class="nm-car">
               <path pathLength="1" class="nm-car__line" d="M60 250H135A62 62 0 0 1 255 250H558A62 62 0 0 1 682 250H756V205Q752 176 720 168L640 150Q585 92 520 90L380 92Q300 105 235 160L95 182Q62 190 60 215Z" />
@@ -263,6 +268,11 @@ const REVIEWS = [
           <div class="nm-head">
             <p class="nm-eyebrow">04 · Why Northgate</p>
             <h2 id="why-title" class="nm-h2">The garage you'd recommend to your mum.</h2>
+          </div>
+          <div class="nm-photos">
+            <figure><Image src={photoMechanic} alt="A mechanic in a grey uniform inspecting a car engine with the bonnet open" width={900} /><figcaption>A real inspection, with photos</figcaption></figure>
+            <figure><Image src={photoTyre} alt="Gloved hands checking the tread of a car tyre" width={900} /><figcaption>Tyres checked and measured</figcaption></figure>
+            <figure><Image src={photoWrench} alt="A mechanic's hand holding a spanner over an engine" width={900} /><figcaption>Hands-on, honest work</figcaption></figure>
           </div>
           <ul class="nm-promises" role="list">
             <li><b>Fixed price</b><span>The quote is the bill. If we find more, we ask first, with photos.</span></li>

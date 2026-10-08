@@ -29,3 +29,15 @@ The base nightly rate is multiplied by a seasonal factor (summer +35–40%, wint
 ## Notes
 
 The Saltmarsh is a fictional hotel. Rooms, rates, reviews and availability are demo content, and nothing is sent or charged.
+
+## Photography
+
+The hero window and all six room cards use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-031/` and converted to WebP at build time. I skipped bedrooms with visible hotel names or product labels on pillows. The Sea View Suite photo is also cropped to the balcony for The Lighthouse; swap in a unique photo once the real hotel supplies them.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Dune Family Loft | Beach artwork above a headboard | https://unsplash.com/photos/kHLJmUQ6xq0 |
+| Garden Nook | Bed with herringbone floor | https://unsplash.com/photos/XWgTzyymwj8 |
+| Courtyard Double | Sitting room with desk | https://unsplash.com/photos/xQbmc2FnK3Y |
+| Marsh View King | King bed with view to the bathroom | https://unsplash.com/photos/3OBxWoy75yw |
+| Hero window, Sea View Suite, The Lighthouse | Twin beds with a sea view | https://unsplash.com/photos/uXYHodDhiG4 |

@@ -204,3 +204,10 @@ textarea.ev-input { height: auto; padding-block: 0.8rem; }
   .ev-bars b { transition: none; }
 }
 }
+
+/* Real photography (replaces the first round of illustrations) */
+html .ev-band { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1rem; padding-block: 3rem; }
+html .ev-band figure { position: relative; margin: 0; overflow: hidden; min-height: 18rem; border-radius: 0.5rem; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.5rem), calc(100% - 1.5rem) 100%, 0 100%); }
+html .ev-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+html .ev-band figcaption { position: absolute; left: 0; bottom: 0; padding: 0.5rem 1rem; background: var(--volt); color: var(--night); font-weight: 800; font-size: 0.9rem; }
+@media (max-width: 760px) { html .ev-band { grid-template-columns: 1fr; } html .ev-band figure { min-height: 14rem; } }

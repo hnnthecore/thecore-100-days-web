@@ -32,3 +32,14 @@ The designer estimates the price from the setting, plus stone price × carat^1.7
 ## Notes
 
 Maison Aurelle is a fictional business. Pieces, prices and certificates are demo content, and nothing is sent.
+
+## Photography
+
+The hero and the atelier section use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-027/` and converted to WebP at build time. The collection grid and the ring designer keep their drawn jewellery, because they change with every option you pick.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Hero | Halo diamond ring, rose gold and white gold | https://unsplash.com/photos/Y_bxfTa_iUA |
+| Atelier | Hand wearing two diamond rings | https://unsplash.com/photos/SBSeFdJouZU |
+| Atelier | Rose-gold ring with a pink stone | https://unsplash.com/photos/yEJwDxAoHc0 |
+| Atelier | Solitaire diamond on teal fabric | https://unsplash.com/photos/1w1FQagKes4 |

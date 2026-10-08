@@ -9,6 +9,10 @@ import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource-variable/dm-sans';
 import Landing from '../../layouts/Landing.astro';
 import Hair from '../../components/day-026/Hair.astro';
+import { Image } from 'astro:assets';
+import photoDry from '../../assets/day-026/blowdry.jpg';
+import photoWash from '../../assets/day-026/cut.jpg';
+import photoStudio from '../../assets/day-026/interior.jpg';
 import '../../days/day-026/styles.css';
 
 const SERVICES = [
@@ -95,9 +99,9 @@ const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday
             <p class="av-next mt-10" aria-live="polite"><span class="av-dot"></span><span data-next>Checking the diary…</span></p>
           </div>
           <div class="av-arches" aria-hidden="true">
-            <div class="av-arch av-arch--a"><Hair look="long" hair="#6B3A2A" tip="#D9A66B" bg="#EBD3C6" skin="#D9A07F" /></div>
-            <div class="av-arch av-arch--b"><Hair look="curls" hair="#2A1A15" bg="#F0D9A8" skin="#A86B4C" /></div>
-            <div class="av-arch av-arch--c"><Hair look="pixie" hair="#2B1625" bg="#D8DEC9" skin="#EFC9B0" /></div>
+            <div class="av-arch av-arch--a"><Image src={photoDry} alt="A stylist blow-drying and shaping a client's hair with a round brush" width={700} class="av-arch__photo" loading="eager" /></div>
+            <div class="av-arch av-arch--b"><Image src={photoWash} alt="A client having her hair washed at a salon basin" width={800} class="av-arch__photo" loading="eager" /></div>
+            <div class="av-arch av-arch--c"><Image src={photoStudio} alt="The empty salon floor with arched mirrors and styling chairs, in black and white" width={700} class="av-arch__photo" loading="eager" /></div>
             <p class="av-stamp"><b>4.9</b><span>★ from 1,280 reviews</span></p>
           </div>
         </div>

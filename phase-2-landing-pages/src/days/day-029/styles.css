@@ -200,3 +200,10 @@
   .iv-blip { animation: none; opacity: 1; }
 }
 }
+
+/* Real photography (replaces the first round of illustrations) */
+html .iv-band { display: grid; grid-template-columns: 1.7fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+html .iv-band figure { position: relative; margin: 0; overflow: hidden; border-radius: 1rem; min-height: 18rem; border: 1px solid var(--line); }
+html .iv-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.85) brightness(0.9); }
+html .iv-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.6rem 1.1rem 0.9rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgb(5 8 10 / 0.88)); }
+@media (max-width: 760px) { html .iv-band { grid-template-columns: 1fr; } html .iv-band figure { min-height: 14rem; } }

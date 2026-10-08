@@ -236,3 +236,12 @@ select.hr-input { cursor: pointer; }
 /* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
 html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(1) > span:nth-child(2) { color: #6d6a62 !important; }
 html body > div:nth-child(2) > footer:nth-child(3) > div:nth-child(1) > p:nth-child(2) { color: #6d6a62 !important; }
+
+/* Real photography (replaces the first round of illustrations) */
+html .hr-hero__photo { width: 100%; height: auto; max-height: min(68vh, 620px); object-fit: cover; border-radius: 0.75rem; border: 1px solid var(--line); display: block; }
+html .hr-process-photos { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 1rem; }
+html .hr-process-photos figure { position: relative; margin: 0; overflow: hidden; aspect-ratio: 3 / 4; border-radius: 0.5rem; }
+html .hr-process-photos figure:nth-child(2) { aspect-ratio: 4 / 4.4; }
+html .hr-process-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+html .hr-process-photos figcaption { position: absolute; left: 0; bottom: 0; padding: 0.4rem 0.8rem; background: #fff; color: var(--ink); font-weight: 700; font-size: 0.85rem; }
+@media (max-width: 700px) { html .hr-process-photos { grid-template-columns: 1fr; } html .hr-process-photos figure, html .hr-process-photos figure:nth-child(2) { aspect-ratio: 16 / 10; } }

@@ -31,3 +31,12 @@ A managed-IT provider for growing UK businesses (fictional). The brief to myself
 ## Notes
 
 Stackwell is a fictional company. Clients, prices and statistics are demo content, and nothing is sent.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-028/` and converted to WebP at build time. I skipped photos that showed visible brand names (a drinks can, wall graphics and a poster). The ticket console, plan builder and status board stay as live interface, not photos.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Open-plan office with people at desks | https://unsplash.com/photos/kN_kViDchA0 |
+| Band, small | Quiet office floor with glass partitions | https://unsplash.com/photos/PG8NyM_Mcts |

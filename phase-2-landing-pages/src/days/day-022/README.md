@@ -31,3 +31,14 @@ Plus a **basket drawer**: quantities, remove, subtotal, free delivery over £25 
 ## Notes
 
 Fictional business: prices, postcodes, reviews and orders are demo content, and nothing is really ordered.
+
+## Photography
+
+The hero and the dough section use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-022/` and converted to WebP at build time. The interactive pizza builder keeps its drawn pizza, because the toppings change as you choose them.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Hero | Neapolitan margherita on a plate | https://unsplash.com/photos/x00CzBt4Dfk |
+| Dough, step 1 | Baker holding a ball of dough | https://unsplash.com/photos/4yzEtTQLdL4 |
+| Dough, step 2 | Hands stretching dough | https://unsplash.com/photos/_CaLXVUfD8g |
+| Dough, step 3 | Pizza leaving a wood-fired oven | https://unsplash.com/photos/vHRFraV4U00 |

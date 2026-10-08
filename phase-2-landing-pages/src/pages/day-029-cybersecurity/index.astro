@@ -7,6 +7,9 @@
 import '@fontsource-variable/archivo';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoHall from '../../assets/day-029/cabinets.jpg';
+import photoTech from '../../assets/day-029/tech.jpg';
 import '../../days/day-029/styles.css';
 
 const SERVICES = [
@@ -167,6 +170,10 @@ const EMAILS = [
       <section id="soc" class="iv-section iv-section--panel" aria-labelledby="soc-title">
         <div class="iv-wrap">
           <div class="iv-head"><p class="iv-eyebrow">// inside the soc</p><h2 id="soc-title" class="iv-h2">What 3 a.m. looks like <span class="iv-green">from here.</span></h2></div>
+          <div class="iv-band">
+            <figure class="iv-band__main"><Image src={photoHall} alt="A data hall with rows of server cabinets and blue network cabling overhead" width={1400} /><figcaption>Your logs land here. We watch them 24/7.</figcaption></figure>
+            <figure class="iv-band__side"><Image src={photoTech} alt="An engineer in a high-visibility vest repairing equipment beside a server rack" width={700} /><figcaption>On-site response when it is physical</figcaption></figure>
+          </div>
           <div class="iv-soc">
             <div class="iv-soc__bar">
               <div class="iv-chips" role="group" aria-label="Filter by severity" data-sev>

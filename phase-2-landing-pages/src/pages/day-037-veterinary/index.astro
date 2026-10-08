@@ -7,6 +7,9 @@
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/nunito';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import photoExam from '../../assets/day-037/exam.jpg';
+import photoTable from '../../assets/day-037/table.jpg';
 import { pet } from '../../days/day-037/art';
 import '../../days/day-037/styles.css';
 
@@ -86,6 +89,12 @@ const VETS = [
           </div>
         </div>
       </section>
+
+      <div class="vt-wrap vt-band">
+        <figure><Image src={photoExam} alt="A vet in a white coat listening to a dachshund's chest with a stethoscope" width={800} /><figcaption>Gentle, unhurried check-ups</figcaption></figure>
+        <div class="vt-band__text"><p class="vt-band__big">30-minute<br />appointments.</p><p>Longer slots mean we listen first, examine properly and explain everything in plain English.</p></div>
+        <figure><Image src={photoTable} alt="A vet trimming fur on a dog lying on a stainless-steel examination table" width={800} /><figcaption>Calm, careful treatment</figcaption></figure>
+      </div>
 
       <!-- =========================== 2 · TIMELINE =========================== -->
       <section id="care" class="vt-section" aria-labelledby="care-title">

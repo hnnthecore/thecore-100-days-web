@@ -30,3 +30,12 @@ A friendly small-animal clinic in Norwich (fictional). The brief to myself: **re
 ## Notes
 
 Pawprint is a fictional clinic. Prices, vets and the emergency number are demo content, and nothing is sent.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-037/` and converted to WebP at build time. I skipped photos that showed a real person's name badge and a branded smartwatch screen. The pet picker, vet avatars and calculators keep their drawn animals because they change as you interact.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, left | Vet examining a dachshund | https://unsplash.com/photos/e4f87NzUJsU |
+| Band, right | Fur trim on an examination table | https://unsplash.com/photos/I3KxEBS6iOc |

@@ -31,3 +31,12 @@ A three-club gym brand across Leeds, Manchester and Sheffield (fictional). The b
 ## Notes
 
 Rival Athletic Club is a fictional business. Classes, prices, members and the busyness figures are demo content, and nothing is sent.
+
+## Photography
+
+The photo band under the hero uses real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-030/` and converted to WebP at build time. I skipped several gym photos that showed visible equipment brands. The live busyness meter, timetable and week builder stay as interface.
+
+| Use | Photo | Source |
+| --- | --- | --- |
+| Band, large | Dumbbell rack and member training | https://unsplash.com/photos/CQfNt66ttZM |
+| Band, small | Rubber dumbbells close up | https://unsplash.com/photos/VJ2s0c20qCo |
