@@ -225,3 +225,6 @@ textarea.cp-input { height: auto; padding-block: 0.8rem; }
   .cp-meter i, .cp-water-fill { transition: none; }
 }
 }
+
+/* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
+html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(3) { color: #15110d !important; }

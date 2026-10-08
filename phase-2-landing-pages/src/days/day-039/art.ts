@@ -1,0 +1,24 @@
+/**
+ * Day 039 · Wayfarer Journeys · destination scenes drawn in code (one per destination).
+ */
+export type Scene = 'city' | 'island' | 'temple' | 'mountain' | 'medina' | 'tropical' | 'savanna' | 'aurora';
+
+const SKY: Record<Scene, [string, string]> = {
+  city: ['#7fc3e8', '#ffe2b8'], island: ['#69b7ee', '#e9f6ff'], temple: ['#f7b9b0', '#fff0dc'], mountain: ['#8fb7e6', '#f4f7fb'],
+  medina: ['#f6b26b', '#ffe9c4'], tropical: ['#5ec8c0', '#fff4c7'], savanna: ['#ff9d5c', '#ffe08a'], aurora: ['#0e1a3f', '#2b2a6e'],
+};
+
+export function scene(kind: Scene, label = '') {
+  const id = 's' + Math.random().toString(36).slice(2, 7);
+  const [a, b] = SKY[kind];
+  let g = '';
+  if (kind === 'city') g = `<circle cx="250" cy="52" r="22" fill="#fff6d4"/><path d="M0 200V132l30-10 20 12 24-26 22 20 30-14 26 18 30-10 28 22 34-14 24 20 52-8v58z" fill="#e9c6a0"/>${[22, 70, 120, 180, 240, 290].map((x, i) => `<rect x="${x}" y="${120 + (i % 3) * 8}" width="26" height="${80 - (i % 3) * 8}" fill="${['#d77a52', '#f0c27a', '#c65a43'][i % 3]}"/><rect x="${x + 6}" y="${130 + (i % 3) * 8}" width="6" height="8" fill="#fff4d0"/>`).join('')}<path d="M0 170q80-14 160 0t160 0v30H0z" fill="#3f8fb8"/>`;
+  if (kind === 'island') g = `<rect y="120" width="320" height="80" fill="#3c8fd9"/><path d="M0 150h320" stroke="#fff" stroke-opacity=".3"/><path d="M40 200V140q40-24 80-4t100 4v60z" fill="#f4efe6"/><path d="M60 140q20-22 44-18v18z" fill="#fff"/><path d="M96 140a20 20 0 0 1 40 0z" fill="#3d7fd6"/><path d="M168 138a16 16 0 0 1 32 0z" fill="#3d7fd6"/><rect x="100" y="138" width="32" height="30" fill="#fff"/><rect x="170" y="138" width="26" height="26" fill="#fff"/><circle cx="262" cy="46" r="20" fill="#fff8d6"/>`;
+  if (kind === 'temple') g = `<circle cx="250" cy="70" r="30" fill="#ff8f7a" opacity=".85"/><path d="M0 200V160q60-30 120-10t120-6 80 14v42z" fill="#8bbf86"/><g fill="#d93a2b"><rect x="104" y="84" width="112" height="12" rx="3"/><rect x="92" y="74" width="136" height="10" rx="5"/><rect x="118" y="96" width="12" height="76"/><rect x="190" y="96" width="12" height="76"/><rect x="118" y="108" width="84" height="8"/></g><path d="M20 200 70 150 120 200zM240 200 290 140 340 200z" fill="#6fa77a"/>${[40, 280].map((x) => `<circle cx="${x}" cy="130" r="14" fill="#ffb7c5"/>`).join('')}`;
+  if (kind === 'mountain') g = `<path d="M0 200V130l60-70 50 60 40-40 60 80 40-50 70 90z" fill="#587aa6"/><path d="M60 60l-18 26 18-8 14 12zM150 80l-14 20 14-6 12 10z" fill="#fff"/><path d="M0 200V160q80-30 160 0t160-10v50z" fill="#3b7a5b"/><path d="M0 188q80-14 160 4t160-6v14H0z" fill="#2e6a85"/>${[30, 70, 250, 290].map((x) => `<path d="M${x} 176l8-26 8 26zM${x + 2} 164l6-20 6 20z" fill="#235a45"/>`).join('')}`;
+  if (kind === 'medina') g = `<circle cx="70" cy="60" r="24" fill="#fff0c4"/><path d="M0 200V150q50-20 100 0t110 0 110-10v60z" fill="#e6a26b"/>${[[40, 90], [150, 70], [250, 96]].map(([x, h]) => `<rect x="${x}" y="${200 - h}" width="64" height="${h}" fill="#d9825a"/><path d="M${x + 14} 200v-34a18 18 0 0 1 36 0v34z" fill="#8a3f2c"/>`).join('')}<path d="M150 130l16-26 16 26z" fill="#3a6fb0"/>`;
+  if (kind === 'tropical') g = `<circle cx="262" cy="46" r="20" fill="#fff6c8"/><path d="M0 200V130q80-30 160-4t160-4v78z" fill="#6fcf87"/>${[0, 1, 2, 3].map((i) => `<path d="M0 ${150 + i * 14}q80-14 160-2t160-2" fill="none" stroke="#3aa65a" stroke-width="6"/>`).join('')}<path d="M80 200V110" stroke="#7b5b3a" stroke-width="7"/><path d="M80 110q-34-8-44 10M80 110q-24-24-50-14M80 110q20-26 50-18M80 110q36-6 46 12" stroke="#2f9a53" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+  if (kind === 'savanna') g = `<circle cx="160" cy="118" r="38" fill="#fff0b0"/><rect y="150" width="320" height="50" fill="#c6903e"/><path d="M0 150h320" stroke="#a8742d" stroke-width="2"/><g fill="#3d3a1c"><path d="M60 150V112M60 118l-30-8M60 118l30-10M60 108q-28-12-40 4h80q-12-16-40-4z"/><path d="M250 150V120M214 124q34-16 70 0z"/></g><path d="M130 150q4-30 20-28t8 28z" fill="#6b4a2a"/>`;
+  if (kind === 'aurora') g = `<path d="M0 90q80-60 160-20t160-30v40q-80 20-160-10T0 130z" fill="#2ee6a6" opacity=".55"/><path d="M0 70q90-50 170 10t150-20v30q-70 14-150-14T0 100z" fill="#b55cff" opacity=".4"/>${Array.from({ length: 22 }, (_, i) => `<circle cx="${(i * 47) % 320}" cy="${(i * 29) % 90 + 6}" r="1.2" fill="#fff"/>`).join('')}<path d="M0 200V150l40-30 30 20 36-40 40 50 34-30 40 36 44-20 56 44v20z" fill="#14234e"/><path d="M0 200V176q80-10 160 0t160-6v30z" fill="#e9f0ff"/>`;
+  return `<svg viewBox="0 0 320 200" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"'} preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="320" height="200" fill="url(#${id})"/>${g}</svg>`;
+}

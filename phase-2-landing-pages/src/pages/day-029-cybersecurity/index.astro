@@ -235,3 +235,8 @@ const EMAILS = [
 <script>
   import '../../days/day-029/script';
 </script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html section#phish > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > button:nth-child(1) { color: #15110d !important; }
+</style>

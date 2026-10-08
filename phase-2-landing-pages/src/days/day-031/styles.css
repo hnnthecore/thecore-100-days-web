@@ -178,3 +178,9 @@ textarea.hl-input { height: auto; padding-block: 0.8rem; }
   .hl-bars i::after { animation: none; }
 }
 }
+
+/* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
+html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(3) { color: #15110d !important; }
+
+/* Contrast fixes from the audit (round two): text now meets WCAG AA. */
+html .hl-day[data-l="3"] { --tint: #7d6e33; } html .hl-day[data-l="4"] { --tint: #a85a30; }

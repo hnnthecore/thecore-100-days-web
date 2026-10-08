@@ -119,4 +119,9 @@ Then open `http://localhost:5500/phase-1-ui-components/day-001-navigation-bars/`
 | 033 | [Voltline Electrical](phase-2-landing-pages/site/day-033-electrician/) | ✅ Done |
 | 034 | [Copperline Plumbing & Heating](phase-2-landing-pages/site/day-034-plumber/) | ✅ Done |
 | 035 | [Apex Motor Group](phase-2-landing-pages/site/day-035-car-dealership/) | ✅ Done |
-| 036 | Real Estate | ⏳ Next |
+| 036 | [Latch & Lane](phase-2-landing-pages/site/day-036-real-estate/) | ✅ Done |
+| 037 | [Pawprint Veterinary Care](phase-2-landing-pages/site/day-037-veterinary/) | ✅ Done |
+| 038 | [Ember & Oak Coffee Roasters](phase-2-landing-pages/site/day-038-coffee-roastery/) | ✅ Done |
+| 039 | [Wayfarer Journeys](phase-2-landing-pages/site/day-039-travel/) | ✅ Done |
+| 040 | [Halide & Co.](phase-2-landing-pages/site/day-040-photography/) | ✅ Done |
+| 041 | Complete Websites (Phase 3) | ⏳ Next |

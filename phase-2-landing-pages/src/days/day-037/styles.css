@@ -1,0 +1,213 @@
+/* ==========================================================================
+   Day 037 · Pawprint Veterinary Care
+   Mood: friendly and reassuring. Cream, pine green, sunshine yellow and coral; round
+   shapes and soft animation (wiggling ears, blinking eyes). Fraunces + Nunito.
+   ========================================================================== */
+/* Declare Tailwind's layer order first, so this file can load before or after it. */
+@layer properties, theme, base, components, utilities;
+@layer components {
+.vt {
+  --cream: #fff8e8;
+  --cream-2: #f7ebcf;
+  --pine: #1f4d3a;
+  --pine-2: #2b6650;
+  --sun: #ffc93c;
+  --sun-d: #e8ae14;
+  --coral: #ff7a59;
+  --mint: #d5ecdc;
+  --ink: #1b2a22;
+  --muted: #5e6f66;
+  --line: rgb(31 77 58 / 0.16);
+  --focus: var(--pine);
+  font-family: "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: clip;
+}
+.vt ::selection { background: var(--sun); color: var(--pine); }
+.vt a { text-decoration: none; }
+.vt-wrap { max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+@media (min-width: 640px) { .vt-wrap { padding-inline: 2rem; } }
+.vt em { font-family: "Fraunces Variable", Georgia, serif; font-style: italic; font-weight: 600; color: var(--coral); }
+.vt-display, .vt-h2, .vt-vet h3, .vt-advice__t, .vt-bowl__big b { font-family: "Fraunces Variable", Georgia, serif; font-weight: 600; }
+.vt-display { font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.02; letter-spacing: -0.03em; text-wrap: balance; }
+.vt-h2 { font-size: clamp(2.1rem, 4.4vw, 3.5rem); line-height: 1.06; letter-spacing: -0.025em; max-width: 18ch; text-wrap: balance; }
+.vt-eyebrow { font-size: 0.82rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pine-2); }
+.vt-eyebrow--sun { color: var(--sun); }
+.vt-section--pine em { color: var(--sun); }
+.vt-head { display: grid; gap: 1rem; margin-bottom: 2.5rem; }
+.vt-err { margin-top: 0.4rem; font-size: 0.85rem; font-weight: 600; color: #c0391b; }
+.vt-fine { margin-top: 1rem; font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.vt-link { font-weight: 800; color: var(--pine); text-decoration: underline !important; text-decoration-color: var(--coral) !important; text-underline-offset: 4px; text-decoration-thickness: 2px !important; }
+
+.vt-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 800; white-space: nowrap; transition: transform 0.25s var(--ease-spring), background-color 0.2s, box-shadow 0.25s; }
+.vt-btn:hover { transform: translateY(-3px); }
+.vt-btn--lg { padding: 1rem 1.8rem; font-size: 1.02rem; }
+.vt-btn--pine { background: var(--pine); color: #fff; box-shadow: 0 8px 0 -3px #0f2a1f; }
+.vt-btn--pine:hover { background: var(--pine-2); }
+.vt-btn--sun { background: var(--sun); color: var(--pine); box-shadow: 0 8px 0 -3px #b98a05; }
+.vt-btn--sun:hover { background: #ffd35f; }
+.vt-btn--line { border: 2.5px solid var(--pine); }
+.vt-btn--line:hover { background: var(--pine); color: #fff; }
+
+.vt-header { position: sticky; top: 0; z-index: 40; background: rgb(255 248 232 / 0.92); backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+.vt-header.is-scrolled { border-bottom-color: var(--line); }
+.vt-header nav a:hover { color: var(--coral); }
+.vt-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Fraunces Variable", Georgia, serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+
+.vt-input { width: 100%; height: 3.1rem; padding: 0 1rem; border: 2.5px solid var(--line); border-radius: 1rem; background: #fff; color: var(--ink); font: inherit; font-weight: 700; }
+textarea.vt-input { height: auto; padding-block: 0.8rem; }
+.vt-input:focus { outline: none; border-color: var(--pine); box-shadow: 0 0 0 4px rgb(255 201 60 / 0.5); }
+.vt-input[aria-invalid="true"] { border-color: #c0391b; }
+.vt label:not(.vt-opts label):not(.vt-checks label):not(.vt-urgent), .vt legend, .vt-sublabel { display: block; margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: 800; color: var(--muted); }
+.vt-range { width: 100%; accent-color: var(--coral); }
+.vt-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
+.vt-row b { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.9rem; color: var(--coral); }
+
+/* ---------- 1 · Hero ---------- */
+.vt-hero { background: radial-gradient(50% 60% at 100% 0%, #ffe9a8, transparent 70%), radial-gradient(40% 50% at 0% 100%, var(--mint), transparent 70%), var(--cream); }
+.vt-open { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.45rem 1rem; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1.5px var(--line); font-size: 0.92rem; }
+.vt-dot { width: 9px; height: 9px; border-radius: 50%; background: #2fb36b; box-shadow: 0 0 0 4px rgb(47 179 107 / 0.2); }
+.vt-dot.is-closed { background: var(--coral); box-shadow: 0 0 0 4px rgb(255 122 89 / 0.2); }
+.vt-trust { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-size: 0.9rem; color: var(--muted); }
+.vt-trust b { color: var(--pine); font-size: 1.1rem; }
+.vt-pets { display: grid; justify-items: center; gap: 1.25rem; }
+.vt-pets__stage { display: grid; place-items: center; width: min(100%, 24rem); aspect-ratio: 1; border-radius: 50%; background: var(--bg, #ffe3b5); box-shadow: 0 0 0 10px #fff, 0 0 0 12px var(--line), 0 40px 60px -40px rgb(31 77 58 / 0.6); transition: background-color 0.5s; }
+.vt-pets__stage svg { width: 84%; height: auto; animation: vt-bob 3.4s ease-in-out infinite; }
+@keyframes vt-bob { 50% { translate: 0 -8px; } }
+.vt-eyes { animation: vt-blink 4.5s infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes vt-blink { 0%, 92%, 100% { scale: 1; } 95% { scale: 1 0.1; } }
+.vt-ear--l { animation: vt-wig 3s ease-in-out infinite; transform-box: fill-box; transform-origin: 80% 90%; }
+.vt-ear--r { animation: vt-wig 3s ease-in-out 0.4s infinite reverse; transform-box: fill-box; transform-origin: 20% 90%; }
+@keyframes vt-wig { 50% { rotate: -5deg; } }
+.vt-tongue { animation: vt-pant 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: top; }
+@keyframes vt-pant { 50% { scale: 1 1.25; } }
+.vt-pick { display: flex; gap: 0.5rem; }
+.vt-pick button { padding: 0.6rem 1.2rem; border-radius: 999px; background: #fff; box-shadow: 0 0 0 2px var(--line); font-weight: 800; transition: background-color 0.2s, color 0.2s, scale 0.2s var(--ease-spring); }
+.vt-pick button:hover { scale: 1.05; }
+.vt-pick button[aria-pressed="true"] { background: var(--pine); color: #fff; box-shadow: none; }
+.vt-pets__tip { max-width: 22rem; text-align: center; font-weight: 700; color: var(--pine-2); min-height: 3rem; }
+
+.vt-section { padding-block: clamp(4.5rem, 9vw, 7.5rem); }
+.vt-section--pine { background: var(--pine); color: #fff; --line: rgb(255 255 255 / 0.2); --muted: #cfe3d8; --focus: var(--sun); }
+.vt-section--sun { background: var(--sun); }
+.vt-section--sun em { color: var(--pine); }
+
+/* ---------- 2 · Timeline ---------- */
+.vt-controls { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-bottom: 2rem; }
+.vt-seg, .vt-chips { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; }
+.vt-seg button, .vt-chips button { padding: 0.6rem 1.2rem; border-radius: 999px; background: #fff; box-shadow: 0 0 0 2px var(--line); font-weight: 800; transition: background-color 0.2s, color 0.2s; }
+.vt-seg button:hover, .vt-chips button:hover { box-shadow: 0 0 0 2px var(--pine); }
+.vt-seg button[aria-pressed="true"], .vt-chips button[aria-pressed="true"] { background: var(--pine); color: #fff; box-shadow: none; }
+.vt-tl { position: relative; display: grid; gap: 1rem; padding-left: 2.2rem; }
+.vt-tl::before { content: ""; position: absolute; left: 0.72rem; top: 0.6rem; bottom: 0.6rem; width: 4px; border-radius: 4px; background: repeating-linear-gradient(180deg, var(--sun) 0 10px, transparent 10px 18px); }
+.vt-step { position: relative; display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1.25rem; padding: 1.2rem 1.5rem; border-radius: 1.5rem; background: #fff; box-shadow: 0 0 0 1.5px var(--line); animation: vt-in 0.45s var(--ease-out-expo) both; }
+@keyframes vt-in { from { opacity: 0; translate: 0 10px; } }
+.vt-step::before { content: "🐾"; position: absolute; left: -2.2rem; top: 1.2rem; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--sun); font-size: 0.8rem; }
+.vt-step__when { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.5rem; font-weight: 600; color: var(--coral); line-height: 1.1; }
+.vt-step h3 { font-size: 1.2rem; font-weight: 900; }
+.vt-step p { margin-top: 0.25rem; color: var(--muted); line-height: 1.55; }
+@media (max-width: 640px) { .vt-step { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; } }
+
+/* ---------- 3 · Checker ---------- */
+.vt-sym { display: grid; gap: 1.75rem; min-width: 0; }
+.vt-sym fieldset { min-width: 0; }
+.vt-sym legend { color: #fff !important; font-size: 1rem !important; }
+.vt-opts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.vt-opts label { position: relative; cursor: pointer; margin: 0 !important; }
+.vt-opts input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.vt-opts span { display: inline-block; padding: 0.6rem 1.2rem; border: 2.5px solid rgb(255 255 255 / 0.3); border-radius: 999px; font-weight: 800; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.vt-opts label:hover span { border-color: #fff; }
+.vt-opts input:checked + span { background: var(--sun); border-color: var(--sun); color: var(--pine); }
+.vt-opts input:focus-visible + span { outline: 3px solid #fff; outline-offset: 2px; }
+.vt-section:not(.vt-section--pine) .vt-opts span { border-color: var(--line); color: var(--ink); }
+.vt-section:not(.vt-section--pine) .vt-opts input:checked + span { background: var(--pine); border-color: var(--pine); color: #fff; }
+.vt-checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 0.5rem; }
+.vt-checks label { position: relative; cursor: pointer; margin: 0 !important; }
+.vt-checks input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.vt-checks span { display: block; height: 100%; padding: 0.75rem 1rem 0.75rem 2.8rem; border: 2px solid rgb(255 255 255 / 0.2); border-radius: 1rem; position: relative; font-weight: 700; font-size: 0.93rem; line-height: 1.35; transition: border-color 0.2s, background-color 0.2s; }
+.vt-checks span::before { content: ""; position: absolute; left: 0.95rem; top: 0.9rem; width: 1.15rem; height: 1.15rem; border: 2.5px solid rgb(255 255 255 / 0.55); border-radius: 0.35rem; }
+.vt-checks label:hover span { border-color: rgb(255 255 255 / 0.5); }
+.vt-checks input:checked + span { border-color: var(--sun); background: rgb(255 201 60 / 0.14); }
+.vt-checks input:checked + span::before { content: "✓"; display: grid; place-items: center; background: var(--sun); border-color: var(--sun); color: var(--pine); font-size: 0.8rem; font-weight: 900; }
+.vt-checks input:focus-visible + span { outline: 3px solid #fff; outline-offset: 2px; }
+.vt-advice { padding: clamp(1.25rem, 3vw, 2rem); border-radius: 1.75rem; background: var(--cream); color: var(--ink); --muted: #5e6f66; min-height: 20rem; }
+.vt-advice__idle { font-size: 1.1rem; line-height: 1.6; color: var(--muted); font-weight: 700; }
+.vt-advice__lvl { display: inline-block; padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.78rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--lc, var(--pine)); }
+[data-lv="emergency"] { --lc: #d63a2a; } [data-lv="urgent"] { --lc: #e0821a; } [data-lv="soon"] { --lc: #2b7fd6; } [data-lv="monitor"] { --lc: #2f9a63; }
+.vt-advice__t { margin-top: 0.8rem; font-size: 2rem; line-height: 1.1; }
+.vt-advice__p { margin-top: 0.6rem; line-height: 1.55; font-weight: 600; }
+.vt-advice__steps { display: grid; gap: 0.5rem; margin: 1.1rem 0 1.4rem; font-weight: 600; font-size: 0.95rem; }
+.vt-advice__steps li { padding-left: 1.5rem; position: relative; }
+.vt-advice__steps li::before { content: "🐾"; position: absolute; left: 0; font-size: 0.8rem; top: 0.15rem; }
+
+/* ---------- 4 · Feeding ---------- */
+.vt-feed { display: grid; gap: 1.5rem; margin-top: 2rem; }
+.vt-feed fieldset { min-width: 0; }
+.vt-bowl { display: grid; justify-items: center; padding: 2rem; border-radius: 2rem; background: #fff; box-shadow: 0 0 0 1.5px var(--line), 0 30px 50px -35px rgb(31 77 58 / 0.5); text-align: center; }
+.vt-bowl svg { width: min(100%, 17rem); height: auto; }
+.vt-bowl [data-bowl-fill] { transition: y 0.8s var(--ease-out-expo); }
+.vt-bowl__big { display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.5rem; }
+.vt-bowl__big b { font-size: clamp(3rem, 6vw, 4.4rem); line-height: 1; color: var(--pine); font-variant-numeric: tabular-nums; }
+.vt-bowl__big span { color: var(--muted); font-weight: 800; }
+.vt-bowl__rows { display: grid; gap: 0.5rem; width: 100%; margin-top: 1.25rem; padding-top: 1.1rem; border-top: 2px dashed var(--line); text-align: left; }
+.vt-bowl__rows div { display: flex; justify-content: space-between; gap: 1rem; }
+.vt-bowl__rows dd { font-weight: 900; font-variant-numeric: tabular-nums; }
+
+/* ---------- 5 · Vets ---------- */
+.vt-chips { margin-bottom: 1.75rem; }
+.vt-team { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 1.25rem; }
+.vt-vet { padding: 1.5rem; border-radius: 1.75rem; background: #fff; transition: transform 0.3s var(--ease-spring), opacity 0.3s; }
+.vt-vet:hover { transform: translateY(-6px) rotate(-0.5deg); }
+.vt-vet.is-dim { opacity: 0.3; }
+.vt-vet__av { width: 6rem; height: 6rem; border-radius: 50%; overflow: hidden; display: grid; place-items: end center; }
+.vt-vet__av svg { width: 120%; height: auto; margin-bottom: -0.5rem; }
+.vt-vet h3 { margin-top: 1rem; font-size: 1.45rem; line-height: 1.15; }
+.vt-vet__role { margin-top: 0.15rem; font-size: 0.85rem; font-weight: 800; color: var(--pine-2); }
+.vt-vet__text { margin-top: 0.7rem; line-height: 1.5; color: var(--muted); }
+.vt-vet__days { margin: 0.7rem 0 0.9rem; font-size: 0.82rem; font-weight: 800; }
+.vt-vets__none { margin-top: 1.5rem; font-weight: 800; }
+
+/* ---------- 6 · Book ---------- */
+.vt-card { padding: clamp(1.25rem, 3vw, 2.25rem); border-radius: 1.75rem; background: #fff; box-shadow: 0 0 0 1.5px var(--line); min-width: 0; }
+.vt-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
+.vt-fields > .sm\:col-span-2 { grid-column: 1 / -1; }
+.vt-fields fieldset { min-width: 0; }
+@media (max-width: 560px) { .vt-fields { grid-template-columns: minmax(0, 1fr); } }
+.vt-urgent { display: flex !important; gap: 0.9rem; align-items: flex-start; padding: 1rem 1.2rem; border-radius: 1.2rem; background: #fff0e8; border: 2.5px solid transparent; cursor: pointer; transition: border-color 0.2s; }
+.vt-urgent:has(input:checked) { border-color: var(--coral); }
+.vt-urgent input { margin-top: 0.25rem; width: 1.2rem; height: 1.2rem; accent-color: var(--coral); }
+.vt-urgent small { display: block; margin-top: 0.15rem; font-size: 0.84rem; font-weight: 600; color: var(--muted); }
+.vt-days { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: thin; }
+.vt-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(5.2rem, 1fr)); gap: 0.5rem; }
+.vt-pick { position: relative; cursor: pointer; flex: none; margin: 0 !important; }
+.vt-pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.vt-pick > span { display: grid; justify-items: center; min-width: 4.2rem; padding: 0.65rem 0.7rem; border: 2.5px solid var(--line); border-radius: 1.1rem; font-weight: 800; color: var(--ink); text-align: center; line-height: 1.2; font-variant-numeric: tabular-nums; transition: border-color 0.2s, background-color 0.2s; }
+.vt-pick small { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.vt-pick b { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.5rem; font-weight: 600; }
+.vt-pick:hover > span { border-color: var(--coral); }
+.vt-pick input:checked + span { border-color: var(--pine); background: var(--mint); }
+.vt-pick input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+.vt-pick input:disabled + span { opacity: 0.35; text-decoration: line-through; cursor: not-allowed; }
+.vt-sum { position: sticky; top: 6rem; padding: 1.75rem; border-radius: 1.75rem; background: var(--pine); color: #fff; text-align: center; }
+@media (max-width: 1023px) { .vt-sum { position: static; } }
+.vt-sum__av { width: 8rem; height: 8rem; margin: 0 auto 0.5rem; border-radius: 50%; overflow: hidden; display: grid; place-items: end center; background: var(--bg, #ffe3b5); }
+.vt-sum__av svg { width: 120%; margin-bottom: -0.5rem; }
+.vt-sum h3 { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.7rem; font-weight: 600; }
+.vt-sum dl { display: grid; gap: 0.6rem; margin-top: 1rem; font-size: 0.93rem; text-align: left; }
+.vt-sum dl div { display: flex; justify-content: space-between; gap: 1rem; }
+.vt-sum dt { opacity: 0.7; } .vt-sum dd { font-weight: 800; text-align: right; }
+.vt-sum__note { margin-top: 1.1rem; padding-top: 1rem; border-top: 2px dashed rgb(255 255 255 / 0.25); font-size: 0.84rem; opacity: 0.85; text-align: left; }
+.vt-done { padding: clamp(2rem, 5vw, 4rem); border-radius: 1.75rem; background: var(--sun); text-align: center; animation: vt-in 0.5s var(--ease-spring); }
+.vt-done .vt-h2 { margin-inline: auto; } .vt-done em { color: var(--pine); }
+.vt-done__ico { font-size: 3.4rem; line-height: 1; margin-bottom: 0.75rem; }
+.vt-ref b { margin-left: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 0.7rem; background: #fff; font-family: ui-monospace, monospace; letter-spacing: 0.1em; }
+.vt-footer { background: var(--pine); color: rgb(255 255 255 / 0.75); }
+.vt-footer .vt-logo { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vt-pets__stage svg, .vt-eyes, .vt-ear--l, .vt-ear--r, .vt-tongue, .vt-step, .vt-done { animation: none; }
+  .vt-vet:hover, .vt-btn:hover { transform: none; }
+  .vt-bowl [data-bowl-fill] { transition: none; }
+}
+}

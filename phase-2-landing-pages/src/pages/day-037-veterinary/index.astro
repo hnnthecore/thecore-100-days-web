@@ -1,0 +1,259 @@
+---
+/**
+ * Day 037 · Veterinary clinic landing page · “Pawprint Veterinary Care”, Norwich (fictional).
+ * Six signature sections: Hero + pet picker · Life-stage care timeline · Symptom checker · Feeding calculator · Meet the vets · Book a visit.
+ * Mood: friendly and reassuring. Cream, pine green, sunshine yellow and coral; Fraunces + Nunito.
+ */
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/nunito';
+import Landing from '../../layouts/Landing.astro';
+import { pet } from '../../days/day-037/art';
+import '../../days/day-037/styles.css';
+
+const TIMELINE = {
+  dog: {
+    young: [['8 weeks', 'First vaccinations', 'Core vaccines, a full health check and a chat about socialising.'], ['12 weeks', 'Second vaccination + microchip', 'Completes the puppy course. Microchipping is a legal requirement in the UK.'], ['16 weeks', 'Flea, worm and dental plan', 'We set up regular parasite protection and show you how to brush teeth.'], ['6 months', 'Neutering advice', 'The right timing depends on breed and size. We talk it through, no pressure.'], ['12 months', 'First booster', 'The yearly booster that keeps protection topped up.']],
+    adult: [['Every year', 'Booster + full health check', 'Vaccinations, weight, heart, joints and teeth, all in one visit.'], ['Every 1–3 months', 'Flea and worm control', 'Spot-on or tablets, whichever your dog finds easier.'], ['Every year', 'Dental check', 'Gum disease is the most common problem we see in adult dogs.'], ['Every 6 months', 'Weight check', 'Free at the clinic, no appointment needed.']],
+    senior: [['Every 6 months', 'Senior health check', 'Earlier checks catch changes sooner.'], ['Every year', 'Blood and urine screen', 'Looks at kidneys, liver and thyroid before symptoms appear.'], ['Every year', 'Joint and mobility assessment', 'Pain relief and supplements can transform a stiff old dog.'], ['Every year', 'Booster + dental check', 'We tailor the vaccine programme to your dog’s lifestyle.']],
+  },
+  cat: {
+    young: [['9 weeks', 'First vaccinations', 'Core vaccines and a thorough kitten check.'], ['12 weeks', 'Second vaccination + microchip', 'Completes the course. Microchipping is advised for every cat.'], ['4 months', 'Flea, worm and neutering plan', 'Neutering from 4 months stops unwanted litters.'], ['6 months', 'Neutering', 'A routine day-patient operation, home the same evening.'], ['12 months', 'First booster', 'Keeps protection topped up for the year ahead.']],
+    adult: [['Every year', 'Booster + health check', 'Vaccines, weight, heart, teeth and kidneys.'], ['Every 1–3 months', 'Flea and worm control', 'Even indoor cats need protection.'], ['Every year', 'Dental check', 'Cats hide dental pain very well, so we check for them.'], ['Every year', 'Weight and body-condition check', 'Obesity shortens cats’ lives and is easy to prevent.']],
+    senior: [['Every 6 months', 'Senior health check', 'Includes blood pressure, a gentle but important test.'], ['Every year', 'Blood and urine screen', 'Early kidney and thyroid disease is very treatable.'], ['Every year', 'Joint and mobility check', 'Arthritis in cats often looks like “just getting older”.'], ['Every year', 'Booster + dental check', 'Tailored to your cat’s lifestyle.']],
+  },
+  rabbit: {
+    young: [['5 weeks +', 'Myxomatosis and RHD vaccines', 'Rabbits need both, with the first at 5 weeks.'], ['3–5 months', 'Neutering', 'Calmer, healthier and can live with a friend.'], ['Every month', 'Weight and teeth check', 'Free nurse clinics. Teeth grow continuously.'], ['Summer', 'Fly-strike check', 'Daily bottom checks from spring to autumn.']],
+    adult: [['Every year', 'Booster + full health check', 'Both vaccines, plus teeth, ears and heart.'], ['Every 6 months', 'Dental check', 'Dental disease is the commonest rabbit problem.'], ['Spring to autumn', 'Fly-strike prevention', 'A spot-on treatment can protect for 10 weeks.'], ['Always', 'Diet review', 'Hay should be 85% of the diet.']],
+    senior: [['Every 6 months', 'Senior health check', 'Includes teeth, spine and joints.'], ['Every year', 'Blood screen', 'Kidney changes are common in older rabbits.'], ['Every year', 'Arthritis assessment', 'Many older rabbits benefit from pain relief.'], ['Every year', 'Booster', 'Tailored to your rabbit’s environment.']],
+  },
+};
+const SYMPTOMS = [
+  ['breath', 'Struggling to breathe or blue gums', 'emergency'], ['collapse', 'Collapse, seizure or unresponsive', 'emergency'], ['poison', 'Might have eaten something toxic', 'emergency'], ['trauma', 'Hit by a car or a serious fall', 'emergency'], ['strain', 'Straining to pee with little or nothing coming out', 'emergency'], ['bloat', 'Swollen, hard tummy or retching with nothing coming up', 'emergency'],
+  ['vomit', 'Vomiting more than twice', 'urgent'], ['eating', 'Not eating for over 24 hours', 'urgent'], ['limp', 'Won’t put weight on a leg', 'urgent'], ['eye', 'Eye injury, squinting or cloudy eye', 'urgent'], ['blood', 'Blood in stool or urine', 'urgent'],
+  ['itch', 'Scratching, licking or head-shaking', 'soon'], ['smelly', 'Bad breath or drooling', 'soon'], ['lump', 'A new lump or bump', 'soon'], ['mild', 'A mild limp, still walking on it', 'soon'],
+  ['sneeze', 'Occasional sneezing', 'monitor'], ['sleepy', 'A bit sleepy after vaccination', 'monitor'],
+];
+const VETS = [
+  { id: 'amara', name: 'Dr Amara Osei', role: 'Clinical director · small animals', skills: ['dogs', 'surgery'], text: 'Soft-tissue surgery and a gift for nervous patients.', days: 'Mon–Thu' },
+  { id: 'will', name: 'Dr Will Hartley', role: 'Cats & exotics', skills: ['cats', 'rabbits'], text: 'Qualified in feline medicine, with a soft spot for rabbits.', days: 'Tue–Sat' },
+  { id: 'nina', name: 'Dr Nina Kowalski', role: 'Dermatology & dentistry', skills: ['dogs', 'cats', 'dental'], text: 'Itchy skin, sore ears and sparkling teeth.', days: 'Mon, Wed–Fri' },
+  { id: 'sam', name: 'Sam Reid RVN', role: 'Head nurse · puppy & kitten classes', skills: ['dogs', 'cats', 'rabbits', 'nurse'], text: 'Weight clinics, nail trims and the best puppy socials in Norwich.', days: 'Every day' },
+];
+---
+<Landing
+  title="Pawprint Veterinary Care · Vets in Norwich"
+  description="Friendly vets in Norwich for dogs, cats and rabbits. Check your pet's care timeline, use the symptom checker and feeding calculator, and book online. (Day 037 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#1f4d3a"
+  icon="🐾"
+  day={37}
+>
+  <div class="vt" data-timeline={JSON.stringify(TIMELINE)} data-symptoms={JSON.stringify(SYMPTOMS)}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="vt-header" data-header>
+      <div class="vt-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="vt-logo" aria-label="Pawprint Veterinary Care, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--pine)" /><g fill="var(--sun)"><ellipse cx="16" cy="21" rx="6" ry="5" /><circle cx="9" cy="14" r="2.6" /><circle cx="14" cy="9.5" r="2.6" /><circle cx="19" cy="9.5" r="2.6" /><circle cx="24" cy="14" r="2.6" /></g></svg><span>Pawprint</span></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-8 text-[15px] font-bold">
+            <li><a href="#care">Care timeline</a></li><li><a href="#check">Symptom checker</a></li><li><a href="#feed">Feeding</a></li><li><a href="#vets">Our vets</a></li>
+          </ul>
+        </nav>
+        <a href="#book" class="vt-btn vt-btn--sun whitespace-nowrap">Book a visit</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="vt-hero" aria-labelledby="hero-title">
+        <div class="vt-wrap grid grid-cols-1 items-center gap-12 pt-12 pb-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-16">
+          <div>
+            <p class="vt-open" aria-live="polite"><span class="vt-dot" data-open-dot></span><b data-open-text>Checking…</b></p>
+            <h1 id="hero-title" class="vt-display mt-6">Care that treats them like <em>family.</em></h1>
+            <p class="mt-6 max-w-lg text-lg leading-relaxed text-(--muted)">Fear Free certified vets for dogs, cats and rabbits. Longer appointments, calm waiting rooms and a nurse who knows your pet’s name.</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#book" class="vt-btn vt-btn--pine vt-btn--lg">Book an appointment</a>
+              <a href="#check" class="vt-btn vt-btn--line vt-btn--lg">Is it urgent?</a>
+            </div>
+            <ul class="vt-trust mt-10" role="list"><li><b>4.9★</b> 3,200 reviews</li><li><b>24/7</b> emergency cover</li><li><b>Fear Free</b> certified</li></ul>
+          </div>
+          <div class="vt-pets">
+            <div class="vt-pets__stage" data-pet-stage aria-live="polite"></div>
+            <div class="vt-pick" role="group" aria-label="Choose your pet" data-pet-pick>
+              <button type="button" data-pet="dog" aria-pressed="true">🐶 Dog</button>
+              <button type="button" data-pet="cat" aria-pressed="false">🐱 Cat</button>
+              <button type="button" data-pet="rabbit" aria-pressed="false">🐰 Rabbit</button>
+            </div>
+            <p class="vt-pets__tip" data-pet-tip></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · TIMELINE =========================== -->
+      <section id="care" class="vt-section" aria-labelledby="care-title">
+        <div class="vt-wrap">
+          <div class="vt-head"><p class="vt-eyebrow">Care timeline</p><h2 id="care-title" class="vt-h2">What does <em data-care-who>your dog</em> need, and when?</h2></div>
+          <div class="vt-controls">
+            <div role="group" aria-label="Pet" class="vt-seg" data-care-pet>
+              <button type="button" data-p="dog" aria-pressed="true">Dog</button><button type="button" data-p="cat" aria-pressed="false">Cat</button><button type="button" data-p="rabbit" aria-pressed="false">Rabbit</button>
+            </div>
+            <div role="group" aria-label="Life stage" class="vt-seg" data-care-stage>
+              <button type="button" data-s="young" aria-pressed="true">Puppy or kitten</button><button type="button" data-s="adult" aria-pressed="false">Adult</button><button type="button" data-s="senior" aria-pressed="false">Senior</button>
+            </div>
+          </div>
+          <ol class="vt-tl" aria-live="polite" data-timeline-list></ol>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · CHECKER =========================== -->
+      <section id="check" class="vt-section vt-section--pine" aria-labelledby="check-title">
+        <div class="vt-wrap">
+          <div class="vt-head"><p class="vt-eyebrow vt-eyebrow--sun">Symptom checker</p><h2 id="check-title" class="vt-h2">Should I <em>worry?</em></h2></div>
+          <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+            <form class="vt-sym" data-check novalidate>
+              <fieldset><legend>Which pet?</legend>
+                <div class="vt-opts">
+                  <label><input type="radio" name="sp" value="dog" checked /><span>Dog</span></label>
+                  <label><input type="radio" name="sp" value="cat" /><span>Cat</span></label>
+                  <label><input type="radio" name="sp" value="rabbit" /><span>Rabbit</span></label>
+                </div>
+              </fieldset>
+              <fieldset><legend>What are you seeing? <span class="opacity-70">(tick all that apply)</span></legend>
+                <div class="vt-checks">
+                  {SYMPTOMS.map(([id, label, level]) => <label><input type="checkbox" value={id} data-level={level} /><span>{label}</span></label>)}
+                </div>
+              </fieldset>
+            </form>
+            <div class="vt-advice" aria-live="polite" data-advice>
+              <p class="vt-advice__idle">Tick what you’re seeing and we’ll tell you how quickly to act. If in doubt, ring us. It’s always free to ask.</p>
+              <div data-advice-body hidden>
+                <p class="vt-advice__lvl" data-lvl></p>
+                <h3 class="vt-advice__t" data-adv-t></h3>
+                <p class="vt-advice__p" data-adv-p></p>
+                <ul class="vt-advice__steps" data-adv-steps></ul>
+                <a class="vt-btn vt-btn--sun vt-btn--lg" data-adv-cta href="#book"></a>
+              </div>
+              <p class="vt-fine">This is general guidance, not a diagnosis. It never replaces speaking to a vet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · FEEDING =========================== -->
+      <section id="feed" class="vt-section" aria-labelledby="feed-title">
+        <div class="vt-wrap grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div>
+            <p class="vt-eyebrow">Feeding calculator</p>
+            <h2 id="feed-title" class="vt-h2 mt-4">How much should <em>they eat?</em></h2>
+            <form class="vt-feed" data-feed novalidate>
+              <fieldset><legend>Pet</legend>
+                <div class="vt-opts">
+                  <label><input type="radio" name="fp" value="dog" checked /><span>Dog</span></label>
+                  <label><input type="radio" name="fp" value="cat" /><span>Cat</span></label>
+                  <label><input type="radio" name="fp" value="rabbit" /><span>Rabbit</span></label>
+                </div>
+              </fieldset>
+              <div><div class="vt-row"><label for="fw">Weight</label><b data-w-out>12 kg</b></div><input id="fw" class="vt-range" type="range" min="1" max="45" step="0.5" value="12" /></div>
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div><label for="fs">Life stage</label><select id="fs" class="vt-input"><option value="young">Puppy / kitten / young</option><option value="adult" selected>Adult, neutered</option><option value="intact">Adult, not neutered</option><option value="senior">Senior (7+)</option></select></div>
+                <div><label for="fc">Body shape</label><select id="fc" class="vt-input"><option value="0.85">Overweight (losing weight)</option><option value="1" selected>Ideal</option><option value="1.15">A bit thin</option></select></div>
+              </div>
+            </form>
+          </div>
+          <div class="vt-bowl" aria-live="polite">
+            <svg viewBox="0 0 240 170" role="img" aria-label="Food bowl showing the daily portion">
+              <defs><clipPath id="bowlclip"><path d="M30 70h180q-8 70-90 70T30 70z" /></clipPath></defs>
+              <g clip-path="url(#bowlclip)"><rect data-bowl-fill x="20" y="140" width="200" height="90" fill="#c68a4a" /><g data-kibble></g></g>
+              <path d="M24 70h192q-6 78-96 78T24 70z" fill="none" stroke="#1f4d3a" stroke-width="6" stroke-linejoin="round" />
+              <ellipse cx="120" cy="70" rx="96" ry="9" fill="none" stroke="#1f4d3a" stroke-width="6" />
+              <path d="M70 156h100" stroke="#1f4d3a" stroke-width="6" stroke-linecap="round" />
+            </svg>
+            <p class="vt-bowl__big"><b data-kcal>0</b><span>kcal a day</span></p>
+            <dl class="vt-bowl__rows"><div><dt data-dry-l>Dry food</dt><dd data-dry></dd></div><div><dt>Or wet food</dt><dd data-wet></dd></div><div><dt>Treats (max 10%)</dt><dd data-treat></dd></div></dl>
+            <p class="vt-fine" data-feed-note></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · VETS =========================== -->
+      <section id="vets" class="vt-section vt-section--sun" aria-labelledby="vets-title">
+        <div class="vt-wrap">
+          <div class="vt-head"><p class="vt-eyebrow">Meet the team</p><h2 id="vets-title" class="vt-h2">Find the <em>right vet.</em></h2></div>
+          <div class="vt-chips" role="group" aria-label="Filter the team" data-vet-filter>
+            <button type="button" data-skill="all" aria-pressed="true">Everyone</button><button type="button" data-skill="dogs" aria-pressed="false">Dogs</button><button type="button" data-skill="cats" aria-pressed="false">Cats</button><button type="button" data-skill="rabbits" aria-pressed="false">Rabbits</button><button type="button" data-skill="dental" aria-pressed="false">Dental</button><button type="button" data-skill="surgery" aria-pressed="false">Surgery</button>
+          </div>
+          <ul class="vt-team" role="list">
+            {VETS.map((v, i) => (
+              <li class="vt-vet" data-vet={v.id} data-skills={v.skills.join(' ')}>
+                <div class="vt-vet__av" style={`background:${['#ffe3b5', '#dfe6f5', '#fde1e5', '#d5ecdc'][i]}`} set:html={pet((['dog', 'cat', 'rabbit', 'dog'] as const)[i], `Portrait for ${v.name}`)} />
+                <h3>{v.name}</h3>
+                <p class="vt-vet__role">{v.role}</p>
+                <p class="vt-vet__text">{v.text}</p>
+                <p class="vt-vet__days">In clinic: {v.days}</p>
+                <a href="#book" class="vt-link" data-pick-vet={v.id}>Book with {v.name.split(' ')[0] === 'Dr' ? v.name.split(' ')[1] : v.name.split(' ')[0]} →</a>
+              </li>
+            ))}
+          </ul>
+          <p class="vt-vets__none" data-vets-none hidden>No one matches that filter right now. Try “Everyone”.</p>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · BOOK =========================== -->
+      <section id="book" class="vt-section" aria-labelledby="book-title">
+        <div class="vt-wrap">
+          <div class="vt-head"><p class="vt-eyebrow">Book a visit</p><h2 id="book-title" class="vt-h2">Let’s see your <em>best friend.</em></h2></div>
+          <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+            <form class="vt-card" data-book novalidate>
+              <div class="vt-fields">
+                <div><label for="b-pet">Pet’s name</label><input id="b-pet" class="vt-input" data-req aria-describedby="b-pet-e" /><p class="vt-err" id="b-pet-e" hidden>Please add your pet’s name.</p></div>
+                <div><label for="b-sp">Species</label><select id="b-sp" class="vt-input"><option value="dog">Dog</option><option value="cat">Cat</option><option value="rabbit">Rabbit</option></select></div>
+                <div><label for="b-why">Reason for visit</label><select id="b-why" class="vt-input"><option>Vaccination or booster</option><option>Health check</option><option>Not well / worried</option><option>Neutering consultation</option><option>Dental check</option><option>Nurse clinic (weight, nails)</option></select></div>
+                <div><label for="b-vet">Prefer a vet?</label><select id="b-vet" class="vt-input"><option value="">First available</option>{VETS.map((v) => <option value={v.id}>{v.name}</option>)}</select></div>
+                <label class="vt-urgent sm:col-span-2"><input type="checkbox" data-urgent /><span><b>It’s urgent, we need to be seen today</b><small>We’ll hold the next available emergency slot and call you straight away.</small></span></label>
+                <fieldset class="sm:col-span-2" data-when><legend>Day</legend><div class="vt-days" data-days></div>
+                  <p class="vt-sublabel">Time</p><div class="vt-slots" data-slots></div></fieldset>
+                <div><label for="b-name">Your name</label><input id="b-name" class="vt-input" autocomplete="name" data-req aria-describedby="b-name-e" /><p class="vt-err" id="b-name-e" hidden>Please add your name.</p></div>
+                <div><label for="b-phone">Mobile</label><input id="b-phone" type="tel" class="vt-input" autocomplete="tel" data-req aria-describedby="b-phone-e" /><p class="vt-err" id="b-phone-e" hidden>Enter a phone number with at least 10 digits.</p></div>
+                <div class="sm:col-span-2"><label for="b-note">Anything we should know? <span class="opacity-60">(optional)</span></label><textarea id="b-note" class="vt-input min-h-20" data-note placeholder="Nervous with strangers? Allergic to anything? Already on medication?"></textarea></div>
+              </div>
+              <p class="vt-err mt-4" role="alert" data-book-err hidden></p>
+              <button type="submit" class="vt-btn vt-btn--pine vt-btn--lg mt-6" data-book-btn>Book appointment</button>
+            </form>
+            <aside class="vt-sum" data-sum>
+              <div class="vt-sum__av" data-sum-av></div>
+              <h3 data-sum-name>Your pet</h3>
+              <dl><div><dt>Reason</dt><dd data-sum-why></dd></div><div><dt>Vet</dt><dd data-sum-vet></dd></div><div><dt>When</dt><dd data-sum-when>Not chosen</dd></div><div><dt>Consultation</dt><dd>£42</dd></div></dl>
+              <p class="vt-sum__note">Longer 20-minute appointments. First visit includes a free nurse welcome and a goody bag.</p>
+            </aside>
+            <div class="vt-done lg:col-span-2" data-done hidden tabindex="-1">
+              <div class="vt-done__ico" aria-hidden="true">🐾</div>
+              <h3 class="vt-h2" style="max-width:none">We can’t wait to meet <em data-done-pet></em>.</h3>
+              <p class="mt-3 text-lg" data-done-text></p>
+              <p class="vt-ref mt-6">Reference <b data-ref></b></p>
+              <button type="button" class="vt-btn vt-btn--pine mt-8" data-again>Book another pet</button>
+              <p class="mt-4 text-sm opacity-60">Demo only: nothing was sent.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="vt-footer">
+      <div class="vt-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="vt-logo"><span>Pawprint</span></p>
+        <p>A fictional clinic created for Thecore's 100 Days of Web (Day 037). Advice is general information, not a diagnosis. In an emergency, call a vet immediately.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-037/script';
+</script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html h2#care-title > em:nth-child(1) { color: #ff4e22 !important; }
+html h2#feed-title > em:nth-child(1) { color: #ff4e22 !important; }
+html section#feed > div:nth-child(1) > div:nth-child(1) > form:nth-child(3) > div:nth-child(2) > div:nth-child(1) > b:nth-child(2) { color: #ff4e22 !important; }
+html section#vets > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #29624d !important; }
+html h2#book-title > em:nth-child(1) { color: #ff4e22 !important; }
+</style>

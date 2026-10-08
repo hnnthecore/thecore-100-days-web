@@ -232,3 +232,11 @@ const hv = view('sea', sceneId);
 <script>
   import '../../days/day-031/script';
 </script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html section#rooms > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #846333 !important; }
+html section#stay > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #846333 !important; }
+html section#guests > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #7c5c30 !important; }
+html section#reserve > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #846333 !important; }
+</style>

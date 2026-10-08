@@ -1,0 +1,272 @@
+---
+/**
+ * Day 038 · Coffee roastery landing page · “Ember & Oak Coffee Roasters”, Sheffield (fictional).
+ * Six signature sections: Hero + roast dial · Beans shop · Brew guide with timer · Taste quiz · Subscription builder · Visit & wholesale.
+ * Mood: warm and crafted. Espresso brown, cream, burnt orange and leaf green; Syne + Figtree.
+ */
+import '@fontsource-variable/syne';
+import '@fontsource-variable/figtree';
+import Landing from '../../layouts/Landing.astro';
+import { bag, ROAST_COLORS } from '../../days/day-038/art';
+import '../../days/day-038/styles.css';
+
+const COFFEES = [
+  { id: 'huila', name: 'Huila Honey', origin: 'Colombia', roast: 2, process: 'Honey', alt: '1,750 m', price: 9.5, notes: ['Caramel', 'Red apple', 'Almond'], flavor: { sweet: 4, acid: 3, body: 3, bitter: 2, fruit: 3 }, brews: ['filter', 'espresso'], accent: '#d9622b' },
+  { id: 'yirg', name: 'Yirgacheffe Kochere', origin: 'Ethiopia', roast: 1, process: 'Natural', alt: '2,000 m', price: 12.5, notes: ['Blueberry', 'Jasmine', 'Lemon'], flavor: { sweet: 3, acid: 5, body: 2, bitter: 1, fruit: 5 }, brews: ['filter'], accent: '#7b5ea7' },
+  { id: 'cerrado', name: 'Cerrado Chocolate', origin: 'Brazil', roast: 3, process: 'Pulped natural', alt: '1,100 m', price: 8.5, notes: ['Hazelnut', 'Milk chocolate', 'Low acid'], flavor: { sweet: 4, acid: 1, body: 4, bitter: 3, fruit: 1 }, brews: ['espresso', 'filter'], accent: '#5a7a4a' },
+  { id: 'sumatra', name: 'Sumatra Mandheling', origin: 'Indonesia', roast: 5, process: 'Wet-hulled', alt: '1,400 m', price: 9, notes: ['Dark cocoa', 'Cedar', 'Smoke'], flavor: { sweet: 2, acid: 1, body: 5, bitter: 5, fruit: 0 }, brews: ['espresso'], accent: '#2f5d8a' },
+  { id: 'kenya', name: 'Kenya AA Nyeri', origin: 'Kenya', roast: 2, process: 'Washed', alt: '1,800 m', price: 11.5, notes: ['Blackcurrant', 'Grapefruit', 'Brown sugar'], flavor: { sweet: 3, acid: 5, body: 3, bitter: 2, fruit: 4 }, brews: ['filter'], accent: '#c8312f' },
+  { id: 'ember', name: 'House Blend: Ember', origin: 'Brazil + Guatemala', roast: 4, process: 'Blend', alt: 'Various', price: 8, notes: ['Toffee', 'Dark chocolate', 'Orange peel'], flavor: { sweet: 4, acid: 2, body: 4, bitter: 4, fruit: 2 }, brews: ['espresso', 'filter'], accent: '#d9622b' },
+];
+const ROASTS = [
+  { name: 'Light', notes: 'Floral, citrus and tea-like. Bright and delicate.', acid: 5, body: 2 },
+  { name: 'Light-medium', notes: 'Berries, stone fruit and honey. Sweet with lively acidity.', acid: 4, body: 3 },
+  { name: 'Medium', notes: 'Caramel, nuts and milk chocolate. Balanced and smooth.', acid: 3, body: 4 },
+  { name: 'Medium-dark', notes: 'Dark chocolate, toasted sugar and spice. Rich and rounded.', acid: 2, body: 4 },
+  { name: 'Dark', notes: 'Smoke, cocoa nibs and cedar. Heavy body, low acidity.', acid: 1, body: 5 },
+];
+const METHODS = [
+  { id: 'v60', name: 'V60 pour-over', ratio: 16, temp: 94, grind: 'Medium-fine, like table salt', dose: 20, steps: [['Rinse the filter and warm the server', 0, 10], ['Bloom: pour 2× the coffee’s weight and swirl', 10, 35], ['First pour to 60% of the water', 45, 30], ['Second pour to the full amount', 75, 45], ['Let it drain, then swirl and serve', 120, 60]] },
+  { id: 'aero', name: 'AeroPress', ratio: 14, temp: 90, grind: 'Medium, a little finer than sea salt', dose: 16, steps: [['Wet the filter and assemble inverted', 0, 10], ['Add coffee and pour all the water', 10, 20], ['Stir 10 times and fit the cap', 30, 30], ['Steep', 60, 60], ['Flip, then press gently for 30 seconds', 120, 30]] },
+  { id: 'fp', name: 'French press', ratio: 15, temp: 95, grind: 'Coarse, like breadcrumbs', dose: 30, steps: [['Add coffee and pour all the water', 0, 15], ['Leave it alone', 15, 225], ['Break the crust and skim', 240, 20], ['Plunge slowly and pour out right away', 260, 20]] },
+  { id: 'esp', name: 'Espresso', ratio: 2, temp: 93, grind: 'Fine, like icing sugar', dose: 18, steps: [['Dose, level and tamp evenly', 0, 10], ['Start the shot with a short pre-infusion', 10, 6], ['Extract to the target weight', 16, 24], ['Taste and adjust the grind next time', 40, 10]] },
+  { id: 'moka', name: 'Moka pot', ratio: 10, temp: 85, grind: 'Medium-fine, finer than filter', dose: 20, steps: [['Fill the base with hot water to the valve', 0, 15], ['Add coffee, level it and screw on tight', 15, 25], ['Heat on medium until it starts to flow', 40, 90], ['Take off at the first gurgle and cool the base', 130, 20]] },
+];
+const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['Wednesday', '7:30 – 16:00'], ['Thursday', '7:30 – 18:00'], ['Friday', '7:30 – 18:00'], ['Saturday', '8:30 – 17:00'], ['Sunday', '9:00 – 15:00']];
+---
+<Landing
+  title="Ember & Oak Coffee Roasters · Speciality coffee, Sheffield"
+  description="Small-batch speciality coffee roasted in Sheffield. Choose your beans, follow a brew guide with a live timer, take the taste quiz and start a subscription. (Day 038 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#1e1410"
+  icon="☕"
+  day={38}
+>
+  <div class="eo" data-coffees={JSON.stringify(COFFEES)} data-methods={JSON.stringify(METHODS)} data-roasts={JSON.stringify(ROASTS)} data-colors={JSON.stringify(ROAST_COLORS)}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="eo-header" data-header>
+      <div class="eo-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="eo-logo" aria-label="Ember and Oak, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#d9622b" /><path d="M16 5c-4 6-7 9-7 13a7 7 0 0 0 14 0c0-4-3-7-7-13z" fill="#1e1410" /><path d="M16 14c-2 3-3 4-3 6a3 3 0 0 0 6 0c0-2-1-3-3-6z" fill="#f5ecdc" /></svg><span>Ember <em>&</em> Oak</span></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-8 text-[15px] font-semibold">
+            <li><a href="#beans">Beans</a></li><li><a href="#brew">Brew guide</a></li><li><a href="#quiz">Find your coffee</a></li><li><a href="#subscribe">Subscribe</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="eo-bagbtn" data-bag-open aria-label="Your bag: 0 items"><span aria-hidden="true">🛍</span> <b data-bag-count>0</b></button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="eo-hero" aria-labelledby="hero-title">
+        <div class="eo-wrap grid grid-cols-1 items-center gap-12 py-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:py-20">
+          <div>
+            <p class="eo-eyebrow">Roasted in Sheffield · Tuesdays and Thursdays</p>
+            <h1 id="hero-title" class="eo-display mt-6">Coffee worth <em>getting up</em> for.</h1>
+            <p class="mt-6 max-w-lg text-lg leading-relaxed text-(--muted)">Small batches, fully traceable beans, roasted to order and posted within 24 hours of leaving the drum.</p>
+            <div class="mt-8 flex flex-wrap gap-3"><a href="#beans" class="eo-btn eo-btn--ember eo-btn--lg">Shop the beans</a><a href="#quiz" class="eo-btn eo-btn--line eo-btn--lg">Find my coffee</a></div>
+            <p class="eo-roasted mt-8" data-roasted></p>
+          </div>
+          <div class="eo-dial">
+            <div class="eo-dial__stage" data-dial-art></div>
+            <div class="eo-dial__panel">
+              <div class="eo-row"><label for="roast">Choose your roast</label><b data-roast-name>Medium</b></div>
+              <input id="roast" class="eo-range" type="range" min="1" max="5" step="1" value="3" aria-describedby="roast-notes" />
+              <div class="eo-range__ticks" aria-hidden="true"><span>Light</span><span>Dark</span></div>
+              <p id="roast-notes" class="eo-dial__notes" aria-live="polite" data-roast-notes></p>
+              <div class="eo-meters"><div><span>Acidity</span><i data-m-acid></i></div><div><span>Body</span><i data-m-body></i></div></div>
+              <a href="#beans" class="eo-link" data-roast-go>Show me coffees like this →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · BEANS =========================== -->
+      <section id="beans" class="eo-section" aria-labelledby="beans-title">
+        <div class="eo-wrap">
+          <div class="eo-head"><p class="eo-eyebrow">The beans</p><h2 id="beans-title" class="eo-h2">Six coffees. <em>One roaster.</em></h2></div>
+          <div class="eo-filters">
+            <div class="eo-chips" role="group" aria-label="Roast" data-roast-filter>
+              <button type="button" data-r="all" aria-pressed="true">All roasts</button><button type="button" data-r="light" aria-pressed="false">Light</button><button type="button" data-r="medium" aria-pressed="false">Medium</button><button type="button" data-r="dark" aria-pressed="false">Dark</button>
+            </div>
+            <div><label for="brewf" class="sr-only">Brew method</label><select id="brewf" class="eo-input" data-brew-filter><option value="all">Any brew method</option><option value="espresso">Espresso</option><option value="filter">Filter / pour-over</option></select></div>
+            <p class="eo-count" aria-live="polite" data-count></p>
+          </div>
+          <ul class="eo-grid" role="list" data-grid>
+            {COFFEES.map((c) => (
+              <li class="eo-card" data-coffee={c.id}>
+                <div class="eo-card__art" set:html={bag(c.name, c.origin, c.roast, c.accent, `Bag of ${c.name} from ${c.origin}`)} />
+                <div class="eo-card__body">
+                  <p class="eo-card__origin">{c.origin} · {c.process}</p>
+                  <h3 class="eo-card__name">{c.name}</h3>
+                  <ul class="eo-notes" role="list">{c.notes.map((n) => <li>{n}</li>)}</ul>
+                  <dl class="eo-flav">
+                    {(['sweet', 'acid', 'body', 'fruit'] as const).map((k) => <div><dt>{({ sweet: 'Sweet', acid: 'Acidity', body: 'Body', fruit: 'Fruit' })[k]}</dt><dd><i style={`--w:${(c.flavor[k] / 5) * 100}%`}></i></dd></div>)}
+                  </dl>
+                  <div class="eo-card__opts">
+                    <div><label for={`sz-${c.id}`}>Size</label><select id={`sz-${c.id}`} class="eo-input" data-size><option value="1">250 g</option><option value="3.6">1 kg</option></select></div>
+                    <div><label for={`gr-${c.id}`}>Grind</label><select id={`gr-${c.id}`} class="eo-input" data-grind><option>Whole bean</option><option>Espresso</option><option>Filter</option><option>Cafetière</option></select></div>
+                  </div>
+                  <div class="eo-card__foot"><p class="eo-card__price" data-price>£{c.price.toFixed(2)}</p><button type="button" class="eo-btn eo-btn--ember" data-add={c.id}>Add to bag</button></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p class="eo-empty" data-empty hidden>No coffees match that combination. Try “All roasts”.</p>
+        </div>
+        <aside class="eo-drawer" data-drawer hidden aria-label="Your bag">
+          <div class="eo-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="bag-title" tabindex="-1">
+            <div class="eo-drawer__head"><h3 id="bag-title">Your bag</h3><button type="button" class="eo-x" data-bag-close aria-label="Close bag">✕</button></div>
+            <p class="eo-ship" data-ship></p>
+            <div class="eo-ship__bar" aria-hidden="true"><i data-ship-bar></i></div>
+            <ul class="eo-lines" role="list" data-lines></ul>
+            <p class="eo-drawer__empty" data-bag-empty>Your bag is empty. The beans are right there.</p>
+            <div class="eo-drawer__foot"><p class="eo-total"><span>Total</span><b data-bag-total>£0.00</b></p><button type="button" class="eo-btn eo-btn--ember eo-btn--lg w-full" data-checkout disabled>Checkout (demo)</button><p class="eo-ok" role="status" data-checkout-msg></p></div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- =========================== 3 · BREW =========================== -->
+      <section id="brew" class="eo-section eo-section--dark" aria-labelledby="brew-title">
+        <div class="eo-wrap">
+          <div class="eo-head"><p class="eo-eyebrow eo-eyebrow--light">Brew guide</p><h2 id="brew-title" class="eo-h2">Brew it <em>properly.</em></h2></div>
+          <div class="eo-tabs" role="tablist" aria-label="Brew methods" data-tabs>
+            {METHODS.map((m, i) => <button type="button" role="tab" id={`bt-${m.id}`} aria-controls="brew-panel" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{m.name}</button>)}
+          </div>
+          <div id="brew-panel" role="tabpanel" class="eo-brew grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div class="eo-recipe">
+              <div><div class="eo-row"><label for="dose">Coffee</label><b data-dose-out>20 g</b></div><input id="dose" class="eo-range" type="range" min="8" max="60" step="1" value="20" /></div>
+              <dl class="eo-recipe__nums">
+                <div><dt>Water</dt><dd data-water></dd></div><div><dt>Ratio</dt><dd data-ratio></dd></div><div><dt>Temperature</dt><dd data-temp></dd></div><div><dt>Total time</dt><dd data-total-time></dd></div>
+              </dl>
+              <p class="eo-recipe__grind"><b>Grind:</b> <span data-grind-note></span></p>
+              <ol class="eo-steps" data-steps></ol>
+            </div>
+            <div class="eo-timer">
+              <div class="eo-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="rgb(255 255 255 / 0.12)" stroke-width="8" /><circle data-ring cx="60" cy="60" r="52" fill="none" stroke="#d9622b" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)" /></svg>
+                <p class="eo-ring__t"><b data-clock>0:00</b><span data-now-step>Ready when you are</span></p>
+              </div>
+              <div class="eo-timer__btns"><button type="button" class="eo-btn eo-btn--ember" data-start>▶ Start</button><button type="button" class="eo-btn eo-btn--ghost" data-reset>Reset</button></div>
+              <p class="sr-only" aria-live="polite" data-timer-live></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · QUIZ =========================== -->
+      <section id="quiz" class="eo-section" aria-labelledby="quiz-title">
+        <div class="eo-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div>
+            <p class="eo-eyebrow">Taste quiz</p>
+            <h2 id="quiz-title" class="eo-h2 mt-4">Which coffee is <em>yours?</em></h2>
+            <form class="eo-quiz" data-quiz novalidate>
+              <fieldset><legend>1 · How do you brew at home?</legend>
+                <div class="eo-opts"><label><input type="radio" name="q1" value="espresso" /><span>Espresso machine</span></label><label><input type="radio" name="q1" value="filter" /><span>Filter or pour-over</span></label><label><input type="radio" name="q1" value="any" /><span>Cafetière / anything</span></label></div></fieldset>
+              <fieldset><legend>2 · Pick a morning mood</legend>
+                <div class="eo-opts"><label><input type="radio" name="q2" value="bright" /><span>Bright and fruity</span></label><label><input type="radio" name="q2" value="sweet" /><span>Sweet and cosy</span></label><label><input type="radio" name="q2" value="bold" /><span>Bold and smoky</span></label></div></fieldset>
+              <fieldset><legend>3 · How do you take it?</legend>
+                <div class="eo-opts"><label><input type="radio" name="q3" value="black" /><span>Black</span></label><label><input type="radio" name="q3" value="milk" /><span>With milk</span></label></div></fieldset>
+            </form>
+          </div>
+          <div class="eo-match" aria-live="polite" data-match>
+            <p class="eo-match__idle" data-match-idle>Answer all three and we’ll match you with a coffee from today’s roast.</p>
+            <div data-match-body hidden>
+              <p class="eo-match__k">Your match</p>
+              <h3 class="eo-match__name" data-match-name></h3>
+              <p class="eo-match__why" data-match-why></p>
+              <svg viewBox="-110 -105 220 215" class="eo-radar" role="img" aria-label="Flavour profile" data-radar></svg>
+              <button type="button" class="eo-btn eo-btn--ember" data-match-add>Add to bag</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · SUBSCRIBE =========================== -->
+      <section id="subscribe" class="eo-section eo-section--oat" aria-labelledby="sub-title">
+        <div class="eo-wrap">
+          <div class="eo-head"><p class="eo-eyebrow">Subscription</p><h2 id="sub-title" class="eo-h2">Never run <em>out.</em></h2></div>
+          <form class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]" data-sub novalidate>
+            <div class="eo-panel">
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2"><label for="s-coffee">Coffee</label><select id="s-coffee" class="eo-input">{COFFEES.map((c) => <option value={c.id}>{c.name} · {c.origin}</option>)}</select></div>
+                <div><label for="s-size">Bag size</label><select id="s-size" class="eo-input"><option value="1">250 g</option><option value="3.6">1 kg</option></select></div>
+                <div><label for="s-grind">Grind</label><select id="s-grind" class="eo-input"><option>Whole bean</option><option>Espresso</option><option>Filter</option><option>Cafetière</option></select></div>
+              </div>
+              <fieldset><legend>How often?</legend>
+                <div class="eo-opts"><label><input type="radio" name="freq" value="7" /><span>Weekly</span></label><label><input type="radio" name="freq" value="14" checked /><span>Fortnightly</span></label><label><input type="radio" name="freq" value="28" /><span>Every 4 weeks</span></label></div></fieldset>
+              <p class="eo-note">Pause, skip or cancel any time. Free UK delivery on every subscription.</p>
+            </div>
+            <div class="eo-subsum" aria-live="polite">
+              <p class="eo-subsum__k">Your subscription</p>
+              <p class="eo-subsum__price"><b data-s-price>£0.00</b><span>per delivery</span></p>
+              <p class="eo-subsum__was" data-s-was></p>
+              <p class="eo-subsum__save" data-s-save></p>
+              <p class="eo-subsum__k">Upcoming deliveries</p>
+              <ul class="eo-deliv" data-deliv></ul>
+              <button type="submit" class="eo-btn eo-btn--ember eo-btn--lg w-full">Start my subscription</button>
+              <p class="eo-ok" role="status" data-sub-msg></p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · VISIT =========================== -->
+      <section id="visit" class="eo-section" aria-labelledby="visit-title">
+        <div class="eo-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div>
+            <p class="eo-eyebrow">Visit & wholesale</p>
+            <h2 id="visit-title" class="eo-h2 mt-4">Come and <em>smell it.</em></h2>
+            <p class="mt-6 max-w-sm text-lg leading-relaxed text-(--muted)">Our roastery café is open daily. Watch the roast, taste the new arrivals and take a bag home. We also supply cafés, offices and restaurants.</p>
+            <p class="eo-open mt-6" aria-live="polite"><span class="eo-dot" data-dot></span><b data-open>Checking…</b></p>
+            <address class="mt-4 not-italic leading-relaxed">Unit 7, Kelham Island Works<br />Sheffield S3 8RY</address>
+            <table class="eo-hours"><caption class="sr-only">Opening hours</caption><tbody>{HOURS.map(([d, h], i) => <tr data-day={(i + 1) % 7}><th scope="row">{d}</th><td>{h}</td></tr>)}</tbody></table>
+          </div>
+          <form class="eo-wholesale" data-wholesale novalidate>
+            <h3>Wholesale enquiry</h3>
+            <div class="eo-fields">
+              <div><label for="w-biz">Business name</label><input id="w-biz" class="eo-input" data-req aria-describedby="w-biz-e" /><p class="eo-err" id="w-biz-e" hidden>Please add your business name.</p></div>
+              <div><label for="w-type">Type</label><select id="w-type" class="eo-input"><option>Café or coffee shop</option><option>Restaurant</option><option>Office</option><option>Shop / retail</option></select></div>
+              <div><label for="w-cups">Cups a day: <b data-cups-out>80</b></label><input id="w-cups" class="eo-range" type="range" min="10" max="500" step="10" value="80" /></div>
+              <div><label for="w-kg">That’s about <b data-kg-out></b> of coffee a week</label><p class="eo-note" style="margin-top:.7rem">Based on 18 g per drink.</p></div>
+              <div><label for="w-name">Your name</label><input id="w-name" class="eo-input" autocomplete="name" data-req aria-describedby="w-name-e" /><p class="eo-err" id="w-name-e" hidden>Please add your name.</p></div>
+              <div><label for="w-email">Email</label><input id="w-email" type="email" class="eo-input" autocomplete="email" data-req aria-describedby="w-email-e" /><p class="eo-err" id="w-email-e" hidden>Enter an email like name@example.com.</p></div>
+            </div>
+            <button type="submit" class="eo-btn eo-btn--ember eo-btn--lg">Request a tasting box</button>
+            <p class="eo-ok" role="status" data-w-ok></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="eo-footer">
+      <div class="eo-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="eo-logo"><span>Ember <em>&</em> Oak</span></p>
+        <p>A fictional roastery created for Thecore's 100 Days of Web (Day 038). Coffees, prices and orders are demo content.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-038/script';
+</script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html section#top > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > a:nth-child(1) { color: #15110d !important; }
+html section#beans > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #b34817 !important; }
+html section#beans > div:nth-child(1) > ul:nth-child(3) > li:nth-child(1) > div:nth-child(2) > div:nth-child(6) > button:nth-child(2) { color: #15110d !important; }
+html section#beans > div:nth-child(1) > ul:nth-child(3) > li:nth-child(2) > div:nth-child(2) > div:nth-child(6) > button:nth-child(2) { color: #15110d !important; }
+html section#beans > div:nth-child(1) > ul:nth-child(3) > li:nth-child(3) > div:nth-child(2) > div:nth-child(6) > button:nth-child(2) { color: #15110d !important; }
+html section#beans > div:nth-child(1) > ul:nth-child(3) > li:nth-child(4) > div:nth-child(2) > div:nth-child(6) > button:nth-child(2) { color: #15110d !important; }
+html section#beans > div:nth-child(1) > ul:nth-child(3) > li:nth-child(5) > div:nth-child(2) > div:nth-child(6) > button:nth-child(2) { color: #15110d !important; }
+html section#beans > div:nth-child(1) > ul:nth-child(3) > li:nth-child(6) > div:nth-child(2) > div:nth-child(6) > button:nth-child(2) { color: #15110d !important; }
+html button#bt-v60 { color: #15110d !important; }
+html div#brew-panel > div:nth-child(2) > div:nth-child(2) > button:nth-child(1) { color: #15110d !important; }
+html section#quiz > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #b34817 !important; }
+html section#subscribe > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #9d3f14 !important; }
+html h2#sub-title > em:nth-child(1) { color: #c35523 !important; }
+html section#subscribe > div:nth-child(1) > form:nth-child(2) > div:nth-child(2) > button:nth-child(7) { color: #15110d !important; }
+html section#visit > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #b34817 !important; }
+html section#visit > div:nth-child(1) > form:nth-child(2) > button:nth-child(3) { color: #15110d !important; }
+</style>

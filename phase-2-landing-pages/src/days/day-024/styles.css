@@ -229,3 +229,10 @@ select.hr-input { cursor: pointer; }
   .iso-crane__load { animation: none; }
 }
 }
+
+/* Layout fixes found in the audit (text must never spill out of its box) */
+@media (max-width: 480px) { html .hr-facts div { padding: 0.8rem; } html .hr-facts dd { font-size: 1.1rem; overflow-wrap: anywhere; } }
+
+/* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
+html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(1) > span:nth-child(2) { color: #6d6a62 !important; }
+html body > div:nth-child(2) > footer:nth-child(3) > div:nth-child(1) > p:nth-child(2) { color: #6d6a62 !important; }

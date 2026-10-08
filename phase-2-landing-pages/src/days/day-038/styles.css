@@ -1,0 +1,223 @@
+/* ==========================================================================
+   Day 038 · Ember & Oak Coffee Roasters
+   Mood: warm and crafted. Espresso brown, cream, oat and burnt orange; a roast dial that
+   changes the bean, a live brew timer. Syne (display) + Figtree.
+   ========================================================================== */
+/* Declare Tailwind's layer order first, so this file can load before or after it. */
+@layer properties, theme, base, components, utilities;
+@layer components {
+.eo {
+  --cream: #f5ecdc;
+  --oat: #e7d6b8;
+  --espresso: #1e1410;
+  --espresso-2: #2c1d16;
+  --ember: #d9622b;
+  --ember-d: #b84a18;
+  --leaf: #5a7a4a;
+  --muted: #6e5d4e;
+  --line: rgb(30 20 16 / 0.16);
+  --focus: var(--ember-d);
+  font-family: "Figtree Variable", ui-sans-serif, system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--espresso);
+  overflow-x: clip;
+}
+.eo ::selection { background: var(--ember); color: #fff; }
+.eo a { text-decoration: none; }
+.eo-wrap { max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+@media (min-width: 640px) { .eo-wrap { padding-inline: 2rem; } }
+.eo em { font-family: "Syne Variable", sans-serif; font-style: normal; font-weight: 800; color: var(--ember); }
+.eo-display, .eo-h2, .eo-card__name, .eo-match__name { font-family: "Syne Variable", sans-serif; font-weight: 800; }
+.eo-display { font-size: clamp(2.8rem, 6vw, 5.1rem); line-height: 1; letter-spacing: -0.04em; text-wrap: balance; }
+.eo-h2 { font-size: clamp(2.1rem, 4.4vw, 3.5rem); line-height: 1.04; letter-spacing: -0.035em; max-width: 16ch; text-wrap: balance; }
+.eo-eyebrow { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ember-d); }
+.eo-eyebrow--light { color: #f2a073; }
+.eo-head { display: grid; gap: 1rem; margin-bottom: 2.5rem; }
+.eo-err { margin-top: 0.4rem; font-size: 0.85rem; color: #b3341f; }
+.eo-ok { min-height: 1.25rem; margin-top: 0.7rem; font-weight: 700; color: var(--leaf); }
+.eo-link { font-weight: 800; text-decoration: underline !important; text-decoration-color: var(--ember) !important; text-underline-offset: 4px; text-decoration-thickness: 2px !important; }
+.eo-note { font-size: 0.85rem; color: var(--muted); }
+
+.eo-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.4rem; border: 2px solid transparent; border-radius: 0.7rem; font-weight: 800; font-size: 0.92rem; white-space: nowrap; transition: transform 0.2s var(--ease-out-expo), background-color 0.2s, color 0.2s, border-color 0.2s; }
+.eo-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.eo-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.eo-btn--lg { padding: 1rem 1.7rem; font-size: 1rem; }
+.eo-btn--ember { background: var(--ember); color: #fff; }
+.eo-btn--ember:hover:not(:disabled) { background: var(--ember-d); }
+.eo-btn--line { border-color: var(--espresso); }
+.eo-btn--line:hover { background: var(--espresso); color: var(--cream); }
+.eo-btn--ghost { border-color: rgb(255 255 255 / 0.3); color: #fff; }
+.eo-btn--ghost:hover { border-color: #fff; }
+
+.eo-header { position: sticky; top: 0; z-index: 40; background: rgb(245 236 220 / 0.92); backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+.eo-header.is-scrolled { border-bottom-color: var(--line); }
+.eo-header nav a:hover { color: var(--ember-d); }
+.eo-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Syne Variable", sans-serif; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; }
+.eo-logo span { display: inline; }
+.eo-bagbtn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1rem; border-radius: 999px; background: var(--espresso); color: var(--cream); font-weight: 800; }
+.eo-bagbtn b { min-width: 1.2rem; text-align: center; color: #f2a073; }
+
+.eo-input { width: 100%; height: 2.9rem; padding: 0 0.85rem; border: 2px solid var(--line); border-radius: 0.7rem; background: #fff; color: var(--espresso); font: inherit; font-weight: 600; }
+.eo-input:focus { outline: none; border-color: var(--ember); box-shadow: 0 0 0 4px rgb(217 98 43 / 0.2); }
+.eo-input[aria-invalid="true"] { border-color: #b3341f; }
+.eo label:not(.eo-opts label), .eo legend { display: block; margin-bottom: 0.4rem; font-size: 0.8rem; font-weight: 800; color: var(--muted); }
+.eo-range { width: 100%; accent-color: var(--ember); }
+.eo-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; gap: 1rem; }
+.eo-row label { margin: 0 !important; font-size: 0.92rem !important; }
+.eo-row b { font-family: "Syne Variable", sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--ember); font-variant-numeric: tabular-nums; }
+
+/* ---------- 1 · Hero ---------- */
+.eo-hero { background: radial-gradient(55% 70% at 85% 40%, rgb(217 98 43 / 0.2), transparent 70%), var(--cream); transition: background 0.5s; }
+.eo-roasted { display: inline-block; padding: 0.45rem 1rem; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1.5px var(--line); font-size: 0.9rem; font-weight: 700; }
+.eo-dial { display: grid; gap: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 2rem; background: var(--espresso); color: var(--cream); box-shadow: 0 40px 70px -40px rgb(30 20 16 / 0.8); min-width: 0; }
+.eo-dial__stage { position: relative; display: flex; justify-content: center; align-items: center; gap: 0.5rem; height: 9.5rem; }
+.eo-dial__stage svg { width: 5.2rem; height: auto; transition: filter 0.4s; }
+.eo-dial__stage svg:nth-child(1) { rotate: -18deg; translate: 0.6rem 0.5rem; } .eo-dial__stage svg:nth-child(2) { rotate: 6deg; translate: 0 -0.6rem; scale: 1.15; } .eo-dial__stage svg:nth-child(3) { rotate: 26deg; translate: -0.6rem 0.6rem; }
+.eo-dial__stage::before { content: ""; position: absolute; inset: auto 10% 0; height: 3rem; border-radius: 50%; background: radial-gradient(closest-side, rgb(0 0 0 / 0.45), transparent); }
+.eo-dial .eo-row label { color: var(--cream) !important; }
+.eo-range__ticks { display: flex; justify-content: space-between; margin-top: 0.3rem; font-size: 0.75rem; color: #b9a58f; }
+.eo-dial__notes { min-height: 3.2rem; font-size: 1.05rem; line-height: 1.5; }
+.eo-meters { display: grid; gap: 0.7rem; }
+.eo-meters div { display: grid; grid-template-columns: 4.5rem 1fr; align-items: center; gap: 0.8rem; font-size: 0.85rem; font-weight: 700; color: #cdbba3; }
+.eo-meters i { position: relative; height: 8px; border-radius: 8px; background: rgb(255 255 255 / 0.14); overflow: hidden; }
+.eo-meters i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w, 0%); border-radius: inherit; background: var(--ember); transition: width 0.5s var(--ease-out-expo); }
+.eo-dial .eo-link { color: #f2a073; }
+
+.eo-section { padding-block: clamp(4.5rem, 9vw, 7.5rem); }
+.eo-section--dark { background: var(--espresso); color: var(--cream); --line: rgb(255 255 255 / 0.18); --muted: #b9a58f; --focus: #f2a073; }
+.eo-section--oat { background: var(--oat); }
+
+/* ---------- 2 · Beans ---------- */
+.eo-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.eo-filters select { min-width: 14rem; }
+.eo-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.eo-chips button { padding: 0.55rem 1.1rem; border: 2px solid var(--line); border-radius: 999px; font-weight: 800; font-size: 0.88rem; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.eo-chips button:hover { border-color: var(--espresso); }
+.eo-chips button[aria-pressed="true"] { background: var(--espresso); border-color: var(--espresso); color: var(--cream); }
+.eo-count { margin-left: auto; font-weight: 700; color: var(--muted); font-size: 0.9rem; }
+.eo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.eo-card { overflow: hidden; border-radius: 1.5rem; background: #fff; box-shadow: 0 0 0 1px var(--line); transition: transform 0.35s var(--ease-out-expo), box-shadow 0.3s; animation: eo-in 0.45s var(--ease-out-expo) both; }
+@keyframes eo-in { from { opacity: 0; translate: 0 12px; } }
+.eo-card:hover { transform: translateY(-4px); box-shadow: 0 0 0 2px var(--espresso), 0 26px 40px -28px rgb(30 20 16 / 0.5); }
+.eo-card__art { padding: 1.25rem 1rem 0.5rem; background: linear-gradient(180deg, var(--oat), #f1e5cd); }
+.eo-card__art svg { width: 62%; height: auto; margin-inline: auto; transition: rotate 0.5s var(--ease-spring), translate 0.5s var(--ease-spring); }
+.eo-card:hover .eo-card__art svg { rotate: -3deg; translate: 0 -4px; }
+.eo-card__body { padding: 1.2rem 1.3rem 1.3rem; }
+.eo-card__origin { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.eo-card__name { margin-top: 0.2rem; font-size: 1.35rem; line-height: 1.15; letter-spacing: -0.03em; }
+.eo-notes { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.8rem; }
+.eo-notes li { padding: 0.2rem 0.65rem; border-radius: 999px; background: var(--cream); font-size: 0.78rem; font-weight: 700; }
+.eo-flav { display: grid; gap: 0.4rem; margin-top: 1rem; font-size: 0.75rem; font-weight: 700; color: var(--muted); }
+.eo-flav div { display: grid; grid-template-columns: 4.2rem 1fr; align-items: center; gap: 0.6rem; }
+.eo-flav dd { height: 5px; border-radius: 5px; background: var(--oat); overflow: hidden; }
+.eo-flav i { display: block; height: 100%; width: var(--w); background: var(--ember); border-radius: inherit; }
+.eo-card__opts { display: grid; grid-template-columns: 1fr 1.4fr; gap: 0.6rem; margin-top: 1.1rem; }
+.eo-card__opts .eo-input { height: 2.5rem; font-size: 0.88rem; }
+.eo-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 1.1rem; }
+.eo-card__price { font-family: "Syne Variable", sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.eo-empty { padding: 2rem; text-align: center; font-weight: 800; color: var(--muted); }
+.eo-drawer { position: fixed; inset: 0; z-index: 70; display: flex; justify-content: flex-end; background: rgb(30 20 16 / 0.55); backdrop-filter: blur(3px); }
+.eo-drawer[hidden] { display: none; }
+.eo-drawer__panel { display: flex; flex-direction: column; width: min(26rem, 100%); height: 100%; padding: 1.5rem; background: var(--cream); animation: eo-slide 0.35s var(--ease-out-expo); outline: none; overflow-y: auto; }
+@keyframes eo-slide { from { translate: 100% 0; } }
+.eo-drawer__head { display: flex; align-items: center; justify-content: space-between; }
+.eo-drawer__head h3 { font-family: "Syne Variable", sans-serif; font-size: 1.7rem; font-weight: 800; }
+.eo-x { width: 2.4rem; height: 2.4rem; border-radius: 50%; }
+.eo-x:hover { background: var(--oat); }
+.eo-ship { margin-top: 1rem; font-weight: 700; font-size: 0.92rem; }
+.eo-ship__bar { height: 8px; margin: 0.5rem 0 1rem; border-radius: 8px; background: var(--oat); overflow: hidden; }
+.eo-ship__bar i { display: block; height: 100%; width: var(--w, 0%); background: var(--leaf); transition: width 0.5s var(--ease-out-expo); }
+.eo-lines { display: grid; gap: 0.75rem; }
+.eo-line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.2rem 1rem; padding: 0.9rem 1rem; border-radius: 1rem; background: #fff; }
+.eo-line b { font-weight: 800; } .eo-line small { grid-column: 1; color: var(--muted); }
+.eo-line button { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-size: 0.8rem; font-weight: 800; text-decoration: underline; color: var(--ember-d); }
+.eo-line span { grid-column: 2; grid-row: 1; justify-self: end; font-weight: 800; font-variant-numeric: tabular-nums; }
+.eo-drawer__empty { margin-top: 2rem; text-align: center; color: var(--muted); font-weight: 700; }
+.eo-drawer__foot { margin-top: auto; padding-top: 1.5rem; }
+.eo-total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; }
+.eo-total b { font-family: "Syne Variable", sans-serif; font-size: 2rem; font-weight: 800; }
+
+/* ---------- 3 · Brew ---------- */
+.eo-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; }
+.eo-tabs button { padding: 0.65rem 1.3rem; border: 2px solid rgb(255 255 255 / 0.2); border-radius: 999px; font-weight: 800; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.eo-tabs button:hover { border-color: #fff; }
+.eo-tabs button[aria-selected="true"] { background: var(--ember); border-color: var(--ember); color: #fff; }
+.eo-recipe { display: grid; gap: 1.4rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 1.75rem; background: var(--espresso-2); min-width: 0; }
+.eo-recipe .eo-row label { color: #fff !important; }
+.eo-recipe__nums { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.eo-recipe__nums div { display: flex; flex-direction: column-reverse; gap: 0.15rem; }
+.eo-recipe__nums dd { font-family: "Syne Variable", sans-serif; font-size: 1.9rem; font-weight: 800; letter-spacing: -0.04em; color: #f2a073; font-variant-numeric: tabular-nums; }
+.eo-recipe__nums dt { font-size: 0.78rem; color: #b9a58f; }
+.eo-recipe__grind { padding-top: 1rem; border-top: 1px dashed rgb(255 255 255 / 0.2); font-size: 0.95rem; }
+.eo-steps { display: grid; gap: 0.5rem; counter-reset: s; }
+.eo-steps li { position: relative; display: grid; grid-template-columns: 3.2rem minmax(0, 1fr); gap: 0.6rem; padding: 0.75rem 1rem; border-radius: 0.9rem; background: rgb(255 255 255 / 0.05); font-size: 0.93rem; line-height: 1.4; counter-increment: s; transition: background-color 0.3s, outline-color 0.3s; outline: 2px solid transparent; }
+.eo-steps li time { font-variant-numeric: tabular-nums; font-weight: 800; color: #f2a073; font-size: 0.85rem; }
+.eo-steps li.is-now { background: rgb(217 98 43 / 0.22); outline-color: var(--ember); }
+.eo-steps li.is-done { opacity: 0.45; }
+.eo-timer { display: grid; justify-items: center; gap: 1.5rem; padding: 2rem; border-radius: 1.75rem; background: var(--espresso-2); position: sticky; top: 6rem; }
+@media (max-width: 1023px) { .eo-timer { position: static; } }
+.eo-ring { position: relative; width: min(100%, 17rem); }
+.eo-ring svg { width: 100%; height: auto; }
+.eo-ring [data-ring] { transition: stroke-dasharray 0.25s linear; }
+.eo-ring__t { position: absolute; inset: 0; display: grid; place-content: center; gap: 0.3rem; padding: 2.2rem; text-align: center; }
+.eo-ring__t b { font-family: "Syne Variable", sans-serif; font-size: clamp(2.6rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.eo-ring__t span { font-size: 0.82rem; line-height: 1.3; color: #cdbba3; }
+.eo-timer__btns { display: flex; gap: 0.6rem; }
+
+/* ---------- 4 · Quiz ---------- */
+.eo-quiz { display: grid; gap: 1.6rem; margin-top: 2rem; }
+.eo-quiz fieldset { min-width: 0; }
+.eo-quiz legend { margin-bottom: 0.7rem; font-size: 0.95rem !important; color: var(--espresso) !important; }
+.eo-opts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.eo-opts label { position: relative; cursor: pointer; margin: 0 !important; }
+.eo-opts input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.eo-opts span { display: inline-block; padding: 0.65rem 1.2rem; border: 2px solid var(--line); border-radius: 0.8rem; font-weight: 800; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.eo-opts label:hover span { border-color: var(--espresso); }
+.eo-opts input:checked + span { background: var(--espresso); border-color: var(--espresso); color: var(--cream); }
+.eo-opts input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+.eo-match { align-self: start; padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: 2rem; background: var(--espresso); color: var(--cream); min-height: 22rem; }
+.eo-match__idle { font-size: 1.15rem; line-height: 1.6; color: #cdbba3; }
+.eo-match__k { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #f2a073; }
+.eo-match__name { margin-top: 0.4rem; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.05; letter-spacing: -0.04em; }
+.eo-match__why { margin-top: 0.6rem; line-height: 1.55; color: #cdbba3; }
+.eo-radar { display: block; width: min(100%, 17rem); margin: 1rem auto 1.25rem; }
+.eo-radar text { fill: #cdbba3; font-size: 9px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.eo-radar .shape { transition: all 0.6s var(--ease-out-expo); }
+
+/* ---------- 5 · Subscribe ---------- */
+.eo-panel { display: grid; gap: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 1.75rem; background: #fff; min-width: 0; }
+.eo-panel fieldset { min-width: 0; }
+.eo-subsum { padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: 1.75rem; background: var(--espresso); color: var(--cream); }
+.eo-subsum__k { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #f2a073; }
+.eo-subsum__price { display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.3rem; }
+.eo-subsum__price b { font-family: "Syne Variable", sans-serif; font-size: clamp(3rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; }
+.eo-subsum__price span { color: #cdbba3; }
+.eo-subsum__was { min-height: 1.3rem; margin-top: 0.4rem; color: #b9a58f; font-size: 0.9rem; }
+.eo-subsum__save { margin: 0.4rem 0 1.4rem; padding: 0.7rem 1rem; border-radius: 0.8rem; background: rgb(90 122 74 / 0.3); color: #c9e6b8; font-weight: 700; font-size: 0.92rem; }
+.eo-deliv { display: grid; gap: 0.5rem; margin: 0.8rem 0 1.5rem; }
+.eo-deliv li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.65rem 0.9rem; border-radius: 0.8rem; background: rgb(255 255 255 / 0.07); font-size: 0.92rem; font-weight: 700; }
+.eo-deliv li.is-skipped { opacity: 0.45; text-decoration: line-through; }
+.eo-deliv button { font-size: 0.78rem; font-weight: 800; text-decoration: underline; color: #f2a073; }
+
+/* ---------- 6 · Visit ---------- */
+.eo-open { display: flex; align-items: center; gap: 0.6rem; font-size: 1.05rem; }
+.eo-dot { width: 9px; height: 9px; border-radius: 50%; background: #3fa66b; box-shadow: 0 0 0 4px rgb(63 166 107 / 0.2); }
+.eo-dot.is-closed { background: var(--ember); box-shadow: 0 0 0 4px rgb(217 98 43 / 0.2); }
+.eo-hours { width: 100%; max-width: 24rem; margin-top: 1.5rem; border-collapse: collapse; }
+.eo-hours th, .eo-hours td { padding: 0.5rem 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 0.93rem; }
+.eo-hours td { text-align: right; font-variant-numeric: tabular-nums; } .eo-hours th { font-weight: 600; }
+.eo-hours tr.is-today th, .eo-hours tr.is-today td { font-weight: 800; color: var(--ember-d); }
+.eo-wholesale { display: grid; gap: 1.5rem; padding: clamp(1.25rem, 3vw, 2.25rem); border-radius: 1.75rem; background: #fff; box-shadow: 0 0 0 1px var(--line); align-self: start; min-width: 0; }
+.eo-wholesale h3 { font-family: "Syne Variable", sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
+.eo-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
+@media (max-width: 560px) { .eo-fields { grid-template-columns: minmax(0, 1fr); } }
+.eo-fields label b { color: var(--ember-d); }
+.eo-footer { background: var(--espresso); color: rgb(245 236 220 / 0.7); }
+.eo-footer .eo-logo { color: var(--cream); }
+
+@media (prefers-reduced-motion: reduce) {
+  .eo-card, .eo-drawer__panel { animation: none; }
+  .eo-ring [data-ring], .eo-meters i::after, .eo-ship__bar i, .eo-radar .shape { transition: none; }
+  .eo-card:hover, .eo-btn:hover { transform: none; }
+}
+}

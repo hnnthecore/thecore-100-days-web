@@ -1,0 +1,221 @@
+---
+/**
+ * Day 039 · Travel company landing page · “Wayfarer Journeys”, tailor-made holidays from the UK (fictional).
+ * Six signature sections: Hero + trip matcher · Destinations & climate · Itinerary builder · Price estimator · Smart packing list · Plan with an expert.
+ * Mood: golden-hour adventure. Night indigo, sunset orange and magenta, sand; Unbounded + DM Sans.
+ */
+import '@fontsource-variable/unbounded';
+import '@fontsource-variable/dm-sans';
+import Landing from '../../layouts/Landing.astro';
+import { scene } from '../../days/day-039/art';
+import '../../days/day-039/styles.css';
+
+const DEST = [
+  { id: 'lisbon', name: 'Lisbon', country: 'Portugal', scene: 'city', vibes: ['culture', 'food', 'beach'], from: 620, flight: 2.5, temps: [12, 13, 15, 17, 20, 24, 27, 27, 24, 20, 15, 12], rain: [100, 90, 60, 70, 45, 15, 3, 5, 30, 80, 100, 110], best: [4, 5, 6, 9, 10],
+    acts: [['Ride tram 28 through Alfama', 'culture'], ['Pastéis de nata crawl in Belém', 'food'], ['Sunset fado dinner', 'food'], ['Day trip to Sintra’s palaces', 'culture'], ['Surf lesson at Carcavelos', 'active'], ['Rooftop drinks in Bairro Alto', 'relax'], ['Tile workshop in the old town', 'culture']] },
+  { id: 'santorini', name: 'Santorini', country: 'Greece', scene: 'island', vibes: ['beach', 'culture', 'food'], from: 890, flight: 4, temps: [11, 11, 14, 17, 22, 26, 29, 29, 26, 21, 16, 12], rain: [60, 50, 40, 20, 10, 2, 0, 0, 10, 30, 50, 70], best: [5, 6, 9],
+    acts: [['Caldera sunset sail with dinner', 'relax'], ['Walk from Fira to Oia', 'active'], ['Wine tasting at a clifftop winery', 'food'], ['Explore ancient Akrotiri', 'culture'], ['Swim at Red Beach', 'relax'], ['Greek cooking class', 'food'], ['Kayak the sea caves', 'active']] },
+  { id: 'kyoto', name: 'Kyoto', country: 'Japan', scene: 'temple', vibes: ['culture', 'food'], from: 1650, flight: 14, temps: [5, 6, 10, 16, 21, 24, 28, 29, 25, 19, 13, 7], rain: [50, 60, 100, 120, 150, 200, 170, 150, 230, 110, 70, 40], best: [3, 4, 5, 10, 11],
+    acts: [['Fushimi Inari at dawn', 'culture'], ['Tea ceremony in Gion', 'culture'], ['Nishiki Market tasting walk', 'food'], ['Bamboo grove at Arashiyama', 'relax'], ['Kaiseki dinner', 'food'], ['Cycle the Philosopher’s Path', 'active'], ['Stay a night in a ryokan', 'relax']] },
+  { id: 'banff', name: 'Banff', country: 'Canada', scene: 'mountain', vibes: ['mountains', 'wildlife', 'active'], from: 1480, flight: 9, temps: [-8, -5, 0, 5, 10, 14, 17, 16, 11, 5, -3, -8], rain: [25, 20, 25, 35, 55, 80, 60, 55, 45, 30, 30, 25], best: [6, 7, 8, 9, 12, 1, 2],
+    acts: [['Canoe on Moraine Lake', 'active'], ['Wildlife drive for elk and bears', 'wildlife'], ['Hike Johnston Canyon', 'active'], ['Soak in the Banff hot springs', 'relax'], ['Gondola to Sulphur Mountain', 'nature'], ['Dog-sled or ski day (winter)', 'active'], ['Fireside dinner in town', 'food']] },
+  { id: 'marrakech', name: 'Marrakech', country: 'Morocco', scene: 'medina', vibes: ['culture', 'food', 'desert'], from: 720, flight: 3.5, temps: [13, 15, 18, 20, 24, 28, 32, 32, 28, 24, 18, 14], rain: [30, 35, 35, 35, 20, 5, 2, 3, 10, 25, 35, 35], best: [3, 4, 5, 10, 11],
+    acts: [['Get lost in the souks', 'culture'], ['Hammam and argan oil massage', 'relax'], ['Cooking class in a riad', 'food'], ['Jemaa el-Fna street food at night', 'food'], ['Day trip to the Atlas Mountains', 'nature'], ['Sunset camel ride at Agafay', 'active'], ['Majorelle Garden visit', 'culture']] },
+  { id: 'bali', name: 'Bali', country: 'Indonesia', scene: 'tropical', vibes: ['beach', 'culture', 'wellness'], from: 1390, flight: 17, temps: [27, 27, 28, 28, 28, 27, 27, 27, 28, 28, 28, 27], rain: [330, 300, 240, 130, 90, 60, 50, 40, 60, 110, 190, 290], best: [4, 5, 6, 7, 8, 9, 10],
+    acts: [['Sunrise over Tegallalang rice terraces', 'nature'], ['Yoga in Ubud', 'relax'], ['Temple tour: Tanah Lot and Uluwatu', 'culture'], ['Snorkel at Nusa Penida', 'active'], ['Balinese cooking class', 'food'], ['Waterfall swim', 'nature'], ['Beach day in Seminyak', 'relax']] },
+  { id: 'serengeti', name: 'Serengeti', country: 'Tanzania', scene: 'savanna', vibes: ['wildlife', 'nature'], from: 2350, flight: 10, temps: [27, 27, 27, 25, 25, 25, 25, 26, 27, 27, 26, 26], rain: [90, 110, 150, 230, 120, 20, 10, 15, 25, 50, 100, 120], best: [6, 7, 8, 9, 10],
+    acts: [['Dawn game drive', 'wildlife'], ['Witness the wildebeest migration', 'wildlife'], ['Hot-air balloon at sunrise', 'nature'], ['Bush breakfast on the plains', 'food'], ['Visit a Maasai village', 'culture'], ['Night drive for leopards', 'wildlife'], ['Sundowners at the lodge', 'relax']] },
+  { id: 'reykjavik', name: 'Reykjavik', country: 'Iceland', scene: 'aurora', vibes: ['mountains', 'wildlife', 'nature'], from: 980, flight: 3, temps: [0, 1, 2, 4, 8, 11, 13, 12, 9, 5, 2, 0], rain: [75, 70, 80, 60, 50, 50, 50, 60, 70, 85, 70, 80], best: [6, 7, 8, 9, 10, 11, 12, 1, 2, 3],
+    acts: [['Chase the northern lights', 'nature'], ['Golden Circle day trip', 'nature'], ['Blue Lagoon soak', 'relax'], ['Whale watching from the harbour', 'wildlife'], ['Walk behind Seljalandsfoss', 'active'], ['Hot-dog and lamb stew food tour', 'food'], ['Glacier hike with a guide', 'active']] },
+];
+const VIBES = [['beach', '🏖 Beach'], ['mountains', '🏔 Mountains'], ['culture', '🏛 Culture'], ['food', '🍜 Food'], ['wildlife', '🦁 Wildlife']];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'], ['Kwame', 'Africa & wildlife'], ['Ingrid', 'Nordics & North America']];
+---
+<Landing
+  title="Wayfarer Journeys · Tailor-made holidays from the UK"
+  description="Tell us your vibe, budget and month and we'll match you with destinations, then build a day-by-day itinerary, price and packing list. (Day 039 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#2a1b5d"
+  icon="✈️"
+  day={39}
+>
+  <div class="wf" data-dest={JSON.stringify(DEST)} data-months={JSON.stringify(MONTHS)}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="wf-header" data-header>
+      <div class="wf-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="wf-logo" aria-label="Wayfarer Journeys, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="url(#wlg)" /><defs><linearGradient id="wlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a3d" /><stop offset="1" stop-color="#e84d8a" /></linearGradient></defs><path d="M7 20c4-1 6-5 9-9l9-2-3 10c-5 1-8 5-10 8l-2-3z" fill="#fff" opacity=".95" /></svg><span>Wayfarer</span></a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-8 text-[15px] font-semibold">
+            <li><a href="#places">Destinations</a></li><li><a href="#plan">Itinerary</a></li><li><a href="#price">Price</a></li><li><a href="#pack">Packing</a></li>
+          </ul>
+        </nav>
+        <a href="#talk" class="wf-btn wf-btn--sun whitespace-nowrap">Talk to an expert</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="wf-hero" aria-labelledby="hero-title">
+        <div class="wf-stars" aria-hidden="true"></div>
+        <div class="wf-wrap relative grid grid-cols-1 items-center gap-12 py-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:py-20">
+          <div>
+            <p class="wf-pill">✈ Tailor-made trips · ATOL protected</p>
+            <h1 id="hero-title" class="wf-display mt-6">Where’s your next <span class="wf-grad">story?</span></h1>
+            <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/75">Tell us what you love, when you can go and what you want to spend. We’ll match you with places that fit, then plan every day.</p>
+            <ul class="wf-trust mt-8" role="list"><li><b>4.9★</b> 5,800 trips</li><li><b>24/7</b> in-trip support</li><li><b>0</b> booking fees</li></ul>
+          </div>
+          <form class="wf-matcher" data-matcher novalidate aria-labelledby="matcher-t">
+            <h2 id="matcher-t" class="wf-matcher__t">Find my trip</h2>
+            <fieldset><legend>I love…</legend>
+              <div class="wf-vibes" role="group" aria-label="Choose what you love">
+                {VIBES.map(([k, l]) => <button type="button" data-vibe={k} aria-pressed="false">{l}</button>)}
+              </div>
+            </fieldset>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div><label for="m-month">Travelling in</label><select id="m-month" class="wf-input"><option value="0">Any month</option>{MONTHS.map((m, i) => <option value={i + 1}>{m}</option>)}</select></div>
+              <div><label for="m-budget">Budget per person</label><select id="m-budget" class="wf-input"><option value="99999">Any budget</option><option value="1000">Up to £1,000</option><option value="1500">Up to £1,500</option><option value="2500">Up to £2,500</option></select></div>
+            </div>
+            <div class="wf-matches" aria-live="polite"><p data-match-sum>Pick a few things you love…</p><ul data-match-chips role="list"></ul></div>
+            <a href="#places" class="wf-btn wf-btn--sun wf-btn--lg w-full" data-see>See my matches</a>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · DESTINATIONS =========================== -->
+      <section id="places" class="wf-section" aria-labelledby="places-title">
+        <div class="wf-wrap">
+          <div class="wf-head"><p class="wf-eyebrow">Destinations</p><h2 id="places-title" class="wf-h2">Eight places. <span class="wf-grad">One that’s yours.</span></h2></div>
+          <p class="wf-count" aria-live="polite" data-count></p>
+          <ul class="wf-grid" role="list" data-grid>
+            {DEST.map((d) => (
+              <li class="wf-card" data-dest-id={d.id}>
+                <div class="wf-card__art" set:html={scene(d.scene as any, `Illustration of ${d.name}, ${d.country}`)} />
+                <span class="wf-card__badge" data-badge hidden></span>
+                <div class="wf-card__body">
+                  <p class="wf-card__country">{d.country} · {d.flight} h flight</p>
+                  <h3 class="wf-card__name">{d.name}</h3>
+                  <ul class="wf-tags" role="list">{d.vibes.map((v) => <li>{v}</li>)}</ul>
+                  <div class="wf-climate" role="img" aria-label={`Average temperature by month for ${d.name}`}>
+                    {d.temps.map((t, i) => <i style={`--h:${Math.max(8, Math.min(100, (t + 10) * 2.6))}%`} data-m={i + 1} class={d.best.includes(i + 1) ? 'is-best' : ''} title={`${MONTHS[i]}: ${t}°C`}></i>)}
+                  </div>
+                  <div class="wf-climate__ax" aria-hidden="true"><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span></div>
+                  <p class="wf-card__avg" data-avg></p>
+                  <div class="wf-card__foot"><p class="wf-card__price">from <b>£{d.from.toLocaleString('en-GB')}</b><small>pp</small></p><a href="#plan" class="wf-btn wf-btn--ink wf-btn--sm" data-plan-dest={d.id}>Plan this trip</a></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p class="wf-empty" data-empty hidden>Nothing matches all of that. Loosen the budget or month and we’ll find something.</p>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · ITINERARY =========================== -->
+      <section id="plan" class="wf-section wf-section--night" aria-labelledby="plan-title">
+        <div class="wf-wrap">
+          <div class="wf-head"><p class="wf-eyebrow wf-eyebrow--light">Itinerary builder</p><h2 id="plan-title" class="wf-h2">Your days, <span class="wf-grad">planned.</span></h2></div>
+          <form class="wf-planform" data-planform novalidate>
+            <div><label for="p-dest">Destination</label><select id="p-dest" class="wf-input wf-input--dark">{DEST.map((d) => <option value={d.id}>{d.name}, {d.country}</option>)}</select></div>
+            <div><div class="wf-row"><label for="p-days">Length of trip</label><b data-days-out>7 days</b></div><input id="p-days" class="wf-range" type="range" min="3" max="14" value="7" /></div>
+            <fieldset><legend>Pace</legend>
+              <div class="wf-opts"><label><input type="radio" name="pace" value="relaxed" /><span>Relaxed</span></label><label><input type="radio" name="pace" value="balanced" checked /><span>Balanced</span></label><label><input type="radio" name="pace" value="packed" /><span>Packed</span></label></div></fieldset>
+            <fieldset><legend>Include more of</legend>
+              <div class="wf-opts" data-cats>
+                {[['culture', 'Culture'], ['food', 'Food'], ['nature', 'Nature'], ['active', 'Active'], ['relax', 'Relaxing'], ['wildlife', 'Wildlife']].map(([k, l]) => <label><input type="checkbox" value={k} /><span>{l}</span></label>)}
+              </div></fieldset>
+          </form>
+          <ol class="wf-days" data-itin></ol>
+          <div class="mt-6 flex flex-wrap items-center gap-4"><button type="button" class="wf-btn wf-btn--ghost" data-copy>Copy itinerary</button><p class="text-sm text-white/70" role="status" data-copy-msg></p></div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · PRICE =========================== -->
+      <section id="price" class="wf-section" aria-labelledby="price-title">
+        <div class="wf-wrap">
+          <div class="wf-head"><p class="wf-eyebrow">Price estimator</p><h2 id="price-title" class="wf-h2">What will it <span class="wf-grad">cost?</span></h2></div>
+          <form class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" data-price-form novalidate>
+            <div class="wf-panel">
+              <p class="wf-note" data-price-trip></p>
+              <div><div class="wf-row"><label for="e-pax">Travellers</label><b data-pax-out>2</b></div><input id="e-pax" class="wf-range" type="range" min="1" max="8" value="2" /></div>
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div><label for="e-month">Month</label><select id="e-month" class="wf-input">{MONTHS.map((m, i) => <option value={i + 1}>{m}</option>)}</select></div>
+                <div><label for="e-hotel">Hotel</label><select id="e-hotel" class="wf-input"><option value="0.7">3★ comfortable</option><option value="1" selected>4★ boutique</option><option value="1.55">5★ luxury</option></select></div>
+                <div><label for="e-board">Meals</label><select id="e-board" class="wf-input"><option value="0.88">Room only</option><option value="1" selected>Breakfast</option><option value="1.14">Half board</option></select></div>
+                <label class="wf-switch"><input type="checkbox" data-flights checked /><span class="wf-switch__ui" aria-hidden="true"></span><span>Include return flights</span></label>
+              </div>
+            </div>
+            <div class="wf-quote" aria-live="polite">
+              <p class="wf-quote__k">Estimated total for <span data-who></span></p>
+              <p class="wf-quote__big"><b data-total>£0</b></p>
+              <p class="wf-quote__pp"><b data-pp>£0</b> per person · <span data-season></span></p>
+              <ul class="wf-split" data-split role="list"></ul>
+              <dl class="wf-quote__rows"><div><dt>Deposit today (20%)</dt><dd data-dep></dd></div><div><dt>Balance due</dt><dd>8 weeks before you go</dd></div></dl>
+              <a href="#talk" class="wf-btn wf-btn--sun wf-btn--lg w-full" data-quote-go>Get a firm quote</a>
+              <p class="wf-fine">Estimates based on typical prices from London. Firm quotes depend on availability.</p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · PACKING =========================== -->
+      <section id="pack" class="wf-section wf-section--sand" aria-labelledby="pack-title">
+        <div class="wf-wrap grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]">
+          <div>
+            <p class="wf-eyebrow">Smart packing list</p>
+            <h2 id="pack-title" class="wf-h2 mt-4">Pack for <span class="wf-grad" data-pack-for>Lisbon</span>, not for “everything”.</h2>
+            <p class="mt-5 max-w-sm text-(--muted)" data-pack-weather></p>
+            <div class="wf-prog" aria-live="polite"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="50" fill="none" stroke="rgb(42 27 93 / .12)" stroke-width="12" /><circle data-pack-ring cx="60" cy="60" r="50" fill="none" stroke="url(#pg)" stroke-width="12" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)" /><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a3d" /><stop offset="1" stop-color="#e84d8a" /></linearGradient></defs></svg><p><b data-pack-pct>0%</b><span data-pack-n></span></p></div>
+            <button type="button" class="wf-btn wf-btn--ink" data-pack-reset>Untick everything</button>
+          </div>
+          <div class="wf-pack" data-pack></div>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · TALK =========================== -->
+      <section id="talk" class="wf-section wf-section--night" aria-labelledby="talk-title">
+        <div class="wf-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <div>
+            <p class="wf-eyebrow wf-eyebrow--light">Plan with an expert</p>
+            <h2 id="talk-title" class="wf-h2 mt-4">Real people. <span class="wf-grad">Who’ve been.</span></h2>
+            <p class="mt-6 max-w-sm text-lg leading-relaxed text-white/75">Every trip is planned by someone who has actually been there. We’ll turn your plan into a firm quote within one working day.</p>
+            <ul class="wf-experts" role="list">{EXPERTS.map(([n, r]) => <li><span aria-hidden="true">{n[0]}</span><div><b>{n}</b><small>{r}</small></div></li>)}</ul>
+          </div>
+          <form class="wf-form" data-talk novalidate>
+            <div class="wf-plan-card" data-trip-card></div>
+            <div class="wf-fields">
+              <div><label for="t-name">Full name</label><input id="t-name" class="wf-input wf-input--dark" autocomplete="name" data-req aria-describedby="t-name-e" /><p class="wf-err" id="t-name-e" hidden>Please add your name.</p></div>
+              <div><label for="t-email">Email</label><input id="t-email" type="email" class="wf-input wf-input--dark" autocomplete="email" data-req aria-describedby="t-email-e" /><p class="wf-err" id="t-email-e" hidden>Enter an email like name@example.com.</p></div>
+              <div><label for="t-when">Roughly when?</label><select id="t-when" class="wf-input wf-input--dark">{MONTHS.map((m) => <option>{m}</option>)}<option>Flexible</option></select></div>
+              <div><label for="t-call">Best way to talk</label><select id="t-call" class="wf-input wf-input--dark"><option>Email me a plan</option><option>Call me back</option><option>Video call</option></select></div>
+              <div class="sm:col-span-2"><label for="t-note">Anything else? <span class="opacity-60">(optional)</span></label><textarea id="t-note" class="wf-input wf-input--dark min-h-24" placeholder="Celebrating something? Mobility needs? Must-sees?" data-note></textarea></div>
+            </div>
+            <button type="submit" class="wf-btn wf-btn--sun wf-btn--lg">Send my trip to an expert</button>
+            <div class="wf-done" data-done hidden tabindex="-1" role="status">
+              <p class="wf-done__t">Sent! <span data-done-name></span></p>
+              <p data-done-text></p>
+              <p class="wf-ref">Reference <b data-ref></b></p>
+              <p class="text-sm opacity-70">Demo only: nothing was sent.</p>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wf-footer">
+      <div class="wf-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="wf-logo"><span>Wayfarer</span></p>
+        <p>A fictional travel company created for Thecore's 100 Days of Web (Day 039). Prices and advice are illustrative. Always check official entry and health guidance.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-039/script';
+</script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html section#places > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #d11b62 !important; }
+html section#price > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #d11b62 !important; }
+html section#pack > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) { color: #c0195b !important; }
+</style>

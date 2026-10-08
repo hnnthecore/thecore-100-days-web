@@ -222,3 +222,6 @@
   .nm-car__sweep, .nm-dot { animation: none; }
 }
 }
+
+/* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
+html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > div:nth-child(3) > a:nth-child(2) { background-color: #d53800 !important; }

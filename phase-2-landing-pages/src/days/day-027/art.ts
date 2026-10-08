@@ -20,7 +20,8 @@ export const STONES: Record<Stone, { name: string; a: string; b: string; c: stri
   ruby: { name: 'Ruby', a: '#ff8fa5', b: '#c8153b', c: '#6e0a22' },
 };
 
-let uid = 0;
+// Start browser-made ids far from the server-made ones so the page never has two gradients with the same id.
+let uid = typeof window === 'undefined' ? 0 : 5000;
 const nid = () => `a${(uid++).toString(36)}`;
 
 function defs(id: string, metal: Metal, stone: Stone) {

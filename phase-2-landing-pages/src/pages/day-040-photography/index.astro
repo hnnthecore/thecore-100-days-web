@@ -1,0 +1,227 @@
+---
+/**
+ * Day 040 · Photography studio landing page · “Halide & Co.”, wedding & portrait photographers in Bristol (fictional).
+ * Six signature sections: Hero + aperture studio · Portfolio & lightbox · Package builder · Process & turnaround · Availability calendar · Enquiry.
+ * Mood: gallery editorial. Paper white, ink black and a film-red accent; Bodoni Moda + Hanken Grotesk.
+ */
+import '@fontsource-variable/bodoni-moda';
+import '@fontsource-variable/bodoni-moda/wght-italic.css';
+import '@fontsource-variable/hanken-grotesk';
+import Landing from '../../layouts/Landing.astro';
+import { photo } from '../../days/day-040/art';
+import '../../days/day-040/styles.css';
+
+const SHOTS = [
+  { id: 1, kind: 'wedding', v: 0, cat: 'weddings', title: 'The first look', place: 'Clifton Observatory', ratio: '3 / 4', lens: '50 mm', f: 1.4, shutter: '1/320', iso: 100 },
+  { id: 2, kind: 'portrait', v: 0, cat: 'portraits', title: 'Studio light, Maya', place: 'Halide Studio', ratio: '4 / 5', lens: '85 mm', f: 1.8, shutter: '1/200', iso: 100 },
+  { id: 3, kind: 'travel', v: 1, cat: 'travel', title: 'Blue hour, Dolomites', place: 'Alpe di Siusi, Italy', ratio: '4 / 3', lens: '24 mm', f: 8, shutter: '1/60', iso: 200 },
+  { id: 4, kind: 'brand', v: 0, cat: 'brand', title: 'Morning flat-lay', place: 'Café Oma campaign', ratio: '1 / 1', lens: '35 mm', f: 5.6, shutter: '1/125', iso: 100 },
+  { id: 5, kind: 'wedding', v: 1, cat: 'weddings', title: 'Vows in the garden', place: 'Tyntesfield Estate', ratio: '4 / 5', lens: '35 mm', f: 2, shutter: '1/500', iso: 125 },
+  { id: 6, kind: 'travel', v: 0, cat: 'travel', title: 'Sunrise over Santorini', place: 'Oia, Greece', ratio: '3 / 4', lens: '70 mm', f: 5.6, shutter: '1/250', iso: 100 },
+  { id: 7, kind: 'portrait', v: 1, cat: 'portraits', title: 'Quiet confidence', place: 'Bristol harbourside', ratio: '3 / 4', lens: '85 mm', f: 2, shutter: '1/400', iso: 200 },
+  { id: 8, kind: 'brand', v: 1, cat: 'brand', title: 'Autumn collection', place: 'Wren & Willow', ratio: '4 / 3', lens: '50 mm', f: 4, shutter: '1/160', iso: 100 },
+  { id: 9, kind: 'wedding', v: 2, cat: 'weddings', title: 'Winter confetti', place: 'The Pump House', ratio: '1 / 1', lens: '35 mm', f: 2.8, shutter: '1/640', iso: 320 },
+  { id: 10, kind: 'portrait', v: 2, cat: 'portraits', title: 'Golden hour, Theo', place: 'Leigh Woods', ratio: '4 / 5', lens: '135 mm', f: 2, shutter: '1/800', iso: 100 },
+  { id: 11, kind: 'travel', v: 2, cat: 'travel', title: 'Souk at dusk', place: 'Marrakech, Morocco', ratio: '3 / 4', lens: '35 mm', f: 2.8, shutter: '1/125', iso: 640 },
+  { id: 12, kind: 'brand', v: 2, cat: 'brand', title: 'Product hero', place: 'Northline Audio', ratio: '1 / 1', lens: '100 mm macro', f: 11, shutter: '1/125', iso: 100 },
+];
+const CATS = [['all', 'All'], ['weddings', 'Weddings'], ['portraits', 'Portraits'], ['travel', 'Travel'], ['brand', 'Brand']];
+const STEPS = [
+  ['01', 'Enquire', 'Tell us your date and what matters to you. We reply within a day.'],
+  ['02', 'Plan', 'A relaxed call or coffee, a shot list that’s actually yours and a location scout.'],
+  ['03', 'Shoot', 'We keep it unposed, unhurried and unobtrusive. You just get on with your day.'],
+  ['04', 'Edit', 'Every image is hand-edited in our signature, timeless, true-to-life style.'],
+  ['05', 'Deliver', 'A private online gallery, with downloads, prints and albums, ready to share.'],
+];
+---
+<Landing
+  title="Halide & Co. · Wedding and portrait photography, Bristol"
+  description="Unposed, timeless wedding, portrait and brand photography. Explore the portfolio, build your package, check dates and enquire. (Day 040 of Thecore's 100 Days of Web, a demo concept.)"
+  themeColor="#111111"
+  icon="📷"
+  day={40}
+>
+  <div class="hc" data-shots={JSON.stringify(SHOTS)}>
+    <!-- =========================== HEADER =========================== -->
+    <header class="hc-header" data-header>
+      <div class="hc-wrap flex h-18 items-center justify-between gap-6">
+        <a href="#top" class="hc-logo" aria-label="Halide and Co., home">Halide <em>&</em> Co.</a>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex gap-9 text-sm font-semibold tracking-wide">
+            <li><a href="#work">Portfolio</a></li><li><a href="#packages">Packages</a></li><li><a href="#process">Process</a></li><li><a href="#dates">Dates</a></li>
+          </ul>
+        </nav>
+        <a href="#enquire" class="hc-btn hc-btn--ink whitespace-nowrap">Enquire</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- =========================== 1 · HERO =========================== -->
+      <section id="top" class="hc-hero" aria-labelledby="hero-title">
+        <div class="hc-wrap grid grid-cols-1 items-center gap-12 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:py-16">
+          <div>
+            <p class="hc-eyebrow">Wedding & portrait photography · Bristol & beyond</p>
+            <h1 id="hero-title" class="hc-display mt-6">Light, <em>honestly</em> kept.</h1>
+            <p class="mt-6 max-w-md text-lg leading-relaxed text-(--muted)">Unposed photographs that look and feel like your day, in a style that will still look right in fifty years.</p>
+            <div class="mt-8 flex flex-wrap gap-3"><a href="#work" class="hc-btn hc-btn--ink hc-btn--lg">See the work</a><a href="#dates" class="hc-btn hc-btn--line hc-btn--lg">Check my date</a></div>
+            <p class="hc-stat mt-10"><b>412</b> weddings · <b>1,900</b> portraits · <b>4.9★</b> from 380 reviews</p>
+          </div>
+          <div class="hc-cam">
+            <div class="hc-cam__frame" data-aperture-scene>
+              <div class="hc-layer hc-layer--bg" data-l="bg"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="220" fill="#2b2230"/>{Array.from({ length: 16 }, (_, i) => <circle cx={(i * 59) % 300} cy={(i * 41) % 190 + 14} r={9 + (i % 4) * 4} fill={['#f2c27a', '#e8836d', '#9cc4d9', '#f6e3b4'][i % 4]} opacity={0.7} />)}</svg></div>
+              <div class="hc-layer hc-layer--mid" data-l="mid"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><ellipse cx="150" cy="260" rx="96" ry="120" fill="#c98a6a" /><rect x="136" y="128" width="28" height="50" fill="#e9b996" /><ellipse cx="150" cy="104" rx="38" ry="48" fill="#e9b996" /><path d="M112 98q-6-62 38-60t38 60q-10-30-38-26t-38 26z" fill="#1a1417" /></svg></div>
+              <div class="hc-layer hc-layer--fg" data-l="fg"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 220q20-90 54-110-8 66-14 110zM300 220q-20-90-60-120 12 70 18 120z" fill="#6d9a62" /><circle cx="36" cy="150" r="14" fill="#f7b3c0" /><circle cx="270" cy="158" r="12" fill="#f7b3c0" /></svg></div>
+              <div class="hc-focus" aria-hidden="true"></div>
+            </div>
+            <div class="hc-cam__ctrl">
+              <div class="hc-row"><label for="ap">Aperture</label><b data-ap-out class="hc-mono">f/2.8</b></div>
+              <input id="ap" class="hc-range" type="range" min="0" max="7" step="1" value="2" aria-describedby="ap-note" />
+              <div class="hc-range__ticks hc-mono" aria-hidden="true"><span>f/1.4</span><span>f/16</span></div>
+              <p id="ap-note" class="hc-cam__note" aria-live="polite" data-ap-note></p>
+              <p class="hc-mono hc-cam__exif" data-exif></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 2 · PORTFOLIO =========================== -->
+      <section id="work" class="hc-section" aria-labelledby="work-title">
+        <div class="hc-wrap">
+          <div class="hc-head"><p class="hc-eyebrow">Portfolio</p><h2 id="work-title" class="hc-h2">Recent <em>frames.</em></h2></div>
+          <div class="hc-chips" role="group" aria-label="Filter the portfolio" data-cats>
+            {CATS.map(([k, l], i) => <button type="button" data-cat={k} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+          </div>
+          <ul class="hc-masonry" role="list" data-masonry>
+            {SHOTS.map((s) => (
+              <li class="hc-shot" data-shot={s.id} data-cat={s.cat}>
+                <button type="button" class="hc-shot__btn" data-open={s.id} aria-label={`Open ${s.title}, ${s.place}`}>
+                  <span class="hc-shot__img" style={`aspect-ratio:${s.ratio}`} set:html={photo(s.kind as any, s.v)} />
+                  <span class="hc-shot__cap"><b>{s.title}</b><small>{s.place}</small></span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <dialog class="hc-lightbox" data-lightbox aria-labelledby="lb-title">
+          <button type="button" class="hc-lb__x" data-lb-close aria-label="Close">✕</button>
+          <button type="button" class="hc-lb__nav hc-lb__nav--prev" data-lb-prev aria-label="Previous photo">‹</button>
+          <figure class="hc-lb__fig">
+            <div class="hc-lb__img" data-lb-img></div>
+            <figcaption><h3 id="lb-title" data-lb-title></h3><p data-lb-place></p><p class="hc-mono hc-lb__exif" data-lb-exif></p><p class="hc-lb__count hc-mono" data-lb-count></p></figcaption>
+          </figure>
+          <button type="button" class="hc-lb__nav hc-lb__nav--next" data-lb-next aria-label="Next photo">›</button>
+        </dialog>
+      </section>
+
+      <!-- =========================== 3 · PACKAGES =========================== -->
+      <section id="packages" class="hc-section hc-section--ink" aria-labelledby="packages-title">
+        <div class="hc-wrap">
+          <div class="hc-head"><p class="hc-eyebrow hc-eyebrow--light">Packages</p><h2 id="packages-title" class="hc-h2">Build <em>yours.</em></h2></div>
+          <form class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]" data-build novalidate>
+            <div class="hc-panel">
+              <fieldset><legend>What are we shooting?</legend>
+                <div class="hc-opts">
+                  <label><input type="radio" name="kind" value="wedding" checked /><span>Wedding</span></label>
+                  <label><input type="radio" name="kind" value="portrait" /><span>Portrait</span></label>
+                  <label><input type="radio" name="kind" value="family" /><span>Family</span></label>
+                  <label><input type="radio" name="kind" value="brand" /><span>Brand</span></label>
+                </div>
+              </fieldset>
+              <div><div class="hc-row"><label for="hrs">Hours of coverage</label><b data-hrs-out class="hc-mono">8 h</b></div><input id="hrs" class="hc-range" type="range" min="1" max="12" step="1" value="8" /></div>
+              <fieldset><legend>Add-ons</legend>
+                <div class="hc-addons" data-addons></div>
+              </fieldset>
+            </div>
+            <div class="hc-quote" aria-live="polite">
+              <p class="hc-quote__k">Your package</p>
+              <p class="hc-quote__big" data-total>£0</p>
+              <ul class="hc-quote__lines" data-lines role="list"></ul>
+              <ul class="hc-quote__incl" data-incl role="list"></ul>
+              <dl class="hc-quote__rows"><div><dt>Deposit to secure the date (30%)</dt><dd data-dep></dd></div><div><dt>Gallery delivered in</dt><dd data-delivery></dd></div></dl>
+              <a href="#dates" class="hc-btn hc-btn--paper hc-btn--lg w-full" data-pack-go>Check availability</a>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · PROCESS =========================== -->
+      <section id="process" class="hc-section" aria-labelledby="process-title">
+        <div class="hc-wrap">
+          <div class="hc-head"><p class="hc-eyebrow">How it works</p><h2 id="process-title" class="hc-h2">Five calm <em>steps.</em></h2></div>
+          <div class="hc-steps" data-steps>
+            <div class="hc-steps__line" aria-hidden="true"><i data-steps-fill></i></div>
+            <ol>
+              {STEPS.map(([n, t, d]) => <li class="hc-step" data-step><span class="hc-step__n hc-mono">{n}</span><h3>{t}</h3><p>{d}</p></li>)}
+            </ol>
+          </div>
+          <form class="hc-turn" data-turn novalidate>
+            <div><label for="t-kind">Shoot type</label><select id="t-kind" class="hc-input"><option value="42">Wedding</option><option value="7">Portrait</option><option value="10">Family</option><option value="14">Brand</option></select></div>
+            <div><label for="t-date">Shoot date</label><input id="t-date" type="date" class="hc-input" /></div>
+            <label class="hc-check"><input type="checkbox" data-rush /><span>Rush edit <small>(half the time, +£150)</small></span></label>
+            <p class="hc-turn__out" aria-live="polite"><span>You’ll receive your gallery by</span><b data-turn-out>Pick a date</b></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · DATES =========================== -->
+      <section id="dates" class="hc-section hc-section--paper" aria-labelledby="dates-title">
+        <div class="hc-wrap grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <div>
+            <p class="hc-eyebrow">Availability</p>
+            <h2 id="dates-title" class="hc-h2 mt-4">Is your <em>date</em> free?</h2>
+            <p class="mt-6 max-w-sm text-lg leading-relaxed text-(--muted)">We take on a limited number of shoots each year so every one gets our full attention. Saturdays between May and September go first.</p>
+            <ul class="hc-legend" role="list"><li><i class="free"></i>Available</li><li><i class="one"></i>One slot left</li><li><i class="booked"></i>Booked</li></ul>
+            <p class="hc-picked" aria-live="polite" data-picked>Pick a date on the calendar.</p>
+          </div>
+          <div class="hc-cal">
+            <div class="hc-cal__head"><button type="button" data-prev aria-label="Previous month">‹</button><h3 data-month aria-live="polite"></h3><button type="button" data-next aria-label="Next month">›</button></div>
+            <div class="hc-cal__dow" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+            <div class="hc-cal__grid" data-grid></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 6 · ENQUIRE =========================== -->
+      <section id="enquire" class="hc-section hc-section--ink" aria-labelledby="enquire-title">
+        <div class="hc-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <div>
+            <p class="hc-eyebrow hc-eyebrow--light">Enquire</p>
+            <h2 id="enquire-title" class="hc-h2 mt-4">Tell us your <em>story.</em></h2>
+            <blockquote class="hc-quoteblk">“They disappeared into the day and somehow caught everything. Not one stiff photo.”<footer>Priya & Daniel, married at Tyntesfield</footer></blockquote>
+          </div>
+          <form class="hc-form" data-enquire novalidate>
+            <div class="hc-fields">
+              <div><label for="e-name">Your name(s)</label><input id="e-name" class="hc-input hc-input--dark" autocomplete="name" data-req aria-describedby="e-name-e" /><p class="hc-err" id="e-name-e" hidden>Please add your name.</p></div>
+              <div><label for="e-email">Email</label><input id="e-email" type="email" class="hc-input hc-input--dark" autocomplete="email" data-req aria-describedby="e-email-e" /><p class="hc-err" id="e-email-e" hidden>Enter an email like name@example.com.</p></div>
+              <div><label for="e-kind">Shoot type</label><select id="e-kind" class="hc-input hc-input--dark"><option>Wedding</option><option>Portrait</option><option>Family</option><option>Brand</option></select></div>
+              <div><label for="e-date">Date</label><input id="e-date" type="date" class="hc-input hc-input--dark" /></div>
+              <div class="sm:col-span-2"><label for="e-note">Tell us about it</label><textarea id="e-note" class="hc-input hc-input--dark min-h-28" data-note placeholder="Where, when, how many guests, and what matters most to you…"></textarea></div>
+            </div>
+            <button type="submit" class="hc-btn hc-btn--paper hc-btn--lg">Send enquiry</button>
+            <div class="hc-done" data-done hidden tabindex="-1" role="status"><p class="hc-done__t">Thank you, <span data-done-name></span>.</p><p data-done-text></p><p class="hc-mono mt-3 text-sm">Reference <b data-ref></b> · Demo only: nothing was sent.</p></div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="hc-footer">
+      <div class="hc-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
+        <p class="hc-logo">Halide <em>&</em> Co.</p>
+        <p>A fictional studio created for Thecore's 100 Days of Web (Day 040). Photographs are drawn in code. Prices and availability are demo content.</p>
+      </div>
+    </footer>
+  </div>
+</Landing>
+
+<script>
+  import '../../days/day-040/script';
+</script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html section#process > div:nth-child(1) > div:nth-child(2) > ol:nth-child(2) > li:nth-child(1) > span:nth-child(1) { color: #c9341c !important; }
+html section#process > div:nth-child(1) > div:nth-child(2) > ol:nth-child(2) > li:nth-child(2) > span:nth-child(1) { color: #c9341c !important; }
+html section#process > div:nth-child(1) > div:nth-child(2) > ol:nth-child(2) > li:nth-child(3) > span:nth-child(1) { color: #c9341c !important; }
+html section#process > div:nth-child(1) > div:nth-child(2) > ol:nth-child(2) > li:nth-child(4) > span:nth-child(1) { color: #c9341c !important; }
+html section#process > div:nth-child(1) > div:nth-child(2) > ol:nth-child(2) > li:nth-child(5) > span:nth-child(1) { color: #c9341c !important; }
+</style>

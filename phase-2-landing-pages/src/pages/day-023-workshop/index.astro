@@ -348,3 +348,10 @@ const REVIEWS = [
 <script>
   import '../../days/day-023/script';
 </script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html section#top > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > a:nth-child(1) { color: #15110d !important; }
+html section#quote > div:nth-child(1) > form:nth-child(2) > a:nth-child(5) { color: #15110d !important; }
+html section#book > div:nth-child(1) > div:nth-child(1) > form:nth-child(3) > button:nth-child(7) { color: #15110d !important; }
+</style>

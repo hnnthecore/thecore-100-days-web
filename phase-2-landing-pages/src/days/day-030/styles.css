@@ -202,3 +202,9 @@
   .rv-board li, .rv-meter i, .rv-board__bar i { transition: none; }
 }
 }
+
+/* Layout fixes found in the audit (text must never spill out of its box) */
+@media (max-width: 480px) { html .rv-class__time { font-size: 1.5rem; } }
+
+/* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
+html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(3) { color: #15110d !important; }
