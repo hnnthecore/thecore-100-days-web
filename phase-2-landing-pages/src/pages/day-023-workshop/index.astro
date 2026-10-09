@@ -72,7 +72,7 @@ const REVIEWS = [
         </a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm text-(--muted)">
-            <li><a href="#services">Services</a></li><li><a href="#quote">Instant quote</a></li><li><a href="#health">Health check</a></li><li><a href="#why">Why us</a></li>
+            <li><a href="#quote">Instant quote</a></li><li><a href="#health">Health check</a></li><li><a href="#services">Services</a></li><li><a href="#why">Why us</a></li>
           </ul>
         </nav>
         <div class="flex items-center gap-3">
@@ -82,6 +82,7 @@ const REVIEWS = [
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="nm-hero" aria-labelledby="hero-title">
@@ -129,34 +130,11 @@ const REVIEWS = [
         </div>
       </section>
 
-      <!-- =========================== 2 · SERVICES =========================== -->
-      <section id="services" class="nm-section" aria-labelledby="services-title">
-        <div class="nm-wrap">
-          <div class="nm-head">
-            <p class="nm-eyebrow">01 · Services</p>
-            <h2 id="services-title" class="nm-h2">Everything your car needs, under one roof.</h2>
-          </div>
-          <ul class="nm-services" role="list">
-            {SERVICES.map((s) => (
-              <li class="nm-service">
-                <svg viewBox="0 0 24 24" class="nm-service__icon" aria-hidden="true"><path d={s.icon} /></svg>
-                <h3 class="mt-6 text-xl font-semibold">{s.name}</h3>
-                <p class="mt-2 text-(--muted)">{s.text}</p>
-                <div class="mt-6 flex items-end justify-between gap-3">
-                  <p><span class="block text-xs uppercase tracking-[0.16em] text-(--muted)">From</span><span class="nm-price">£{s.from % 1 ? s.from.toFixed(2) : s.from}</span><span class="ml-2 text-sm text-(--muted)">· {s.time}</span></p>
-                  <a href="#quote" class="nm-arrow" data-quote-for={s.id} aria-label={`Get a quote for ${s.name}`}>→</a>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · INSTANT QUOTE =========================== -->
+      <!-- =========================== 2 · INSTANT QUOTE =========================== -->
       <section id="quote" class="nm-section nm-section--panel" aria-labelledby="quote-title">
         <div class="nm-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div>
-            <p class="nm-eyebrow">02 · Instant quote</p>
+            <p class="nm-eyebrow">01 · Instant quote</p>
             <h2 id="quote-title" class="nm-h2">A real price in 20 seconds. No phone calls.</h2>
             <p class="mt-4 max-w-md text-(--muted)">Enter your registration. We look up the exact engine and parts, then price the job with our published labour rate of £85/h.</p>
 
@@ -206,11 +184,11 @@ const REVIEWS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · HEALTH CHECK =========================== -->
+      <!-- =========================== 3 · HEALTH CHECK =========================== -->
       <section id="health" class="nm-section" aria-labelledby="health-title">
         <div class="nm-wrap">
           <div class="nm-head">
-            <p class="nm-eyebrow">03 · Digital health check</p>
+            <p class="nm-eyebrow">02 · Digital health check</p>
             <h2 id="health-title" class="nm-h2">See what we see. Approve only what you want.</h2>
             <p class="mt-4 max-w-2xl text-(--muted)">Every car gets a 40-point inspection with photos and measurements sent to your phone. Here's a real-style example: try approving and declining the work.</p>
           </div>
@@ -259,6 +237,29 @@ const REVIEWS = [
               </ul>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · SERVICES =========================== -->
+      <section id="services" class="nm-section" aria-labelledby="services-title">
+        <div class="nm-wrap">
+          <div class="nm-head">
+            <p class="nm-eyebrow">03 · Services</p>
+            <h2 id="services-title" class="nm-h2">Everything your car needs, under one roof.</h2>
+          </div>
+          <ul class="nm-services" role="list">
+            {SERVICES.map((s) => (
+              <li class="nm-service">
+                <svg viewBox="0 0 24 24" class="nm-service__icon" aria-hidden="true"><path d={s.icon} /></svg>
+                <h3 class="mt-6 text-xl font-semibold">{s.name}</h3>
+                <p class="mt-2 text-(--muted)">{s.text}</p>
+                <div class="mt-6 flex items-end justify-between gap-3">
+                  <p><span class="block text-xs uppercase tracking-[0.16em] text-(--muted)">From</span><span class="nm-price">£{s.from % 1 ? s.from.toFixed(2) : s.from}</span><span class="ml-2 text-sm text-(--muted)">· {s.time}</span></p>
+                  <a href="#quote" class="nm-arrow" data-quote-for={s.id} aria-label={`Get a quote for ${s.name}`}>→</a>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

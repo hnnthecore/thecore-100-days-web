@@ -172,3 +172,39 @@ html .ma-craft img { width: 100%; height: 100%; object-fit: cover; display: bloc
 html .ma-craft figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem 1rem 0.8rem; color: #fff; font-weight: 500; letter-spacing: 0.02em; background: linear-gradient(transparent, rgb(10 20 15 / 0.75)); }
 @media (max-width: 700px) { html .ma-craft { grid-template-columns: 1fr; } html .ma-craft figure, html .ma-craft figure:nth-child(n+2) { aspect-ratio: 4 / 3; } }
 @media (prefers-reduced-motion: reduce) { html .ma-stage__photo { animation: none; } }
+
+/* Layout redesign: pedestal. The ring stands in the middle with the headline on one side and the actions on the other */
+@media (min-width: 1024px) {
+  html .ma-hero > .ma-wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 27rem) minmax(0, 0.8fr) !important; grid-template-rows: auto auto auto; column-gap: 3rem; align-items: center; }
+  html .ma-hero .ma-wrap > div:first-child { display: contents; }
+  html .ma-hero .ma-stage { grid-column: 2; grid-row: 1 / span 3; max-width: none; }
+  html .ma-hero .ma-eyebrow { grid-column: 1; grid-row: 1; align-self: end; margin: 0; }
+  html .ma-hero h1.ma-display { grid-column: 1; grid-row: 2; margin: 0.5rem 0; font-size: clamp(3rem, 5vw, 5rem); }
+  html .ma-hero .ma-wrap > div:first-child > p:not(.ma-eyebrow) { grid-column: 1; grid-row: 3; margin: 0; align-self: start; }
+  html .ma-hero .ma-wrap > div:first-child > div { grid-column: 3; grid-row: 1 / span 2; margin: 0; flex-direction: column; align-items: stretch; align-self: end; }
+  html .ma-hero .ma-wrap > div:first-child > div .ma-btn { justify-content: center; text-align: center; }
+  html .ma-hero .ma-trust { grid-column: 3; grid-row: 3; margin: 1rem 0 0; flex-direction: column; gap: 0.5rem; align-self: start; }
+}
+
+html .ma-heart { color: #8a8174; }
+
+/* Navigation redesign: centred masthead. Logo on top, a ruled menu row beneath, actions pinned right */
+@media (min-width: 1024px) {
+  html .ma-header > div { position: relative; flex-direction: column !important; height: auto !important; padding-block: 1rem 0.55rem; gap: 0.7rem; justify-content: center; }
+  html .ma-header > div > a:first-child { justify-content: center; }
+  html .ma-header > div > nav { display: block; width: 100%; border-top: 1px solid rgb(185 141 74 / 0.5); padding-top: 0.6rem; }
+  html .ma-header > div > nav ul { justify-content: center; gap: 2.5rem; }
+  html .ma-header > div > :last-child { position: absolute; right: 2rem; top: 0.9rem; }
+}
+
+html .ma-step__n { color: #7a5a1f; }
+
+/* Real piece photography. The metal swatches tint the photo gently and update the price and name */
+html .ma-piece__art > div[data-art] { width: 100%; height: 100%; overflow: hidden; }
+html .ma-piece__art { overflow: hidden; }
+html .ma-piece__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.4s, scale 0.7s var(--ease-out-expo); }
+html .ma-piece:hover .ma-piece__photo { scale: 1.06; }
+html .ma-piece__art > div[data-art][data-metal="yellow"] .ma-piece__photo { filter: sepia(0.22) saturate(1.18) hue-rotate(-6deg); }
+html .ma-piece__art > div[data-art][data-metal="rose"] .ma-piece__photo { filter: sepia(0.18) saturate(1.1) hue-rotate(-24deg); }
+html .ma-piece__art > div[data-art][data-metal="white"] .ma-piece__photo { filter: grayscale(0.3) brightness(1.04) contrast(1.02); }
+@media (prefers-reduced-motion: reduce) { html .ma-piece__photo { transition: none; } }

@@ -207,3 +207,30 @@ html .iv-band figure { position: relative; margin: 0; overflow: hidden; border-r
 html .iv-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.85) brightness(0.9); }
 html .iv-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.6rem 1.1rem 0.9rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgb(5 8 10 / 0.88)); }
 @media (max-width: 760px) { html .iv-band { grid-template-columns: 1fr; } html .iv-band figure { min-height: 14rem; } }
+
+/* Layout redesign: SOC dashboard. Three bordered panels side by side: brief, live radar, and a column of metrics */
+@media (min-width: 1024px) {
+  html .iv-hero > .iv-wrap { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 0.62fr) !important; gap: 1rem; align-items: stretch; padding-block: 2.5rem; }
+  html .iv-hero .iv-wrap > div:first-child { display: contents; }
+  html .iv-hero .iv-wrap > div:first-child > :is(.iv-tag, h1, p, div) { grid-column: 1; }
+  html .iv-hero .iv-wrap > div:first-child > .iv-tag { grid-row: 1; margin: 0; padding: 1.5rem 1.75rem 0; border: 1px solid var(--line); border-bottom: 0; border-radius: 1rem 1rem 0 0; background: rgb(255 255 255 / 0.02); }
+  html .iv-hero h1.iv-display { grid-row: 2; margin: 0; padding: 0.75rem 1.75rem 0; font-size: clamp(2.2rem, 3.6vw, 3.6rem); border-inline: 1px solid var(--line); background: rgb(255 255 255 / 0.02); }
+  html .iv-hero .iv-wrap > div:first-child > p:not(.iv-tag) { grid-row: 3; margin: 0; padding: 1rem 1.75rem; border-inline: 1px solid var(--line); background: rgb(255 255 255 / 0.02); }
+  html .iv-hero .iv-wrap > div:first-child > div { grid-row: 4; margin: 0; padding: 0 1.75rem 1.75rem; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 1rem 1rem; background: rgb(255 255 255 / 0.02); }
+  html .iv-hero .iv-radar { grid-column: 2; grid-row: 1 / span 4; align-self: center; padding: 1rem; border: 1px solid var(--line); border-radius: 1rem; background: radial-gradient(circle at 50% 45%, rgb(44 245 155 / 0.07), transparent 70%); }
+  html .iv-hero .iv-stats { grid-column: 3; grid-row: 1 / span 4; margin: 0; display: grid; grid-auto-rows: 1fr; gap: 1rem; }
+  html .iv-hero .iv-stats > div { display: grid; align-content: center; gap: 0.35rem; padding: 1.25rem; border: 1px solid var(--line); border-radius: 1rem; background: rgb(255 255 255 / 0.02); }
+}
+
+/* Navigation redesign: boxed bar. A heavy rule, squared tabs and uppercase labels */
+html .iv-header { border-bottom: 3px solid var(--green) !important; background: #05080a !important; backdrop-filter: none !important; }
+html .iv-header > div { height: 4.25rem !important; }
+
+@media (min-width: 1024px) {
+  html .iv-header > div > nav { align-self: stretch; }
+  html .iv-header > div > nav ul { height: 100%; gap: 0; align-items: stretch; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; font-size: 0.74rem; }
+  html .iv-header > div > nav li { display: flex; }
+  html .iv-header > div > nav a { display: flex; align-items: center; padding-inline: 1.15rem; border-left: 2px solid var(--green); transition: background-color 0.15s, color 0.15s; }
+  html .iv-header > div > nav li:last-child a { border-right: 2px solid var(--green); }
+  html .iv-header > div > nav a:hover { background: var(--green); color: #031; }
+}

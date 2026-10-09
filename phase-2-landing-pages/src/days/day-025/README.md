@@ -40,3 +40,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | Road | White lorry on a motorway | https://unsplash.com/photos/ZhNYKwjRMh4 |
 | Warehouse | Warehouse with blue and orange racking | https://unsplash.com/photos/jcav1COVvOc |
 | Delivery | Parcel being handed over | https://unsplash.com/photos/BFdSCxmqvYc |
+
+### Layout redesign
+
+The hero is now a dark control-room screen with a wide tracking bar as the centrepiece, instead of the shared two-column hero.
+
+### Navigation redesign
+
+The header is now a floating pill bar, and the sections follow a different order from the other days.

@@ -49,13 +49,14 @@ const JOBS = [
         </a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold text-(--ink-2)">
-            <li><a href="#services">Services</a></li><li><a href="#quote">Get a quote</a></li><li><a href="#network">Network</a></li><li><a href="#green">Sustainability</a></li><li><a href="#contact">Careers</a></li>
+            <li><a href="#quote">Get a quote</a></li><li><a href="#network">Network</a></li><li><a href="#services">Services</a></li><li><a href="#green">Sustainability</a></li><li><a href="#contact">Careers</a></li>
           </ul>
         </nav>
         <a href="#quote" class="pl-btn pl-btn--blue whitespace-nowrap"><span class="sm:hidden">Quote</span><span class="hidden sm:inline">Instant quote</span></a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO + TRACKING =========================== -->
       <section id="top" class="pl-hero" aria-labelledby="hero-title">
@@ -110,24 +111,7 @@ const JOBS = [
         <figure class="pl-band__side"><Image src={photoHandover} alt="A courier handing a parcel to a customer" width={600} /><figcaption>Signed for and photographed</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · SERVICES =========================== -->
-      <section id="services" class="pl-section" aria-labelledby="services-title">
-        <div class="pl-wrap">
-          <div class="pl-head"><p class="pl-eyebrow">Services</p><h2 id="services-title" class="pl-h2">One partner for everything that moves.</h2></div>
-          <ul class="pl-services" role="list">
-            {SERVICES.map((s) => (
-              <li class="pl-service">
-                <span class="pl-service__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={s.icon} /></svg></span>
-                <h3 class="mt-5 text-xl font-bold">{s.name}</h3>
-                <p class="mt-2 text-(--ink-2)">{s.text}</p>
-                <p class="pl-service__stat">{s.stat}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · QUOTE =========================== -->
+      <!-- =========================== 2 · QUOTE =========================== -->
       <section id="quote" class="pl-section pl-section--navy" aria-labelledby="quote-title">
         <div class="pl-wrap">
           <div class="pl-head"><p class="pl-eyebrow pl-eyebrow--lime">Instant quote</p><h2 id="quote-title" class="pl-h2">Compare speeds and prices in seconds.</h2></div>
@@ -156,7 +140,7 @@ const JOBS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · NETWORK =========================== -->
+      <!-- =========================== 3 · NETWORK =========================== -->
       <section id="network" class="pl-section" aria-labelledby="network-title">
         <div class="pl-wrap grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div>
@@ -185,6 +169,23 @@ const JOBS = [
             </svg>
             <p class="pl-map__note">Stylised map, not to scale</p>
           </div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · SERVICES =========================== -->
+      <section id="services" class="pl-section" aria-labelledby="services-title">
+        <div class="pl-wrap">
+          <div class="pl-head"><p class="pl-eyebrow">Services</p><h2 id="services-title" class="pl-h2">One partner for everything that moves.</h2></div>
+          <ul class="pl-services" role="list">
+            {SERVICES.map((s) => (
+              <li class="pl-service">
+                <span class="pl-service__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={s.icon} /></svg></span>
+                <h3 class="mt-5 text-xl font-bold">{s.name}</h3>
+                <p class="mt-2 text-(--ink-2)">{s.text}</p>
+                <p class="pl-service__stat">{s.stat}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

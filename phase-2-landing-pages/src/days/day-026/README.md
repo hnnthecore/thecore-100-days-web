@@ -47,3 +47,11 @@ The three arches in the hero use real photographs from Unsplash (free for commer
 ### Team portraits
 
 The four stylist portraits are stock photos from Pexels (free to use) standing in for the fictional team. Pexels IDs: 20781288, 36712860, 18003350, 9331274. The before/after slider keeps its drawn hair because it needs matched before and after photos of one client, which stock libraries rarely offer.
+
+### Layout redesign
+
+The hero now leads with a tall, staggered arch gallery on the left, with a narrow copy column on the right aligned to the bottom, instead of the usual text-left, picture-right split.
+
+### Navigation redesign
+
+The header is now a centred masthead with a ruled menu row, and the sections follow a different order from the other days.

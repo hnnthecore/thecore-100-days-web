@@ -40,3 +40,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | --- | --- | --- |
 | Band, large | Open-plan office with people at desks | https://unsplash.com/photos/kN_kViDchA0 |
 | Band, small | Quiet office floor with glass partitions | https://unsplash.com/photos/PG8NyM_Mcts |
+
+### Layout redesign
+
+The hero is now a left-aligned headline row with the ticket console as a full-width app window beneath it, with the problem chips and the live log side by side.
+
+### Navigation redesign
+
+The header is now a slim side rail on wide screens, and the sections follow a different order from the other days.

@@ -43,3 +43,11 @@ The hero scan panel and the "Why Northgate" section use real photographs from Un
 | Hero scan background and first photo | Mechanic inspecting an engine | https://unsplash.com/photos/bEGTsOCnHro |
 | Tyres | Gloved hands checking a tyre | https://unsplash.com/photos/9uHal2Dd9aE |
 | Hands-on work | Hand with a spanner over an engine | https://unsplash.com/photos/Fd6osyVbtG4 |
+
+### Layout redesign
+
+The hero now leads with the live scan as a wide banner, with the headline and booking actions in two columns underneath, so the page opens like a diagnostic screen instead of the usual text-left, picture-right split.
+
+### Navigation redesign
+
+The header is now a capsule menu, and the sections follow a different order from the other days.

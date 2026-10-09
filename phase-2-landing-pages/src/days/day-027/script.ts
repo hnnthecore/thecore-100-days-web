@@ -52,7 +52,8 @@ function paintShop() {
 function paintPiece(li: HTMLElement) {
   const p = PIECES.find((x) => x.id === li.dataset.piece)!;
   const metal = chosenMetal.get(p.id)!;
-  $('[data-art]', li).innerHTML = art(p, metal);
+  const artEl = $('[data-art]', li);
+  if (artEl.querySelector('img')) artEl.dataset.metal = metal; else artEl.innerHTML = art(p, metal);
   $('[data-price]', li).textContent = gbp(priceOf(p, metal));
   $('[data-metal-name]', li).textContent = METALS[metal].name;
   $$<HTMLButtonElement>('[data-metal]', li).forEach((b) => b.setAttribute('aria-checked', String(b.dataset.metal === metal)));

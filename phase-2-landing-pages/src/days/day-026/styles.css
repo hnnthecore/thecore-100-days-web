@@ -10,7 +10,7 @@
   --cream: #f8f1e9;
   --blush: #f0ddd0;
   --clay: #c2745c;
-  --clay-d: #a85b44;
+  --clay-d: #94472f;
   --plum: #2b1625;
   --plum-2: #3d2234;
   --muted: #7a6469;
@@ -201,3 +201,26 @@ html .av-arch__photo { width: 100%; height: 100%; object-fit: cover; display: bl
 html .av-arch--c .av-arch__photo { object-position: 50% 62%; }
 html .av-person__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block; transition: scale 0.8s var(--ease-out-expo); }
 html .av-person:hover .av-person__photo { scale: 1.06; }
+
+/* Layout redesign: gallery-left. The arches lead as a tall staggered gallery, with a narrow copy column set against the bottom */
+@media (min-width: 1024px) {
+  html .av-hero > .av-wrap { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr) !important; align-items: end; padding-top: 2.5rem; padding-bottom: 3rem; gap: 3.5rem; }
+  html .av-hero .av-arches { order: -1; grid-template-columns: 0.9fr 1.2fr 0.9fr; gap: 1rem; padding-bottom: 0; }
+  html .av-hero .av-arch--a { aspect-ratio: 3 / 6; margin-bottom: 3rem; }
+  html .av-hero .av-arch--b { aspect-ratio: 3 / 7; }
+  html .av-hero .av-arch--c { aspect-ratio: 3 / 5.4; margin-bottom: 5rem; }
+  html .av-hero .av-wrap > div:first-child { padding-bottom: 1rem; }
+  html .av-hero .av-display { font-size: clamp(2.6rem, 4.4vw, 4.2rem); }
+}
+
+
+html .av-steps .is-now span { background: #a9533b; border-color: #a9533b; color: #fff; }
+
+/* Navigation redesign: centred masthead. Logo on top, a ruled menu row beneath, actions pinned right */
+@media (min-width: 1024px) {
+  html .av-header > div { position: relative; flex-direction: column !important; height: auto !important; padding-block: 1rem 0.55rem; gap: 0.7rem; justify-content: center; }
+  html .av-header > div > a:first-child { justify-content: center; }
+  html .av-header > div > nav { display: block; width: 100%; border-top: 1px solid rgb(43 22 37 / 0.18); padding-top: 0.6rem; }
+  html .av-header > div > nav ul { justify-content: center; gap: 2.5rem; }
+  html .av-header > div > :last-child { position: absolute; right: 2rem; top: 0.9rem; }
+}

@@ -40,3 +40,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | --- | --- | --- |
 | Band, large | Dumbbell rack and member training | https://unsplash.com/photos/CQfNt66ttZM |
 | Band, small | Rubber dumbbells close up | https://unsplash.com/photos/VJ2s0c20qCo |
+
+### Layout redesign
+
+The hero is now a billboard poster: the headline is set across the full width, with the live club meter as a horizontal strip beneath it.
+
+### Navigation redesign
+
+The header is now a boxed bar with a heavy rule and squared tabs, and the sections follow a different order from the other days.

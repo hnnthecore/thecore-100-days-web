@@ -30,7 +30,7 @@ import photoAgave from '../../assets/day-021/agave-field.jpg';
 import photoBeef from '../../assets/day-021/tacos-beef.jpg';
 import '../../days/day-021/styles.css';
 
-const NAV = [['#menu', 'Menu'], ['#story', 'Our story'], ['#experiences', 'Experiences'], ['#reviews', 'Reviews'], ['#visit', 'Visit']];
+const NAV = [['#menu', 'Menu'], ['#experiences', 'Experiences'], ['#story', 'Our story'], ['#reviews', 'Reviews'], ['#visit', 'Visit']];
 
 type Dish = { cat: string; name: string; desc: string; price: number; tags: string[]; heat: number; illo: string; tint: string; signature?: boolean };
 const DISHES: Dish[] = [
@@ -114,14 +114,18 @@ const HOURS = [
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="sys-hero" aria-labelledby="hero-title">
         <div class="papel" aria-hidden="true">
           {['var(--pink)', 'var(--marigold)', 'var(--agave)', 'var(--cobalt)', 'var(--orange)', 'var(--pink)', 'var(--lime)', 'var(--chili)', 'var(--marigold)', 'var(--agave)', 'var(--cobalt)', 'var(--pink)'].map((c, i) => <span style={`--c:${c};--d:${(i % 4) * 0.35}s`}></span>)}
         </div>
-        <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 pt-12 pb-20 sm:px-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:pt-20">
-          <div class="relative z-10">
+        <div class="sys-hero__stage">
+          <Image src={photoTacos} alt="Tacos with fresh lime being squeezed over them" width={1800} class="sys-hero__bg" loading="eager" />
+          <div class="sys-hero__scrim" aria-hidden="true"></div>
+          <div class="sys-hero__inner">
+          <div class="sys-hero__copy">
             <p class="sys-kicker">Shoreditch · London · Since 2019</p>
             <h1 id="hero-title" class="mt-5 font-display text-[clamp(3.2rem,8.5vw,7.25rem)] leading-[0.92] font-semibold tracking-[-0.035em]">
               Fire, flavour <span class="block italic font-normal text-(--pink)">&amp; fiesta.</span>
@@ -134,20 +138,18 @@ const HOURS = [
               <a href="#visit" class="sys-btn sys-btn--pink sys-btn--lg">Book a table <span aria-hidden="true">→</span></a>
               <a href="#menu" class="sys-btn sys-btn--ghost sys-btn--lg">See the menu</a>
             </div>
-            <dl class="mt-12 flex flex-wrap gap-x-10 gap-y-4">
+            <dl class="sys-hero__stats">
               <div><dt class="sys-stat-label">Google rating</dt><dd class="sys-stat">4.9<span class="text-(--marigold)">★</span></dd></div>
               <div><dt class="sys-stat-label">Mezcals behind the bar</dt><dd class="sys-stat" data-count="64">64</dd></div>
               <div><dt class="sys-stat-label">Tacos served last year</dt><dd class="sys-stat" data-count="182" data-suffix="k">182k</dd></div>
             </dl>
           </div>
 
-          <div class="relative mx-auto w-full max-w-[560px]" aria-hidden="true">
-            <div class="sys-plate">
-              <Image src={photoTacos} alt="Tacos with fresh lime being squeezed over them" width={900} class="sys-plate__photo" loading="eager" />
-            </div>
-            <div class="sys-badge">
+          <div class="sys-hero__tag" aria-hidden="true">
+              <div class="sys-badge">
               <svg viewBox="0 0 120 120" class="sys-badge__ring"><defs><path id="ring" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0" /></defs><text><textPath href="#ring">· HECHO A MANO · TORTILLAS DAILY · HECHO A MANO · TORTILLAS DAILY </textPath></text></svg>
               <span>🌽</span>
+            </div>
             </div>
           </div>
         </div>
@@ -218,7 +220,25 @@ const HOURS = [
         </div>
       </section>
 
-      <!-- =========================== 3 · STORY =========================== -->
+      <!-- =========================== 3 · EXPERIENCES =========================== -->
+      <section id="experiences" class="sys-exp" aria-labelledby="exp-title">
+        <div class="mx-auto max-w-7xl px-5 py-24 sm:px-8">
+          <p class="sys-kicker text-(--cobalt)">Every week</p>
+          <h2 id="exp-title" class="sys-h2 mt-3 max-w-3xl">More than dinner: <i class="text-(--orange)">a little fiesta</i> most nights.</h2>
+          <ul class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4" role="list">
+            {EXPERIENCES.map((e, i) => (
+              <li class="sys-exp__card" style={`--bg:${e.bg};--fg:${e.fg};--r:${i % 2 ? 1.5 : -1.5}deg`} data-tilt>
+                <p class="sys-exp__day">{e.day}</p>
+                <h3 class="mt-2 font-display text-3xl font-semibold leading-tight">{e.title}</h3>
+                <p class="mt-3 leading-relaxed opacity-90">{e.text}</p>
+                <Illo name={e.illo} class="sys-exp__illo" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · STORY =========================== -->
       <section id="story" class="sys-story" aria-labelledby="story-title">
         <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-5 py-28 sm:px-8 lg:grid-cols-2">
           <div class="sys-collage">
@@ -243,24 +263,6 @@ const HOURS = [
               <div class="sys-fact" style="--c:var(--agave-2)"><dt>Hours for our mole</dt><dd data-count="48">48</dd></div>
             </dl>
           </div>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · EXPERIENCES =========================== -->
-      <section id="experiences" class="sys-exp" aria-labelledby="exp-title">
-        <div class="mx-auto max-w-7xl px-5 py-24 sm:px-8">
-          <p class="sys-kicker text-(--cobalt)">Every week</p>
-          <h2 id="exp-title" class="sys-h2 mt-3 max-w-3xl">More than dinner: <i class="text-(--orange)">a little fiesta</i> most nights.</h2>
-          <ul class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4" role="list">
-            {EXPERIENCES.map((e, i) => (
-              <li class="sys-exp__card" style={`--bg:${e.bg};--fg:${e.fg};--r:${i % 2 ? 1.5 : -1.5}deg`} data-tilt>
-                <p class="sys-exp__day">{e.day}</p>
-                <h3 class="mt-2 font-display text-3xl font-semibold leading-tight">{e.title}</h3>
-                <p class="mt-3 leading-relaxed opacity-90">{e.text}</p>
-                <Illo name={e.illo} class="sys-exp__illo" />
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
@@ -430,5 +432,4 @@ html h2#exp-title > i:nth-child(1) { color: #ee6400 !important; }
 html section#visit > div:nth-child(1) > div:nth-child(1) > form:nth-child(4) > div:nth-child(6) > button:nth-child(1) { color: #15110d !important; }
 html section#experiences > div:nth-child(1) > ul:nth-child(3) > li:nth-child(2) { background-color: #117a58 !important; }
 html section#experiences > div:nth-child(1) > ul:nth-child(3) > li:nth-child(3) { background-color: #da0058 !important; }
-html section#visit > div:nth-child(1) > div:nth-child(1) > form:nth-child(4) > fieldset:nth-child(1) > div:nth-child(2) > label:nth-child(1) > span:nth-child(2) { background-color: #e6005d !important; }
 </style>

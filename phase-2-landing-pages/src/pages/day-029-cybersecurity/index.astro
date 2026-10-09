@@ -52,13 +52,14 @@ const EMAILS = [
         <a href="#top" class="iv-logo" aria-label="Ironveil, home"><svg viewBox="0 0 28 28" class="size-7" aria-hidden="true"><path d="M14 2 4 6v8c0 6 4 10 10 12 6-2 10-6 10-12V6z" fill="none" stroke="var(--green)" stroke-width="2" /><path d="M9 14l4 4 6-8" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>IRONVEIL</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm font-semibold tracking-wide uppercase">
-            <li><a href="#services">Services</a></li><li><a href="#attack">Attack demo</a></li><li><a href="#phish">Spot the phish</a></li><li><a href="#soc">Our SOC</a></li>
+            <li><a href="#soc">Our SOC</a></li><li><a href="#attack">Attack demo</a></li><li><a href="#services">Services</a></li><li><a href="#phish">Spot the phish</a></li>
           </ul>
         </nav>
         <a href="#scan" class="iv-btn iv-btn--green whitespace-nowrap">Free domain scan</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="iv-hero" aria-labelledby="hero-title">
@@ -93,20 +94,28 @@ const EMAILS = [
         </div>
       </section>
 
-      <!-- =========================== 2 · SERVICES =========================== -->
-      <section id="services" class="iv-section" aria-labelledby="services-title">
+      <!-- =========================== 2 · SOC =========================== -->
+      <section id="soc" class="iv-section iv-section--panel" aria-labelledby="soc-title">
         <div class="iv-wrap">
-          <div class="iv-head"><p class="iv-eyebrow">// capabilities</p><h2 id="services-title" class="iv-h2">One team between you and <span class="iv-green">the breach.</span></h2></div>
-          <ul class="iv-services" role="list">
-            {SERVICES.map((s) => (
-              <li class="iv-svc">
-                <span class="iv-svc__tag iv-mono">{s.tag}</span>
-                <h3 class="iv-svc__t">{s.name}</h3>
-                <p class="iv-svc__p">{s.text}</p>
-                <p class="iv-svc__stat iv-mono">{s.stat}</p>
-              </li>
-            ))}
-          </ul>
+          <div class="iv-head"><p class="iv-eyebrow">// inside the soc</p><h2 id="soc-title" class="iv-h2">What 3 a.m. looks like <span class="iv-green">from here.</span></h2></div>
+          <div class="iv-band">
+            <figure class="iv-band__main"><Image src={photoHall} alt="A data hall with rows of server cabinets and blue network cabling overhead" width={1400} /><figcaption>Your logs land here. We watch them 24/7.</figcaption></figure>
+            <figure class="iv-band__side"><Image src={photoTech} alt="An engineer in a high-visibility vest repairing equipment beside a server rack" width={700} /><figcaption>On-site response when it is physical</figcaption></figure>
+          </div>
+          <div class="iv-soc">
+            <div class="iv-soc__bar">
+              <div class="iv-chips" role="group" aria-label="Filter by severity" data-sev>
+                <button type="button" data-sev="all" aria-pressed="true">All</button>
+                <button type="button" data-sev="critical" aria-pressed="false"><i class="s-critical"></i>Critical</button>
+                <button type="button" data-sev="high" aria-pressed="false"><i class="s-high"></i>High</button>
+                <button type="button" data-sev="medium" aria-pressed="false"><i class="s-medium"></i>Medium</button>
+                <button type="button" data-sev="low" aria-pressed="false"><i class="s-low"></i>Low</button>
+              </div>
+              <button type="button" class="iv-btn iv-btn--line" data-pause aria-pressed="false">❚❚ Pause</button>
+            </div>
+            <div class="iv-soc__counts iv-mono" data-counts></div>
+            <ol class="iv-feed iv-mono" data-feed aria-label="Live security events"></ol>
+          </div>
         </div>
       </section>
 
@@ -137,7 +146,24 @@ const EMAILS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · SPOT THE PHISH =========================== -->
+      <!-- =========================== 4 · SERVICES =========================== -->
+      <section id="services" class="iv-section" aria-labelledby="services-title">
+        <div class="iv-wrap">
+          <div class="iv-head"><p class="iv-eyebrow">// capabilities</p><h2 id="services-title" class="iv-h2">One team between you and <span class="iv-green">the breach.</span></h2></div>
+          <ul class="iv-services" role="list">
+            {SERVICES.map((s) => (
+              <li class="iv-svc">
+                <span class="iv-svc__tag iv-mono">{s.tag}</span>
+                <h3 class="iv-svc__t">{s.name}</h3>
+                <p class="iv-svc__p">{s.text}</p>
+                <p class="iv-svc__stat iv-mono">{s.stat}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · SPOT THE PHISH =========================== -->
       <section id="phish" class="iv-section" aria-labelledby="phish-title">
         <div class="iv-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           <div>
@@ -162,31 +188,6 @@ const EMAILS = [
               <button type="button" class="iv-btn iv-btn--line" data-next-mail>Next email →</button>
             </div>
             <p class="iv-mail__count iv-mono" data-m-count></p>
-          </div>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · SOC =========================== -->
-      <section id="soc" class="iv-section iv-section--panel" aria-labelledby="soc-title">
-        <div class="iv-wrap">
-          <div class="iv-head"><p class="iv-eyebrow">// inside the soc</p><h2 id="soc-title" class="iv-h2">What 3 a.m. looks like <span class="iv-green">from here.</span></h2></div>
-          <div class="iv-band">
-            <figure class="iv-band__main"><Image src={photoHall} alt="A data hall with rows of server cabinets and blue network cabling overhead" width={1400} /><figcaption>Your logs land here. We watch them 24/7.</figcaption></figure>
-            <figure class="iv-band__side"><Image src={photoTech} alt="An engineer in a high-visibility vest repairing equipment beside a server rack" width={700} /><figcaption>On-site response when it is physical</figcaption></figure>
-          </div>
-          <div class="iv-soc">
-            <div class="iv-soc__bar">
-              <div class="iv-chips" role="group" aria-label="Filter by severity" data-sev>
-                <button type="button" data-sev="all" aria-pressed="true">All</button>
-                <button type="button" data-sev="critical" aria-pressed="false"><i class="s-critical"></i>Critical</button>
-                <button type="button" data-sev="high" aria-pressed="false"><i class="s-high"></i>High</button>
-                <button type="button" data-sev="medium" aria-pressed="false"><i class="s-medium"></i>Medium</button>
-                <button type="button" data-sev="low" aria-pressed="false"><i class="s-low"></i>Low</button>
-              </div>
-              <button type="button" class="iv-btn iv-btn--line" data-pause aria-pressed="false">❚❚ Pause</button>
-            </div>
-            <div class="iv-soc__counts iv-mono" data-counts></div>
-            <ol class="iv-feed iv-mono" data-feed aria-label="Live security events"></ol>
           </div>
         </div>
       </section>

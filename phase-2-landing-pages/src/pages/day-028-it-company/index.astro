@@ -55,13 +55,14 @@ const QUIZ = [
         <a href="#top" class="sw-logo" aria-label="Stackwell, home"><svg viewBox="0 0 28 28" class="size-7" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--ink)" /><path d="M7 10h14M7 14h14M7 18h9" stroke="var(--orange)" stroke-width="2.4" stroke-linecap="round" /></svg>Stackwell</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-medium">
-            <li><a href="#services">Services</a></li><li><a href="#plan">Pricing</a></li><li><a href="#status">Live status</a></li><li><a href="#results">Results</a></li>
+            <li><a href="#status">Live status</a></li><li><a href="#services">Services</a></li><li><a href="#plan">Pricing</a></li><li><a href="#results">Results</a></li>
           </ul>
         </nav>
         <a href="#check" class="sw-btn sw-btn--ink whitespace-nowrap">Free health check</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="sw-hero" aria-labelledby="hero-title">
@@ -99,7 +100,22 @@ const QUIZ = [
         <figure class="sw-band__side"><Image src={photoFloor} alt="A quiet office floor with glass-panelled desks and a long corridor" width={900} /><figcaption>On-site visits when it matters</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · SERVICES =========================== -->
+      <!-- =========================== 2 · STATUS =========================== -->
+      <section id="status" class="sw-section" aria-labelledby="status-title">
+        <div class="sw-wrap">
+          <div class="sw-head"><p class="sw-eyebrow">Transparency</p><h2 id="status-title" class="sw-h2">Our own uptime, <span class="sw-mark">in public.</span></h2></div>
+          <div class="sw-status" data-status></div>
+          <p class="sw-statuscap sw-mono" aria-live="polite" data-status-cap>Hover or tap a bar to see the day.</p>
+          <div class="sw-sla">
+            <div><b>15 min</b><span>P1 response (system down)</span></div>
+            <div><b>1 hr</b><span>P2 response (user blocked)</span></div>
+            <div><b>4 hrs</b><span>P3 response (how do I…?)</span></div>
+            <div><b>99.98%</b><span>helpdesk availability, 90 days</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · SERVICES =========================== -->
       <section id="services" class="sw-section" aria-labelledby="services-title">
         <div class="sw-wrap">
           <div class="sw-head"><p class="sw-eyebrow">What we do</p><h2 id="services-title" class="sw-h2">Everything with a plug <span class="sw-mark">or a login.</span></h2></div>
@@ -120,7 +136,7 @@ const QUIZ = [
         </div>
       </section>
 
-      <!-- =========================== 3 · PLAN =========================== -->
+      <!-- =========================== 4 · PLAN =========================== -->
       <section id="plan" class="sw-section sw-section--dark" aria-labelledby="plan-title">
         <div class="sw-wrap">
           <div class="sw-head"><p class="sw-eyebrow sw-eyebrow--orange">Pricing</p><h2 id="plan-title" class="sw-h2">Price it yourself. <span class="sw-mark sw-mark--dark">No call needed.</span></h2></div>
@@ -150,21 +166,6 @@ const QUIZ = [
               <a href="#check" class="sw-btn sw-btn--orange sw-btn--lg mt-6 w-full" data-take>Get this plan</a>
             </aside>
           </form>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · STATUS =========================== -->
-      <section id="status" class="sw-section" aria-labelledby="status-title">
-        <div class="sw-wrap">
-          <div class="sw-head"><p class="sw-eyebrow">Transparency</p><h2 id="status-title" class="sw-h2">Our own uptime, <span class="sw-mark">in public.</span></h2></div>
-          <div class="sw-status" data-status></div>
-          <p class="sw-statuscap sw-mono" aria-live="polite" data-status-cap>Hover or tap a bar to see the day.</p>
-          <div class="sw-sla">
-            <div><b>15 min</b><span>P1 response (system down)</span></div>
-            <div><b>1 hr</b><span>P2 response (user blocked)</span></div>
-            <div><b>4 hrs</b><span>P3 response (how do I…?)</span></div>
-            <div><b>99.98%</b><span>helpdesk availability, 90 days</span></div>
-          </div>
         </div>
       </section>
 

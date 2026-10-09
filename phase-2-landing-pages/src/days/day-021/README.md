@@ -50,3 +50,11 @@ The hero, menu banner and story collage use real photographs from Unsplash (free
 ### Menu photos
 
 All 16 menu items now have a real dish photo from Pexels (free to use), in menu order. Pexels IDs: 28992999, 9044685, 39433063, 31632714, 5282726, 5848726, 17582268, 28959315, 28173586, 36361401, 39707090, 37228442, 36892001, 38800650, 18347939, 34567207. They are close stand-ins, not shots of these exact dishes. The "Experiences" cards keep their drawn sun, agave and cactus as decorative marks.
+
+### Layout redesign
+
+The hero is now a full-bleed photo stage with the headline anchored bottom-left and the stats in a glass strip, instead of the two-column text-and-plate layout used by most other days.
+
+### Navigation redesign
+
+The header is now a split masthead (menu left, logo centred, actions right), and the sections follow a different order from the other days.

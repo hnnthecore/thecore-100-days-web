@@ -41,6 +41,9 @@ const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www
       href="../../../index.html"
       aria-label={`Thecore 100 Days of Web, day ${day}. Back to all projects`}
     ><span aria-hidden="true">T</span> Day {String(day).padStart(3, '0')} · Thecore</a>
+    <script>
+      import '../scripts/mobile-menu';
+    </script>
     <style is:global>
       .thecore-badge {
         position: fixed; left: 1rem; bottom: 1rem; z-index: 60;
@@ -52,6 +55,24 @@ const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www
         transition: transform 0.3s var(--ease-spring);
       }
       .thecore-badge:hover { transform: translateY(-2px); }
+      /* Phone menu (see scripts/mobile-menu.ts) */
+      .mm-btn { display: inline-flex; flex-direction: column; justify-content: center; gap: 4px; width: 2.75rem; height: 2.75rem; padding: 0 0.7rem; margin-left: 0.5rem; border-radius: 0.75rem; background: transparent; color: inherit; border: 1.5px solid currentColor; cursor: pointer; flex: none; }
+      .mm-btn[hidden] { display: none; }
+      .mm-btn i { display: block; height: 2px; border-radius: 2px; background: currentColor; transition: transform 0.2s, opacity 0.2s; }
+      .mm-btn.is-open i:nth-child(2) { transform: translateY(6px) rotate(45deg); }
+      .mm-btn.is-open i:nth-child(3) { opacity: 0; }
+      .mm-btn.is-open i:nth-child(4) { transform: translateY(-6px) rotate(-45deg); }
+      .mm-panel { position: absolute; left: 0.75rem; right: 0.75rem; top: calc(100% + 0.4rem); z-index: 70; padding: 0.6rem; border-radius: 1.1rem; box-shadow: 0 24px 50px -16px rgb(0 0 0 / 0.45); border: 1px solid rgb(128 128 128 / 0.25); }
+      .mm-panel--up { top: auto; bottom: calc(100% + 0.4rem); }
+      .mm-panel[data-tone="light"] { background: #fff; color: #14181f; }
+      .mm-panel[data-tone="dark"] { background: #14181f; color: #fff; }
+      .mm-panel[hidden] { display: none; }
+      .mm-hide { display: none !important; }
+      .mm-cta[hidden] { display: none; }
+      .mm-cta a { margin-top: 0.4rem; text-align: center; border: 1.5px solid currentColor; }
+      .mm-panel ul { list-style: none; margin: 0; padding: 0; display: grid; }
+      .mm-panel a { display: block; padding: 0.95rem 1rem; border-radius: 0.7rem; font-weight: 700; font-size: 1.05rem; text-decoration: none; color: inherit; }
+      .mm-panel a:hover, .mm-panel a:focus-visible { background: rgb(128 128 128 / 0.18); }
       .thecore-badge span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); font-size: 11px; }
     </style>
   </body>

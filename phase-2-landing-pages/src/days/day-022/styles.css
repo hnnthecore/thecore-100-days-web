@@ -193,3 +193,37 @@ html .fr-dough__photos figure { position: relative; margin: 0; border-radius: 1.
 html .fr-dough__photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
 html .fr-dough__photos figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.4rem 1rem 0.8rem; font-weight: 800; color: #fff; background: linear-gradient(transparent, rgb(0 0 0 / 0.75)); }
 @media (max-width: 700px) { html .fr-dough__photos { grid-template-columns: 1fr; } html .fr-dough__photos figure { aspect-ratio: 16 / 10; } }
+
+/* Layout redesign: centred poster with an oversized pizza rising from the bottom edge */
+html .fr-hero { overflow: hidden; text-align: center; padding-bottom: 0; }
+html .fr-hero > .fr-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; padding-block: 3.5rem 0; }
+html .fr-hero .fr-display { font-size: clamp(3.4rem, 11vw, 9rem); line-height: 0.88; }
+html .fr-hero .fr-wrap > div:first-child { display: flex; flex-direction: column; align-items: center; max-width: 52rem; }
+html .fr-hero .fr-wrap > div:first-child p { margin-inline: auto; }
+html .fr-hero .fr-wrap > div:first-child ul { justify-content: center; margin-top: 1.5rem; }
+html .fr-hero__art { max-width: 820px; width: min(100%, 820px); margin: 2.5rem auto -22% !important; }
+html .fr-hero__art .fr-sticker--a { left: 4%; top: 6%; }
+html .fr-hero__art .fr-sticker--b { right: 4%; top: 12%; }
+html .fr-checker { position: relative; z-index: 2; }
+@media (max-width: 700px) { html .fr-hero__art { margin-bottom: -14% !important; } }
+
+html .fr-stamp { color: #c0300f; }
+html .fr-step__h { background: #c0300f; color: #fbf1de; }
+
+/* More photography: classic pizzas, the delivery rider and the open kitchen */
+html .fr-card__art { padding: 0; aspect-ratio: 8 / 7; overflow: hidden; background: var(--char); }
+html .fr-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s var(--ease-out-expo); }
+html .fr-card:hover .fr-card__photo { transform: scale(1.07) rotate(1deg); }
+html .fr-deliverypic, html .fr-kitchenpic { position: relative; margin: 0; overflow: hidden; border: 3px solid var(--char); border-radius: 1.25rem; box-shadow: 7px 7px 0 var(--char); }
+html .fr-deliverypic img { width: 100%; height: 14rem; object-fit: cover; object-position: 50% 30%; display: block; }
+html .fr-kitchenpic { margin-bottom: 1.5rem; }
+html .fr-kitchenpic img { width: 100%; height: clamp(12rem, 28vw, 22rem); object-fit: cover; display: block; }
+html .fr-deliverypic figcaption, html .fr-kitchenpic figcaption { position: absolute; left: 0; bottom: 0; padding: 0.55rem 1rem; background: var(--cream); color: var(--char); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; border-top-right-radius: 0.9rem; }
+
+/* Navigation redesign: inverted bar. A dark header over the light page with an accent rule */
+html .fr-header { background: #2b1b17 !important; border-bottom: 4px solid #f2b632 !important; backdrop-filter: none !important; }
+html .fr-header nav a, html .fr-header > div > a:first-child { color: #fbf1de; }
+html .fr-header nav a:hover { color: #f2b632; }
+
+html .fr-findus { background: #c0300f; }
+html .fr-findus .fr-btn--red { background: #8f2208; }

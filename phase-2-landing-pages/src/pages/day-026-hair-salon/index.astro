@@ -82,13 +82,14 @@ const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday
         <a href="#top" class="av-logo" aria-label="Atelier Vesper, home"><span>Atelier</span> <em>Vesper</em></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-9 text-[15px] font-medium">
-            <li><a href="#menu">Menu</a></li><li><a href="#team">Stylists</a></li><li><a href="#work">Work</a></li><li><a href="#visit">Visit</a></li>
+            <li><a href="#work">Work</a></li><li><a href="#menu">Menu</a></li><li><a href="#team">Stylists</a></li><li><a href="#visit">Visit</a></li>
           </ul>
         </nav>
         <a href="#book" class="av-btn av-btn--plum">Book online</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="av-hero" aria-labelledby="hero-title">
@@ -112,7 +113,40 @@ const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday
         </div>
       </section>
 
-      <!-- =========================== 2 · MENU =========================== -->
+      <!-- =========================== 2 · WORK =========================== -->
+      <section id="work" class="av-section" aria-labelledby="work-title">
+        <div class="av-wrap grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+          <div>
+            <p class="av-eyebrow">Transformations</p>
+            <h2 id="work-title" class="av-h2 mt-4">Before, after, <em>and everything between.</em></h2>
+            <div class="av-cases mt-8" role="group" aria-label="Choose a transformation" data-cases>
+              {CASES.map((c, i) => (
+                <button type="button" class="av-case" data-case={c.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+                  <b>{c.title}</b><span>{c.who} · {c.time}</span>
+                </button>
+              ))}
+            </div>
+            <p class="mt-6 max-w-md text-lg leading-relaxed text-(--muted)" aria-live="polite" data-case-text>{CASES[0].text}</p>
+          </div>
+          <div>
+            <div class="av-compare" data-compare style="--pos:50%">
+              {CASES.map((c, i) => (
+                <div class="av-compare__set" data-set={c.id} hidden={i !== 0}>
+                  <div class="av-compare__layer"><Hair look={c.before.look as any} hair={c.before.hair} tip={c.before.tip} bg="#E9E0D6" /></div>
+                  <div class="av-compare__layer av-compare__layer--after"><Hair look={c.after.look as any} hair={c.after.hair} tip={c.after.tip} bg="#EBD3C6" /></div>
+                </div>
+              ))}
+              <span class="av-compare__tag av-compare__tag--l">Before</span><span class="av-compare__tag av-compare__tag--r">After</span>
+              <span class="av-compare__handle" aria-hidden="true"><i>⇆</i></span>
+            </div>
+            <label class="sr-only" for="cmp">Reveal before and after</label>
+            <input id="cmp" type="range" min="0" max="100" value="50" class="av-range" data-range aria-valuetext="50% after" />
+            <p class="mt-3 text-center text-sm text-(--muted)">Drag, or use the slider. Illustrations stand in for client photos.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · MENU =========================== -->
       <section id="menu" class="av-section" aria-labelledby="menu-title">
         <div class="av-wrap">
           <div class="av-head"><p class="av-eyebrow">The menu</p><h2 id="menu-title" class="av-h2">Honest prices. <em>Add what you like.</em></h2></div>
@@ -143,7 +177,7 @@ const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday
         </div>
       </section>
 
-      <!-- =========================== 3 · STYLISTS =========================== -->
+      <!-- =========================== 4 · STYLISTS =========================== -->
       <section id="team" class="av-section av-section--blush" aria-labelledby="team-title">
         <div class="av-wrap">
           <div class="av-head"><p class="av-eyebrow">The team</p><h2 id="team-title" class="av-h2">Four specialists. <em>One standard.</em></h2></div>
@@ -159,39 +193,6 @@ const HOURS = [['Monday', 'Closed'], ['Tuesday', '10:00 – 19:00'], ['Wednesday
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · WORK =========================== -->
-      <section id="work" class="av-section" aria-labelledby="work-title">
-        <div class="av-wrap grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-          <div>
-            <p class="av-eyebrow">Transformations</p>
-            <h2 id="work-title" class="av-h2 mt-4">Before, after, <em>and everything between.</em></h2>
-            <div class="av-cases mt-8" role="group" aria-label="Choose a transformation" data-cases>
-              {CASES.map((c, i) => (
-                <button type="button" class="av-case" data-case={c.id} aria-pressed={i === 0 ? 'true' : 'false'}>
-                  <b>{c.title}</b><span>{c.who} · {c.time}</span>
-                </button>
-              ))}
-            </div>
-            <p class="mt-6 max-w-md text-lg leading-relaxed text-(--muted)" aria-live="polite" data-case-text>{CASES[0].text}</p>
-          </div>
-          <div>
-            <div class="av-compare" data-compare style="--pos:50%">
-              {CASES.map((c, i) => (
-                <div class="av-compare__set" data-set={c.id} hidden={i !== 0}>
-                  <div class="av-compare__layer"><Hair look={c.before.look as any} hair={c.before.hair} tip={c.before.tip} bg="#E9E0D6" /></div>
-                  <div class="av-compare__layer av-compare__layer--after"><Hair look={c.after.look as any} hair={c.after.hair} tip={c.after.tip} bg="#EBD3C6" /></div>
-                </div>
-              ))}
-              <span class="av-compare__tag av-compare__tag--l">Before</span><span class="av-compare__tag av-compare__tag--r">After</span>
-              <span class="av-compare__handle" aria-hidden="true"><i>⇆</i></span>
-            </div>
-            <label class="sr-only" for="cmp">Reveal before and after</label>
-            <input id="cmp" type="range" min="0" max="100" value="50" class="av-range" data-range aria-valuetext="50% after" />
-            <p class="mt-3 text-center text-sm text-(--muted)">Drag, or use the slider. Illustrations stand in for client photos.</p>
-          </div>
         </div>
       </section>
 

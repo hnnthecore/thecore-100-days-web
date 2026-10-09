@@ -206,3 +206,26 @@ html .pl-band img { position: absolute; inset: 0; width: 100%; height: 100%; obj
 html .pl-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.6rem 1.1rem 0.9rem; font-weight: 700; color: #fff; background: linear-gradient(transparent, rgb(8 16 40 / 0.8)); }
 html .pl-band figcaption b { color: var(--lime, #c6f432); }
 @media (max-width: 800px) { html .pl-band { grid-template-columns: 1fr; } html .pl-band figure { min-height: 14rem; } }
+
+/* Layout redesign: tracking-first control-room hero. Dark, centred headline with a wide tracking bar as the centrepiece */
+html .pl-hero { background: radial-gradient(60% 70% at 50% 0%, rgb(45 91 255 / 0.45), transparent 70%), radial-gradient(40% 40% at 100% 100%, rgb(198 244 50 / 0.16), transparent 70%), #08142e; color: #fff; text-align: center; }
+html .pl-hero > .pl-wrap { display: flex; flex-direction: column; align-items: center; padding-top: 4.5rem; padding-bottom: 4rem; gap: 2.5rem; }
+html .pl-hero .pl-wrap > div:first-child { display: contents; }
+html .pl-hero .pl-chip { order: 1; margin: 0; background: rgb(255 255 255 / 0.1); color: #fff; border-color: rgb(255 255 255 / 0.2); }
+html .pl-hero h1.pl-display { order: 2; margin: 0; max-width: 16ch; color: #fff; font-size: clamp(2.8rem, 7vw, 6rem); }
+html .pl-hero .pl-wrap > div:first-child > p:not(.pl-chip) { order: 3; margin: 0; max-width: 40rem; color: rgb(255 255 255 / 0.8); }
+html .pl-hero .pl-track { order: 4; width: min(100%, 52rem); text-align: left; margin: 0; }
+html .pl-hero .pl-wrap > div:first-child > div:not(.pl-track) { order: 5; margin: 0; justify-content: center; }
+html .pl-hero .pl-kpis { order: 6; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem 3.5rem; color: #fff; }
+html .pl-hero .pl-kpis dt { color: rgb(255 255 255 / 0.7); }
+html .pl-hero .pl-kpis dd { color: #fff; }
+html .pl-hero .pl-btn--ghost { color: #fff; border-color: rgb(255 255 255 / 0.5); background: transparent; }
+html .pl-hero .pl-btn--ghost:hover { background: #fff; color: #08142e; }
+html .pl-hero .pl-grad { background: linear-gradient(90deg, #c6f432, #7fe3ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+html .pl-hero .pl-chip, html .pl-hero .pl-chip b { color: #fff; }
+
+html .pl-track, html .pl-track h2 { color: var(--ink); }
+
+/* Navigation redesign: floating pill. The bar is detached from the edge and floats over the page */
+html .pl-header { background: transparent !important; backdrop-filter: none !important; border: 0 !important; box-shadow: none !important; top: 0.75rem !important; padding-inline: 0.75rem; pointer-events: none; }
+html .pl-header > div { pointer-events: auto; max-width: 62rem !important; margin-inline: auto; height: auto !important; padding: 0.5rem 0.6rem 0.5rem 1.25rem; border-radius: 999px; background: rgb(255 255 255 / 0.93); backdrop-filter: blur(14px); box-shadow: 0 14px 40px -14px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(0 0 0 / 0.07); }

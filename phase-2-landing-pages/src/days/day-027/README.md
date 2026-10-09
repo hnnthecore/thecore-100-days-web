@@ -43,3 +43,15 @@ The hero and the atelier section use real photographs from Unsplash (free for co
 | Atelier | Hand wearing two diamond rings | https://unsplash.com/photos/SBSeFdJouZU |
 | Atelier | Rose-gold ring with a pink stone | https://unsplash.com/photos/yEJwDxAoHc0 |
 | Atelier | Solitaire diamond on teal fabric | https://unsplash.com/photos/1w1FQagKes4 |
+
+### Layout redesign
+
+The hero is now a pedestal: the ring stands in the centre with the headline on the left and the actions stacked on the right.
+
+### Navigation redesign
+
+The header is now a centred masthead with a ruled menu row, and the sections follow a different order from the other days.
+
+### Collection photos
+
+All eight collection pieces now show real jewellery photographs from Pexels (free to use): p1 39643912, p2 28843818, p3 10976653, p4 14058109, p5 21235147, p6 5370641, p7 34444063, p8 20141640. The photos are stand-ins and are not shot in every metal, so picking yellow, rose or white gold updates the price and name and gently tints the photo, as a hint. The ring designer keeps its live drawn ring because every option changes it.

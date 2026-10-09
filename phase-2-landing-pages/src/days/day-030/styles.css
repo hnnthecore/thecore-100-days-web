@@ -215,3 +215,34 @@ html .rv-band figure { position: relative; margin: 0; overflow: hidden; min-heig
 html .rv-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(0.35) contrast(1.05); }
 html .rv-band figcaption { position: absolute; left: 0; bottom: 0; padding: 0.5rem 0.9rem; background: #ff2e88; color: #0a0a0a; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.85rem; }
 @media (max-width: 760px) { html .rv-band { grid-template-columns: 1fr; } html .rv-band figure { min-height: 14rem; } }
+
+/* Layout redesign: poster. The headline is set at billboard scale across the full width, with the live club meter as a horizontal strip beneath */
+html .rv-hero > .rv-wrap { display: flex; flex-direction: column; align-items: stretch; gap: 2rem; padding-top: 2.5rem; padding-bottom: 2.5rem; }
+html .rv-hero .rv-wrap > div:first-child { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); column-gap: 3rem; row-gap: 1.25rem; align-items: end; }
+html .rv-hero .rv-kicker { grid-column: 1 / -1; margin: 0; }
+html .rv-hero h1.rv-display { grid-column: 1 / -1; margin: 0; font-size: clamp(7rem, 30vw, 27rem); line-height: 0.74; letter-spacing: -0.04em; }
+html .rv-hero .rv-wrap > div:first-child > p:not(.rv-kicker) { grid-column: 1; margin: 0; }
+html .rv-hero .rv-wrap > div:first-child > div { grid-column: 2; margin: 0; }
+@media (min-width: 900px) {
+  html .rv-live { display: grid; grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 1rem 2rem; padding: 1.25rem 1.75rem; }
+  html .rv-live > * { margin: 0; }
+  html .rv-live .rv-meter { grid-column: 4; }
+  html .rv-live .rv-live__text, html .rv-live .rv-live__tip { grid-column: 2 / -1; }
+}
+@media (max-width: 900px) { html .rv-hero .rv-wrap > div:first-child { display: block; } html .rv-hero .rv-wrap > div:first-child > * { margin-top: 1.25rem; } }
+html .rv-hero h1.rv-display { font-size: clamp(5rem, 22vw, 19rem); line-height: 0.82; white-space: nowrap; }
+html .rv-hero h1.rv-display br { display: none; }
+html .rv-hero h1.rv-display .rv-pink { margin-left: 0.04em; }
+
+/* Navigation redesign: boxed bar. A heavy rule, squared tabs and uppercase labels */
+html .rv-header { border-bottom: 3px solid var(--pink) !important; background: #0a0a0a !important; backdrop-filter: none !important; }
+html .rv-header > div { height: 4.25rem !important; }
+
+@media (min-width: 1024px) {
+  html .rv-header > div > nav { align-self: stretch; }
+  html .rv-header > div > nav ul { height: 100%; gap: 0; align-items: stretch; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; font-size: 0.74rem; }
+  html .rv-header > div > nav li { display: flex; }
+  html .rv-header > div > nav a { display: flex; align-items: center; padding-inline: 1.15rem; border-left: 2px solid var(--pink); transition: background-color 0.15s, color 0.15s; }
+  html .rv-header > div > nav li:last-child a { border-right: 2px solid var(--pink); }
+  html .rv-header > div > nav a:hover { background: var(--pink); color: #0a0a0a; }
+}

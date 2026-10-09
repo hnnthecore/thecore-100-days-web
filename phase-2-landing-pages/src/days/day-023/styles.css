@@ -236,3 +236,21 @@ html .nm-photos figure { position: relative; margin: 0; border-radius: 1rem; ove
 html .nm-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
 html .nm-photos figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem 1rem 0.8rem; font-weight: 700; color: #fff; background: linear-gradient(transparent, rgb(0 0 0 / 0.78)); }
 @media (max-width: 700px) { html .nm-photos { grid-template-columns: 1fr; } }
+
+/* Layout redesign: scan-first. The live car scan becomes a wide cinematic banner, with the copy set in two columns beneath it */
+html .nm-hero > .nm-wrap { display: flex; flex-direction: column; gap: 2.5rem; padding-top: 2rem; padding-bottom: 3.5rem; }
+html .nm-hero .nm-scan { order: -1; width: 100%; aspect-ratio: 800 / 330; max-height: 34rem; }
+html .nm-hero .nm-wrap > div:first-child { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 3.5rem; row-gap: 1.25rem; align-items: start; }
+html .nm-hero .nm-wrap > div:first-child > .nm-eyebrow { grid-column: 1; grid-row: 1; margin: 0; }
+html .nm-hero .nm-wrap > div:first-child > h1 { grid-column: 1; grid-row: 2 / span 3; margin: 0; font-size: clamp(2.4rem, 5.2vw, 4.6rem); }
+html .nm-hero .nm-wrap > div:first-child > p:not(.nm-eyebrow) { grid-column: 2; grid-row: 1 / span 2; margin: 0; align-self: end; }
+html .nm-hero .nm-wrap > div:first-child > div { grid-column: 2; grid-row: 3; margin: 0; }
+html .nm-hero .nm-wrap > div:first-child > dl { grid-column: 2; grid-row: 4; margin: 0; }
+@media (max-width: 860px) { html .nm-hero .nm-scan { aspect-ratio: 800 / 460; } html .nm-hero .nm-wrap > div:first-child { display: block; } html .nm-hero .nm-wrap > div:first-child > * { margin-top: 1.25rem; } }
+
+/* Navigation redesign: capsule menu. The links sit inside one rounded segmented control */
+@media (min-width: 1024px) {
+  html .nm-header > div > nav ul { gap: 0.15rem; padding: 0.3rem; border-radius: 999px; background: rgb(255 255 255 / 0.07); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12); }
+  html .nm-header > div > nav a { display: block; padding: 0.45rem 1.1rem; border-radius: 999px; transition: background-color 0.15s, color 0.15s; }
+  html .nm-header > div > nav a:hover { background: var(--accent); color: #fff; }
+}

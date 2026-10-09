@@ -40,3 +40,11 @@ The photo band above the live SOC feed uses real photographs from Unsplash (free
 | --- | --- | --- |
 | Band, large | Server room with rows of cabinets | https://unsplash.com/photos/aWslrFhs1w4 |
 | Band, small | Technician working on server equipment | https://unsplash.com/photos/ufT32_VFS-I |
+
+### Layout redesign
+
+The hero is now a three-panel security-operations dashboard: the brief, a live radar and a column of metrics.
+
+### Navigation redesign
+
+The header is now a boxed bar with a heavy rule and squared tabs, and the sections follow a different order from the other days.

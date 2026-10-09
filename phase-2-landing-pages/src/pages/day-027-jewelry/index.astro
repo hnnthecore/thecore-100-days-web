@@ -14,6 +14,16 @@ import photoHalo from '../../assets/day-027/ring-black.jpg';
 import photoPink from '../../assets/day-027/ring-pink.jpg';
 import photoSolitaire from '../../assets/day-027/ring-teal.jpg';
 import photoHand from '../../assets/day-027/hand-rings.jpg';
+import piece_p1 from '../../assets/day-027/piece-p1.jpg';
+import piece_p2 from '../../assets/day-027/piece-p2.jpg';
+import piece_p3 from '../../assets/day-027/piece-p3.jpg';
+import piece_p4 from '../../assets/day-027/piece-p4.jpg';
+import piece_p5 from '../../assets/day-027/piece-p5.jpg';
+import piece_p6 from '../../assets/day-027/piece-p6.jpg';
+import piece_p7 from '../../assets/day-027/piece-p7.jpg';
+import piece_p8 from '../../assets/day-027/piece-p8.jpg';
+const PIECE_PHOTOS: Record<string, any> = { p1: piece_p1, p2: piece_p2, p3: piece_p3, p4: piece_p4, p5: piece_p5, p6: piece_p6, p7: piece_p7, p8: piece_p8 };
+const PIECE_ALTS: Record<string, string> = {"p1":"A solitaire diamond ring on a gold band worn on a finger","p2":"An oval halo diamond ring in an open ring box","p3":"A three-stone diamond ring in rose gold","p4":"A sapphire and diamond cluster ring resting in soft fabric","p5":"Gold drop earrings set with diamonds against green paper","p6":"Stud earrings with blue, black and green stones","p7":"A pear-cut red stone pendant on a gold chain","p8":"A diamond tennis bracelet with a teardrop centre"};
 import '../../days/day-027/styles.css';
 
 const PIECES = [
@@ -56,7 +66,7 @@ const STEPS = [
         <a href="#top" class="ma-logo" aria-label="Maison Aurelle, home"><span aria-hidden="true">◆</span> Maison <em>Aurelle</em></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-6 xl:gap-9 text-[13px] font-medium tracking-[0.14em] uppercase">
-            <li><a href="#shop">Collection</a></li><li><a href="#design">Design a ring</a></li><li><a href="#guide">The 4Cs</a></li><li><a href="#atelier">Atelier</a></li>
+            <li><a href="#shop">Collection</a></li><li><a href="#design">Design a ring</a></li><li><a href="#atelier">Atelier</a></li><li><a href="#guide">The 4Cs</a></li>
           </ul>
         </nav>
         <div class="flex items-center gap-3">
@@ -66,6 +76,7 @@ const STEPS = [
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="ma-hero" aria-labelledby="hero-title">
@@ -102,7 +113,7 @@ const STEPS = [
             {PIECES.map((p) => (
               <li class="ma-piece" data-piece={p.id} data-type={p.type}>
                 <div class="ma-piece__art">
-                  <div set:html={draw(p)} data-art />
+                  <div data-art data-metal={p.metal}><Image src={PIECE_PHOTOS[p.id]} alt={PIECE_ALTS[p.id]} width={600} class="ma-piece__photo" /></div>
                   <button type="button" class="ma-heart" data-heart aria-pressed="false" aria-label={`Save ${p.name}`}>♥</button>
                 </div>
                 <h3 class="ma-piece__name">{p.name}</h3>
@@ -174,7 +185,34 @@ const STEPS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · THE 4Cs =========================== -->
+      <!-- =========================== 4 · ATELIER =========================== -->
+      <section id="atelier" class="ma-section ma-section--ivory2" aria-labelledby="atelier-title">
+        <div class="ma-wrap">
+          <div class="ma-head"><p class="ma-eyebrow">The atelier</p><h2 id="atelier-title" class="ma-h2">Five steps. <em>Forty hours.</em></h2></div>
+          <div class="ma-craft">
+            <figure><Image src={photoHand} alt="A hand wearing two diamond rings, one pear-shaped and one emerald-cut" width={700} /><figcaption>Worn, not displayed</figcaption></figure>
+            <figure><Image src={photoPink} alt="A rose-gold ring with a pink gemstone surrounded by small diamonds" width={800} /><figcaption>Coloured stones, ethically sourced</figcaption></figure>
+            <figure><Image src={photoSolitaire} alt="A classic six-claw diamond solitaire on teal fabric" width={800} /><figcaption>The classic solitaire</figcaption></figure>
+          </div>
+          <ol class="ma-steps">
+            {STEPS.map((s) => (
+              <li class="ma-step" data-reveal>
+                <span class="ma-step__n">{s.n}</span>
+                <h3 class="ma-step__t">{s.t}</h3>
+                <p>{s.d}</p>
+              </li>
+            ))}
+          </ol>
+          <ul class="ma-badges" role="list">
+            <li><b>100%</b>recycled gold & platinum</li>
+            <li><b>GIA</b>certified diamonds</li>
+            <li><b>5 yrs</b>of free cleaning & checks</li>
+            <li><b>Lifetime</b>resizing & repair</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · THE 4Cs =========================== -->
       <section id="guide" class="ma-section" aria-labelledby="guide-title">
         <div class="ma-wrap grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div class="ma-lab">
@@ -207,33 +245,6 @@ const STEPS = [
               </div>
             </form>
           </div>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · ATELIER =========================== -->
-      <section id="atelier" class="ma-section ma-section--ivory2" aria-labelledby="atelier-title">
-        <div class="ma-wrap">
-          <div class="ma-head"><p class="ma-eyebrow">The atelier</p><h2 id="atelier-title" class="ma-h2">Five steps. <em>Forty hours.</em></h2></div>
-          <div class="ma-craft">
-            <figure><Image src={photoHand} alt="A hand wearing two diamond rings, one pear-shaped and one emerald-cut" width={700} /><figcaption>Worn, not displayed</figcaption></figure>
-            <figure><Image src={photoPink} alt="A rose-gold ring with a pink gemstone surrounded by small diamonds" width={800} /><figcaption>Coloured stones, ethically sourced</figcaption></figure>
-            <figure><Image src={photoSolitaire} alt="A classic six-claw diamond solitaire on teal fabric" width={800} /><figcaption>The classic solitaire</figcaption></figure>
-          </div>
-          <ol class="ma-steps">
-            {STEPS.map((s) => (
-              <li class="ma-step" data-reveal>
-                <span class="ma-step__n">{s.n}</span>
-                <h3 class="ma-step__t">{s.t}</h3>
-                <p>{s.d}</p>
-              </li>
-            ))}
-          </ol>
-          <ul class="ma-badges" role="list">
-            <li><b>100%</b>recycled gold & platinum</li>
-            <li><b>GIA</b>certified diamonds</li>
-            <li><b>5 yrs</b>of free cleaning & checks</li>
-            <li><b>Lifetime</b>resizing & repair</li>
-          </ul>
         </div>
       </section>
 

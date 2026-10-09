@@ -42,3 +42,15 @@ The hero and the dough section use real photographs from Unsplash (free for comm
 | Dough, step 1 | Baker holding a ball of dough | https://unsplash.com/photos/4yzEtTQLdL4 |
 | Dough, step 2 | Hands stretching dough | https://unsplash.com/photos/_CaLXVUfD8g |
 | Dough, step 3 | Pizza leaving a wood-fired oven | https://unsplash.com/photos/vHRFraV4U00 |
+
+### Layout redesign
+
+The hero is now a centred poster with a huge headline and an oversized pizza rising from the bottom edge, instead of a two-column text-and-picture layout.
+
+### More photography
+
+The six classic pizza cards, a delivery rider photo beside the deals and an open-kitchen photo above "Find us" now use real photographs from Pexels (free to use). Pexels IDs: margherita 31596394, diavola 17402719, funghi 34675729, nduja 32862466, ortolana 5112509, marinara 34775818, delivery 9461632, kitchen 5953497. The build-your-own pizza keeps its drawn pizza because the toppings change live.
+
+### Navigation redesign
+
+The header is now an inverted dark bar, and the sections follow a different order from the other days.

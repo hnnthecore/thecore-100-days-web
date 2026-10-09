@@ -36,20 +36,21 @@ const MEMBERS = [
         <a href="#top" class="rv-logo" aria-label="Rival Athletic Club, home">RIVAL<span>/</span>AC</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm font-bold tracking-widest uppercase">
-            <li><a href="#classes">Classes</a></li><li><a href="#plans">Membership</a></li><li><a href="#build">Build a week</a></li><li><a href="#challenge">Challenge</a></li>
+            <li><a href="#build">Build a week</a></li><li><a href="#classes">Classes</a></li><li><a href="#challenge">Challenge</a></li><li><a href="#plans">Membership</a></li>
           </ul>
         </nav>
         <a href="#pass" class="rv-btn rv-btn--pink whitespace-nowrap">Free 3-day pass</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="rv-hero" aria-labelledby="hero-title">
         <div class="rv-wrap grid grid-cols-1 items-end gap-12 pt-14 pb-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] lg:pt-20">
           <div>
             <p class="rv-kicker">Leeds · Manchester · Sheffield</p>
-            <h1 id="hero-title" class="rv-display">Earn<br />it<span class="rv-pink">.</span></h1>
+            <h1 id="hero-title" class="rv-display">Earn it<span class="rv-pink">.</span></h1>
             <p class="mt-8 max-w-lg text-lg leading-relaxed text-white/70">Serious equipment, brilliant classes and coaches who actually know your name. Open 5 am to 11 pm, every day.</p>
             <div class="mt-9 flex flex-wrap gap-3">
               <a href="#pass" class="rv-btn rv-btn--pink rv-btn--lg">Claim a free pass</a>
@@ -73,52 +74,7 @@ const MEMBERS = [
         <figure class="rv-band__side"><Image src={photoDumbbells} alt="Rubber dumbbells lined up on a rack, close up" width={700} /><figcaption>Open 5 am to 11 pm</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · CLASSES =========================== -->
-      <section id="classes" class="rv-section" aria-labelledby="classes-title">
-        <div class="rv-wrap">
-          <div class="rv-head"><p class="rv-kicker rv-kicker--dark">Timetable</p><h2 id="classes-title" class="rv-h2">Book your <span class="rv-pink">spot.</span></h2></div>
-          <div class="rv-tt-bar">
-            <div class="rv-days" role="group" aria-label="Day of the week" data-days></div>
-            <div class="rv-types" role="group" aria-label="Filter by class type" data-types>
-              <button type="button" data-type="all" aria-pressed="true">All</button>
-              <button type="button" data-type="hiit" aria-pressed="false">HIIT</button>
-              <button type="button" data-type="strength" aria-pressed="false">Strength</button>
-              <button type="button" data-type="cycle" aria-pressed="false">Cycle</button>
-              <button type="button" data-type="boxing" aria-pressed="false">Boxing</button>
-              <button type="button" data-type="yoga" aria-pressed="false">Yoga</button>
-            </div>
-          </div>
-          <ul class="rv-classes" role="list" data-classes></ul>
-          <p class="rv-mybook" aria-live="polite" data-mybook></p>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · PLANS =========================== -->
-      <section id="plans" class="rv-section rv-section--dark" aria-labelledby="plans-title">
-        <div class="rv-wrap">
-          <div class="rv-head"><p class="rv-kicker">Membership</p><h2 id="plans-title" class="rv-h2">No contracts. <span class="rv-pink">No excuses.</span></h2></div>
-          <label class="rv-bill"><input type="checkbox" data-annual /><span class="rv-bill__ui" aria-hidden="true"></span><span>Pay annually <b>2 months free + no joining fee</b></span></label>
-          <div class="rv-plans" role="radiogroup" aria-label="Choose a plan" data-plans>
-            {PLANS.map((p) => (
-              <label class={`rv-plan${p.hot ? ' is-hot' : ''}`}>
-                <input type="radio" name="plan" value={p.id} checked={p.id === 'rival'} />
-                <span class="rv-plan__card">
-                  {p.hot && <em class="rv-plan__tag">Most popular</em>}
-                  <b class="rv-plan__name">{p.name}</b>
-                  <span class="rv-plan__blurb">{p.blurb}</span>
-                  <span class="rv-plan__price"><b data-price={p.price}>£{p.price}</b><small data-per>/month</small></span>
-                  <ul class="rv-plan__feats" role="list">
-                    {p.feats.map(([f, on]) => <li class={on ? 'on' : 'off'}><span class="sr-only">{on ? 'Included: ' : 'Not included: '}</span>{f}</li>)}
-                  </ul>
-                </span>
-              </label>
-            ))}
-          </div>
-          <p class="rv-plansum" aria-live="polite" data-plan-sum></p>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · BUILD =========================== -->
+      <!-- =========================== 2 · BUILD =========================== -->
       <section id="build" class="rv-section" aria-labelledby="build-title">
         <div class="rv-wrap">
           <div class="rv-head"><p class="rv-kicker rv-kicker--dark">Week builder</p><h2 id="build-title" class="rv-h2">Your week, <span class="rv-pink">sorted.</span></h2></div>
@@ -153,7 +109,27 @@ const MEMBERS = [
         </div>
       </section>
 
-      <!-- =========================== 5 · CHALLENGE =========================== -->
+      <!-- =========================== 3 · CLASSES =========================== -->
+      <section id="classes" class="rv-section" aria-labelledby="classes-title">
+        <div class="rv-wrap">
+          <div class="rv-head"><p class="rv-kicker rv-kicker--dark">Timetable</p><h2 id="classes-title" class="rv-h2">Book your <span class="rv-pink">spot.</span></h2></div>
+          <div class="rv-tt-bar">
+            <div class="rv-days" role="group" aria-label="Day of the week" data-days></div>
+            <div class="rv-types" role="group" aria-label="Filter by class type" data-types>
+              <button type="button" data-type="all" aria-pressed="true">All</button>
+              <button type="button" data-type="hiit" aria-pressed="false">HIIT</button>
+              <button type="button" data-type="strength" aria-pressed="false">Strength</button>
+              <button type="button" data-type="cycle" aria-pressed="false">Cycle</button>
+              <button type="button" data-type="boxing" aria-pressed="false">Boxing</button>
+              <button type="button" data-type="yoga" aria-pressed="false">Yoga</button>
+            </div>
+          </div>
+          <ul class="rv-classes" role="list" data-classes></ul>
+          <p class="rv-mybook" aria-live="polite" data-mybook></p>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · CHALLENGE =========================== -->
       <section id="challenge" class="rv-section rv-section--pink" aria-labelledby="challenge-title">
         <div class="rv-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div>
@@ -172,6 +148,31 @@ const MEMBERS = [
             </div>
           </div>
           <ol class="rv-board" data-board aria-live="off"></ol>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · PLANS =========================== -->
+      <section id="plans" class="rv-section rv-section--dark" aria-labelledby="plans-title">
+        <div class="rv-wrap">
+          <div class="rv-head"><p class="rv-kicker">Membership</p><h2 id="plans-title" class="rv-h2">No contracts. <span class="rv-pink">No excuses.</span></h2></div>
+          <label class="rv-bill"><input type="checkbox" data-annual /><span class="rv-bill__ui" aria-hidden="true"></span><span>Pay annually <b>2 months free + no joining fee</b></span></label>
+          <div class="rv-plans" role="radiogroup" aria-label="Choose a plan" data-plans>
+            {PLANS.map((p) => (
+              <label class={`rv-plan${p.hot ? ' is-hot' : ''}`}>
+                <input type="radio" name="plan" value={p.id} checked={p.id === 'rival'} />
+                <span class="rv-plan__card">
+                  {p.hot && <em class="rv-plan__tag">Most popular</em>}
+                  <b class="rv-plan__name">{p.name}</b>
+                  <span class="rv-plan__blurb">{p.blurb}</span>
+                  <span class="rv-plan__price"><b data-price={p.price}>£{p.price}</b><small data-per>/month</small></span>
+                  <ul class="rv-plan__feats" role="list">
+                    {p.feats.map(([f, on]) => <li class={on ? 'on' : 'off'}><span class="sr-only">{on ? 'Included: ' : 'Not included: '}</span>{f}</li>)}
+                  </ul>
+                </span>
+              </label>
+            ))}
+          </div>
+          <p class="rv-plansum" aria-live="polite" data-plan-sum></p>
         </div>
       </section>
 

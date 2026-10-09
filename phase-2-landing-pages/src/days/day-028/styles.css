@@ -219,3 +219,33 @@ html .sw-band img { position: absolute; inset: 0; width: 100%; height: 100%; obj
 html .sw-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.6rem 1.25rem 1rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgb(20 20 24 / 0.82)); }
 html .sw-band figcaption b { color: #ffb08c; }
 @media (max-width: 760px) { html .sw-band { grid-template-columns: 1fr; } html .sw-band figure { min-height: 14rem; } }
+
+/* Layout redesign: console-wide. Left-aligned headline row, then the ticket console as a full-width app window with chips and log side by side */
+@media (min-width: 900px) {
+  html .sw-hero > .sw-wrap { display: flex; flex-direction: column; gap: 2.5rem; padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  html .sw-hero .sw-wrap > div:first-child { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); column-gap: 3rem; row-gap: 1.25rem; align-items: end; }
+  html .sw-hero .sw-pill { grid-column: 1 / -1; width: fit-content; margin: 0; }
+  html .sw-hero h1.sw-display { grid-column: 1; grid-row: 2 / span 2; margin: 0; font-size: clamp(3rem, 6vw, 5.6rem); }
+  html .sw-hero .sw-wrap > div:first-child > p:not(.sw-pill) { grid-column: 2; grid-row: 2; margin: 0; }
+  html .sw-hero .sw-wrap > div:first-child > div { grid-column: 2; grid-row: 3; margin: 0; }
+  html .sw-hero .sw-logos { grid-column: 1 / -1; grid-row: 4; margin: 0.5rem 0 0; }
+  html .sw-console__body { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.5rem 2rem; align-items: start; }
+  html .sw-console__body > p:first-child { grid-column: 1; }
+  html .sw-console__body .sw-chips { grid-column: 1; grid-row: 2; }
+  html .sw-console__body .sw-log { grid-column: 2; grid-row: 1 / span 2; min-height: 11rem; }
+  html .sw-console__body .sw-eta { grid-column: 1 / -1; }
+}
+
+/* Navigation redesign: side rail. On wide screens the bar becomes a slim fixed rail down the left edge */
+@media (min-width: 1100px) {
+  html .sw { padding-left: 4.75rem; }
+  html .sw-header { position: fixed !important; inset: 0 auto 0 0 !important; width: 4.75rem; height: 100vh; background: #1e1f24 !important; backdrop-filter: none !important; border: 0 !important; border-right: 3px solid #ff5a1f !important; z-index: 60; }
+  html .sw-header > div { flex-direction: column !important; height: 100% !important; width: 100%; max-width: none !important; padding: 1.25rem 0 !important; gap: 1.25rem; align-items: center; justify-content: space-between; }
+  html .sw-header > div > a:first-child { color: #fff; font-size: 0; gap: 0; }
+  html .sw-header > div > a:first-child > svg { width: 2rem; height: 2rem; }
+  html .sw-header > div > nav { display: block; flex: 1; }
+  html .sw-header > div > nav ul { flex-direction: column; align-items: center; gap: 1.6rem; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; font-weight: 700; }
+  html .sw-header > div > nav a { color: #fff; opacity: 0.8; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
+  html .sw-header > div > nav a:hover { opacity: 1; color: #ff5a1f; }
+  html .sw-header > div > :last-child { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; padding: 1.1rem 0.7rem; font-size: 0.74rem; }
+}

@@ -253,3 +253,37 @@ html .sys-collage__card--1 { width: 34%; }
 html .sys-dish__art { overflow: hidden; }
 html .sys-dish__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s var(--ease-spring); }
 html .sys-dish:hover .sys-dish__photo { transform: scale(1.1); }
+
+/* Layout redesign: full-bleed photo stage hero, copy anchored bottom-left, stats in a glass strip */
+html .sys-hero { background: var(--ink); }
+html .sys-hero__stage { position: relative; min-height: min(86vh, 56rem); display: grid; align-items: end; overflow: hidden; }
+html .sys-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+html .sys-hero__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(20 8 6 / 0.45) 0%, rgb(20 8 6 / 0.15) 35%, rgb(20 8 6 / 0.88) 100%), linear-gradient(90deg, rgb(20 8 6 / 0.6), transparent 65%); }
+html .sys-hero__inner { position: relative; z-index: 2; max-width: 80rem; width: 100%; margin-inline: auto; padding: 8rem 1.25rem 2.5rem; display: grid; gap: 2rem; }
+@media (min-width: 640px) { html .sys-hero__inner { padding-inline: 2rem; } }
+html .sys-hero__copy { max-width: 46rem; color: #fff; }
+html .sys-hero__copy h1 { color: #fff; }
+html .sys-hero__copy .sys-kicker { color: var(--marigold); }
+html .sys-hero__copy p:not(.sys-kicker) { color: rgb(255 255 255 / 0.88); }
+html .sys-hero__copy .sys-btn--ghost { color: #fff; border-color: rgb(255 255 255 / 0.7); background: transparent; }
+html .sys-hero__copy .sys-btn--ghost:hover { background: #fff; color: var(--ink); }
+html .sys-hero__stats { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; margin-top: 2.5rem; padding: 1.1rem 1.5rem; width: fit-content; max-width: 100%; border-radius: 1.2rem; background: rgb(255 255 255 / 0.12); backdrop-filter: blur(14px); border: 1px solid rgb(255 255 255 / 0.25); }
+html .sys-hero__stats .sys-stat, html .sys-hero__stats .sys-stat-label { color: #fff; }
+html .sys-hero__tag { position: absolute; right: 1.25rem; bottom: 2.5rem; width: 8rem; }
+html .sys-hero__tag .sys-badge { position: relative; left: auto; top: auto; width: 100%; }
+@media (max-width: 760px) { html .sys-hero__tag { display: none; } html .sys-hero__stage { min-height: 40rem; } }
+@media (min-width: 1100px) { html .sys-hero__tag { right: 2rem; width: 9.5rem; } }
+
+/* Contrast fixes found in the pre-delivery test */
+html .sys-btn--pink { color: #15110d; }
+
+/* Navigation redesign: split masthead. Menu left, logo centred, actions right */
+@media (min-width: 1024px) {
+  html .sys-header > div { display: grid !important; grid-template-columns: 1fr auto 1fr; align-items: center; }
+  html .sys-header > div > a:first-child { grid-column: 2; grid-row: 1; justify-self: center; }
+  html .sys-header > div > nav { grid-column: 1; grid-row: 1; justify-self: start; display: block; }
+  html .sys-header > div > :last-child { grid-column: 3; grid-row: 1; justify-self: end; }
+}
+
+html .sys-days input:checked + span, html .sys-days input:checked + span * { color: #fff; }
+html .sys-days input:checked + span { background: #c9135f; }

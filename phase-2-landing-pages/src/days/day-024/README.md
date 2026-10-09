@@ -44,3 +44,11 @@ The hero and the "How we work" section use real photographs from Unsplash (free 
 ### Project photos
 
 The four sector panels, the six project cards and the project pop-ups now use real building photographs from Pexels (free to use) instead of isometric drawings. They are close stand-ins for each fictional project. Pexels IDs: wharf 17987656, atlas 39521475, oak 18513513, chapel 31533227, mews 35937701, lab 30624890.
+
+### Layout redesign
+
+The hero is now an editorial site board: a full-width headline, a tall photo on the left, and the brief and actions in a ruled column on the right.
+
+### Navigation redesign
+
+The header is now a boxed bar with a heavy rule and squared tabs, and the sections follow a different order from the other days.
