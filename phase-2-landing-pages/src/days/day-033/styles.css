@@ -234,3 +234,8 @@ html .ev-hero::before { content: ""; position: absolute; inset: 0; background: l
 }
 
 html .ev-header em { color: var(--volt); }
+
+/* Bolt fix: the yellow bolt sat on the yellow diagonal and flashed in and out of it. It is now white with a navy outline so it reads on both blue and yellow, and the flash is a glow rather than a fade. */
+html .ev-hero .ev-bolt__shape { fill: #fff; stroke: #0a0f3d; stroke-width: 5; stroke-linejoin: round; animation: ev-flash 4s infinite; }
+@keyframes ev-flash { 0%, 90%, 100% { filter: none; } 92% { filter: drop-shadow(0 0 16px #fff); } 94% { filter: none; } 96% { filter: drop-shadow(0 0 26px #ffe45c); } }
+@media (prefers-reduced-motion: reduce) { html .ev-hero .ev-bolt__shape { animation: none; } }
