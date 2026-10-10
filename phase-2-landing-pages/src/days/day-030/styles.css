@@ -246,3 +246,5 @@ html .rv-header > div { height: 4.25rem !important; }
   html .rv-header > div > nav li:last-child a { border-right: 2px solid var(--pink); }
   html .rv-header > div > nav a:hover { background: var(--pink); color: #0a0a0a; }
 }
+
+html .rv-btn--pink { color: #0a0a0a; }

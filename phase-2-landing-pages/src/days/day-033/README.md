@@ -40,3 +40,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | --- | --- | --- |
 | Band, large | Electrician fitting a wall switch | https://unsplash.com/photos/_2AlIm-F6pw |
 | Band, small | Testing a consumer unit | https://unsplash.com/photos/PkHf7BUWbtk |
+
+### Layout redesign
+
+The hero is now a lightning-strike diagonal: a huge bolt bleeding off the right edge across an angled yellow band.
+
+### Navigation redesign
+
+The header is now a bottom dock on desktop, and the sections follow a different order from the other days.

@@ -226,3 +226,22 @@ html .vt-pets__stage { overflow: hidden; }
 html .vt-vet__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
 html .vt-vet__av { display: block; }
 html [data-sum-av] .vt-petphoto { border-radius: 0; }
+
+/* Layout redesign: friendly blobs. The pet stage is an organic blob on the left with the picker floating on it, and a wavy edge closes the hero */
+@media (min-width: 1024px) {
+  html .vt-hero > .vt-wrap { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) !important; gap: 3rem; padding-bottom: 6rem; }
+  html .vt-hero .vt-pets { order: -1; position: relative; }
+  html .vt-hero .vt-pets__stage { width: min(100%, 30rem); border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%; box-shadow: 0 0 0 12px #fff, 0 40px 60px -30px rgb(31 77 58 / 0.45); animation: vt-blob 10s ease-in-out infinite alternate; }
+  html .vt-hero .vt-pick { position: absolute; left: 50%; translate: -50% 0; bottom: 5.5rem; z-index: 2; background: #fff; padding: 0.4rem; border-radius: 999px; box-shadow: 0 10px 30px -10px rgb(31 77 58 / 0.5); }
+  html .vt-hero .vt-pets__tip { margin-top: 1.5rem; max-width: 26rem; margin-inline: auto; text-align: center; }
+}
+html .vt-hero { position: relative; }
+html .vt-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3.5rem; background: var(--cream); clip-path: path("M0 40 Q 180 0 360 30 T 720 30 T 1080 30 T 1440 30 V 56 H0 Z"); clip-path: polygon(0 100%, 0 55%, 8% 40%, 16% 48%, 25% 62%, 33% 55%, 42% 38%, 50% 40%, 58% 55%, 66% 62%, 75% 52%, 83% 40%, 92% 45%, 100% 58%, 100% 100%); }
+@keyframes vt-blob { to { border-radius: 45% 55% 42% 58% / 56% 44% 56% 44%; } }
+@media (prefers-reduced-motion: reduce) { html .vt-hero .vt-pets__stage { animation: none; } }
+
+html .vt-hero .vt-display em { color: #e0522f; }
+
+/* Navigation redesign: floating pill. The bar is detached from the edge and floats over the page */
+html .vt-header { background: transparent !important; backdrop-filter: none !important; border: 0 !important; box-shadow: none !important; top: 0.75rem !important; padding-inline: 0.75rem; pointer-events: none; }
+html .vt-header > div { pointer-events: auto; max-width: 62rem !important; margin-inline: auto; height: auto !important; padding: 0.5rem 0.6rem 0.5rem 1.25rem; border-radius: 999px; background: rgb(255 255 255 / 0.93); backdrop-filter: blur(14px); box-shadow: 0 14px 40px -14px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(0 0 0 / 0.07); }

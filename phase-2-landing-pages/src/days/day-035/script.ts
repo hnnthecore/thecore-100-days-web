@@ -3,6 +3,7 @@
  * Colour studio · filterable stock with compare · HP/PCP finance maths · part-exchange valuation · 100-point ring · test-drive booking.
  */
 import { car, type Body } from './art';
+import { CAR_THUMBS, CAR_ALTS } from './photos';
 
 type Car = { id: string; make: string; model: string; year: number; body: Body; fuel: string; price: number; miles: number; gear: string; color: string; colorName: string; spec: string };
 
@@ -220,7 +221,7 @@ function paintSlots() {
 function paintDrive() {
   const c = byId(carSel.value);
   paintDays(); paintSlots();
-  $('[data-sum-art]').innerHTML = car(c.body, c.color, `${c.make} ${c.model}`);
+  $('[data-sum-art]').innerHTML = CAR_THUMBS[c.id] ? `<img class="ax-sum__photo" src="${CAR_THUMBS[c.id]}" alt="${CAR_ALTS[c.id]}" width="480" height="300" />` : car(c.body, c.color, `${c.make} ${c.model}`);
   $('[data-sum-name]').textContent = `${c.year} ${c.make} ${c.model}`;
   $('[data-sum-price]').textContent = gbp(c.price);
   $('[data-sum-when]').textContent = st.date && st.slot ? `${new Date(st.date + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}, ${st.slot}` : 'Not chosen';

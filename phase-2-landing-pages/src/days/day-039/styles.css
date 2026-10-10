@@ -210,3 +210,14 @@ html .wf-slot { grid-template-columns: 5.8rem minmax(0, 1fr) auto; }
 html .wf-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale 0.8s var(--ease-out-expo); }
 html .wf-card:hover .wf-card__photo { scale: 1.07; }
 @media (prefers-reduced-motion: reduce) { html .wf-card__photo { transition: none; } }
+
+/* Layout redesign: destination cover. A full-bleed Santorini photograph sits behind the hero, with the trip matcher as a glass panel */
+html .wf-hero { overflow: hidden; }
+html .wf-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; }
+html .wf-hero__scrim { position: absolute; inset: 0; background: linear-gradient(100deg, rgb(27 17 71 / 0.92) 0%, rgb(27 17 71 / 0.6) 45%, rgb(27 17 71 / 0.25) 100%), linear-gradient(0deg, rgb(27 17 71 / 0.7), transparent 40%); }
+html .wf-stars { opacity: 0.35; }
+@media (min-width: 1024px) { html .wf-hero > .wf-wrap { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr) !important; padding-block: 5rem; } html .wf-hero .wf-display { font-size: clamp(3.4rem, 6.4vw, 6.4rem); } }
+
+/* Navigation redesign: floating pill. The bar is detached from the edge and floats over the page */
+html .wf-header { background: transparent !important; backdrop-filter: none !important; border: 0 !important; box-shadow: none !important; top: 0.75rem !important; padding-inline: 0.75rem; pointer-events: none; }
+html .wf-header > div { pointer-events: auto; max-width: 62rem !important; margin-inline: auto; height: auto !important; padding: 0.5rem 0.6rem 0.5rem 1.25rem; border-radius: 999px; background: rgb(255 255 255 / 0.93); backdrop-filter: blur(14px); box-shadow: 0 14px 40px -14px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(0 0 0 / 0.07); }

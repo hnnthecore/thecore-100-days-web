@@ -205,3 +205,26 @@ textarea.hc-input { height: auto; padding-block: 0.8rem; }
 /* Real photography (replaces the first round of illustrations) */
 html .hc-shot__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
 html .hc-lb__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Layout redesign: wide aperture. A giant serif headline across the top, then the aperture scene as a cinematic strip with the controls beneath */
+html .hc-hero > .hc-wrap { display: flex; flex-direction: column; gap: 2.5rem; padding-top: 3rem; padding-bottom: 3rem; }
+html .hc-hero .hc-wrap > div:first-child { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); column-gap: 3rem; row-gap: 1rem; align-items: end; }
+html .hc-hero .hc-eyebrow { grid-column: 1 / -1; margin: 0; }
+html .hc-hero h1.hc-display { grid-column: 1; grid-row: 2 / span 3; margin: 0; font-size: clamp(4rem, 11vw, 11rem); line-height: 0.86; letter-spacing: -0.035em; }
+html .hc-hero .hc-wrap > div:first-child > p:not(.hc-eyebrow):not(.hc-stat) { grid-column: 2; grid-row: 2; margin: 0; }
+html .hc-hero .hc-wrap > div:first-child > div { grid-column: 2; grid-row: 3; margin: 0; }
+html .hc-hero .hc-stat { grid-column: 2; grid-row: 4; margin: 0; }
+@media (min-width: 900px) { html .hc-hero .hc-cam__frame { aspect-ratio: 21 / 8; } html .hc-hero .hc-cam__ctrl { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1rem 3rem; align-items: center; } }
+@media (max-width: 900px) { html .hc-hero .hc-wrap > div:first-child { display: block; } html .hc-hero .hc-wrap > div:first-child > * { margin-top: 1.25rem; } }
+
+html .hc-day:not(.is-one):not(.is-booked) { color: #6f6a62; }
+html .hc-day.is-booked { color: #a39e95; }
+
+/* Navigation redesign: centred masthead. Logo on top, a ruled menu row beneath, actions pinned right */
+@media (min-width: 1024px) {
+  html .hc-header > div { position: relative; flex-direction: column !important; height: auto !important; padding-block: 1rem 0.55rem; gap: 0.7rem; justify-content: center; }
+  html .hc-header > div > a:first-child { justify-content: center; }
+  html .hc-header > div > nav { display: block; width: 100%; border-top: 1px solid rgb(17 17 17 / 0.8); padding-top: 0.6rem; }
+  html .hc-header > div > nav ul { justify-content: center; gap: 2.5rem; }
+  html .hc-header > div > :last-child { position: absolute; right: 2rem; top: 0.9rem; }
+}

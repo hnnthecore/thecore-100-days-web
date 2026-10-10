@@ -67,13 +67,14 @@ const REVIEWS = [['Hannah, Clifton', 'Burst pipe at 11 pm, Dan was here in 50 mi
         <a href="#top" class="cp-logo" aria-label="Copperline, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--teal)" /><path d="M6 12h12a4 4 0 0 1 4 4v6" fill="none" stroke="var(--copper)" stroke-width="3.2" stroke-linecap="round" /><circle cx="22" cy="24" r="2.4" fill="#7fd0e4" /></svg><span>Copper<em>line</em></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
-            <li><a href="#prices">Prices</a></li><li><a href="#boiler">Boiler advice</a></li><li><a href="#leaks">Leak calculator</a></li><li><a href="#plans">Care plans</a></li>
+            <li><a href="#leaks">Leak calculator</a></li><li><a href="#prices">Prices</a></li><li><a href="#boiler">Boiler advice</a></li><li><a href="#plans">Care plans</a></li>
           </ul>
         </nav>
         <a href="#book" class="cp-btn cp-btn--copper whitespace-nowrap">Book an engineer</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="cp-hero" aria-labelledby="hero-title">
@@ -103,64 +104,7 @@ const REVIEWS = [['Hannah, Clifton', 'Burst pipe at 11 pm, Dan was here in 50 mi
         <figure><Image src={photoCabinet} alt="A plumber checking the waste trap and valves in a sink cabinet" width={800} /><figcaption>Tidy, careful work</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · PRICES =========================== -->
-      <section id="prices" class="cp-section" aria-labelledby="prices-title">
-        <div class="cp-wrap">
-          <div class="cp-head"><p class="cp-eyebrow">Price list</p><h2 id="prices-title" class="cp-h2">No surprises. <span class="cp-copper">Just prices.</span></h2></div>
-          <div class="cp-tabs" role="tablist" aria-label="Price categories" data-tabs>
-            {TABS.map(([k, l], i) => <button type="button" role="tab" id={`pt-${k}`} aria-controls={`pp-${k}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{l}</button>)}
-          </div>
-          {TABS.map(([k], i) => (
-            <div role="tabpanel" id={`pp-${k}`} aria-labelledby={`pt-${k}`} hidden={i !== 0}>
-              <ul class="cp-list" role="list">
-                {PRICES[k].map((p) => (
-                  <li class="cp-item">
-                    <div><h3>{p.name}</h3><p>{p.note}</p></div>
-                    <p class="cp-item__price"><small>from</small> £{p.price.toLocaleString('en-GB')}</p>
-                    <button type="button" class="cp-add" data-add={p.id} aria-pressed="false" aria-label={`Add ${p.name} to my quote`}><span aria-hidden="true">+</span></button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          <div class="cp-basket" data-basket hidden>
-            <p aria-live="polite"><b data-b-count>0</b> job<span data-b-s>s</span> in your quote · from <b data-b-total>£0</b></p>
-            <a href="#book" class="cp-btn cp-btn--copper" data-b-go>Request this quote</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · BOILER =========================== -->
-      <section id="boiler" class="cp-section cp-section--teal" aria-labelledby="boiler-title">
-        <div class="cp-wrap">
-          <div class="cp-head"><p class="cp-eyebrow cp-eyebrow--light">Boiler advisor</p><h2 id="boiler-title" class="cp-h2">Repair it, or <span class="cp-water">replace it?</span></h2></div>
-          <form class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" data-boiler novalidate>
-            <div class="cp-panel">
-              <div><div class="cp-row"><label for="bo-age">Age of your boiler</label><b data-age-out>10 years</b></div><input id="bo-age" class="cp-range" type="range" min="1" max="25" value="10" /></div>
-              <div><div class="cp-row"><label for="bo-rep">Repairs in the last 2 years</label><b data-rep-out>1</b></div><input id="bo-rep" class="cp-range" type="range" min="0" max="5" value="1" /></div>
-              <div><div class="cp-row"><label for="bo-bill">Yearly gas bill</label><b data-bill-out>£1,400</b></div><input id="bo-bill" class="cp-range" type="range" min="600" max="3000" step="50" value="1400" /></div>
-              <fieldset><legend>Any of these?</legend>
-                <div class="cp-checks">
-                  <label><input type="checkbox" value="noise" /><span>Banging or whistling</span></label>
-                  <label><input type="checkbox" value="pilot" /><span>Pilot light going out</span></label>
-                  <label><input type="checkbox" value="cold" /><span>Radiators cold at the bottom</span></label>
-                  <label><input type="checkbox" value="parts" /><span>Engineer says parts are obsolete</span></label>
-                </div>
-              </fieldset>
-            </div>
-            <div class="cp-verdict" aria-live="polite">
-              <p class="cp-verdict__k">Our advice</p>
-              <h3 class="cp-verdict__t" data-verdict></h3>
-              <div class="cp-meter" aria-hidden="true"><span>Repair</span><span>Plan to replace</span><span>Replace</span><i data-marker></i></div>
-              <ul class="cp-verdict__list" data-reasons></ul>
-              <p class="cp-verdict__save" data-saving></p>
-              <a href="#book" class="cp-btn cp-btn--copper cp-btn--lg" data-b-advice>Get a fixed-price quote</a>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · LEAKS =========================== -->
+      <!-- =========================== 2 · LEAKS =========================== -->
       <section id="leaks" class="cp-section" aria-labelledby="leaks-title">
         <div class="cp-wrap grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div>
@@ -197,6 +141,63 @@ const REVIEWS = [['Hannah, Clifton', 'Burst pipe at 11 pm, Dan was here in 50 mi
             <p class="cp-bucket__cost">That’s about <b data-cost>£0</b> down the drain.</p>
             <a href="#book" class="cp-btn cp-btn--teal" data-leak-book>Get it fixed today</a>
           </div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · PRICES =========================== -->
+      <section id="prices" class="cp-section" aria-labelledby="prices-title">
+        <div class="cp-wrap">
+          <div class="cp-head"><p class="cp-eyebrow">Price list</p><h2 id="prices-title" class="cp-h2">No surprises. <span class="cp-copper">Just prices.</span></h2></div>
+          <div class="cp-tabs" role="tablist" aria-label="Price categories" data-tabs>
+            {TABS.map(([k, l], i) => <button type="button" role="tab" id={`pt-${k}`} aria-controls={`pp-${k}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{l}</button>)}
+          </div>
+          {TABS.map(([k], i) => (
+            <div role="tabpanel" id={`pp-${k}`} aria-labelledby={`pt-${k}`} hidden={i !== 0}>
+              <ul class="cp-list" role="list">
+                {PRICES[k].map((p) => (
+                  <li class="cp-item">
+                    <div><h3>{p.name}</h3><p>{p.note}</p></div>
+                    <p class="cp-item__price"><small>from</small> £{p.price.toLocaleString('en-GB')}</p>
+                    <button type="button" class="cp-add" data-add={p.id} aria-pressed="false" aria-label={`Add ${p.name} to my quote`}><span aria-hidden="true">+</span></button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div class="cp-basket" data-basket hidden>
+            <p aria-live="polite"><b data-b-count>0</b> job<span data-b-s>s</span> in your quote · from <b data-b-total>£0</b></p>
+            <a href="#book" class="cp-btn cp-btn--copper" data-b-go>Request this quote</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · BOILER =========================== -->
+      <section id="boiler" class="cp-section cp-section--teal" aria-labelledby="boiler-title">
+        <div class="cp-wrap">
+          <div class="cp-head"><p class="cp-eyebrow cp-eyebrow--light">Boiler advisor</p><h2 id="boiler-title" class="cp-h2">Repair it, or <span class="cp-water">replace it?</span></h2></div>
+          <form class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" data-boiler novalidate>
+            <div class="cp-panel">
+              <div><div class="cp-row"><label for="bo-age">Age of your boiler</label><b data-age-out>10 years</b></div><input id="bo-age" class="cp-range" type="range" min="1" max="25" value="10" /></div>
+              <div><div class="cp-row"><label for="bo-rep">Repairs in the last 2 years</label><b data-rep-out>1</b></div><input id="bo-rep" class="cp-range" type="range" min="0" max="5" value="1" /></div>
+              <div><div class="cp-row"><label for="bo-bill">Yearly gas bill</label><b data-bill-out>£1,400</b></div><input id="bo-bill" class="cp-range" type="range" min="600" max="3000" step="50" value="1400" /></div>
+              <fieldset><legend>Any of these?</legend>
+                <div class="cp-checks">
+                  <label><input type="checkbox" value="noise" /><span>Banging or whistling</span></label>
+                  <label><input type="checkbox" value="pilot" /><span>Pilot light going out</span></label>
+                  <label><input type="checkbox" value="cold" /><span>Radiators cold at the bottom</span></label>
+                  <label><input type="checkbox" value="parts" /><span>Engineer says parts are obsolete</span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="cp-verdict" aria-live="polite">
+              <p class="cp-verdict__k">Our advice</p>
+              <h3 class="cp-verdict__t" data-verdict></h3>
+              <div class="cp-meter" aria-hidden="true"><span>Repair</span><span>Plan to replace</span><span>Replace</span><i data-marker></i></div>
+              <ul class="cp-verdict__list" data-reasons></ul>
+              <p class="cp-verdict__save" data-saving></p>
+              <a href="#book" class="cp-btn cp-btn--copper cp-btn--lg" data-b-advice>Get a fixed-price quote</a>
+            </div>
+          </form>
         </div>
       </section>
 

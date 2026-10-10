@@ -62,13 +62,14 @@ const STEPS = [
         <a href="#top" class="hc-logo" aria-label="Halide and Co., home">Halide <em>&</em> Co.</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-9 text-sm font-semibold tracking-wide">
-            <li><a href="#work">Portfolio</a></li><li><a href="#packages">Packages</a></li><li><a href="#process">Process</a></li><li><a href="#dates">Dates</a></li>
+            <li><a href="#process">Process</a></li><li><a href="#work">Portfolio</a></li><li><a href="#packages">Packages</a></li><li><a href="#dates">Dates</a></li>
           </ul>
         </nav>
         <a href="#enquire" class="hc-btn hc-btn--ink whitespace-nowrap">Enquire</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="hc-hero" aria-labelledby="hero-title">
@@ -98,7 +99,26 @@ const STEPS = [
         </div>
       </section>
 
-      <!-- =========================== 2 · PORTFOLIO =========================== -->
+      <!-- =========================== 2 · PROCESS =========================== -->
+      <section id="process" class="hc-section" aria-labelledby="process-title">
+        <div class="hc-wrap">
+          <div class="hc-head"><p class="hc-eyebrow">How it works</p><h2 id="process-title" class="hc-h2">Five calm <em>steps.</em></h2></div>
+          <div class="hc-steps" data-steps>
+            <div class="hc-steps__line" aria-hidden="true"><i data-steps-fill></i></div>
+            <ol>
+              {STEPS.map(([n, t, d]) => <li class="hc-step" data-step><span class="hc-step__n hc-mono">{n}</span><h3>{t}</h3><p>{d}</p></li>)}
+            </ol>
+          </div>
+          <form class="hc-turn" data-turn novalidate>
+            <div><label for="t-kind">Shoot type</label><select id="t-kind" class="hc-input"><option value="42">Wedding</option><option value="7">Portrait</option><option value="10">Family</option><option value="14">Brand</option></select></div>
+            <div><label for="t-date">Shoot date</label><input id="t-date" type="date" class="hc-input" /></div>
+            <label class="hc-check"><input type="checkbox" data-rush /><span>Rush edit <small>(half the time, +£150)</small></span></label>
+            <p class="hc-turn__out" aria-live="polite"><span>You’ll receive your gallery by</span><b data-turn-out>Pick a date</b></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · PORTFOLIO =========================== -->
       <section id="work" class="hc-section" aria-labelledby="work-title">
         <div class="hc-wrap">
           <div class="hc-head"><p class="hc-eyebrow">Portfolio</p><h2 id="work-title" class="hc-h2">Recent <em>frames.</em></h2></div>
@@ -127,7 +147,7 @@ const STEPS = [
         </dialog>
       </section>
 
-      <!-- =========================== 3 · PACKAGES =========================== -->
+      <!-- =========================== 4 · PACKAGES =========================== -->
       <section id="packages" class="hc-section hc-section--ink" aria-labelledby="packages-title">
         <div class="hc-wrap">
           <div class="hc-head"><p class="hc-eyebrow hc-eyebrow--light">Packages</p><h2 id="packages-title" class="hc-h2">Build <em>yours.</em></h2></div>
@@ -154,25 +174,6 @@ const STEPS = [
               <dl class="hc-quote__rows"><div><dt>Deposit to secure the date (30%)</dt><dd data-dep></dd></div><div><dt>Gallery delivered in</dt><dd data-delivery></dd></div></dl>
               <a href="#dates" class="hc-btn hc-btn--paper hc-btn--lg w-full" data-pack-go>Check availability</a>
             </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · PROCESS =========================== -->
-      <section id="process" class="hc-section" aria-labelledby="process-title">
-        <div class="hc-wrap">
-          <div class="hc-head"><p class="hc-eyebrow">How it works</p><h2 id="process-title" class="hc-h2">Five calm <em>steps.</em></h2></div>
-          <div class="hc-steps" data-steps>
-            <div class="hc-steps__line" aria-hidden="true"><i data-steps-fill></i></div>
-            <ol>
-              {STEPS.map(([n, t, d]) => <li class="hc-step" data-step><span class="hc-step__n hc-mono">{n}</span><h3>{t}</h3><p>{d}</p></li>)}
-            </ol>
-          </div>
-          <form class="hc-turn" data-turn novalidate>
-            <div><label for="t-kind">Shoot type</label><select id="t-kind" class="hc-input"><option value="42">Wedding</option><option value="7">Portrait</option><option value="10">Family</option><option value="14">Brand</option></select></div>
-            <div><label for="t-date">Shoot date</label><input id="t-date" type="date" class="hc-input" /></div>
-            <label class="hc-check"><input type="checkbox" data-rush /><span>Rush edit <small>(half the time, +£150)</small></span></label>
-            <p class="hc-turn__out" aria-live="polite"><span>You’ll receive your gallery by</span><b data-turn-out>Pick a date</b></p>
           </form>
         </div>
       </section>

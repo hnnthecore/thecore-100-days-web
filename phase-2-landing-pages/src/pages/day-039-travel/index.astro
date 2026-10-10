@@ -57,16 +57,19 @@ const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'
         <a href="#top" class="wf-logo" aria-label="Wayfarer Journeys, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="url(#wlg)" /><defs><linearGradient id="wlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a3d" /><stop offset="1" stop-color="#e84d8a" /></linearGradient></defs><path d="M7 20c4-1 6-5 9-9l9-2-3 10c-5 1-8 5-10 8l-2-3z" fill="#fff" opacity=".95" /></svg><span>Wayfarer</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
-            <li><a href="#places">Destinations</a></li><li><a href="#plan">Itinerary</a></li><li><a href="#price">Price</a></li><li><a href="#pack">Packing</a></li>
+            <li><a href="#plan">Itinerary</a></li><li><a href="#places">Destinations</a></li><li><a href="#price">Price</a></li><li><a href="#pack">Packing</a></li>
           </ul>
         </nav>
         <a href="#talk" class="wf-btn wf-btn--sun whitespace-nowrap">Talk to an expert</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="wf-hero" aria-labelledby="hero-title">
+        <Image src={ph_santorini} alt="" width={1800} class="wf-hero__bg" loading="eager" />
+        <div class="wf-hero__scrim" aria-hidden="true"></div>
         <div class="wf-stars" aria-hidden="true"></div>
         <div class="wf-wrap relative grid grid-cols-1 items-center gap-12 py-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:py-20">
           <div>
@@ -92,7 +95,26 @@ const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'
         </div>
       </section>
 
-      <!-- =========================== 2 · DESTINATIONS =========================== -->
+      <!-- =========================== 2 · ITINERARY =========================== -->
+      <section id="plan" class="wf-section wf-section--night" aria-labelledby="plan-title">
+        <div class="wf-wrap">
+          <div class="wf-head"><p class="wf-eyebrow wf-eyebrow--light">Itinerary builder</p><h2 id="plan-title" class="wf-h2">Your days, <span class="wf-grad">planned.</span></h2></div>
+          <form class="wf-planform" data-planform novalidate>
+            <div><label for="p-dest">Destination</label><select id="p-dest" class="wf-input wf-input--dark">{DEST.map((d) => <option value={d.id}>{d.name}, {d.country}</option>)}</select></div>
+            <div><div class="wf-row"><label for="p-days">Length of trip</label><b data-days-out>7 days</b></div><input id="p-days" class="wf-range" type="range" min="3" max="14" value="7" /></div>
+            <fieldset><legend>Pace</legend>
+              <div class="wf-opts"><label><input type="radio" name="pace" value="relaxed" /><span>Relaxed</span></label><label><input type="radio" name="pace" value="balanced" checked /><span>Balanced</span></label><label><input type="radio" name="pace" value="packed" /><span>Packed</span></label></div></fieldset>
+            <fieldset><legend>Include more of</legend>
+              <div class="wf-opts" data-cats>
+                {[['culture', 'Culture'], ['food', 'Food'], ['nature', 'Nature'], ['active', 'Active'], ['relax', 'Relaxing'], ['wildlife', 'Wildlife']].map(([k, l]) => <label><input type="checkbox" value={k} /><span>{l}</span></label>)}
+              </div></fieldset>
+          </form>
+          <ol class="wf-days" data-itin></ol>
+          <div class="mt-6 flex flex-wrap items-center gap-4"><button type="button" class="wf-btn wf-btn--ghost" data-copy>Copy itinerary</button><p class="text-sm text-white/70" role="status" data-copy-msg></p></div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · DESTINATIONS =========================== -->
       <section id="places" class="wf-section" aria-labelledby="places-title">
         <div class="wf-wrap">
           <div class="wf-head"><p class="wf-eyebrow">Destinations</p><h2 id="places-title" class="wf-h2">Eight places. <span class="wf-grad">One that’s yours.</span></h2></div>
@@ -117,25 +139,6 @@ const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'
             ))}
           </ul>
           <p class="wf-empty" data-empty hidden>Nothing matches all of that. Loosen the budget or month and we’ll find something.</p>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · ITINERARY =========================== -->
-      <section id="plan" class="wf-section wf-section--night" aria-labelledby="plan-title">
-        <div class="wf-wrap">
-          <div class="wf-head"><p class="wf-eyebrow wf-eyebrow--light">Itinerary builder</p><h2 id="plan-title" class="wf-h2">Your days, <span class="wf-grad">planned.</span></h2></div>
-          <form class="wf-planform" data-planform novalidate>
-            <div><label for="p-dest">Destination</label><select id="p-dest" class="wf-input wf-input--dark">{DEST.map((d) => <option value={d.id}>{d.name}, {d.country}</option>)}</select></div>
-            <div><div class="wf-row"><label for="p-days">Length of trip</label><b data-days-out>7 days</b></div><input id="p-days" class="wf-range" type="range" min="3" max="14" value="7" /></div>
-            <fieldset><legend>Pace</legend>
-              <div class="wf-opts"><label><input type="radio" name="pace" value="relaxed" /><span>Relaxed</span></label><label><input type="radio" name="pace" value="balanced" checked /><span>Balanced</span></label><label><input type="radio" name="pace" value="packed" /><span>Packed</span></label></div></fieldset>
-            <fieldset><legend>Include more of</legend>
-              <div class="wf-opts" data-cats>
-                {[['culture', 'Culture'], ['food', 'Food'], ['nature', 'Nature'], ['active', 'Active'], ['relax', 'Relaxing'], ['wildlife', 'Wildlife']].map(([k, l]) => <label><input type="checkbox" value={k} /><span>{l}</span></label>)}
-              </div></fieldset>
-          </form>
-          <ol class="wf-days" data-itin></ol>
-          <div class="mt-6 flex flex-wrap items-center gap-4"><button type="button" class="wf-btn wf-btn--ghost" data-copy>Copy itinerary</button><p class="text-sm text-white/70" role="status" data-copy-msg></p></div>
         </div>
       </section>
 

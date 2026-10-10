@@ -211,3 +211,26 @@ html .ev-band figure { position: relative; margin: 0; overflow: hidden; min-heig
 html .ev-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 html .ev-band figcaption { position: absolute; left: 0; bottom: 0; padding: 0.5rem 1rem; background: var(--volt); color: var(--night); font-weight: 800; font-size: 0.9rem; }
 @media (max-width: 760px) { html .ev-band { grid-template-columns: 1fr; } html .ev-band figure { min-height: 14rem; } }
+
+/* Layout redesign: lightning-strike diagonal. A huge bolt bleeds off the right edge across an angled yellow band */
+html .ev-hero { overflow: hidden; }
+html .ev-hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 58%, var(--volt) 58.2%, var(--volt) 71%, transparent 71.2%); opacity: 0.95; pointer-events: none; }
+@media (min-width: 1024px) {
+  html .ev-hero > .ev-wrap { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr) !important; }
+  html .ev-hero .ev-bolt { position: absolute; right: -6rem; top: 50%; translate: 0 -50%; width: 34rem; max-width: none; rotate: 8deg; z-index: 0; pointer-events: none; }
+  html .ev-hero .ev-wrap > div:first-child { position: relative; z-index: 2; }
+  html .ev-hero .ev-display { font-size: clamp(3.2rem, 6vw, 6.2rem); }
+  html .ev-hero .ev-bolt__tag { right: 8rem; left: auto; bottom: -1rem; rotate: -8deg; background: var(--night); color: var(--volt); }
+}
+
+/* Navigation redesign: bottom dock. On desktop the bar floats at the foot of the screen like an app dock */
+@media (min-width: 900px) {
+  html .ev-header { position: fixed !important; top: auto !important; bottom: 1rem; left: 50%; translate: -50% 0; width: min(54rem, calc(100vw - 15rem)); border-radius: 999px; background: rgb(10 15 61 / 0.94) !important; backdrop-filter: blur(14px) !important; box-shadow: 0 20px 50px -15px rgb(10 15 61 / 0.7); z-index: 60; border: 0 !important; }
+  html .ev-header > div { height: 3.6rem !important; padding-inline: 1.4rem; max-width: none !important; }
+  html .ev-header nav a, html .ev-header > div > a:first-child { color: #fff; }
+  html .ev-header nav a:hover { color: var(--volt); }
+  html .ev-hero { padding-top: 1.5rem; }
+  html .ev footer { padding-bottom: 5.5rem; }
+}
+
+html .ev-header em { color: var(--volt); }

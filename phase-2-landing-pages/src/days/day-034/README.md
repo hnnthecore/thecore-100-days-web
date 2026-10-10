@@ -39,3 +39,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | --- | --- | --- |
 | Band, large | Plumber fitting a waste pipe under a sink | https://unsplash.com/photos/c314Gh8dXAo |
 | Band, small | Plumber checking the trap and valves | https://unsplash.com/photos/wzIjLL4KB-4 |
+
+### Layout redesign
+
+The hero is now pipework: a copper pipe with joints runs down the copy, with today's slots as a narrow side card.
+
+### Navigation redesign
+
+The header is now a pipework bar, and the sections follow a different order from the other days.

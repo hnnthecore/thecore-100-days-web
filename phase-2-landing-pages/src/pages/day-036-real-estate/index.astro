@@ -57,13 +57,14 @@ const HOODS = [
         <a href="#top" class="ll-logo" aria-label="Latch and Lane, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><path d="M4 15 16 4l12 11v13H4z" fill="var(--coral)" /><rect x="13" y="17" width="6" height="11" rx="1.5" fill="var(--ink)" /></svg><span>Latch <em>&</em> Lane</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
-            <li><a href="#homes">Homes</a></li><li><a href="#afford">Affordability</a></li><li><a href="#value">Valuation</a></li><li><a href="#areas">Areas</a></li>
+            <li><a href="#areas">Areas</a></li><li><a href="#homes">Homes</a></li><li><a href="#afford">Affordability</a></li><li><a href="#value">Valuation</a></li>
           </ul>
         </nav>
         <a href="#viewing" class="ll-btn ll-btn--coral whitespace-nowrap">Book a viewing</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="ll-hero" aria-labelledby="hero-title">
@@ -90,7 +91,18 @@ const HOODS = [
         </div>
       </section>
 
-      <!-- =========================== 2 · LISTINGS =========================== -->
+      <!-- =========================== 2 · AREAS =========================== -->
+      <section id="areas" class="ll-section ll-section--sage" aria-labelledby="areas-title">
+        <div class="ll-wrap">
+          <div class="ll-head"><p class="ll-eyebrow">Neighbourhood guide</p><h2 id="areas-title" class="ll-h2">Where <em>should</em> you live?</h2></div>
+          <div class="ll-tabs" role="tablist" aria-label="Areas" data-tabs>
+            {HOODS.map((h, i) => <button type="button" role="tab" id={`at-${i}`} aria-controls="area-panel" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{h.id}</button>)}
+          </div>
+          <div id="area-panel" role="tabpanel" class="ll-hood" aria-live="polite" data-hood></div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · LISTINGS =========================== -->
       <section id="homes" class="ll-section" aria-labelledby="homes-title">
         <div class="ll-wrap">
           <div class="ll-head"><p class="ll-eyebrow">Properties</p><h2 id="homes-title" class="ll-h2">Homes on the <em>map.</em></h2></div>
@@ -144,7 +156,7 @@ const HOODS = [
         </div>
       </section>
 
-      <!-- =========================== 3 · AFFORD =========================== -->
+      <!-- =========================== 4 · AFFORD =========================== -->
       <section id="afford" class="ll-section ll-section--ink" aria-labelledby="afford-title">
         <div class="ll-wrap">
           <div class="ll-head"><p class="ll-eyebrow ll-eyebrow--light">Affordability</p><h2 id="afford-title" class="ll-h2">What can you <em>really</em> afford?</h2></div>
@@ -181,7 +193,7 @@ const HOODS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · VALUE =========================== -->
+      <!-- =========================== 5 · VALUE =========================== -->
       <section id="value" class="ll-section" aria-labelledby="value-title">
         <div class="ll-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div>
@@ -207,17 +219,6 @@ const HOODS = [
             <a href="#viewing" class="ll-btn ll-btn--coral" data-est-go>Book a free valuation visit</a>
           </div>
           <div class="ll-est ll-est--empty" data-est-empty><p>Enter your postcode and we’ll show an estimate with the local price trend.</p></div>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · AREAS =========================== -->
-      <section id="areas" class="ll-section ll-section--sage" aria-labelledby="areas-title">
-        <div class="ll-wrap">
-          <div class="ll-head"><p class="ll-eyebrow">Neighbourhood guide</p><h2 id="areas-title" class="ll-h2">Where <em>should</em> you live?</h2></div>
-          <div class="ll-tabs" role="tablist" aria-label="Areas" data-tabs>
-            {HOODS.map((h, i) => <button type="button" role="tab" id={`at-${i}`} aria-controls="area-panel" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{h.id}</button>)}
-          </div>
-          <div id="area-panel" role="tabpanel" class="ll-hood" aria-live="polite" data-hood></div>
         </div>
       </section>
 

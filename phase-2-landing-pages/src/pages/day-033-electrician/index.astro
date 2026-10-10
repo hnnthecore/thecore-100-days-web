@@ -44,13 +44,14 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
         <a href="#top" class="ev-logo" aria-label="Voltline Electrical, home"><svg viewBox="0 0 28 28" class="size-8" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--blue)" /><path d="M16 3 7 16h6l-2 9 10-14h-6z" fill="var(--volt)" /></svg><span>Volt<em>line</em></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
-            <li><a href="#jobs">Jobs & prices</a></li><li><a href="#triage">Emergency help</a></li><li><a href="#ev">EV chargers</a></li><li><a href="#safety">Safety checks</a></li>
+            <li><a href="#triage">Emergency help</a></li><li><a href="#jobs">Jobs & prices</a></li><li><a href="#safety">Safety checks</a></li><li><a href="#ev">EV chargers</a></li>
           </ul>
         </nav>
         <a href="#book" class="ev-btn ev-btn--volt whitespace-nowrap">Book an electrician</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="ev-hero" aria-labelledby="hero-title">
@@ -82,7 +83,28 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
         <figure><Image src={photoPanel} alt="Gloved hands testing a consumer unit with a multimeter" width={900} /><figcaption>Every circuit tested</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · HOUSE TOUR =========================== -->
+      <!-- =========================== 2 · TRIAGE =========================== -->
+      <section id="triage" class="ev-section ev-section--night" aria-labelledby="triage-title">
+        <div class="ev-wrap">
+          <div class="ev-head"><p class="ev-eyebrow ev-eyebrow--volt">Emergency help</p><h2 id="triage-title" class="ev-h2">What’s <span class="ev-volt">happening?</span></h2></div>
+          <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div class="ev-symptoms" role="radiogroup" aria-label="Choose the closest description" data-symptoms>
+              {SYMPTOMS.map((s) => <label class={`ev-sym ev-sym--${s.level}`}><input type="radio" name="symptom" value={s.id} /><span>{s.label}</span></label>)}
+            </div>
+            <div class="ev-advice" data-advice aria-live="polite">
+              <p class="ev-advice__empty" data-advice-empty>Pick the closest match on the left and we’ll tell you exactly what to do. If anyone is in danger, call <b>999</b> first.</p>
+              <div data-advice-body hidden>
+                <p class="ev-advice__level" data-level></p>
+                <h3 class="ev-advice__t" data-advice-t></h3>
+                <ol class="ev-advice__steps" data-steps></ol>
+                <a class="ev-btn ev-btn--volt ev-btn--lg" data-advice-cta href="#book"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · HOUSE TOUR =========================== -->
       <section id="jobs" class="ev-section" aria-labelledby="jobs-title">
         <div class="ev-wrap">
           <div class="ev-head"><p class="ev-eyebrow">Jobs & prices</p><h2 id="jobs-title" class="ev-h2">Tap a room. <span class="ev-blue">See the price.</span></h2></div>
@@ -127,28 +149,38 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
         </div>
       </section>
 
-      <!-- =========================== 3 · TRIAGE =========================== -->
-      <section id="triage" class="ev-section ev-section--night" aria-labelledby="triage-title">
-        <div class="ev-wrap">
-          <div class="ev-head"><p class="ev-eyebrow ev-eyebrow--volt">Emergency help</p><h2 id="triage-title" class="ev-h2">What’s <span class="ev-volt">happening?</span></h2></div>
-          <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-            <div class="ev-symptoms" role="radiogroup" aria-label="Choose the closest description" data-symptoms>
-              {SYMPTOMS.map((s) => <label class={`ev-sym ev-sym--${s.level}`}><input type="radio" name="symptom" value={s.id} /><span>{s.label}</span></label>)}
-            </div>
-            <div class="ev-advice" data-advice aria-live="polite">
-              <p class="ev-advice__empty" data-advice-empty>Pick the closest match on the left and we’ll tell you exactly what to do. If anyone is in danger, call <b>999</b> first.</p>
-              <div data-advice-body hidden>
-                <p class="ev-advice__level" data-level></p>
-                <h3 class="ev-advice__t" data-advice-t></h3>
-                <ol class="ev-advice__steps" data-steps></ol>
-                <a class="ev-btn ev-btn--volt ev-btn--lg" data-advice-cta href="#book"></a>
-              </div>
-            </div>
+      <!-- =========================== 4 · SAFETY =========================== -->
+      <section id="safety" class="ev-section ev-section--blue" aria-labelledby="safety-title">
+        <div class="ev-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div>
+            <p class="ev-eyebrow ev-eyebrow--volt">Electrical safety</p>
+            <h2 id="safety-title" class="ev-h2 mt-4">Is your <span class="ev-volt">certificate</span> in date?</h2>
+            <p class="mt-6 max-w-sm text-lg leading-relaxed text-white/80">An Electrical Installation Condition Report (EICR) checks the wiring in your property. Tell us when yours was last done.</p>
+            <ul class="ev-eicr-facts" role="list"><li>1–2 hours for a typical home</li><li>Written report with codes and fixes</li><li>From £149 for a 2-bed flat</li></ul>
           </div>
+          <form class="ev-eicr" data-eicr novalidate>
+            <fieldset><legend>I am a…</legend>
+              <div class="ev-opts">
+                <label><input type="radio" name="kind" value="landlord" checked /><span>Landlord</span></label>
+                <label><input type="radio" name="kind" value="home" /><span>Homeowner</span></label>
+                <label><input type="radio" name="kind" value="biz" /><span>Business</span></label>
+              </div>
+            </fieldset>
+            <div>
+              <label for="x-date">Last EICR date</label>
+              <input id="x-date" type="date" class="ev-input" aria-describedby="x-msg" />
+              <label class="ev-check"><input type="checkbox" data-unknown /><span>I don’t have one / I’m not sure</span></label>
+            </div>
+            <div class="ev-status" data-status aria-live="polite" data-state="idle">
+              <p class="ev-status__t" id="x-msg" data-status-t>Enter a date to check.</p>
+              <p class="ev-status__p" data-status-p></p>
+              <a href="#book" class="ev-btn ev-btn--volt" data-eicr-book hidden>Book an EICR</a>
+            </div>
+          </form>
         </div>
       </section>
 
-      <!-- =========================== 4 · EV =========================== -->
+      <!-- =========================== 5 · EV =========================== -->
       <section id="ev" class="ev-section" aria-labelledby="ev-title">
         <div class="ev-wrap">
           <div class="ev-head"><p class="ev-eyebrow">EV chargers</p><h2 id="ev-title" class="ev-h2">Charge at home. <span class="ev-blue">Keep the difference.</span></h2></div>
@@ -177,37 +209,6 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
               </div>
               <p class="ev-result__pay" data-payback></p>
               <a href="#book" class="ev-btn ev-btn--volt ev-btn--lg mt-4" data-ev-book>Get a fixed-price install quote</a>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · SAFETY =========================== -->
-      <section id="safety" class="ev-section ev-section--blue" aria-labelledby="safety-title">
-        <div class="ev-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-          <div>
-            <p class="ev-eyebrow ev-eyebrow--volt">Electrical safety</p>
-            <h2 id="safety-title" class="ev-h2 mt-4">Is your <span class="ev-volt">certificate</span> in date?</h2>
-            <p class="mt-6 max-w-sm text-lg leading-relaxed text-white/80">An Electrical Installation Condition Report (EICR) checks the wiring in your property. Tell us when yours was last done.</p>
-            <ul class="ev-eicr-facts" role="list"><li>1–2 hours for a typical home</li><li>Written report with codes and fixes</li><li>From £149 for a 2-bed flat</li></ul>
-          </div>
-          <form class="ev-eicr" data-eicr novalidate>
-            <fieldset><legend>I am a…</legend>
-              <div class="ev-opts">
-                <label><input type="radio" name="kind" value="landlord" checked /><span>Landlord</span></label>
-                <label><input type="radio" name="kind" value="home" /><span>Homeowner</span></label>
-                <label><input type="radio" name="kind" value="biz" /><span>Business</span></label>
-              </div>
-            </fieldset>
-            <div>
-              <label for="x-date">Last EICR date</label>
-              <input id="x-date" type="date" class="ev-input" aria-describedby="x-msg" />
-              <label class="ev-check"><input type="checkbox" data-unknown /><span>I don’t have one / I’m not sure</span></label>
-            </div>
-            <div class="ev-status" data-status aria-live="polite" data-state="idle">
-              <p class="ev-status__t" id="x-msg" data-status-t>Enter a date to check.</p>
-              <p class="ev-status__p" data-status-p></p>
-              <a href="#book" class="ev-btn ev-btn--volt" data-eicr-book hidden>Book an EICR</a>
             </div>
           </form>
         </div>

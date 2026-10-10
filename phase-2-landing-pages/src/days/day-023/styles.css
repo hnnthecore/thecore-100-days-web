@@ -254,3 +254,5 @@ html .nm-hero .nm-wrap > div:first-child > dl { grid-column: 2; grid-row: 4; mar
   html .nm-header > div > nav a { display: block; padding: 0.45rem 1.1rem; border-radius: 999px; transition: background-color 0.15s, color 0.15s; }
   html .nm-header > div > nav a:hover { background: var(--accent); color: #fff; }
 }
+
+html .nm-btn--accent { color: #0b0c0e; }

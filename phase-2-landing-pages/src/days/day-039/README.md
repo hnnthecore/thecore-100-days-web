@@ -49,3 +49,11 @@ The eight destination cards use real photographs from Pexels (free to use, no at
 | Bali | https://www.pexels.com/photo/34136177/ |
 | Serengeti | https://www.pexels.com/photo/33650529/ |
 | Reykjavik | https://www.pexels.com/photo/31291321/ |
+
+### Layout redesign
+
+The hero is now a destination cover: a full-bleed Santorini photograph behind the hero with the trip matcher as a panel.
+
+### Navigation redesign
+
+The header is now a floating pill bar, and the sections follow a different order from the other days.

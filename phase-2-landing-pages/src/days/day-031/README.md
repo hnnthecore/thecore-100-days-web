@@ -32,7 +32,7 @@ The Saltmarsh is a fictional hotel. Rooms, rates, reviews and availability are d
 
 ## Photography
 
-The hero window and all six room cards use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-031/` and converted to WebP at build time. I skipped bedrooms with visible hotel names or product labels on pillows. The Sea View Suite photo is also cropped to the balcony for The Lighthouse; swap in a unique photo once the real hotel supplies them.
+The hero window and all six room cards use real photographs from Unsplash (free for commercial use, no attribution required), stored in `src/assets/day-031/` and converted to WebP at build time. I skipped bedrooms with visible hotel names or product labels on pillows. The Lighthouse now has its own photograph (Pexels 31817153), a suite with a floor-to-ceiling sea window.
 
 | Use | Photo | Source |
 | --- | --- | --- |
@@ -41,3 +41,11 @@ The hero window and all six room cards use real photographs from Unsplash (free 
 | Courtyard Double | Sitting room with desk | https://unsplash.com/photos/xQbmc2FnK3Y |
 | Marsh View King | King bed with view to the bathroom | https://unsplash.com/photos/3OBxWoy75yw |
 | Hero window, Sea View Suite, The Lighthouse | Twin beds with a sea view | https://unsplash.com/photos/uXYHodDhiG4 |
+
+### Layout redesign
+
+The hero is now a magazine layout: a tall arched window beside the headline, with the availability search as a wide booking bar underneath.
+
+### Navigation redesign
+
+The header is now a split masthead (menu left, logo centred, actions right), and the sections follow a different order from the other days.

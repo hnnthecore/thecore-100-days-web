@@ -227,3 +227,34 @@ html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-ch
 html .ll-arch__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; display: block; }
 html .ll-prop__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale 0.7s var(--ease-out-expo); }
 html .ll-prop:hover .ll-prop__photo { scale: 1.05; }
+
+/* Layout redesign: edge-bleed photo. The picture runs from the left edge of the screen, square-cut, with the search card beside it */
+@media (min-width: 1024px) {
+  html .ll-hero { overflow: hidden; }
+  html .ll-hero > .ll-wrap { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) !important; align-items: stretch; gap: 4rem; padding-top: 0; padding-bottom: 0; }
+  html .ll-hero .ll-arch { order: -1; max-width: none; margin-left: calc(50% - 50vw); margin-right: 0; }
+  html .ll-hero .ll-arch__img { height: 100%; min-height: 36rem; aspect-ratio: auto; border-radius: 0 !important; box-shadow: none; }
+  html .ll-hero .ll-arch__card { left: auto; right: -2rem; bottom: 3rem; }
+  html .ll-hero .ll-wrap > div:first-child { padding-block: 4rem; }
+  html .ll-hero .ll-display { font-size: clamp(2.8rem, 4.6vw, 4.8rem); }
+}
+@media (min-width: 1024px) {
+  html .ll-hero > .ll-wrap { max-width: none !important; padding-inline: 0 !important; gap: 0 !important; }
+  html .ll-hero .ll-arch { margin-left: 0; }
+  html .ll-hero .ll-wrap > div:first-child { padding-inline: clamp(2.5rem, 5vw, 6rem) clamp(1.5rem, 6vw, 8rem); }
+  html .ll-hero .ll-arch__card { right: 1.5rem; }
+}
+
+html .ll-hero .ll-display em { color: #e5503f; }
+html .ll-hero .ll-eyebrow { color: #c93c2b; }
+html .ll-heart { color: #8a8f9c; }
+
+/* Navigation redesign: file tabs. Each link is a tab with an accent bar on top */
+@media (min-width: 1024px) {
+  html .ll-header > div > nav ul { gap: 0.25rem; align-self: end; }
+  html .ll-header > div > nav a { display: block; padding: 1.5rem 1.2rem 1.3rem; border-top: 4px solid transparent; transition: border-color 0.15s, background-color 0.15s; }
+  html .ll-header > div > nav a:hover { border-top-color: #e5503f; background: rgb(20 33 61 / 0.05); }
+}
+html .ll-sum__photo { width: 100%; height: 11rem; object-fit: cover; display: block; }
+
+html .ll-btn--coral { color: #14213d; }

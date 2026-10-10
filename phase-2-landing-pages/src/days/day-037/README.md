@@ -43,3 +43,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 ### Pet photos
 
 The hero pet picker, the booking summary and the team avatars now show real animal photographs from Pexels (free to use): golden retriever 30810890, cat 39497325, rabbit 34451824, beagle 38010. The hero and booking photos are embedded in the script so they work from disk. The symptom checker keeps its own artwork.
+
+### Layout redesign
+
+The hero is now friendly blobs: the pet stage is an organic blob with the picker floating on it, and a wavy edge closes the hero.
+
+### Navigation redesign
+
+The header is now a floating pill bar, and the sections follow a different order from the other days.

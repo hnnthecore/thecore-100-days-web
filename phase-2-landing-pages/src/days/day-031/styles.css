@@ -13,7 +13,7 @@
   --sea: #1e3b44;
   --sea-2: #2b5160;
   --brass: #b98b4d;
-  --brass-d: #96703a;
+  --brass-d: #7d5c2d;
   --ink: #14262c;
   --muted: #5d6f73;
   --line: rgb(20 38 44 / 0.14);
@@ -191,6 +191,27 @@ html .hl-room__photo { width: 100%; height: 100%; object-fit: cover; display: bl
 html .hl-room:hover .hl-room__photo { scale: 1.05; }
 html .hl-room.is-off .hl-room__photo { filter: grayscale(1); }
 html .hl-room__photo--loft { object-position: 50% 45%; }
-html .hl-room__photo--light { object-position: 88% 50%; scale: 1.35; transform-origin: 85% 50%; }
-html .hl-room:hover .hl-room__photo--light { scale: 1.4; }
 @media (prefers-reduced-motion: reduce) { html .hl-room__photo { transition: none; } }
+
+/* Layout redesign: magazine. A tall arched window on the left with the headline beside it, and the availability search as a wide booking bar underneath */
+@media (min-width: 1024px) {
+  html .hl-hero > .hl-wrap { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr) !important; grid-template-rows: auto auto auto auto auto; column-gap: 4rem; align-items: center; padding-top: 2.5rem; padding-bottom: 3rem; }
+  html .hl-hero .hl-wrap > div:first-child { display: contents; }
+  html .hl-hero .hl-window { grid-column: 1; grid-row: 1 / span 3; max-width: none; }
+  html .hl-hero .hl-window__photo { aspect-ratio: 3 / 4.2; }
+  html .hl-hero .hl-eyebrow { grid-column: 2; grid-row: 1; align-self: end; margin: 0; }
+  html .hl-hero h1.hl-display { grid-column: 2; grid-row: 2; margin: 0.5rem 0; font-size: clamp(3.2rem, 6vw, 6rem); }
+  html .hl-hero .hl-wrap > div:first-child > p:not(.hl-eyebrow):not(.hl-searchmsg) { grid-column: 2; grid-row: 3; margin: 0; align-self: start; }
+  html .hl-hero .hl-search { grid-column: 1 / -1; grid-row: 4; margin-top: 3rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; align-items: end; gap: 1.5rem; padding: 1.25rem 1.75rem; border-radius: 999px; }
+  html .hl-hero .hl-searchmsg { grid-column: 1 / -1; grid-row: 5; margin: 0.5rem 0 0; text-align: center; }
+}
+
+html .hl-btn--brass { color: #15110d; }
+
+/* Navigation redesign: split masthead. Menu left, logo centred, actions right */
+@media (min-width: 1024px) {
+  html .hl-header > div { display: grid !important; grid-template-columns: 1fr auto 1fr; align-items: center; }
+  html .hl-header > div > a:first-child { grid-column: 2; grid-row: 1; justify-self: center; }
+  html .hl-header > div > nav { grid-column: 1; grid-row: 1; justify-self: start; display: block; }
+  html .hl-header > div > :last-child { grid-column: 3; grid-row: 1; justify-self: end; }
+}

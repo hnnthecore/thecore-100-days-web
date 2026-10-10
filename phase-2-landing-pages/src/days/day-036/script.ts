@@ -3,6 +3,7 @@
  * Buy / rent search with a live map · saved homes · affordability maths · postcode valuation with trend · area guide · viewing booking.
  */
 import { home, type Kind } from './art';
+import { LISTING_THUMBS } from './photos';
 
 type Prop = { id: string; mode: 'buy' | 'rent'; title: string; area: string; kind: Kind; price: number; beds: number; baths: number; sqft: number; tag: string; epc: string; x: number; y: number; wall: string; roof: string };
 type Hood = { id: string; blurb: string; price: number; rent: number; commute: number; schools: number; green: number; night: number; tags: string[] };
@@ -227,7 +228,7 @@ function paintSlots() {
 function paintBook() {
   const p = PROPS.find((x) => x.id === propSel.value);
   paintDays(); paintSlots();
-  $('[data-sum-img]').innerHTML = p ? home(p.kind, p.wall, p.roof, p.title) : home('house', '#efe3cf', '#3d5a80', 'A typical home');
+  $('[data-sum-img]').innerHTML = p && LISTING_THUMBS[p.id] ? `<img class="ll-sum__photo" src="${LISTING_THUMBS[p.id]}" alt="${p.title} in ${p.area}" width="520" height="300" />` : home('house', '#efe3cf', '#3d5a80', 'A typical home');
   $('[data-sum-title]').textContent = p ? p.title : 'Free home valuation';
   $('[data-sum-area]').textContent = p ? `${p.area} · ${p.beds} bed · ${p.baths} bath` : 'At your address';
   $('[data-sum-price]').textContent = p ? gbp(p.price) + (p.mode === 'rent' ? ' pcm' : '') : 'Free';

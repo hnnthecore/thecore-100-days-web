@@ -244,3 +244,36 @@ textarea.ax-input { height: auto; padding-block: 0.7rem; }
 
 /* Contrast fixes from the audit (shared header and footer): text now meets WCAG AA. */
 html body > div:nth-child(2) > header:nth-child(1) > div:nth-child(1) > a:nth-child(3) { background-color: #e4181d !important; }
+
+/* Layout redesign: night showroom. Black hero with a red racing stripe and the colour studio as a lit display stand */
+html .ax-hero { background: radial-gradient(60% 50% at 70% 60%, rgb(232 38 43 / 0.28), transparent 70%), linear-gradient(115deg, transparent 0 58%, rgb(232 38 43 / 0.9) 58% 59.2%, transparent 59.2% 60.6%, rgb(255 255 255 / 0.9) 60.6% 61.2%, transparent 61.2%), #0b0b0d; color: #fff; }
+html .ax-hero .ax-eyebrow { color: #d7d9df; }
+html .ax-hero h1.ax-display { color: #fff; font-size: clamp(3.4rem, 8.5vw, 8.5rem); line-height: 0.9; }
+html .ax-hero p { color: rgb(255 255 255 / 0.82); }
+html .ax-hero .ax-studio { margin-top: 3rem; box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(255 255 255 / 0.18); }
+html .ax-hero .ax-studio, html .ax-hero .ax-studio p, html .ax-hero .ax-studio span, html .ax-hero .ax-studio b { color: var(--ink); }
+html .ax-hero .ax-kpis { background: rgb(255 255 255 / 0.18); }
+html .ax-hero .ax-kpis > div { background: #141417; }
+html .ax-hero .ax-kpis dt { color: #b9bcc4; }
+html .ax-hero .ax-kpis dd { color: #fff; }
+
+/* Navigation redesign: boxed bar. A heavy rule, squared tabs and uppercase labels */
+html .ax-header { border-bottom: 3px solid var(--red) !important; background: #0b0b0d !important; backdrop-filter: none !important; }
+html .ax-header > div { height: 4.25rem !important; }
+html .ax-header nav a, html .ax-header > div > a:first-child { color: #fff; }
+@media (min-width: 1024px) {
+  html .ax-header > div > nav { align-self: stretch; }
+  html .ax-header > div > nav ul { height: 100%; gap: 0; align-items: stretch; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; font-size: 0.74rem; }
+  html .ax-header > div > nav li { display: flex; }
+  html .ax-header > div > nav a { display: flex; align-items: center; padding-inline: 1.15rem; border-left: 2px solid var(--red); transition: background-color 0.15s, color 0.15s; }
+  html .ax-header > div > nav li:last-child a { border-right: 2px solid var(--red); }
+  html .ax-header > div > nav a:hover { background: var(--red); color: #fff; }
+}
+
+html .ax-header .ax-logo small { color: #b9bcc4; }
+html .ax-card__art { padding: 0; overflow: hidden; aspect-ratio: 3 / 2; background: #111; }
+html .ax-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale 0.6s var(--ease-out-expo); }
+html .ax-card:hover .ax-card__photo { scale: 1.06; }
+html .ax-sum__photo { width: 100%; height: 11rem; object-fit: cover; display: block; border-radius: 0.5rem; }
+
+html .ax-btn--red { background: #c41a1f; color: #fff; }

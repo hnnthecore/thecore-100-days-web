@@ -7,6 +7,18 @@
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import { Image } from 'astro:assets';
+import car_golf from '../../assets/day-035/car-golf.jpg';
+import car_m3 from '../../assets/day-035/car-m3.jpg';
+import car_rav4 from '../../assets/day-035/car-rav4.jpg';
+import car_3t from '../../assets/day-035/car-3t.jpg';
+import car_tt from '../../assets/day-035/car-tt.jpg';
+import car_niro from '../../assets/day-035/car-niro.jpg';
+import car_fiesta from '../../assets/day-035/car-fiesta.jpg';
+import car_v60 from '../../assets/day-035/car-v60.jpg';
+import car_cclass from '../../assets/day-035/car-cclass.jpg';
+const CAR_PHOTOS: Record<string, any> = { 'golf': car_golf, 'm3': car_m3, 'rav4': car_rav4, '3t': car_3t, 'tt': car_tt, 'niro': car_niro, 'fiesta': car_fiesta, 'v60': car_v60, 'cclass': car_cclass };
+const CAR_ALTS: Record<string, string> = {"golf":"A teal Volkswagen Golf hatchback on a track road","m3":"A white Tesla Model 3 seen from the rear three-quarter at dusk","rav4":"A silver Toyota RAV4 parked below snowy mountains","3t":"A silver BMW 3 Series Touring estate with a roof box","tt":"A red Audi TT coupe from behind on an autumn road","niro":"A grey Kia Niro on a motorway","fiesta":"A red Ford Fiesta in an underground car park","v60":"A dark Volvo V60 estate on a city street at dusk","cclass":"A black Mercedes-Benz C-Class saloon"};
 import { car } from '../../days/day-035/art';
 import '../../days/day-035/styles.css';
 
@@ -48,13 +60,14 @@ const CHECKS = [
         <a href="#top" class="ax-logo" aria-label="Apex Motor Group, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0d0d0f" /><path d="M6 24 16 7l10 17" fill="none" stroke="#e8262b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /></svg><span>APEX<small>MOTOR GROUP</small></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm font-semibold">
-            <li><a href="#stock">Used cars</a></li><li><a href="#finance">Finance</a></li><li><a href="#partex">Part-exchange</a></li><li><a href="#check">Our promise</a></li>
+            <li><a href="#stock">Used cars</a></li><li><a href="#check">Our promise</a></li><li><a href="#finance">Finance</a></li><li><a href="#partex">Part-exchange</a></li>
           </ul>
         </nav>
         <a href="#drive" class="ax-btn ax-btn--red whitespace-nowrap">Book a test drive</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="ax-hero" aria-labelledby="hero-title">
@@ -107,7 +120,7 @@ const CHECKS = [
           <ul class="ax-grid" role="list" data-grid>
             {CARS.map((c) => (
               <li class="ax-card" data-car={c.id}>
-                <div class="ax-card__art" set:html={car(c.body as any, c.color, `${c.make} ${c.model} in ${c.colorName}`)} />
+                <div class="ax-card__art"><Image src={CAR_PHOTOS[c.id]} alt={CAR_ALTS[c.id]} width={720} class="ax-card__photo" /></div>
                 <div class="ax-card__body">
                   <p class="ax-card__make">{c.make} · {c.year}</p>
                   <h3 class="ax-card__model">{c.model}</h3>
@@ -136,7 +149,31 @@ const CHECKS = [
         </dialog>
       </section>
 
-      <!-- =========================== 3 · FINANCE =========================== -->
+      <!-- =========================== 3 · CHECK =========================== -->
+      <section id="check" class="ax-section ax-section--grey" aria-labelledby="check-title">
+        <div class="ax-wrap">
+          <div class="ax-head"><p class="ax-eyebrow"><i></i>Our promise</p><h2 id="check-title" class="ax-h2">100 points. <span class="ax-red">No shortcuts.</span></h2></div>
+          <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]">
+            <div class="ax-ring" data-ring>
+              <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#dcdcd6" stroke-width="10" /><circle data-ring-arc cx="60" cy="60" r="52" fill="none" stroke="#e8262b" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)" /></svg>
+              <p class="ax-ring__n"><b data-ring-n>0</b><span>point check</span></p>
+            </div>
+            <div>
+              <div class="ax-acc">
+                {CHECKS.map(([name, n, items], i) => (
+                  <details name="check" open={i === 0}>
+                    <summary><span>{name}</span><b class="ax-mono">{n} checks</b><i style={`--w:${n * 5}%`} aria-hidden="true"></i></summary>
+                    <ul role="list">{items.map((it) => <li>{it}</li>)}</ul>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+          <ul class="ax-promises" role="list"><li><b>12 months</b>warranty included</li><li><b>7 days</b>no-quibble returns</li><li><b>1 year</b>roadside assistance</li><li><b>Full HPI</b>history report free</li></ul>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · FINANCE =========================== -->
       <section id="finance" class="ax-section ax-section--ink" aria-labelledby="finance-title">
         <div class="ax-wrap">
           <div class="ax-head"><p class="ax-eyebrow ax-eyebrow--light"><i></i>Finance calculator</p><h2 id="finance-title" class="ax-h2">What will it <span class="ax-red">cost a month?</span></h2></div>
@@ -170,7 +207,7 @@ const CHECKS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · PART-EX =========================== -->
+      <!-- =========================== 5 · PART-EX =========================== -->
       <section id="partex" class="ax-section" aria-labelledby="partex-title">
         <div class="ax-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div>
@@ -196,30 +233,6 @@ const CHECKS = [
               <a href="#drive" class="ax-btn ax-btn--red" data-val-go>Use this in my test drive booking</a>
             </div>
           </form>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · CHECK =========================== -->
-      <section id="check" class="ax-section ax-section--grey" aria-labelledby="check-title">
-        <div class="ax-wrap">
-          <div class="ax-head"><p class="ax-eyebrow"><i></i>Our promise</p><h2 id="check-title" class="ax-h2">100 points. <span class="ax-red">No shortcuts.</span></h2></div>
-          <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]">
-            <div class="ax-ring" data-ring>
-              <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#dcdcd6" stroke-width="10" /><circle data-ring-arc cx="60" cy="60" r="52" fill="none" stroke="#e8262b" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)" /></svg>
-              <p class="ax-ring__n"><b data-ring-n>0</b><span>point check</span></p>
-            </div>
-            <div>
-              <div class="ax-acc">
-                {CHECKS.map(([name, n, items], i) => (
-                  <details name="check" open={i === 0}>
-                    <summary><span>{name}</span><b class="ax-mono">{n} checks</b><i style={`--w:${n * 5}%`} aria-hidden="true"></i></summary>
-                    <ul role="list">{items.map((it) => <li>{it}</li>)}</ul>
-                  </details>
-                ))}
-              </div>
-            </div>
-          </div>
-          <ul class="ax-promises" role="list"><li><b>12 months</b>warranty included</li><li><b>7 days</b>no-quibble returns</li><li><b>1 year</b>roadside assistance</li><li><b>Full HPI</b>history report free</li></ul>
         </div>
       </section>
 

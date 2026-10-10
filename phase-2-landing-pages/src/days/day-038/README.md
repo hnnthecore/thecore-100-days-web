@@ -40,3 +40,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 | Band, large | Scooping roasted beans from the cooling tray | https://unsplash.com/photos/YC6RVdoTtIk |
 | Band | Beans in the roaster drum | https://unsplash.com/photos/_7CVm353m7A |
 | Band | Hand holding roasted beans over a pan | https://unsplash.com/photos/rKYRJu0n06Y |
+
+### Layout redesign
+
+The hero is now a roast control panel: a dark roastery hero with a large headline and the roast dial as a wide instrument panel.
+
+### Navigation redesign
+
+The header is now an inverted dark bar, and the sections follow a different order from the other days.

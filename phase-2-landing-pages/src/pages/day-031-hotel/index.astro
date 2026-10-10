@@ -14,7 +14,8 @@ import pGarden from '../../assets/day-031/garden.jpg';
 import pCourt from '../../assets/day-031/court.jpg';
 import pMarsh from '../../assets/day-031/marsh.jpg';
 import pSea from '../../assets/day-031/seaview.jpg';
-const ROOM_PHOTOS: Record<string, any> = { garden: pGarden, court: pCourt, marsh: pMarsh, sea: pSea, loft: pHero, light: pSea };
+import pLight from '../../assets/day-031/lighthouse.jpg';
+const ROOM_PHOTOS: Record<string, any> = { garden: pGarden, court: pCourt, marsh: pMarsh, sea: pSea, loft: pHero, light: pLight };
 import { room, view } from '../../days/day-031/art';
 import '../../days/day-031/styles.css';
 
@@ -70,13 +71,14 @@ const hv = view('sea', sceneId);
         <a href="#top" class="hl-logo" aria-label="The Saltmarsh, home">The <em>Saltmarsh</em></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-9 text-[15px] font-medium">
-            <li><a href="#rooms">Rooms</a></li><li><a href="#rates">Rates</a></li><li><a href="#stay">Plan your stay</a></li><li><a href="#guests">Guests</a></li>
+            <li><a href="#stay">Plan your stay</a></li><li><a href="#rooms">Rooms</a></li><li><a href="#guests">Guests</a></li><li><a href="#rates">Rates</a></li>
           </ul>
         </nav>
         <a href="#reserve" class="hl-btn hl-btn--brass whitespace-nowrap">Reserve</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="hl-hero" aria-labelledby="hero-title">
@@ -104,43 +106,7 @@ const hv = view('sea', sceneId);
         </div>
       </section>
 
-      <!-- =========================== 2 · ROOMS =========================== -->
-      <section id="rooms" class="hl-section" aria-labelledby="rooms-title">
-        <div class="hl-wrap">
-          <div class="hl-head"><p class="hl-eyebrow">Rooms & suites</p><h2 id="rooms-title" class="hl-h2">Six ways to <em>wake up here.</em></h2></div>
-          <p class="hl-avail" aria-live="polite" data-avail></p>
-          <ul class="hl-rooms" role="list">
-            {ROOMS.map((r) => (
-              <li class="hl-room" data-room={r.id}>
-                <div class="hl-room__img"><Image src={ROOM_PHOTOS[r.id]} alt={`The ${r.name}`} width={800} class={`hl-room__photo hl-room__photo--${r.id}`} /></div>
-                <div class="hl-room__body">
-                  <h3 class="hl-room__name">{r.name}</h3>
-                  <p class="hl-room__meta">{r.size} m² · sleeps {r.sleeps} · {r.bed}</p>
-                  <p class="hl-room__text">{r.text}</p>
-                  <div class="hl-room__foot">
-                    <p class="hl-room__price"><b data-room-price>£{r.price}</b><small data-room-note>from, per night</small></p>
-                    <button type="button" class="hl-btn hl-btn--sea" data-pick={r.id}>Select</button>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · RATES =========================== -->
-      <section id="rates" class="hl-section hl-section--sea" aria-labelledby="rates-title">
-        <div class="hl-wrap">
-          <div class="hl-head"><p class="hl-eyebrow hl-eyebrow--light">Rate calendar</p><h2 id="rates-title" class="hl-h2">Find the <em>best nights.</em></h2></div>
-          <div class="hl-calhead">
-            <p class="hl-calhelp" aria-live="polite" data-cal-help>Pick your arrival date, then your departure date. Prices show the lowest room rate.</p>
-            <div class="hl-legend" aria-hidden="true"><i class="l1"></i>Best value<i class="l2"></i><i class="l3"></i><i class="l4"></i>Peak</div>
-          </div>
-          <div class="hl-cals" data-cals></div>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · STAY =========================== -->
+      <!-- =========================== 2 · STAY =========================== -->
       <section id="stay" class="hl-section" aria-labelledby="stay-title">
         <div class="hl-wrap">
           <div class="hl-head"><p class="hl-eyebrow">Plan your stay</p><h2 id="stay-title" class="hl-h2">Add the <em>good bits.</em></h2></div>
@@ -164,7 +130,31 @@ const hv = view('sea', sceneId);
         </div>
       </section>
 
-      <!-- =========================== 5 · GUESTS =========================== -->
+      <!-- =========================== 3 · ROOMS =========================== -->
+      <section id="rooms" class="hl-section" aria-labelledby="rooms-title">
+        <div class="hl-wrap">
+          <div class="hl-head"><p class="hl-eyebrow">Rooms & suites</p><h2 id="rooms-title" class="hl-h2">Six ways to <em>wake up here.</em></h2></div>
+          <p class="hl-avail" aria-live="polite" data-avail></p>
+          <ul class="hl-rooms" role="list">
+            {ROOMS.map((r) => (
+              <li class="hl-room" data-room={r.id}>
+                <div class="hl-room__img"><Image src={ROOM_PHOTOS[r.id]} alt={`The ${r.name}`} width={800} class={`hl-room__photo hl-room__photo--${r.id}`} /></div>
+                <div class="hl-room__body">
+                  <h3 class="hl-room__name">{r.name}</h3>
+                  <p class="hl-room__meta">{r.size} m² · sleeps {r.sleeps} · {r.bed}</p>
+                  <p class="hl-room__text">{r.text}</p>
+                  <div class="hl-room__foot">
+                    <p class="hl-room__price"><b data-room-price>£{r.price}</b><small data-room-note>from, per night</small></p>
+                    <button type="button" class="hl-btn hl-btn--sea" data-pick={r.id}>Select</button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · GUESTS =========================== -->
       <section id="guests" class="hl-section hl-section--glass" aria-labelledby="guests-title">
         <div class="hl-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           <div>
@@ -182,6 +172,18 @@ const hv = view('sea', sceneId);
               <li><b>4 min</b>walk to the beach</li><li><b>12 min</b>ferry to Blakeney Point</li><li><b>40 min</b>from King’s Lynn station</li><li><b>2 h 15</b>from London King’s Cross</li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · RATES =========================== -->
+      <section id="rates" class="hl-section hl-section--sea" aria-labelledby="rates-title">
+        <div class="hl-wrap">
+          <div class="hl-head"><p class="hl-eyebrow hl-eyebrow--light">Rate calendar</p><h2 id="rates-title" class="hl-h2">Find the <em>best nights.</em></h2></div>
+          <div class="hl-calhead">
+            <p class="hl-calhelp" aria-live="polite" data-cal-help>Pick your arrival date, then your departure date. Prices show the lowest room rate.</p>
+            <div class="hl-legend" aria-hidden="true"><i class="l1"></i>Best value<i class="l2"></i><i class="l3"></i><i class="l4"></i>Peak</div>
+          </div>
+          <div class="hl-cals" data-cals></div>
         </div>
       </section>
 

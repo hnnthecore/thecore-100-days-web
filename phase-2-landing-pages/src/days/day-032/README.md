@@ -43,3 +43,11 @@ The photo band under the hero uses real photographs from Unsplash (free for comm
 ### Team photo
 
 The team section now opens with a real team photograph from Pexels (https://www.pexels.com/photo/6195121/). The four portrait placeholders stay because the cleaners are fictional, and a stock photo of one named person would be misleading.
+
+### Layout redesign
+
+The hero is now an inset rounded panel with the instant quote on the left and the copy on the right.
+
+### Navigation redesign
+
+The header is now a floating pill bar, and the sections follow a different order from the other days.

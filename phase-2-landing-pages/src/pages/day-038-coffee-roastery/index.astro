@@ -52,13 +52,14 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
         <a href="#top" class="eo-logo" aria-label="Ember and Oak, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#d9622b" /><path d="M16 5c-4 6-7 9-7 13a7 7 0 0 0 14 0c0-4-3-7-7-13z" fill="#1e1410" /><path d="M16 14c-2 3-3 4-3 6a3 3 0 0 0 6 0c0-2-1-3-3-6z" fill="#f5ecdc" /></svg><span>Ember <em>&</em> Oak</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
-            <li><a href="#beans">Beans</a></li><li><a href="#brew">Brew guide</a></li><li><a href="#quiz">Find your coffee</a></li><li><a href="#subscribe">Subscribe</a></li>
+            <li><a href="#quiz">Find your coffee</a></li><li><a href="#beans">Beans</a></li><li><a href="#brew">Brew guide</a></li><li><a href="#subscribe">Subscribe</a></li>
           </ul>
         </nav>
         <button type="button" class="eo-bagbtn" data-bag-open aria-label="Your bag: 0 items"><span aria-hidden="true">🛍</span> <b data-bag-count>0</b></button>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="eo-hero" aria-labelledby="hero-title">
@@ -90,7 +91,35 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
         <figure><Image src={photoHand} alt="A hand holding a few roasted coffee beans above a pan full of beans" width={900} /><figcaption>Checked by hand</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · BEANS =========================== -->
+      <!-- =========================== 2 · QUIZ =========================== -->
+      <section id="quiz" class="eo-section" aria-labelledby="quiz-title">
+        <div class="eo-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div>
+            <p class="eo-eyebrow">Taste quiz</p>
+            <h2 id="quiz-title" class="eo-h2 mt-4">Which coffee is <em>yours?</em></h2>
+            <form class="eo-quiz" data-quiz novalidate>
+              <fieldset><legend>1 · How do you brew at home?</legend>
+                <div class="eo-opts"><label><input type="radio" name="q1" value="espresso" /><span>Espresso machine</span></label><label><input type="radio" name="q1" value="filter" /><span>Filter or pour-over</span></label><label><input type="radio" name="q1" value="any" /><span>Cafetière / anything</span></label></div></fieldset>
+              <fieldset><legend>2 · Pick a morning mood</legend>
+                <div class="eo-opts"><label><input type="radio" name="q2" value="bright" /><span>Bright and fruity</span></label><label><input type="radio" name="q2" value="sweet" /><span>Sweet and cosy</span></label><label><input type="radio" name="q2" value="bold" /><span>Bold and smoky</span></label></div></fieldset>
+              <fieldset><legend>3 · How do you take it?</legend>
+                <div class="eo-opts"><label><input type="radio" name="q3" value="black" /><span>Black</span></label><label><input type="radio" name="q3" value="milk" /><span>With milk</span></label></div></fieldset>
+            </form>
+          </div>
+          <div class="eo-match" aria-live="polite" data-match>
+            <p class="eo-match__idle" data-match-idle>Answer all three and we’ll match you with a coffee from today’s roast.</p>
+            <div data-match-body hidden>
+              <p class="eo-match__k">Your match</p>
+              <h3 class="eo-match__name" data-match-name></h3>
+              <p class="eo-match__why" data-match-why></p>
+              <svg viewBox="-110 -105 220 215" class="eo-radar" role="img" aria-label="Flavour profile" data-radar></svg>
+              <button type="button" class="eo-btn eo-btn--ember" data-match-add>Add to bag</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · BEANS =========================== -->
       <section id="beans" class="eo-section" aria-labelledby="beans-title">
         <div class="eo-wrap">
           <div class="eo-head"><p class="eo-eyebrow">The beans</p><h2 id="beans-title" class="eo-h2">Six coffees. <em>One roaster.</em></h2></div>
@@ -135,7 +164,7 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
         </aside>
       </section>
 
-      <!-- =========================== 3 · BREW =========================== -->
+      <!-- =========================== 4 · BREW =========================== -->
       <section id="brew" class="eo-section eo-section--dark" aria-labelledby="brew-title">
         <div class="eo-wrap">
           <div class="eo-head"><p class="eo-eyebrow eo-eyebrow--light">Brew guide</p><h2 id="brew-title" class="eo-h2">Brew it <em>properly.</em></h2></div>
@@ -158,34 +187,6 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
               </div>
               <div class="eo-timer__btns"><button type="button" class="eo-btn eo-btn--ember" data-start>▶ Start</button><button type="button" class="eo-btn eo-btn--ghost" data-reset>Reset</button></div>
               <p class="sr-only" aria-live="polite" data-timer-live></p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- =========================== 4 · QUIZ =========================== -->
-      <section id="quiz" class="eo-section" aria-labelledby="quiz-title">
-        <div class="eo-wrap grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div>
-            <p class="eo-eyebrow">Taste quiz</p>
-            <h2 id="quiz-title" class="eo-h2 mt-4">Which coffee is <em>yours?</em></h2>
-            <form class="eo-quiz" data-quiz novalidate>
-              <fieldset><legend>1 · How do you brew at home?</legend>
-                <div class="eo-opts"><label><input type="radio" name="q1" value="espresso" /><span>Espresso machine</span></label><label><input type="radio" name="q1" value="filter" /><span>Filter or pour-over</span></label><label><input type="radio" name="q1" value="any" /><span>Cafetière / anything</span></label></div></fieldset>
-              <fieldset><legend>2 · Pick a morning mood</legend>
-                <div class="eo-opts"><label><input type="radio" name="q2" value="bright" /><span>Bright and fruity</span></label><label><input type="radio" name="q2" value="sweet" /><span>Sweet and cosy</span></label><label><input type="radio" name="q2" value="bold" /><span>Bold and smoky</span></label></div></fieldset>
-              <fieldset><legend>3 · How do you take it?</legend>
-                <div class="eo-opts"><label><input type="radio" name="q3" value="black" /><span>Black</span></label><label><input type="radio" name="q3" value="milk" /><span>With milk</span></label></div></fieldset>
-            </form>
-          </div>
-          <div class="eo-match" aria-live="polite" data-match>
-            <p class="eo-match__idle" data-match-idle>Answer all three and we’ll match you with a coffee from today’s roast.</p>
-            <div data-match-body hidden>
-              <p class="eo-match__k">Your match</p>
-              <h3 class="eo-match__name" data-match-name></h3>
-              <p class="eo-match__why" data-match-why></p>
-              <svg viewBox="-110 -105 220 215" class="eo-radar" role="img" aria-label="Flavour profile" data-radar></svg>
-              <button type="button" class="eo-btn eo-btn--ember" data-match-add>Add to bag</button>
             </div>
           </div>
         </div>

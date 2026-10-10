@@ -74,7 +74,7 @@
 .eo-dial__stage svg { width: 5.2rem; height: auto; transition: filter 0.4s; }
 .eo-dial__stage svg:nth-child(1) { rotate: -18deg; translate: 0.6rem 0.5rem; } .eo-dial__stage svg:nth-child(2) { rotate: 6deg; translate: 0 -0.6rem; scale: 1.15; } .eo-dial__stage svg:nth-child(3) { rotate: 26deg; translate: -0.6rem 0.6rem; }
 .eo-dial__stage::before { content: ""; position: absolute; inset: auto 10% 0; height: 3rem; border-radius: 50%; background: radial-gradient(closest-side, rgb(0 0 0 / 0.45), transparent); }
-.eo-dial .eo-row label { color: var(--cream) !important; }
+.eo-dial .eo-row label { color: #1e1410 !important; }
 .eo-range__ticks { display: flex; justify-content: space-between; margin-top: 0.3rem; font-size: 0.75rem; color: #b9a58f; }
 .eo-dial__notes { min-height: 3.2rem; font-size: 1.05rem; line-height: 1.5; }
 .eo-meters { display: grid; gap: 0.7rem; }
@@ -228,3 +228,25 @@ html .eo-band figure { position: relative; margin: 0; overflow: hidden; border-r
 html .eo-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 html .eo-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.6rem 1.1rem 0.9rem; font-weight: 700; color: #fff; background: linear-gradient(transparent, rgb(30 20 16 / 0.85)); }
 @media (max-width: 800px) { html .eo-band { grid-template-columns: 1fr; } html .eo-band figure { min-height: 14rem; } }
+
+/* Layout redesign: roast control panel. A dark roastery hero with the headline set large and the roast dial as a wide instrument panel */
+html .eo-hero { background: radial-gradient(60% 60% at 80% 100%, rgb(217 98 43 / 0.35), transparent 70%), var(--espresso); color: var(--cream); }
+html .eo-hero > .eo-wrap { display: flex; flex-direction: column; gap: 2.5rem; padding-top: 3rem; padding-bottom: 3.5rem; }
+html .eo-hero .eo-wrap > div:first-child { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 3rem; row-gap: 1.25rem; align-items: end; }
+html .eo-hero .eo-eyebrow { grid-column: 1 / -1; margin: 0; color: #f0b48a; }
+html .eo-hero h1.eo-display { grid-column: 1; grid-row: 2 / span 3; margin: 0; color: var(--cream); font-size: clamp(3.2rem, 7.2vw, 7.2rem); line-height: 0.92; }
+html .eo-hero .eo-wrap > div:first-child > p:not(.eo-eyebrow):not(.eo-roasted) { grid-column: 2; grid-row: 2; margin: 0; color: rgb(245 236 220 / 0.82); }
+html .eo-hero .eo-wrap > div:first-child > div { grid-column: 2; grid-row: 3; margin: 0; }
+html .eo-hero .eo-roasted { grid-column: 2; grid-row: 4; margin: 0; color: rgb(245 236 220 / 0.7); }
+html .eo-hero .eo-btn--line, html .eo-hero .eo-btn--ghost { color: var(--cream); border-color: rgb(245 236 220 / 0.5); }
+@media (min-width: 900px) { html .eo-hero .eo-dial { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: 2rem; padding: 1.5rem 2rem; border-radius: 1.5rem; background: var(--cream); color: var(--espresso); } html .eo-hero .eo-dial__stage { max-height: 18rem; } }
+@media (max-width: 900px) { html .eo-hero .eo-wrap > div:first-child { display: block; } html .eo-hero .eo-wrap > div:first-child > * { margin-top: 1.25rem; } }
+
+html .eo-hero .eo-dial label, html .eo-hero .eo-dial .eo-row label { color: #1e1410 !important; }
+html .eo-hero .eo-dial .eo-range__ticks, html .eo-hero .eo-dial .eo-range__ticks span, html .eo-hero .eo-meters span { color: #6e5d4e; }
+html .eo-hero .eo-dial .eo-link { color: #a8420f; }
+
+/* Navigation redesign: inverted bar. A dark header over the light page with an accent rule */
+html .eo-header { background: #1e1410 !important; border-bottom: 4px solid #d9622b !important; backdrop-filter: none !important; }
+html .eo-header nav a, html .eo-header > div > a:first-child { color: #f5ecdc; }
+html .eo-header nav a:hover { color: #d9622b; }

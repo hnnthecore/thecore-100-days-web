@@ -64,13 +64,14 @@ const FAQ = [
         <a href="#top" class="ll-logo" aria-label="Lemon and Linen, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><ellipse cx="16" cy="17" rx="12" ry="10" fill="#ffe45c" /><path d="M16 7c1-3 4-4 6-3-1 3-3 4-6 3z" fill="#1cc38b" /><path d="M9 15q3-4 8-3" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7" /></svg>Lemon <em>&</em> Linen</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-medium">
-            <li><a href="#services">Services</a></li><li><a href="#rooms">What’s included</a></li><li><a href="#book">Book</a></li><li><a href="#team">Our team</a></li><li><a href="#faq">FAQ</a></li>
+            <li><a href="#rooms">What’s included</a></li><li><a href="#services">Services</a></li><li><a href="#team">Our team</a></li><li><a href="#book">Book</a></li><li><a href="#faq">FAQ</a></li>
           </ul>
         </nav>
         <a href="#top" class="ll-btn ll-btn--lemon whitespace-nowrap">Get a quote</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="ll-hero" aria-labelledby="hero-title">
@@ -120,7 +121,21 @@ const FAQ = [
         <figure><Image src={photoKitchen} alt="A bright white kitchen with a gas hob and marble worktops" width={800} /><figcaption>Kitchens that gleam</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · SERVICES =========================== -->
+      <!-- =========================== 2 · ROOMS =========================== -->
+      <section id="rooms" class="ll-section ll-section--mint" aria-labelledby="rooms-title">
+        <div class="ll-wrap">
+          <div class="ll-head"><p class="ll-eyebrow">What’s included</p><h2 id="rooms-title" class="ll-h2">Room by room. <span class="ll-hl">Nothing skipped.</span></h2></div>
+          <div class="ll-roomtop">
+            <div class="ll-tabs" role="tablist" aria-label="Rooms" data-rtabs>
+              {ROOMS.map((r, i) => <button type="button" role="tab" id={`rt-${r.id}`} aria-controls="rpanel" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}><span aria-hidden="true">{r.icon}</span> {r.name}</button>)}
+            </div>
+            <label class="ll-switch"><input type="checkbox" data-deep /><span class="ll-switch__ui" aria-hidden="true"></span><span>Show deep-clean extras</span></label>
+          </div>
+          <div id="rpanel" role="tabpanel" class="ll-checklist" aria-live="polite" data-checklist></div>
+        </div>
+      </section>
+
+      <!-- =========================== 3 · SERVICES =========================== -->
       <section id="services" class="ll-section" aria-labelledby="services-title">
         <div class="ll-wrap">
           <div class="ll-head"><p class="ll-eyebrow">What we clean</p><h2 id="services-title" class="ll-h2">Six ways to get your <span class="ll-hl">weekend back.</span></h2></div>
@@ -144,21 +159,37 @@ const FAQ = [
         </div>
       </section>
 
-      <!-- =========================== 3 · ROOMS =========================== -->
-      <section id="rooms" class="ll-section ll-section--mint" aria-labelledby="rooms-title">
+      <!-- =========================== 4 · TEAM =========================== -->
+      <section id="team" class="ll-section ll-section--teal" aria-labelledby="team-title">
         <div class="ll-wrap">
-          <div class="ll-head"><p class="ll-eyebrow">What’s included</p><h2 id="rooms-title" class="ll-h2">Room by room. <span class="ll-hl">Nothing skipped.</span></h2></div>
-          <div class="ll-roomtop">
-            <div class="ll-tabs" role="tablist" aria-label="Rooms" data-rtabs>
-              {ROOMS.map((r, i) => <button type="button" role="tab" id={`rt-${r.id}`} aria-controls="rpanel" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}><span aria-hidden="true">{r.icon}</span> {r.name}</button>)}
-            </div>
-            <label class="ll-switch"><input type="checkbox" data-deep /><span class="ll-switch__ui" aria-hidden="true"></span><span>Show deep-clean extras</span></label>
-          </div>
-          <div id="rpanel" role="tabpanel" class="ll-checklist" aria-live="polite" data-checklist></div>
+          <div class="ll-head"><p class="ll-eyebrow ll-eyebrow--lemon">The people</p><h2 id="team-title" class="ll-h2">Cleaners you’d <span class="ll-hl ll-hl--dark">trust with a key.</span></h2></div>
+          <dl class="ll-stats">
+            <div><dt>Homes cleaned</dt><dd data-count="48000">0</dd></div>
+            <div><dt>Average rating</dt><dd data-count="4.9" data-dec="1">0</dd></div>
+            <div><dt>Re-clean requests</dt><dd data-count="0.8" data-dec="1" data-suffix="%">0</dd></div>
+            <div><dt>Staff retention</dt><dd data-count="91" data-suffix="%">0</dd></div>
+          </dl>
+          <figure class="ll-teamphoto"><Image src={photoTeam} alt="Three Lemon & Linen cleaners in orange overalls standing in a freshly cleaned living room" width={1200} /></figure>
+          <ul class="ll-team" role="list">
+            {TEAM.map((t) => (
+              <li class="ll-person">
+                <svg viewBox="0 0 80 80" class="ll-person__av" role="img" aria-label={`Portrait placeholder for ${t.name}`}><circle cx="40" cy="40" r="40" fill={t.c} /><circle cx="40" cy="32" r="13" fill="#fff" opacity=".9" /><path d="M14 74q4-24 26-24t26 24" fill="#fff" opacity=".9" /></svg>
+                <h3>{t.name}</h3>
+                <p class="ll-person__role">{t.role} · {t.yrs} yrs with us</p>
+                <p class="ll-person__q">“{t.quote}”</p>
+              </li>
+            ))}
+          </ul>
+          <ul class="ll-guar" role="list">
+            <li><b>Vetted</b>DBS, right-to-work and 2 references</li>
+            <li><b>Insured</b>£5m public liability</li>
+            <li><b>Eco</b>Plant-based, EU Ecolabel products</li>
+            <li><b>24h guarantee</b>Not happy? We re-clean free</li>
+          </ul>
         </div>
       </section>
 
-      <!-- =========================== 4 · BOOK =========================== -->
+      <!-- =========================== 5 · BOOK =========================== -->
       <section id="book" class="ll-section" aria-labelledby="book-title">
         <div class="ll-wrap">
           <div class="ll-head"><p class="ll-eyebrow">Book a clean</p><h2 id="book-title" class="ll-h2">Pick a slot. <span class="ll-hl">We’ll do the rest.</span></h2></div>
@@ -202,36 +233,6 @@ const FAQ = [
               <p class="mt-4 text-sm opacity-60">Demo only: nothing was sent or charged.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · TEAM =========================== -->
-      <section id="team" class="ll-section ll-section--teal" aria-labelledby="team-title">
-        <div class="ll-wrap">
-          <div class="ll-head"><p class="ll-eyebrow ll-eyebrow--lemon">The people</p><h2 id="team-title" class="ll-h2">Cleaners you’d <span class="ll-hl ll-hl--dark">trust with a key.</span></h2></div>
-          <dl class="ll-stats">
-            <div><dt>Homes cleaned</dt><dd data-count="48000">0</dd></div>
-            <div><dt>Average rating</dt><dd data-count="4.9" data-dec="1">0</dd></div>
-            <div><dt>Re-clean requests</dt><dd data-count="0.8" data-dec="1" data-suffix="%">0</dd></div>
-            <div><dt>Staff retention</dt><dd data-count="91" data-suffix="%">0</dd></div>
-          </dl>
-          <figure class="ll-teamphoto"><Image src={photoTeam} alt="Three Lemon & Linen cleaners in orange overalls standing in a freshly cleaned living room" width={1200} /></figure>
-          <ul class="ll-team" role="list">
-            {TEAM.map((t) => (
-              <li class="ll-person">
-                <svg viewBox="0 0 80 80" class="ll-person__av" role="img" aria-label={`Portrait placeholder for ${t.name}`}><circle cx="40" cy="40" r="40" fill={t.c} /><circle cx="40" cy="32" r="13" fill="#fff" opacity=".9" /><path d="M14 74q4-24 26-24t26 24" fill="#fff" opacity=".9" /></svg>
-                <h3>{t.name}</h3>
-                <p class="ll-person__role">{t.role} · {t.yrs} yrs with us</p>
-                <p class="ll-person__q">“{t.quote}”</p>
-              </li>
-            ))}
-          </ul>
-          <ul class="ll-guar" role="list">
-            <li><b>Vetted</b>DBS, right-to-work and 2 references</li>
-            <li><b>Insured</b>£5m public liability</li>
-            <li><b>Eco</b>Plant-based, EU Ecolabel products</li>
-            <li><b>24h guarantee</b>Not happy? We re-clean free</li>
-          </ul>
         </div>
       </section>
 

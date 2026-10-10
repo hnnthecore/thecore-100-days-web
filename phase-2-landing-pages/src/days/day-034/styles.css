@@ -236,3 +236,30 @@ html .cp-band img { position: absolute; inset: 0; width: 100%; height: 100%; obj
 html .cp-band figure:nth-child(2) img { object-position: 60% 40%; }
 html .cp-band figcaption { position: absolute; left: 0.9rem; bottom: 0.9rem; padding: 0.4rem 0.95rem; border-radius: 999px; background: var(--cream); color: var(--teal); font-weight: 700; font-size: 0.9rem; }
 @media (max-width: 760px) { html .cp-band { grid-template-columns: 1fr; } html .cp-band figure { min-height: 14rem; } }
+
+/* Layout redesign: pipework. A copper pipe runs down the left of the copy with joints at each step, and today's slots become a narrow side card */
+@media (min-width: 1024px) {
+  html .cp-hero > .cp-wrap { grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.6fr) !important; align-items: start; gap: 4rem; padding-top: 3rem; }
+  html .cp-hero .cp-wrap > div:first-child { position: relative; padding-left: 4.5rem; }
+  html .cp-hero .cp-wrap > div:first-child::before { content: ""; position: absolute; left: 1.1rem; top: 0.4rem; bottom: 0.4rem; width: 1.1rem; border-radius: 1rem; background: linear-gradient(90deg, #8e4a22, var(--copper) 40%, #f0b48a 55%, var(--copper) 70%, #8e4a22); box-shadow: 0 4px 10px rgb(18 48 47 / 0.25); }
+  html .cp-hero .cp-wrap > div:first-child > * { position: relative; }
+  html .cp-hero .cp-wrap > div:first-child > *::after { content: ""; position: absolute; left: -4.1rem; top: 0.5em; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--cream); border: 0.4rem solid var(--copper); box-shadow: 0 0 0 0.3rem var(--cream); }
+  html .cp-hero .cp-wrap > div:first-child > .cp-trust::after, html .cp-hero .cp-wrap > div:first-child > p:nth-of-type(2)::after { display: none; }
+  html .cp-hero .cp-display { font-size: clamp(3.4rem, 6.4vw, 6.4rem); }
+  html .cp-hero .cp-today { position: sticky; top: 6rem; }
+}
+
+
+html .cp { --muted: #4d605e; }
+
+/* Navigation redesign: pipework. A copper pipe runs under the bar and the links sit on joints */
+html .cp-header { border-bottom: 0 !important; box-shadow: none !important; position: sticky; }
+html .cp-header::after { content: ""; display: block; height: 0.55rem; background: linear-gradient(180deg, #8e4a22, #c86b3c 35%, #f0b48a 50%, #c86b3c 65%, #8e4a22); }
+@media (min-width: 1024px) {
+  html .cp-header > div > nav ul { gap: 2.4rem; }
+  html .cp-header > div > nav a { position: relative; padding-block: 0.4rem; }
+  html .cp-header > div > nav a::before { content: ""; position: absolute; left: 50%; bottom: -1.05rem; width: 0.8rem; height: 0.8rem; margin-left: -0.4rem; border-radius: 50%; background: #fbf5ec; border: 3px solid #c86b3c; opacity: 0; scale: 0.4; transition: opacity 0.2s, scale 0.2s; z-index: 2; }
+  html .cp-header > div > nav a:hover::before { opacity: 1; scale: 1; }
+}
+
+html .cp-header .cp-btn--copper { background: #a8532a; color: #fff; }

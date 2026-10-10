@@ -53,7 +53,8 @@ if (header && nav && bar && !header.querySelector('[data-burger], .sys-burger'))
     });
     panel.appendChild(ul);
 
-    bar.appendChild(btn);
+    // Placed before the nav so the header's own last child (its call-to-action) keeps any last-child styling; CSS order puts the button last on screen
+    bar.insertBefore(btn, nav);
     header.appendChild(panel);
 
     const theme = () => {

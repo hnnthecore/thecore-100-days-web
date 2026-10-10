@@ -62,13 +62,14 @@ const VETS = [
         <a href="#top" class="vt-logo" aria-label="Pawprint Veterinary Care, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--pine)" /><g fill="var(--sun)"><ellipse cx="16" cy="21" rx="6" ry="5" /><circle cx="9" cy="14" r="2.6" /><circle cx="14" cy="9.5" r="2.6" /><circle cx="19" cy="9.5" r="2.6" /><circle cx="24" cy="14" r="2.6" /></g></svg><span>Pawprint</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-bold">
-            <li><a href="#care">Care timeline</a></li><li><a href="#check">Symptom checker</a></li><li><a href="#feed">Feeding</a></li><li><a href="#vets">Our vets</a></li>
+            <li><a href="#check">Symptom checker</a></li><li><a href="#care">Care timeline</a></li><li><a href="#vets">Our vets</a></li><li><a href="#feed">Feeding</a></li>
           </ul>
         </nav>
         <a href="#book" class="vt-btn vt-btn--sun whitespace-nowrap">Book a visit</a>
       </div>
     </header>
 
+    <!-- reordered -->
     <main id="main">
       <!-- =========================== 1 · HERO =========================== -->
       <section id="top" class="vt-hero" aria-labelledby="hero-title">
@@ -101,23 +102,7 @@ const VETS = [
         <figure><Image src={photoTable} alt="A vet trimming fur on a dog lying on a stainless-steel examination table" width={800} /><figcaption>Calm, careful treatment</figcaption></figure>
       </div>
 
-      <!-- =========================== 2 · TIMELINE =========================== -->
-      <section id="care" class="vt-section" aria-labelledby="care-title">
-        <div class="vt-wrap">
-          <div class="vt-head"><p class="vt-eyebrow">Care timeline</p><h2 id="care-title" class="vt-h2">What does <em data-care-who>your dog</em> need, and when?</h2></div>
-          <div class="vt-controls">
-            <div role="group" aria-label="Pet" class="vt-seg" data-care-pet>
-              <button type="button" data-p="dog" aria-pressed="true">Dog</button><button type="button" data-p="cat" aria-pressed="false">Cat</button><button type="button" data-p="rabbit" aria-pressed="false">Rabbit</button>
-            </div>
-            <div role="group" aria-label="Life stage" class="vt-seg" data-care-stage>
-              <button type="button" data-s="young" aria-pressed="true">Puppy or kitten</button><button type="button" data-s="adult" aria-pressed="false">Adult</button><button type="button" data-s="senior" aria-pressed="false">Senior</button>
-            </div>
-          </div>
-          <ol class="vt-tl" aria-live="polite" data-timeline-list></ol>
-        </div>
-      </section>
-
-      <!-- =========================== 3 · CHECKER =========================== -->
+      <!-- =========================== 2 · CHECKER =========================== -->
       <section id="check" class="vt-section vt-section--pine" aria-labelledby="check-title">
         <div class="vt-wrap">
           <div class="vt-head"><p class="vt-eyebrow vt-eyebrow--sun">Symptom checker</p><h2 id="check-title" class="vt-h2">Should I <em>worry?</em></h2></div>
@@ -151,7 +136,46 @@ const VETS = [
         </div>
       </section>
 
-      <!-- =========================== 4 · FEEDING =========================== -->
+      <!-- =========================== 3 · TIMELINE =========================== -->
+      <section id="care" class="vt-section" aria-labelledby="care-title">
+        <div class="vt-wrap">
+          <div class="vt-head"><p class="vt-eyebrow">Care timeline</p><h2 id="care-title" class="vt-h2">What does <em data-care-who>your dog</em> need, and when?</h2></div>
+          <div class="vt-controls">
+            <div role="group" aria-label="Pet" class="vt-seg" data-care-pet>
+              <button type="button" data-p="dog" aria-pressed="true">Dog</button><button type="button" data-p="cat" aria-pressed="false">Cat</button><button type="button" data-p="rabbit" aria-pressed="false">Rabbit</button>
+            </div>
+            <div role="group" aria-label="Life stage" class="vt-seg" data-care-stage>
+              <button type="button" data-s="young" aria-pressed="true">Puppy or kitten</button><button type="button" data-s="adult" aria-pressed="false">Adult</button><button type="button" data-s="senior" aria-pressed="false">Senior</button>
+            </div>
+          </div>
+          <ol class="vt-tl" aria-live="polite" data-timeline-list></ol>
+        </div>
+      </section>
+
+      <!-- =========================== 4 · VETS =========================== -->
+      <section id="vets" class="vt-section vt-section--sun" aria-labelledby="vets-title">
+        <div class="vt-wrap">
+          <div class="vt-head"><p class="vt-eyebrow">Meet the team</p><h2 id="vets-title" class="vt-h2">Find the <em>right vet.</em></h2></div>
+          <div class="vt-chips" role="group" aria-label="Filter the team" data-vet-filter>
+            <button type="button" data-skill="all" aria-pressed="true">Everyone</button><button type="button" data-skill="dogs" aria-pressed="false">Dogs</button><button type="button" data-skill="cats" aria-pressed="false">Cats</button><button type="button" data-skill="rabbits" aria-pressed="false">Rabbits</button><button type="button" data-skill="dental" aria-pressed="false">Dental</button><button type="button" data-skill="surgery" aria-pressed="false">Surgery</button>
+          </div>
+          <ul class="vt-team" role="list">
+            {VETS.map((v, i) => (
+              <li class="vt-vet" data-vet={v.id} data-skills={v.skills.join(' ')}>
+                <div class="vt-vet__av" style={`background:${['#ffe3b5', '#dfe6f5', '#fde1e5', '#d5ecdc'][i]}`} ><Image src={VET_PETS[i]} alt={`${v.name}'s patient of the week`} width={160} class="vt-vet__photo" /></div>
+                <h3>{v.name}</h3>
+                <p class="vt-vet__role">{v.role}</p>
+                <p class="vt-vet__text">{v.text}</p>
+                <p class="vt-vet__days">In clinic: {v.days}</p>
+                <a href="#book" class="vt-link" data-pick-vet={v.id}>Book with {v.name.split(' ')[0] === 'Dr' ? v.name.split(' ')[1] : v.name.split(' ')[0]} →</a>
+              </li>
+            ))}
+          </ul>
+          <p class="vt-vets__none" data-vets-none hidden>No one matches that filter right now. Try “Everyone”.</p>
+        </div>
+      </section>
+
+      <!-- =========================== 5 · FEEDING =========================== -->
       <section id="feed" class="vt-section" aria-labelledby="feed-title">
         <div class="vt-wrap grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div>
@@ -184,29 +208,6 @@ const VETS = [
             <dl class="vt-bowl__rows"><div><dt data-dry-l>Dry food</dt><dd data-dry></dd></div><div><dt>Or wet food</dt><dd data-wet></dd></div><div><dt>Treats (max 10%)</dt><dd data-treat></dd></div></dl>
             <p class="vt-fine" data-feed-note></p>
           </div>
-        </div>
-      </section>
-
-      <!-- =========================== 5 · VETS =========================== -->
-      <section id="vets" class="vt-section vt-section--sun" aria-labelledby="vets-title">
-        <div class="vt-wrap">
-          <div class="vt-head"><p class="vt-eyebrow">Meet the team</p><h2 id="vets-title" class="vt-h2">Find the <em>right vet.</em></h2></div>
-          <div class="vt-chips" role="group" aria-label="Filter the team" data-vet-filter>
-            <button type="button" data-skill="all" aria-pressed="true">Everyone</button><button type="button" data-skill="dogs" aria-pressed="false">Dogs</button><button type="button" data-skill="cats" aria-pressed="false">Cats</button><button type="button" data-skill="rabbits" aria-pressed="false">Rabbits</button><button type="button" data-skill="dental" aria-pressed="false">Dental</button><button type="button" data-skill="surgery" aria-pressed="false">Surgery</button>
-          </div>
-          <ul class="vt-team" role="list">
-            {VETS.map((v, i) => (
-              <li class="vt-vet" data-vet={v.id} data-skills={v.skills.join(' ')}>
-                <div class="vt-vet__av" style={`background:${['#ffe3b5', '#dfe6f5', '#fde1e5', '#d5ecdc'][i]}`} ><Image src={VET_PETS[i]} alt={`${v.name}'s patient of the week`} width={160} class="vt-vet__photo" /></div>
-                <h3>{v.name}</h3>
-                <p class="vt-vet__role">{v.role}</p>
-                <p class="vt-vet__text">{v.text}</p>
-                <p class="vt-vet__days">In clinic: {v.days}</p>
-                <a href="#book" class="vt-link" data-pick-vet={v.id}>Book with {v.name.split(' ')[0] === 'Dr' ? v.name.split(' ')[1] : v.name.split(' ')[0]} →</a>
-              </li>
-            ))}
-          </ul>
-          <p class="vt-vets__none" data-vets-none hidden>No one matches that filter right now. Try “Everyone”.</p>
         </div>
       </section>
 

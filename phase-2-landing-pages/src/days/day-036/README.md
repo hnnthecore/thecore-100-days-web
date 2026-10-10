@@ -41,3 +41,13 @@ The hero arch uses a real photograph from Unsplash (free for commercial use, no 
 ### Listing photos
 
 All nine listing cards now use real photographs from Pexels (free to use), chosen to match each property type. Pexels IDs: s1 3639504, s2 7377669, s3 32711440, s4 17987656, s5 34099360, r1 12625643, r2 4655752, r3 10628470, r4 280222. The valuation summary keeps a drawn house because it changes with the form.
+
+### Layout redesign
+
+The hero is now an edge-bleed photo running from the left edge of the screen, with the search card beside it.
+
+### Navigation redesign
+
+The header is now file-style tabs, and the sections follow a different order from the other days.
+
+The viewing-request summary now shows the chosen property's photograph instead of a drawn house. With no property selected it still shows the drawn house.
