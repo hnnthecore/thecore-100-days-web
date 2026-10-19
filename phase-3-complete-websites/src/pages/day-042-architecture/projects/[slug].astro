@@ -1,0 +1,53 @@
+---
+/** Day 042 · Atelier Nord · one case study per project, generated from the "projects" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-042/Shell.astro';
+import ProjectCard from '../../../components/day-042/ProjectCard.astro';
+import { Image } from 'astro:assets';
+import { PROJECT_PHOTOS } from '../../../days/day-042/photos';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('projects')).sort((a, b) => b.data.year - a.data.year || a.id.localeCompare(b.id));
+  return all.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length], related: all.filter((p) => p.id !== entry.id && p.data.type === entry.data.type).concat(all.filter((p) => p.id !== entry.id && p.data.type !== entry.data.type)).slice(0, 3) },
+  }));
+}
+const { entry, prev, next, related } = Astro.props;
+const p = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${p.title}, ${p.location} · Atelier Nord`} description={`${p.title}: ${p.summary} ${p.type} project in ${p.location}, ${p.year}, ${p.area.toLocaleString('en-GB')} m².`} themeColor="#16181b" icon="📐" day={42}>
+  <Shell active="projects">
+    <header class="an-pagehead">
+      <div class="an-wrap">
+        <ol class="an-crumbs" aria-label="Breadcrumb"><li><a href="/day-042-architecture/">Home</a></li><li><a href="/day-042-architecture/projects/">Projects</a></li><li aria-current="page">{p.title}</li></ol>
+        <p class="an-eyebrow">{p.type} · {p.location}</p>
+        <h1 class="an-h1 mt-3">{p.title}</h1>
+        <p class="an-lede mt-4">{p.summary}</p>
+      </div>
+    </header>
+    <section class="an-section">
+      <div class="an-wrap">
+        <div class="an-hero-img"><Image src={PROJECT_PHOTOS[entry.id]} alt={p.title} width={1400} class="an-photo" loading="eager" /></div>
+        <dl class="an-facts mt-8">
+          <div><dt>Location</dt><dd>{p.location}</dd></div><div><dt>Year</dt><dd>{p.year}</dd></div><div><dt>Floor area</dt><dd>{p.area.toLocaleString('en-GB')} m²</dd></div>
+          <div><dt>Client</dt><dd>{p.client}</dd></div><div><dt>Status</dt><dd>{p.status}</dd></div><div><dt>Type</dt><dd>{p.type}</dd></div>
+        </dl>
+        <div class="an-case">
+          <div>
+            <h2 class="an-h3">Materials</h2>
+            <ul class="an-mats" role="list">{p.materials.map((m) => <li>{m}</li>)}</ul>
+            <dl class="an-stats">{p.stats.map((s) => <div><dt>{s.label}</dt><dd>{s.value}</dd></div>)}</dl>
+          </div>
+          <div class="an-prose"><Content /></div>
+        </div>
+      </div>
+    </section>
+    <nav class="an-wrap" aria-label="More projects"><div class="an-pn"><a href={`/day-042-architecture/projects/${prev.id}/`}><small>← Previous</small><b>{prev.data.title}</b></a><a href={`/day-042-architecture/projects/${next.id}/`}><small>Next →</small><b>{next.data.title}</b></a></div></nav>
+    <section class="an-section an-section--birch" aria-labelledby="rel-title">
+      <div class="an-wrap"><div class="an-head"><h2 id="rel-title" class="an-h2">Related projects</h2></div><ul class="an-grid" role="list">{related.map((r) => <ProjectCard slug={r.id} {...r.data} />)}</ul></div>
+    </section>
+  </Shell>
+</Site>

@@ -1,0 +1,34 @@
+---
+/** Day 042 · Atelier Nord · all projects, filterable by type with a grid or list view. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-042/Shell.astro';
+import ProjectCard from '../../../components/day-042/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => b.data.year - a.data.year);
+const types = [...new Set(projects.map((p) => p.data.type))];
+---
+<Site title="Projects · Atelier Nord" description="Homes, libraries, schools and workplaces designed by Atelier Nord, Edinburgh. Filter by type and explore each case study." themeColor="#16181b" icon="📐" day={42}>
+  <Shell active="projects">
+    <header class="an-pagehead">
+      <div class="an-wrap"><ol class="an-crumbs" aria-label="Breadcrumb"><li><a href="/day-042-architecture/">Home</a></li><li aria-current="page">Projects</li></ol><h1 class="an-h1">Our work</h1><p class="an-lede mt-4">{projects.length} projects across homes, civic buildings, schools and workplaces. Each started with a site and a question.</p></div>
+    </header>
+    <section class="an-section">
+      <div class="an-wrap">
+        <div class="an-tools">
+          <div class="an-chips" role="group" aria-label="Project type" data-types>
+            <button type="button" data-type="all" aria-pressed="true">All</button>
+            {types.map((t) => <button type="button" data-type={t} aria-pressed="false">{t}</button>)}
+          </div>
+          <div class="an-chips" role="group" aria-label="View" data-views><button type="button" data-view="grid" aria-pressed="true">Grid</button><button type="button" data-view="list" aria-pressed="false">List</button></div>
+        </div>
+        <p class="an-count" aria-live="polite" data-count>{projects.length} projects</p>
+        <ul class="an-grid" role="list" data-grid>{projects.map((p) => <ProjectCard slug={p.id} {...p.data} />)}</ul>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../../days/day-042/projects';
+</script>

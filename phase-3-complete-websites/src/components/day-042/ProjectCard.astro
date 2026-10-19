@@ -1,0 +1,15 @@
+---
+/** A project card: the elevation drawing, its type and year, title and summary. */
+import { Image } from 'astro:assets';
+import { PROJECT_PHOTOS } from '../../days/day-042/photos';
+interface Props { slug: string; title: string; location: string; type: string; year: number; kind: any; variant: number; summary: string; area: number }
+const { slug, title, location, type, year, kind, variant, summary, area } = Astro.props;
+---
+<li class="an-card" data-project data-type={type} data-year={year} data-title={title.toLowerCase()} data-area={area}>
+  <a href={`/day-042-architecture/projects/${slug}/`} class="block" aria-label={`${title}, ${location}`}>
+    <div class="an-card__img"><Image src={PROJECT_PHOTOS[slug]} alt={title} width={700} class="an-photo" /></div>
+    <p class="an-card__meta"><span>{type}</span><span>{year}</span><span>{location}</span></p>
+    <h3>{title}</h3>
+    <p>{summary}</p>
+  </a>
+</li>

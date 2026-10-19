@@ -1,0 +1,52 @@
+---
+/** Day 041 · Pagebound Books · basket and click-and-collect checkout. The basket lives in localStorage and is read in the browser. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-041/Shell.astro';
+---
+<Site title="Your basket · Pagebound Books" description="Review your basket and reserve your books for free click and collect at Pagebound Books, Edinburgh." themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="basket">
+    <header class="pb-pagehead">
+      <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">Basket</li></ol><h1 class="pb-h1">Your basket</h1></div>
+    </header>
+    <section class="pb-section">
+      <div class="pb-wrap">
+        <div data-empty class="pb-empty" hidden>
+          <p>Your basket is empty. The shelves are full, though.</p>
+          <p class="mt-6"><a href="/day-041-bookshop/books/" class="pb-btn pb-btn--ox pb-btn--lg">Browse the shelves</a></p>
+        </div>
+        <div class="pb-bk" data-full hidden>
+          <div>
+            <ul class="pb-lines" role="list" data-lines></ul>
+            <p class="mt-5"><a href="/day-041-bookshop/books/" class="pb-link">← Keep browsing</a></p>
+          </div>
+          <aside class="pb-summary" aria-label="Order summary">
+            <h2 class="pb-h3">Reserve for collection</h2>
+            <dl><div><dt>Items</dt><dd data-items></dd></div><div><dt>Collection</dt><dd>Free, in store</dd></div></dl>
+            <p class="pb-summary__total"><span>Total to pay in store</span><b data-total>£0.00</b></p>
+            <form data-checkout novalidate>
+              <div class="pb-fields">
+                <div class="col-2"><label for="c-name" class="pb-label">Name</label><input id="c-name" class="pb-input" autocomplete="name" data-req aria-describedby="c-name-e" /><p class="pb-err" id="c-name-e" hidden>Please add your name.</p></div>
+                <div class="col-2"><label for="c-email" class="pb-label">Email</label><input id="c-email" type="email" class="pb-input" autocomplete="email" data-req aria-describedby="c-email-e" /><p class="pb-err" id="c-email-e" hidden>Enter an email like name@example.com.</p></div>
+                <div class="col-2"><label for="c-when" class="pb-label">Collect on</label><select id="c-when" class="pb-input" data-when></select></div>
+                <label class="pb-check col-2"><input type="checkbox" id="c-gift" /><span>Gift wrap my order (free)</span></label>
+              </div>
+              <button type="submit" class="pb-btn pb-btn--ox pb-btn--lg mt-5 w-full">Reserve my books</button>
+              <p class="pb-fine mt-3 text-sm text-(--muted)">No payment now. We hold your books for 7 days.</p>
+            </form>
+          </aside>
+        </div>
+        <div class="pb-done" data-done hidden tabindex="-1">
+          <h2 class="pb-h2">Reserved, <em data-done-name></em>.</h2>
+          <p class="mt-3 text-lg" data-done-text></p>
+          <p class="pb-ref">Order <b data-ref></b></p>
+          <p class="mt-6"><a href="/day-041-bookshop/books/" class="pb-btn pb-btn--ox">Back to the shelves</a></p>
+          <p class="mt-4 text-sm text-(--muted)">Demo only: nothing was sent.</p>
+        </div>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-041/basket-page';
+</script>

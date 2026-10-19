@@ -1,0 +1,65 @@
+---
+/** Day 041 · Pagebound Books · events listing from the "events" collection, with a seat-reservation dialog. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-041/Shell.astro';
+
+const events = (await getCollection('events')).sort((a, b) => a.data.date.localeCompare(b.data.date));
+const kinds = [...new Set(events.map((e) => e.data.kind))];
+const d = (s: string) => new Date(s + 'T00:00');
+---
+<Site title="Events · Pagebound Books" description="Author talks, book clubs, story times and workshops at Pagebound Books, Edinburgh. Reserve your seat online." themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="events">
+    <header class="pb-pagehead">
+      <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">Events</li></ol><h1 class="pb-h1">What’s on</h1><p class="pb-lede mt-4">Readings, clubs and workshops, mostly with wine, always with books. Seats are limited, so reserve yours.</p></div>
+    </header>
+    <section class="pb-section">
+      <div class="pb-wrap">
+        <div class="pb-chips mb-8" role="group" aria-label="Event type" data-kinds>
+          <button type="button" data-kind="all" aria-pressed="true">All events</button>
+          {kinds.map((k) => <button type="button" data-kind={k} aria-pressed="false">{k}</button>)}
+        </div>
+        <ul class="pb-events" role="list" data-events>
+          {events.map((e) => {
+            const left = e.data.seats - e.data.taken;
+            return (
+              <li class="pb-event" data-event={e.id} data-kind={e.data.kind} data-date={e.data.date}>
+                <span class="pb-date"><small>{d(e.data.date).toLocaleDateString('en-GB', { month: 'short' })}</small><b>{d(e.data.date).getDate()}</b></span>
+                <div>
+                  <p class="pb-event__kind">{e.data.kind}</p>
+                  <h2>{e.data.title}</h2>
+                  <p>{e.data.blurb}</p>
+                  <p class="pb-event__meta">{d(e.data.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {e.data.time} · Hosted by {e.data.host} · {e.data.price ? `£${e.data.price}` : 'Free'}</p>
+                </div>
+                <div>
+                  <div class:list={['pb-seats', left <= 6 && 'is-low']}><i style={`--w:${(e.data.taken / e.data.seats) * 100}%`}></i><small>{left > 0 ? `${left} of ${e.data.seats} seats left` : 'Sold out'}</small></div>
+                  <button type="button" class="pb-btn pb-btn--ox mt-3 w-full" data-rsvp={e.id} data-title={e.data.title} data-when={`${d(e.data.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}, ${e.data.time}`} data-left={left} data-price={e.data.price} disabled={left <= 0}>{left > 0 ? 'Reserve a seat' : 'Join the waiting list'}</button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <p class="pb-empty" data-none hidden>No upcoming events of that kind just now. Check back soon.</p>
+      </div>
+    </section>
+    <dialog class="pb-dialog" data-dialog aria-labelledby="rsvp-title">
+      <div class="pb-dialog__in">
+        <div class="pb-dialog__head"><div><p class="pb-eyebrow">Reserve a seat</p><h2 id="rsvp-title" class="pb-h3 mt-1" data-d-title></h2><p class="mt-1 text-sm text-(--muted)" data-d-when></p></div><button type="button" class="pb-x" data-close aria-label="Close">✕</button></div>
+        <form data-rsvp-form novalidate>
+          <div class="pb-fields">
+            <div class="col-2"><label for="r-name" class="pb-label">Name</label><input id="r-name" class="pb-input" autocomplete="name" data-req aria-describedby="r-name-e" /><p class="pb-err" id="r-name-e" hidden>Please add your name.</p></div>
+            <div class="col-2"><label for="r-email" class="pb-label">Email</label><input id="r-email" type="email" class="pb-input" autocomplete="email" data-req aria-describedby="r-email-e" /><p class="pb-err" id="r-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div><label for="r-n" class="pb-label">Seats</label><select id="r-n" class="pb-input"></select></div>
+            <div><p class="pb-label">To pay on the night</p><p class="pb-price" data-d-total></p></div>
+          </div>
+          <button type="submit" class="pb-btn pb-btn--ox pb-btn--lg mt-5 w-full">Confirm reservation</button>
+        </form>
+        <div class="pb-done mt-2" data-d-done hidden tabindex="-1"><h2 class="pb-h3">See you there, <em data-d-name></em>!</h2><p class="mt-2" data-d-text></p><p class="pb-ref">Reference <b data-d-ref></b></p><p class="mt-2 text-sm text-(--muted)">Demo only: nothing was sent.</p></div>
+      </div>
+    </dialog>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-041/events';
+</script>

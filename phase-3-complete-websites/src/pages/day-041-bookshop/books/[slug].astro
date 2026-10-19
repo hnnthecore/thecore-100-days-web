@@ -1,0 +1,65 @@
+---
+/** Day 041 · Pagebound Books · one page per book, generated from the "books" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-041/Shell.astro';
+import BookCard from '../../../components/day-041/BookCard.astro';
+import BookCover from '../../../components/day-041/BookCover.astro';
+
+export async function getStaticPaths() {
+  const books = await getCollection('books');
+  return books.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, related: [...books.filter((b) => b.data.genre === entry.data.genre && b.id !== entry.id), ...books.filter((b) => b.data.genre !== entry.data.genre && b.id !== entry.id)].slice(0, 4) },
+  }));
+}
+const { entry, related } = Astro.props;
+const b = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${b.title} by ${b.author} · Pagebound Books`} description={`${b.title} by ${b.author}, £${b.price.toFixed(2)}. ${b.genre}, ${b.pages} pages. Reserve for click and collect at Pagebound Books, Edinburgh.`} themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="books">
+    <header class="pb-pagehead">
+      <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li><a href="/day-041-bookshop/books/">Books</a></li><li aria-current="page">{b.title}</li></ol></div>
+    </header>
+    <section class="pb-section">
+      <div class="pb-wrap pb-detail">
+        <div class="pb-cover" role="img" aria-label={`Cover of ${b.title}`}><BookCover slug={entry.id} title={b.title} author={b.author} palette={b.palette} pattern={b.pattern} width={640} eager /></div>
+        <div>
+          <p class="pb-eyebrow">{b.genre}</p>
+          <h1 class="pb-h1 mt-3">{b.title}</h1>
+          <p class="pb-lede mt-3">by <b class="text-(--ink)">{b.author}</b></p>
+          <div class="pb-prose"><Content /></div>
+          {b.staffPick && <figure class="pb-staffpick">“{b.staffPick}”<small>{b.staff}, bookseller</small></figure>}
+          <dl class="pb-meta"><div><dt>Pages</dt><dd>{b.pages}</dd></div><div><dt>Published</dt><dd>{b.year}</dd></div><div><dt>Publisher</dt><dd>{b.publisher}</dd></div><div><dt>ISBN</dt><dd>{b.isbn}</dd></div></dl>
+          <div class="pb-buy">
+            <p class="pb-price">£{b.price.toFixed(2)}</p>
+            <div class="pb-qty" role="group" aria-label="Quantity"><button type="button" data-q="-1" aria-label="Fewer">−</button><output data-qty aria-live="polite">1</output><button type="button" data-q="1" aria-label="More">+</button></div>
+            <button type="button" class="pb-btn pb-btn--ox pb-btn--lg" data-add data-slug={entry.id} data-title={b.title} data-author={b.author} data-price={b.price} data-palette={b.palette} data-pattern={b.pattern}>Add to basket</button>
+          </div>
+          <p class:list={['pb-stock', b.stock <= 6 && 'is-low']}>{b.stock <= 6 ? `Only ${b.stock} left on the shelf` : `In stock: ${b.stock} copies, ready to collect today`}</p>
+        </div>
+      </div>
+    </section>
+    <section class="pb-section pb-section--cream" aria-labelledby="rel-title">
+      <div class="pb-wrap">
+        <div class="pb-head"><h2 id="rel-title" class="pb-h2">You might also like</h2></div>
+        <ul class="pb-grid" role="list">{related.map((r) => <BookCard slug={r.id} {...r.data} />)}</ul>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import { add } from '../../../days/day-041/basket';
+  import { toast } from '../../../days/day-041/shell';
+  const btn = document.querySelector<HTMLButtonElement>('[data-add]')!;
+  const out = document.querySelector<HTMLOutputElement>('[data-qty]')!;
+  let qty = 1;
+  document.querySelectorAll<HTMLButtonElement>('[data-q]').forEach((b) => b.addEventListener('click', () => { qty = Math.min(10, Math.max(1, qty + Number(b.dataset.q))); out.textContent = String(qty); }));
+  btn.addEventListener('click', () => {
+    add({ slug: btn.dataset.slug!, title: btn.dataset.title!, author: btn.dataset.author!, price: Number(btn.dataset.price), palette: Number(btn.dataset.palette), pattern: Number(btn.dataset.pattern) }, qty);
+    const href = document.querySelector<HTMLAnchorElement>('[data-basket-link]')!.getAttribute('href');
+    toast(`Added ${qty} × “${btn.dataset.title}” <a href="${href}">View basket</a>`);
+  });
+</script>

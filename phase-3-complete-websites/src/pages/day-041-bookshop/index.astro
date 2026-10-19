@@ -1,0 +1,104 @@
+---
+/**
+ * Day 041 · Pagebound Books · home page. Content comes from the "books" and "events" collections.
+ */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_shelves_jpg from '../../assets/day-041/shelves.jpg';
+import ph_browsing_jpg from '../../assets/day-041/browsing.jpg';
+import ph_aisle_jpg from '../../assets/day-041/aisle.jpg';
+import Shell from '../../components/day-041/Shell.astro';
+import BookCard from '../../components/day-041/BookCard.astro';
+import BookCover from '../../components/day-041/BookCover.astro';
+
+const books = await getCollection('books');
+const featured = books.filter((b) => b.data.featured);
+const shelf = [...featured, ...books.filter((b) => !b.data.featured)].slice(0, 7);
+const pick = books.find((b) => b.data.staffPick)!;
+const events = (await getCollection('events')).sort((a, b) => a.data.date.localeCompare(b.data.date)).slice(0, 3);
+const fmt = (d: string) => new Date(d + 'T00:00');
+---
+<Site title="Pagebound Books · Independent bookshop, Edinburgh" description="An independent bookshop on Canongate, Edinburgh. Browse the shelves online, reserve for click and collect, and join us for readings and book clubs. (Day 041 of Thecore's 100 Days of Web, a demo site.)" themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="home">
+    <section class="pb-hero pb-hero--shelf" aria-labelledby="hero-title">
+      <div class="pb-wrap pb-shelfhead">
+        <p class="pb-eyebrow">Independent since 1998 · Canongate, Edinburgh</p>
+        <h1 id="hero-title" class="pb-h1 mt-5">A shop for people who <em>love</em> a good page.</h1>
+        <p class="pb-lede mt-6">Twelve thousand books, a very good kettle and booksellers who’ll talk you out of the wrong one. Browse the shelves here, then reserve for click and collect.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3"><a href="/day-041-bookshop/books/" class="pb-btn pb-btn--ox pb-btn--lg">Browse the shelves</a><a href="/day-041-bookshop/events/" class="pb-btn pb-btn--line pb-btn--lg">What’s on</a></div>
+      </div>
+      <div class="pb-wrap">
+        <ul class="pb-shelf" role="list" aria-hidden="true">
+          {shelf.map((b) => <li><BookCover slug={b.id} title={b.data.title} author={b.data.author} palette={b.data.palette} pattern={b.data.pattern} width={360} eager /></li>)}
+        </ul>
+        <div class="pb-shelf__board"></div>
+        <ul class="pb-trust" role="list"><li><b>Free</b> collection in store</li><li><b>Next-day</b> ordering</li><li><b>Gift</b> wrapping, always</li></ul>
+      </div>
+    </section>
+
+    <section class="pb-section pb-section--cream" aria-labelledby="pick-title">
+      <div class="pb-wrap">
+        <p class="pb-eyebrow" id="pick-title">Bookseller’s pick</p>
+        <figure class="pb-pick mt-6">
+          <a href={`/day-041-bookshop/books/${pick.id}/`} class="pb-cover" aria-label={pick.data.title}><BookCover slug={pick.id} title={pick.data.title} author={pick.data.author} palette={pick.data.palette} pattern={pick.data.pattern} width={480} /></a>
+          <div>
+            <blockquote>“{pick.data.staffPick}”</blockquote>
+            <figcaption>{pick.data.staff}, bookseller, on <b>{pick.data.title}</b> by {pick.data.author}</figcaption>
+            <a href={`/day-041-bookshop/books/${pick.id}/`} class="pb-btn pb-btn--ox mt-6">Read more</a>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pb-section" aria-labelledby="picks-title">
+      <div class="pb-wrap">
+        <div class="pb-head"><div><p class="pb-eyebrow">Hand-picked</p><h2 id="picks-title" class="pb-h2 mt-2">On our front table</h2></div><a href="/day-041-bookshop/books/" class="pb-link">See all {books.length} books →</a></div>
+        <ul class="pb-grid" role="list">
+          {featured.map((b) => <BookCard slug={b.id} {...b.data} />)}
+        </ul>
+      </div>
+    </section>
+
+    <div class="pb-wrap pb-band" data-photo-band>
+        <figure class="pb-band__main"><Image src={ph_shelves_jpg} alt="Tall grey shelves packed with books in an independent bookshop" width={1400} /><figcaption>Twelve thousand books</figcaption></figure>
+        <figure><Image src={ph_browsing_jpg} alt="A smiling customer browsing a table of paperbacks" width={900} /><figcaption>Browse as long as you like</figcaption></figure>
+        <figure><Image src={ph_aisle_jpg} alt="A narrow aisle between tall shelves in a second-hand bookshop" width={900} /><figcaption>Corners to get lost in</figcaption></figure>
+      </div>
+
+    <section class="pb-section" aria-labelledby="events-title">
+      <div class="pb-wrap">
+        <div class="pb-head"><div><p class="pb-eyebrow">Upcoming</p><h2 id="events-title" class="pb-h2 mt-2">Come and join us</h2></div><a href="/day-041-bookshop/events/" class="pb-link">All events →</a></div>
+        <ul role="list">
+          {events.map((e) => (
+            <li class="pb-evrow">
+              <span class="pb-date"><small>{fmt(e.data.date).toLocaleDateString('en-GB', { month: 'short' })}</small><b>{fmt(e.data.date).getDate()}</b></span>
+              <div><p class="pb-event__kind">{e.data.kind}</p><h3 class="pb-h3 mt-2">{e.data.title}</h3><p class="mt-1 text-(--muted)">{e.data.time} · {e.data.price ? `£${e.data.price}` : 'Free'}</p></div>
+              <a href="/day-041-bookshop/events/" class="pb-btn pb-btn--line pb-btn--sm">Reserve a seat</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="pb-section pb-section--ox" aria-labelledby="news-title">
+      <div class="pb-wrap pb-news">
+        <div><p class="pb-eyebrow !text-(--gold)">The Pagebound letter</p><h2 id="news-title" class="pb-h2 mt-3">One email a month. <em>Only good books.</em></h2><p class="pb-lede mt-4 !text-(--cream)/80">New arrivals, event dates and one book we cannot stop recommending.</p></div>
+        <form data-news novalidate>
+          <div><label for="n-email" class="pb-label">Your email</label><input id="n-email" type="email" class="pb-input" autocomplete="email" data-req aria-describedby="n-email-e" /><p class="pb-err !text-(--gold)" id="n-email-e" hidden>Enter an email like name@example.com.</p></div>
+          <button type="submit" class="pb-btn pb-btn--cream pb-btn--lg">Subscribe</button>
+          <p class="pb-ok !text-(--cream)" role="status" data-news-ok></p>
+        </form>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-041/home';
+</script>
+
+<style is:global>
+/* Contrast fixes from the audit (this page): text now meets WCAG AA (4.5:1, or 3:1 for large text). */
+html main#main > .pb-section--ox { background-color: #701d28 !important; }
+</style>

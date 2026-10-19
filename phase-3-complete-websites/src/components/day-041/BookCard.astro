@@ -1,0 +1,18 @@
+---
+/** A book in the catalogue: cover, genre, title, author, price and a quick add. */
+import BookCover from './BookCover.astro';
+interface Props { slug: string; title: string; author: string; genre: string; price: number; stock: number; palette: number; pattern: number }
+const { slug, title, author, genre, price, stock, palette, pattern } = Astro.props;
+const href = `/day-041-bookshop/books/${slug}/`;
+---
+<li class="pb-card" data-book={slug} data-genre={genre} data-title={title.toLowerCase()} data-author={author.toLowerCase()} data-price={price} data-stock={stock}>
+  <a href={href} class="pb-cover" aria-label={`${title} by ${author}`}><BookCover slug={slug} title={title} author={author} palette={palette} pattern={pattern} width={420} /></a>
+  {stock <= 6 && <span class="pb-card__low">Only {stock} left</span>}
+  <p class="pb-card__genre">{genre}</p>
+  <h3 class="pb-card__title"><a href={href}>{title}</a></h3>
+  <p class="pb-card__author">{author}</p>
+  <div class="pb-card__foot">
+    <p class="pb-price">£{price.toFixed(2)}</p>
+    <button type="button" class="pb-btn pb-btn--line pb-btn--sm" data-quick={slug} data-title={title} data-author={author} data-price={price} data-palette={palette} data-pattern={pattern}>Add</button>
+  </div>
+</li>

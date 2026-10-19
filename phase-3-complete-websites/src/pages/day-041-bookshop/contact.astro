@@ -1,0 +1,60 @@
+---
+/** Day 041 · Pagebound Books · contact page: enquiry form, live opening hours, map and FAQ. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_front from '../../assets/day-041/shopfront.jpg';
+import Shell from '../../components/day-041/Shell.astro';
+
+const HOURS = [['Monday', '09:00 – 18:00'], ['Tuesday', '09:00 – 18:00'], ['Wednesday', '09:00 – 18:00'], ['Thursday', '09:00 – 20:00'], ['Friday', '09:00 – 18:00'], ['Saturday', '09:00 – 18:00'], ['Sunday', '11:00 – 16:00']];
+const FAQ = [
+  ['Can I order a book you don’t stock?', 'Yes. Order before 4 pm and it is usually here the next working day. We’ll text you when it arrives.'],
+  ['Do you buy secondhand books?', 'We do, on Tuesdays and Thursdays. Bring up to twenty books and we’ll give you an offer on the spot, in cash or shop credit.'],
+  ['Is the shop accessible?', 'The ground floor is step-free with wide aisles. The upstairs room has a stairlift, and events can be moved downstairs on request.'],
+  ['Do you do gift cards?', 'Yes, in store and by email. Gift wrapping is always free.'],
+  ['Can I bring my dog?', 'Of course. Water bowl by the door, biscuits behind the till.'],
+];
+---
+<Site title="Visit & contact · Pagebound Books" description="Find Pagebound Books on Canongate, Edinburgh. Opening hours, map, contact form and answers to common questions." themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="contact">
+    <header class="pb-pagehead">
+      <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">Visit & contact</li></ol><h1 class="pb-h1">Come and say <em>hello.</em></h1></div>
+    </header>
+    <section class="pb-section">
+      <div class="pb-wrap pb-contact">
+        <form class="pb-form" data-contact novalidate>
+          <h2 class="pb-h3">Send us a message</h2>
+          <div class="pb-fields mt-5">
+            <div><label for="m-name" class="pb-label">Name</label><input id="m-name" class="pb-input" autocomplete="name" data-req aria-describedby="m-name-e" /><p class="pb-err" id="m-name-e" hidden>Please add your name.</p></div>
+            <div><label for="m-email" class="pb-label">Email</label><input id="m-email" type="email" class="pb-input" autocomplete="email" data-req aria-describedby="m-email-e" /><p class="pb-err" id="m-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div class="col-2"><label for="m-topic" class="pb-label">What’s it about?</label><select id="m-topic" class="pb-input"><option>A book recommendation</option><option>Special order</option><option>Selling secondhand books</option><option>An event or group booking</option><option>Something else</option></select></div>
+            <div class="col-2"><label for="m-msg" class="pb-label">Your message</label><textarea id="m-msg" class="pb-input" data-req aria-describedby="m-msg-e"></textarea><p class="pb-err" id="m-msg-e" hidden>Please write a few words.</p></div>
+          </div>
+          <button type="submit" class="pb-btn pb-btn--ox pb-btn--lg mt-5">Send message</button>
+          <p class="pb-ok" role="status" data-ok></p>
+        </form>
+        <div class="pb-side">
+          <div>
+            <p class="pb-open" aria-live="polite"><span class="pb-dot" data-dot></span><b data-open>Checking…</b></p>
+            <table class="pb-hours"><caption class="sr-only">Opening hours</caption><tbody>{HOURS.map(([d, h], i) => <tr data-day={(i + 1) % 7}><th scope="row">{d}</th><td>{h}</td></tr>)}</tbody></table>
+          </div>
+          <div class="pb-map">
+            <iframe title="Map of Canongate, Edinburgh, centred on the shop" src="https://www.openstreetmap.org/export/embed.html?bbox=-3.1840%2C55.9490%2C-3.1740%2C55.9535&amp;layer=mapnik&amp;marker=55.9511%2C-3.1788" loading="lazy" referrerpolicy="no-referrer" width="600" height="360"></iframe>
+            <figure class="pb-map__photo"><Image src={ph_front} alt="A bookshop front with a green door and a window full of books" width={420} /><figcaption>Look for the green door</figcaption></figure>
+            <a class="pb-map__link" href="https://www.openstreetmap.org/?mlat=55.9511&amp;mlon=-3.1788#map=17/55.9511/-3.1788" rel="noopener">Open the full map ↗</a>
+          </div>
+          <address class="not-italic leading-relaxed">42 Canongate, Edinburgh EH8 8BN<br />0131 555 0142 · hello@pagebound.example<br /><span class="text-(--muted)">Bus 35 stops outside · Waverley Station is a 10-minute walk</span></address>
+        </div>
+      </div>
+    </section>
+    <section class="pb-section pb-section--cream" aria-labelledby="faq-title">
+      <div class="pb-wrap pb-two" style="align-items:start">
+        <div><p class="pb-eyebrow">Good to know</p><h2 id="faq-title" class="pb-h2 mt-3">Questions we often hear</h2></div>
+        <div class="pb-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-041/contact';
+</script>

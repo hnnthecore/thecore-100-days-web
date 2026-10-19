@@ -1,0 +1,63 @@
+---
+/** Day 042 · Atelier Nord · project enquiry with a live fee-and-timeline estimator. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-042/Shell.astro';
+---
+<Site title="Start a project · Atelier Nord" description="Tell Atelier Nord about your project. Get a quick estimate of build cost, fees and timeline, then book a free first conversation." themeColor="#16181b" icon="📐" day={42}>
+  <Shell active="contact">
+    <header class="an-pagehead">
+      <div class="an-wrap"><ol class="an-crumbs" aria-label="Breadcrumb"><li><a href="/day-042-architecture/">Home</a></li><li aria-current="page">Contact</li></ol><h1 class="an-h1">Start a <em>project.</em></h1><p class="an-lede mt-4">Tell us about the site and the brief. The numbers on the right update as you go, so you can see roughly what to expect before we speak.</p></div>
+    </header>
+    <section class="an-section">
+      <div class="an-wrap an-contact">
+        <form class="an-form" data-enquiry novalidate>
+          <fieldset><legend>What are you planning?</legend>
+            <div class="an-opts" data-types>
+              <label><input type="radio" name="type" value="Residential" checked /><span>A home</span></label>
+              <label><input type="radio" name="type" value="Cultural" /><span>Cultural or civic</span></label>
+              <label><input type="radio" name="type" value="Education" /><span>A school</span></label>
+              <label><input type="radio" name="type" value="Workplace" /><span>A workplace</span></label>
+            </div>
+          </fieldset>
+          <div><div class="an-row"><label for="area" class="an-label !mb-0">Floor area</label><b data-area-out>180 m²</b></div><input id="area" class="an-range" type="range" min="30" max="5000" step="10" value="180" /></div>
+          <fieldset><legend>Level of design ambition</legend>
+            <div class="an-opts" data-quality>
+              <label><input type="radio" name="quality" value="0.09" /><span>Straightforward</span></label>
+              <label><input type="radio" name="quality" value="0.11" checked /><span>High quality</span></label>
+              <label><input type="radio" name="quality" value="0.13" /><span>Exceptional</span></label>
+            </div>
+          </fieldset>
+          <div class="an-fields">
+            <div><label for="f-name" class="an-label">Your name</label><input id="f-name" class="an-input" autocomplete="name" data-req aria-describedby="f-name-e" /><p class="an-err" id="f-name-e" hidden>Please add your name.</p></div>
+            <div><label for="f-email" class="an-label">Email</label><input id="f-email" type="email" class="an-input" autocomplete="email" data-req aria-describedby="f-email-e" /><p class="an-err" id="f-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div><label for="f-site" class="an-label">Where is the site?</label><input id="f-site" class="an-input" placeholder="Town or postcode" data-req aria-describedby="f-site-e" /><p class="an-err" id="f-site-e" hidden>Tell us roughly where the site is.</p></div>
+            <div><label for="f-start" class="an-label">When would you like to start?</label><select id="f-start" class="an-input"><option>As soon as possible</option><option>In 3 to 6 months</option><option>In 6 to 12 months</option><option>Just exploring</option></select></div>
+            <div class="col-2"><label for="f-brief" class="an-label">Tell us about it</label><textarea id="f-brief" class="an-input" data-req aria-describedby="f-brief-e" placeholder="What is the site like? Who will use the building? What matters most?"></textarea><p class="an-err" id="f-brief-e" hidden>A few words about the project would help.</p></div>
+            <div class="col-2"><label for="f-files" class="an-label">Photos or drawings <span class="font-normal normal-case tracking-normal opacity-70">(optional)</span></label><input id="f-files" type="file" class="an-input" multiple accept=".pdf,.jpg,.jpeg,.png,.dwg,.dxf" /><p class="mt-2 text-sm text-(--muted)">PDF, JPG, PNG, DWG or DXF, up to 20 MB each.</p><p class="an-err" id="f-files-e" hidden></p><ul class="an-files" data-files role="list"></ul></div>
+          </div>
+          <div><button type="submit" class="an-btn an-btn--ink an-btn--lg">Send enquiry</button><p class="an-ok" role="status" data-status></p></div>
+        </form>
+
+        <aside class="an-est" aria-label="Estimate" aria-live="polite">
+          <h2>Rough estimate</h2>
+          <dl>
+            <div><dt>Build cost</dt><dd data-cost>£0</dd></div>
+            <div><dt>Architect’s fee</dt><dd data-fee>£0</dd></div>
+            <div><dt>Time from brief to completion</dt><dd data-time>0 months</dd></div>
+          </dl>
+          <p>Indicative only. It reflects typical Scottish build costs and RIBA full-service fees. After a conversation we’ll give you a proper figure.</p>
+        </aside>
+      </div>
+    </section>
+    <section class="an-section an-section--birch">
+      <div class="an-wrap an-two">
+        <div><h2 class="an-h2">Prefer to talk?</h2></div>
+        <div class="an-prose"><p>Call the studio on <b>0131 555 0188</b> on weekdays between 9 and 5, or come by: 12 Leith Walk Mews, Edinburgh EH6 5AA. The kettle is always on and the first conversation is always free.</p></div>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-042/contact';
+</script>

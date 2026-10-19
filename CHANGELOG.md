@@ -2,6 +2,31 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Days 41–42 · Distinct home pages, real photography, inner-page headers
+
+**Why:** the same client feedback as Days 21–40, now for the first two complete websites. Both sites also get a distinct page header on every inner page; the page bodies keep their layouts.
+
+| Day | Site | First screen | Navigation | Opens with | Photography |
+| --- | --- | --- | --- | --- | --- |
+| 41 | Pagebound Books | Centred headline over a wooden shelf of standing book covers | Split masthead, logo centred | Bookseller's pick | All 12 book covers are real photographs with live title and author type; shelf band; About photo; real map of Canongate with a shopfront photo |
+| 42 | Atelier Nord (architecture) | Giant full-bleed project photograph, headline set over it, stats on a black bar | Boxed bar, heavy rule | Recent projects | Project photos on the hero, cards and pages; five director portraits |
+
+Inner-page headers: Day 41 a centred bookplate with a double rule; Day 42 a dark band with an amber rule.
+
+**Fixed along the way**
+- Day 41: the events section was dark red on dark red (an old position-based rule had stayed attached to the wrong section after the photo band was added). The rule now targets the newsletter section by its class.
+- Day 41: the drawn book covers are replaced by real photographs (a mood-matched Pexels photo per book, cropped to 2:3, with a hinge and page edge and the title and author as live text) on the shelf, front table, bookseller's pick, catalogue, detail pages, related books and basket.
+- Day 42: the Studio page shows real portraits of the five directors and leads (full faces checked).
+
+**How it was tested**
+- The automated sweep at 360, 768, 1024, 1280 and 1536 px on all 36 built pages of Days 41 and 42: overflow, off-screen elements, clipped text, broken images, alt text, duplicate ids, one heading per page, contrast. All clean.
+- The menu button opens and shows the links at 390 px, and the header has no overlap or wrapping at 800, 1024 and 1280 px.
+
+**Known limits and still open**
+- Photographs are free stock (Pexels, sources in each day's README) and stand in for fictional books and people; replace the portraits with real team photos before launch.
+- The Day 41 map is an embedded OpenStreetMap map and needs an internet connection.
+- Not yet tested on real phones or in Safari, and no keyboard-focus pass on the new navigation bars.
+
 ## Days 31–40 · Distinct layouts, real photography, phone menu
 
 **Why:** the same client feedback as Days 21–30, applied to the second half of Phase 2.

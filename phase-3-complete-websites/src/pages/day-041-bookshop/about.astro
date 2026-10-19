@@ -1,0 +1,54 @@
+---
+/** Day 041 · Pagebound Books · about page: story, team, timeline and numbers. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_about from '../../assets/day-041/about-shop.jpg';
+import Shell from '../../components/day-041/Shell.astro';
+
+const TEAM = [
+  ['Hana Rahimi', 'Owner & fiction buyer', 'Opened Pagebound after fifteen years at a big chain, and has never looked back. Ask her for something to read after your favourite novel.', '#7a1f2b'],
+  ['Dev Chaudhary', 'Crime & thrillers', 'Reads two books a week and keeps a spreadsheet of every locked-room mystery ever written. Yes, really.', '#1d4b57'],
+  ['Priya Nair', 'Children’s & sci-fi', 'Runs story time and the sci-fi shelf with equal enthusiasm. Can recommend a picture book for any mood.', '#3a2d6b'],
+  ['Moira Lennox', 'Events & poetry', 'Organises our evenings, pours the wine and reads poetry out loud when the shop is quiet.', '#2f6b4a'],
+];
+const TIMELINE = [
+  ['1998', 'Two rooms and a kettle', 'Hana’s mum lends her the deposit and the first stock is 900 secondhand paperbacks.'],
+  ['2006', 'We move to Canongate', 'The old printing works becomes our home. The shelves still creak the way they did on day one.'],
+  ['2014', 'The first book club', 'Six people, one crime novel. It is now a monthly sell-out.'],
+  ['2020', 'Click and collect', 'We quietly built an online shelf and posted books on bicycles.'],
+  ['Today', 'Twelve thousand books', 'Still independent, still choosing every title ourselves, still talking you out of the wrong one.'],
+];
+---
+<Site title="About · Pagebound Books" description="The story of Pagebound Books: an independent Edinburgh bookshop run by people who read." themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="about">
+    <header class="pb-pagehead">
+      <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">About</li></ol><h1 class="pb-h1">A shop with <em>opinions.</em></h1><p class="pb-lede mt-4">Pagebound is run by four booksellers who read everything we stock. No algorithms, no promotions we don’t believe in.</p></div>
+    </header>
+    <section class="pb-section">
+      <div class="pb-wrap pb-two">
+        <figure class="pb-shop"><Image src={ph_about} alt="A sunny window seat and tables of books inside an independent bookshop" width={1000} loading="eager" /></figure>
+        <div>
+          <p class="pb-eyebrow">Our story</p>
+          <h2 class="pb-h2 mt-3">Twenty-eight years of putting the right book in the right hands.</h2>
+          <p class="pb-lede mt-5">We started in 1998 with two rooms and nine hundred secondhand paperbacks. Today we’re a proper shop with a proper kettle, and a proper belief that a bookshop is a place, not a website.</p>
+          <p class="pb-lede mt-4">This site exists so you can browse from your sofa and reserve what you like. But the best part is still walking in.</p>
+        </div>
+      </div>
+    </section>
+    <section class="pb-section pb-section--cream" aria-labelledby="team-title">
+      <div class="pb-wrap">
+        <div class="pb-head"><h2 id="team-title" class="pb-h2">The booksellers</h2></div>
+        <ul class="pb-team" role="list">{TEAM.map(([n, r, t, c]) => <li class="pb-person"><span class="pb-person__av" style={`--c:${c}`} aria-hidden="true">{n[0]}</span><h3 class="pb-h3">{n}</h3><p class="font-semibold text-(--oxblood)">{r}</p><p>{t}</p></li>)}</ul>
+      </div>
+    </section>
+    <section class="pb-section" aria-labelledby="time-title">
+      <div class="pb-wrap pb-two">
+        <div><p class="pb-eyebrow">Along the way</p><h2 id="time-title" class="pb-h2 mt-3">A short history</h2></div>
+        <ol class="pb-time">{TIMELINE.map(([y, t, d]) => <li><b>{y}</b> <span class="pb-h3 ml-2">{t}</span><p>{d}</p></li>)}</ol>
+      </div>
+    </section>
+    <section class="pb-section pb-section--ox" aria-label="Pagebound in numbers">
+      <div class="pb-wrap"><dl class="pb-stats"><div><dt>Books on the shelves</dt><dd>12,000</dd></div><div><dt>Years independent</dt><dd>28</dd></div><div><dt>Events a year</dt><dd>60+</dd></div><div><dt>Cups of tea poured</dt><dd>41,000</dd></div></dl></div>
+    </section>
+  </Shell>
+</Site>

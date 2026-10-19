@@ -1,0 +1,65 @@
+---
+/** Day 042 · Atelier Nord · the studio: story, team, process, recognition and open roles. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import team_elin from '../../assets/day-042/team-elin.jpg';
+import team_callum from '../../assets/day-042/team-callum.jpg';
+import team_maya from '../../assets/day-042/team-maya.jpg';
+import team_jonas from '../../assets/day-042/team-jonas.jpg';
+import team_priyanka from '../../assets/day-042/team-priyanka.jpg';
+const TEAM_PHOTOS: Record<string, ImageMetadata> = { 'Elin Sørensen': team_elin, 'Callum Reid': team_callum, 'Maya Okafor': team_maya, 'Jonas Whitlock': team_jonas, 'Priyanka Das': team_priyanka };
+import Shell from '../../components/day-042/Shell.astro';
+
+const TEAM = [
+  ['Elin Sørensen', 'Founding director', 'Trained in Bergen and Edinburgh. Believes the best drawings are the ones you can rub out.', '#2f5d74'],
+  ['Callum Reid', 'Director · timber & conservation', 'Has repaired more roofs than he can count, and designs as if the next repair will be made by his grandson.', '#b4793a'],
+  ['Maya Okafor', 'Associate · sustainability', 'Our Passivhaus designer and the person who says “but what is the U-value?” in every meeting.', '#5e6b3c'],
+  ['Jonas Whitlock', 'Architect · education', 'Spends one day a month teaching in schools to understand how children use buildings.', '#6b4e71'],
+  ['Priyanka Das', 'Architect · housing', 'Obsessed with front doors, shared gardens and the exact width of a good staircase.', '#a14a3b'],
+];
+const STEPS = [
+  ['Listen', 'We visit the site, meet the people who will use the building and write a one-page brief everybody signs.'],
+  ['Sketch', 'Pencil and tracing paper, then physical models. We show options early and argue about them openly.'],
+  ['Test', 'Daylight, energy, cost and construction are checked at every stage, so surprises are cheap.'],
+  ['Build', 'We stay close through construction, visiting site weekly and solving problems with the builders.'],
+  ['Care', 'A year after handover we return to see how the building is really lived in, and tune it.'],
+];
+const AWARDS = [['RIAS Award', 'Ullapool Library, 2024'], ['Passivhaus Trust', 'Birch Court School, 2025'], ['Scottish Design Award', 'House on the Skerry, 2024'], ['Civic Trust', 'Tide Mill Studios, 2025']];
+const JOBS = [
+  ['Part II Architectural Assistant (Edinburgh)', 'Join a small team working on schools and housing. You’ll draw, model and visit sites from week one. Full-time, from £28,000.'],
+  ['Passivhaus Designer (hybrid)', 'Lead energy modelling on three live projects. PHPP experience required. Full-time, from £38,000.'],
+  ['Studio Manager (part-time)', 'Keep a creative studio calm and organised: finance, people and project administration. Three days a week.'],
+];
+---
+<Site title="Studio · Atelier Nord" description="Meet the architects at Atelier Nord, see how we work and find open roles at our Edinburgh studio." themeColor="#16181b" icon="📐" day={42}>
+  <Shell active="studio">
+    <header class="an-pagehead">
+      <div class="an-wrap"><ol class="an-crumbs" aria-label="Breadcrumb"><li><a href="/day-042-architecture/">Home</a></li><li aria-current="page">Studio</li></ol><h1 class="an-h1">Eleven people. <em>One long table.</em></h1><p class="an-lede mt-4">We stay small on purpose, so every project gets a director’s full attention from first sketch to final snag.</p></div>
+    </header>
+    <section class="an-section">
+      <div class="an-wrap an-two">
+        <div><p class="an-eyebrow">The practice</p><h2 class="an-h2 mt-3">Founded on a kitchen table in 2011.</h2></div>
+        <div class="an-prose"><p>Elin Sørensen started Atelier Nord with a laptop, a roll of tracing paper and a single commission: a boathouse for a friend. The boathouse was finished under budget and the friend told two friends.</p><p>Fifteen years on, we are eleven architects and designers in a converted print works on Leith Walk. We still draw first, we still visit every site, and we still share one long table for lunch.</p></div>
+      </div>
+    </section>
+    <section class="an-section an-section--birch" aria-labelledby="team-title">
+      <div class="an-wrap"><div class="an-head"><h2 id="team-title" class="an-h2">The directors &amp; leads</h2></div>
+        <ul class="an-team" role="list">{TEAM.map(([n, r, t, c]) => <li class="an-person"><div class="an-person__av" style={`--c:${c}`}><Image src={TEAM_PHOTOS[n]} alt={`Portrait of ${n}`} width={480} height={480} /></div><h3 class="an-h3">{n}</h3><p class="font-semibold text-(--fjord)">{r}</p><p>{t}</p></li>)}</ul></div>
+    </section>
+    <section class="an-section" aria-labelledby="proc-title">
+      <div class="an-wrap an-two">
+        <div><p class="an-eyebrow">Process</p><h2 id="proc-title" class="an-h2 mt-3">Five steps, no surprises.</h2><p class="an-lede mt-4">Every project follows the same calm rhythm, adapted to its size.</p></div>
+        <ol class="an-steps">{STEPS.map(([t, d]) => <li><div><b>{t}</b><p>{d}</p></div></li>)}</ol>
+      </div>
+    </section>
+    <section class="an-section an-section--birch" aria-labelledby="aw-title">
+      <div class="an-wrap"><div class="an-head"><h2 id="aw-title" class="an-h2">Recognition</h2></div><ul class="an-awards" role="list">{AWARDS.map(([a, p]) => <li><b>{a}</b><span>{p}</span></li>)}</ul></div>
+    </section>
+    <section class="an-section" aria-labelledby="jobs-title">
+      <div class="an-wrap an-two">
+        <div><p class="an-eyebrow">Join us</p><h2 id="jobs-title" class="an-h2 mt-3">Open roles</h2><p class="an-lede mt-4">We hire slowly and keep people for a long time. Send a few pages of work and a note about a building you love.</p><p class="mt-6"><a href="/day-042-architecture/contact/" class="an-btn an-btn--ink">Get in touch</a></p></div>
+        <div class="an-jobs">{JOBS.map(([t, d], i) => <details open={i === 0}><summary>{t}</summary><p>{d}</p></details>)}</div>
+      </div>
+    </section>
+  </Shell>
+</Site>

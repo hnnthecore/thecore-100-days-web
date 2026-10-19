@@ -1,0 +1,45 @@
+---
+/** Day 041 · Pagebound Books · the catalogue. Cards are rendered at build time; filtering is progressive enhancement. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-041/Shell.astro';
+import BookCard from '../../../components/day-041/BookCard.astro';
+
+const books = (await getCollection('books')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const genres = [...new Set(books.map((b) => b.data.genre))];
+---
+<Site title="All books · Pagebound Books" description="Browse every book on the Pagebound shelves. Filter by genre, search by title or author, and reserve for click and collect." themeColor="#7a1f2b" icon="📚" day={41}>
+  <Shell active="books">
+    <header class="pb-pagehead">
+      <div class="pb-wrap">
+        <ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">Books</li></ol>
+        <h1 class="pb-h1">The shelves</h1>
+        <p class="pb-lede mt-4">{books.length} favourites from our front tables. Everything here is on the shop floor, ready to collect the same day.</p>
+      </div>
+    </header>
+    <section class="pb-section" aria-label="Catalogue">
+      <div class="pb-wrap">
+        <form class="pb-filters" data-filters novalidate>
+          <div class="pb-chips" role="group" aria-label="Genre" data-genres>
+            <button type="button" data-genre="all" aria-pressed="true">All</button>
+            {genres.map((g) => <button type="button" data-genre={g} aria-pressed="false">{g}</button>)}
+          </div>
+          <div class="pb-filters__row">
+            <div><label for="q" class="pb-label">Search title or author</label><input id="q" type="search" class="pb-input" placeholder="e.g. lighthouse" autocomplete="off" /></div>
+            <div><label for="sort" class="pb-label">Sort by</label><select id="sort" class="pb-input"><option value="title">Title A–Z</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="author">Author A–Z</option></select></div>
+            <label class="pb-check"><input type="checkbox" id="cheap" /><span>Under £10 only</span></label>
+          </div>
+        </form>
+        <p class="pb-count" aria-live="polite" data-count>{books.length} books</p>
+        <ul class="pb-grid" role="list" data-grid>
+          {books.map((b) => <BookCard slug={b.id} {...b.data} />)}
+        </ul>
+        <p class="pb-empty" data-empty hidden>Nothing on the shelves matches that. Try a different word, or <a href="/day-041-bookshop/contact/" class="pb-link">ask a bookseller</a>.</p>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../../days/day-041/catalogue';
+</script>

@@ -1,0 +1,37 @@
+---
+/** Day 042 · Atelier Nord · journal index with category filter and search. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-042/Shell.astro';
+
+const posts = (await getCollection('journal')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const cats = [...new Set(posts.map((p) => p.data.category))];
+const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const mins = (body = '') => Math.max(1, Math.round(body.split(/\s+/).length / 200));
+---
+<Site title="Journal · Atelier Nord" description="Essays and notes from Atelier Nord on timber, schools, conservation and low-carbon design." themeColor="#16181b" icon="📐" day={42}>
+  <Shell active="journal">
+    <header class="an-pagehead">
+      <div class="an-wrap"><ol class="an-crumbs" aria-label="Breadcrumb"><li><a href="/day-042-architecture/">Home</a></li><li aria-current="page">Journal</li></ol><h1 class="an-h1">Journal</h1><p class="an-lede mt-4">Notes on how and why we build the way we do.</p></div>
+    </header>
+    <section class="an-section">
+      <div class="an-wrap">
+        <div class="an-tools">
+          <div class="an-chips" role="group" aria-label="Category" data-cats><button type="button" data-cat="all" aria-pressed="true">All</button>{cats.map((c) => <button type="button" data-cat={c} aria-pressed="false">{c}</button>)}</div>
+          <div class="w-full sm:w-72"><label for="s" class="sr-only">Search the journal</label><input id="s" type="search" class="an-input" placeholder="Search articles…" autocomplete="off" /></div>
+        </div>
+        <p class="an-count" aria-live="polite" data-count>{posts.length} articles</p>
+        <ul class="an-posts" role="list" data-posts>
+          {posts.map((p) => (
+            <li data-post data-cat={p.data.category} data-text={`${p.data.title} ${p.data.excerpt}`.toLowerCase()}><a href={`/day-042-architecture/journal/${p.id}/`} class="an-post"><time datetime={p.data.date}>{fmt(p.data.date)}</time><div><h2 class="an-h3">{p.data.title}</h2><p>{p.data.excerpt}</p><p class="an-post__cat mt-2">{p.data.author} · {mins(p.body)} min read</p></div><span class="an-post__cat">{p.data.category}</span></a></li>
+          ))}
+        </ul>
+        <p class="an-empty" data-empty hidden>No articles match that. Try a different word.</p>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../../days/day-042/journal';
+</script>
