@@ -1,0 +1,21 @@
+---
+/** A donation widget used on the home page and on Get involved. All instances are wired by days/day-043/donate.ts. */
+interface Props { id: string }
+const { id } = Astro.props;
+const AMOUNTS = [5, 12, 25, 50, 100];
+---
+<form class="rw-donate" data-donate novalidate aria-labelledby={`${id}-t`}>
+  <h2 class="rw-h3" id={`${id}-t`}>Help us keep growing</h2>
+  <fieldset><legend class="sr-only">How often?</legend>
+    <div class="rw-seg" role="radiogroup" aria-label="How often"><label><input type="radio" name={`${id}-f`} value="once" checked /><span>Once</span></label><label><input type="radio" name={`${id}-f`} value="monthly" /><span>Monthly</span></label></div>
+  </fieldset>
+  <fieldset><legend class="rw-label">Choose an amount</legend>
+    <div class="rw-amts">{AMOUNTS.map((a) => <label><input type="radio" name={`${id}-a`} value={a} checked={a === 25} /><span>£{a}</span></label>)}<label class="rw-amts__other"><input type="radio" name={`${id}-a`} value="other" /><span>Other</span></label></div>
+    <div class="rw-other" data-other hidden><label for={`${id}-o`} class="rw-label">Your amount (£)</label><input id={`${id}-o`} type="number" min="1" max="5000" step="1" inputmode="numeric" class="rw-input" aria-describedby={`${id}-o-e`} data-other-in /><p class="rw-err" id={`${id}-o-e`} hidden>Enter an amount between £1 and £5,000.</p></div>
+  </fieldset>
+  <p class="rw-impact" aria-live="polite" data-impact></p>
+  <label class="rw-check"><input type="checkbox" data-gift /><span>I'm a UK taxpayer: add Gift Aid, so <b data-gift-amt>£25</b> becomes <b data-gift-tot>£31.25</b> at no cost to me</span></label>
+  <button type="submit" class="rw-btn rw-btn--tomato rw-btn--lg w-full" data-go>Donate £25</button>
+  <p class="rw-ok" role="status" data-ok></p>
+  <p class="rw-fine">Demo only: no card details are asked for and no money is taken.</p>
+</form>

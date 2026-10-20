@@ -1,0 +1,7 @@
+{
+ "date": "2026-09-10",
+ "version": "v4.1",
+ "kind": "improvement",
+ "title": "Forecasts load twice as fast",
+ "text": "We rebuilt how weekly totals are calculated. Large accounts with 50,000 transactions now open in under a second."
+}

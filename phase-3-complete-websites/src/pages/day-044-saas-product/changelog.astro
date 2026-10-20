@@ -1,0 +1,46 @@
+---
+/** Day 044 · Fathom · changelog from the "releases" collection, filterable by type, plus a subscribe form. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-044/Shell.astro';
+
+const B = '/day-044-saas-product';
+const rel = (await getCollection('releases')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const LABEL = { feature: 'New', improvement: 'Improved', fix: 'Fixed' } as const;
+---
+<Site title="Changelog · Fathom" description="Everything new in Fathom: features, improvements and fixes, newest first." themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="changelog">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Changelog</li></ol><h1 class="fa-h1">What's <span class="fa-grad">new.</span></h1><p class="fa-lede mt-5">We ship every two weeks. Here is everything that has changed, newest first.</p></div></header>
+    <section class="fa-section"><div class="fa-wrap fa-split">
+      <div>
+        <div class="fa-chips mb-8" role="group" aria-label="Type of change" data-kinds><button type="button" data-kind="all" aria-pressed="true">All</button><button type="button" data-kind="feature" aria-pressed="false">New</button><button type="button" data-kind="improvement" aria-pressed="false">Improved</button><button type="button" data-kind="fix" aria-pressed="false">Fixed</button></div>
+        <ol class="fa-rel" role="list">{rel.map((r) => <li data-rel data-kind={r.data.kind}><header><span class="fa-ver">{r.data.version}</span><span class={`fa-tag fa-tag--${r.data.kind}`}>{LABEL[r.data.kind]}</span><time datetime={r.data.date}>{fmt(r.data.date)}</time></header><h2 class="fa-h3">{r.data.title}</h2><p class="mt-1">{r.data.text}</p></li>)}</ol>
+      </div>
+      <aside class="fa-panel" style="position:sticky;top:6rem" aria-labelledby="sub-t">
+        <h2 id="sub-t" class="fa-h3">Get release notes by email</h2><p class="mt-2" style="color:var(--muted)">One short email every two weeks. Unsubscribe any time.</p>
+        <form data-sub novalidate class="mt-4"><label for="s-email" class="fa-label">Email</label><input id="s-email" type="email" class="fa-input" autocomplete="email" data-req aria-describedby="s-email-e" /><p class="fa-err" id="s-email-e" hidden>Enter an email like name@example.com.</p><button type="submit" class="fa-btn fa-btn--blue fa-btn--full mt-4">Subscribe</button><p class="fa-ok" role="status" data-ok></p></form>
+      </aside>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const items = [...document.querySelectorAll<HTMLElement>('[data-rel]')];
+  document.querySelector('[data-kinds]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    document.querySelectorAll<HTMLButtonElement>('[data-kinds] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    items.forEach((li) => (li.hidden = !(b.dataset.kind === 'all' || li.dataset.kind === b.dataset.kind)));
+  });
+  const form = document.querySelector<HTMLFormElement>('[data-sub]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = 'You are subscribed. (Demo: nothing was sent.)';
+    form.reset();
+  });
+</script>

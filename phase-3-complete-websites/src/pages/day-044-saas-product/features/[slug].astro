@@ -1,0 +1,32 @@
+---
+/** Day 044 · Fathom · one page per feature, generated from the "features" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { FEATURE_PHOTOS, PHOTO_ALTS } from '../../../days/day-044/photos';
+import Shell from '../../../components/day-044/Shell.astro';
+import { icon } from '../../../days/day-044/chart';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('features')).sort((a, b) => a.data.order - b.data.order);
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, index: i, others: all.filter((f) => f.id !== entry.id) } }));
+}
+const B = '/day-044-saas-product';
+const { entry, index, others } = Astro.props;
+const f = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${f.title} · Fathom`} description={f.lede} themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="features">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/features/`}>Product</a></li><li aria-current="page">{f.title}</li></ol>
+      <div class="fa-split" style="align-items:center">
+        <div><span class="fa-ico" set:html={icon(f.icon, 28)} style="width:3.6rem;height:3.6rem"></span><h1 class="fa-h1 mt-5" style="font-size:clamp(2.4rem,5vw,4rem)">{f.tagline}</h1><p class="fa-lede mt-5">{f.lede}</p><div class="mt-7 flex flex-wrap gap-3"><a href={`${B}/pricing/`} class="fa-btn fa-btn--blue fa-btn--lg">Try {f.title}</a><a href={`${B}/demo/`} class="fa-btn fa-btn--line fa-btn--lg">See it live</a></div></div>
+        <figure class="fa-featphoto"><Image src={FEATURE_PHOTOS[entry.id]} alt={PHOTO_ALTS[entry.id]} width={900} loading="eager" /></figure>
+      </div></div></header>
+    <section class="fa-section"><div class="fa-wrap"><div class="fa-prose"><Content /></div></div></section>
+    <section class="fa-section fa-section--tint" aria-labelledby="more-t"><div class="fa-wrap">
+      <div class="fa-head"><h2 id="more-t" class="fa-h2">More from Fathom</h2></div>
+      <ul class="fa-grid fa-grid--3" role="list">{others.slice(0, 3).map((o) => <li><a href={`${B}/features/${o.id}/`} class="fa-card"><span class="fa-ico" set:html={icon(o.data.icon)}></span><h3 class="fa-h3 mt-4">{o.data.title}</h3><p class="mt-2">{o.data.tagline}</p></a></li>)}</ul>
+    </div></section>
+  </Shell>
+</Site>

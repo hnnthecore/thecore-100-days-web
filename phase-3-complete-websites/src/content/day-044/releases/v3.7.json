@@ -1,0 +1,7 @@
+{
+ "date": "2026-07-15",
+ "version": "v3.7",
+ "kind": "improvement",
+ "title": "Smarter late-payer predictions",
+ "text": "The model now learns from seasonality, so December payers are no longer treated like July payers."
+}

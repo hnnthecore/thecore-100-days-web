@@ -1,0 +1,7 @@
+{
+ "date": "2026-06-11",
+ "version": "v3.5",
+ "kind": "fix",
+ "title": "Accessibility improvements",
+ "text": "Charts now have keyboard navigation and text summaries, and every control meets WCAG 2.2 AA contrast."
+}

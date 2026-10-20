@@ -2,6 +2,20 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Days 43–45 · No drawn or sample images left
+
+**Why:** the client asked for real photographs instead of drawn or sample pictures. Every drawn illustration on these three sites is now a real photograph.
+
+| Day | What was drawn | Now |
+| --- | --- | --- |
+| 43 Rootwork | Story cards had no picture; "More from the farm" and the contact map were drawn; the volunteer quote had no face | A real photo for each of the three stories (card, story page, "more stories"), a real portrait on the volunteer quote, programme photos in "More from the farm", a real OpenStreetMap map of Chorlton with a photo of the allotment gate, and real portraits of the four team members on the About page |
+| 44 Fathom | Feature pages showed a drawn chart; customers were letter tiles | One real photograph for each of the six features, a real photograph of each customer's business, and a real portrait of each person quoted. The hero dashboard and the live what-if demo stay as real interactive interface, not pictures |
+| 45 Lingua Lane | Teachers were coloured initials; courses were plain colour cards | A real portrait of each of the eight teachers (cards, bios, course pages) a real street scene for each of the eight languages, and on the About page two real class photographs plus a real OpenStreetMap map of Gower Mews with a photo of the mews |
+
+**Checked:** every portrait was inspected so the whole face is in frame, brand names and readable logos were avoided, and the automated sweep (360, 768 and 1280 px) is clean on all 43 pages of the three sites.
+
+**Known limits:** all photographs are free stock (Pexels, listed in each day's README) standing in for fictional people, businesses and places. The Day 43 map needs an internet connection.
+
 ## Days 41–42 · Distinct home pages, real photography, inner-page headers
 
 **Why:** the same client feedback as Days 21–40, now for the first two complete websites. Both sites also get a distinct page header on every inner page; the page bodies keep their layouts.

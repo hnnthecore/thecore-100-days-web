@@ -1,0 +1,7 @@
+{
+ "date": "2026-08-12",
+ "version": "v3.9",
+ "kind": "fix",
+ "title": "Fixed duplicate bank transactions",
+ "text": "A small number of customers saw the same transaction twice after a bank reconnect. This is fixed and duplicates are cleaned up automatically."
+}

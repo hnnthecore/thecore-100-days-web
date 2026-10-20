@@ -1,0 +1,58 @@
+---
+/** Day 044 · Fathom · book a demo: a two-step form (your details, then a time slot) with a confirmation. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-044/Shell.astro';
+
+const B = '/day-044-saas-product';
+---
+<Site title="Book a demo · Fathom" description="Book a 20-minute Fathom demo with a cash-flow specialist. Pick a time that suits you." themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="demo">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Book a demo</li></ol><h1 class="fa-h1">See Fathom <span class="fa-grad">in 20 minutes.</span></h1></div></header>
+    <section class="fa-section !pt-10"><div class="fa-wrap fa-split">
+      <div>
+        <h2 class="fa-h2">What to expect</h2>
+        <ol class="fa-expect mt-8" role="list">
+          <li><div><b>We look at your numbers</b><span>Bring a rough idea of your sales and costs. We will build a sample forecast with you.</span></div></li>
+          <li><div><b>You see the product</b><span>A guided tour of forecasts, scenarios and invoice chasing, shaped around your business.</span></div></li>
+          <li><div><b>You decide, no pressure</b><span>We will talk plans and pricing, then leave you with a free trial and a follow-up email.</span></div></li>
+        </ol>
+        <blockquote class="fa-card mt-10"><p class="fa-quote" style="font-size:1.25rem">“The demo paid for itself in the first ten minutes. We spotted a cash dip we had no idea about.”</p><p class="mt-3 font-bold">Rosa Whitfield <span style="color:var(--muted);font-weight:600">· Northbound Bakery</span></p></blockquote>
+      </div>
+
+      <div class="fa-panel" data-demo>
+        <ol class="fa-steps" aria-label="Progress" role="list"><li class="is-on" data-step-bar></li><li data-step-bar></li></ol>
+
+        <form data-step="1" novalidate>
+          <h2 class="fa-h3">Tell us about you</h2>
+          <div class="fa-fields mt-5">
+            <div><label for="d-name" class="fa-label">Name</label><input id="d-name" class="fa-input" autocomplete="name" data-req aria-describedby="d-name-e" /><p class="fa-err" id="d-name-e" hidden>Please add your name.</p></div>
+            <div><label for="d-email" class="fa-label">Work email</label><input id="d-email" type="email" class="fa-input" autocomplete="email" data-req aria-describedby="d-email-e" /><p class="fa-err" id="d-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div class="col-2"><label for="d-co" class="fa-label">Company</label><input id="d-co" class="fa-input" autocomplete="organization" data-req aria-describedby="d-co-e" /><p class="fa-err" id="d-co-e" hidden>Please add your company.</p></div>
+            <fieldset class="fa-set col-2"><legend>Team size</legend><div class="fa-radios"><label><input type="radio" name="size" value="1-5" checked /><span>1 to 5</span></label><label><input type="radio" name="size" value="6-20" /><span>6 to 20</span></label><label><input type="radio" name="size" value="21-50" /><span>21 to 50</span></label><label><input type="radio" name="size" value="50+" /><span>50+</span></label></div></fieldset>
+          </div>
+          <button type="submit" class="fa-btn fa-btn--blue fa-btn--full fa-btn--lg mt-6">Choose a time →</button>
+        </form>
+
+        <div data-step="2" hidden>
+          <h2 class="fa-h3">Pick a time</h2>
+          <p class="mt-1 text-sm" style="color:var(--muted)">20 minutes on video. Times shown in your local time.</p>
+          <div class="fa-days mt-4" role="group" aria-label="Day" data-days></div>
+          <div class="fa-slots" role="group" aria-label="Time" data-slots></div>
+          <p class="fa-err" hidden data-slot-e>Please pick a time.</p>
+          <div class="mt-6 flex gap-3"><button type="button" class="fa-btn fa-btn--line" data-back>← Back</button><button type="button" class="fa-btn fa-btn--blue" style="flex:1" data-book>Confirm booking</button></div>
+        </div>
+
+        <div class="fa-done" data-step="3" hidden tabindex="-1">
+          <div class="fa-done__tick" aria-hidden="true">✓</div>
+          <h2 class="fa-h3">You are booked in, <span data-d-name></span>.</h2>
+          <p class="mt-2" style="color:var(--muted)" data-d-text></p>
+          <a href={`${B}/features/`} class="fa-btn fa-btn--line mt-6">Explore the product meanwhile</a>
+        </div>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-044/demo';
+</script>

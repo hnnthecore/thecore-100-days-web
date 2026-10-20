@@ -1,0 +1,19 @@
+---
+/** Day 043 · Rootwork · all programmes. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-043/Shell.astro';
+import { Image } from 'astro:assets';
+import { PROGRAMME_PHOTOS } from '../../../days/day-043/photos';
+
+const B = '/day-043-community-farm';
+const programmes = await getCollection('programmes');
+---
+<Site title="What we do · Rootwork Community Farm" description="Community growing, cooking skills, a children's garden club and green jobs training at Rootwork Community Farm, Manchester." themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="programmes">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">What we do</li></ol><h1 class="rw-h1">Four programmes. <em>One farm.</em></h1><p class="rw-lede mt-4">Everything we run is free or pay-what-you-can, and everything starts with a seed.</p></div></header>
+    <section class="rw-section"><div class="rw-wrap"><ul class="rw-cards" role="list">
+      {programmes.map((p) => <li><a href={`${B}/programmes/${p.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[p.id]} alt={p.data.title} width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{p.data.when} · {p.data.who}</p><h2 class="rw-h3">{p.data.title}</h2><p>{p.data.tagline}</p><span class="rw-card__more">Find out more →</span></div></a></li>)}
+    </ul></div></section>
+  </Shell>
+</Site>

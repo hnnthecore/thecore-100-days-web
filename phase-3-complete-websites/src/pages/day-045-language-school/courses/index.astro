@@ -1,0 +1,63 @@
+---
+/** Day 045 · Lingua Lane · course catalogue from the "courses" collection, filterable by day of week and searchable. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { COURSE_PHOTOS } from '../../../days/day-045/photos';
+import Shell from '../../../components/day-045/Shell.astro';
+
+const B = '/day-045-language-school';
+const courses = await getCollection('courses');
+const teachers = await getCollection('teachers');
+const nameOf = (id: string) => teachers.find((t) => t.id === id)?.data.name ?? '';
+---
+<Site title="Courses · Lingua Lane" description="Eight languages from beginner to upper-intermediate. Evening, lunchtime and weekend classes in London and online." themeColor="#ff5a3c" icon="💬" day={45}>
+  <Shell active="courses">
+    <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Courses</li></ol><h1 class="ll-h1">Eight languages. <span class="ll-mark">Your pick.</span></h1><p class="ll-lede mt-5">Ten-week courses from A1 to B2. Evenings, lunchtimes and weekends.</p></div></header>
+    <section class="ll-section"><div class="ll-wrap">
+      <div class="mb-8 flex flex-wrap items-end gap-6">
+        <div style="flex:1;min-width:14rem;max-width:22rem"><label for="c-q" class="ll-label">Search a language</label><input id="c-q" type="search" class="ll-input" placeholder="e.g. Japanese" autocomplete="off" data-q /></div>
+        <div><p class="ll-label" id="when-l">When can you learn?</p><div class="ll-chips" role="group" aria-labelledby="when-l" data-when><button type="button" data-w="all" aria-pressed="true">Any time</button><button type="button" data-w="Eve" aria-pressed="false">Evenings</button><button type="button" data-w="Day" aria-pressed="false">Daytime</button><button type="button" data-w="Wknd" aria-pressed="false">Weekends</button></div></div>
+      </div>
+      <p class="mb-5 font-bold" style="color:var(--muted)" role="status" data-count></p>
+      <ul class="ll-grid ll-grid--3" role="list" data-list>{courses.map((c) => (
+        <li data-course data-name={c.data.language.toLowerCase() + ' ' + c.data.native.toLowerCase()} data-sched={c.data.schedule.join('|')}>
+          <a href={`${B}/courses/${c.id}/`} class="ll-lang" style={`background:${c.data.colour};color:${c.data.ink}`}>
+            <span class="ll-lang__photo"><Image src={COURSE_PHOTOS[c.id]} alt="" width={520} /></span><span class="ll-lang__hi">{c.data.greeting}</span>
+            <span><h2 class="ll-h3">{c.data.language}</h2><p>{c.data.tagline}</p><p class="mt-2 font-bold">With {nameOf(c.data.teacher)} · from £189</p></span>
+          </a>
+        </li>
+      ))}</ul>
+      <p class="ll-lede mt-8" hidden data-empty>No courses match. Try a different day or search.</p>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('[data-course]')];
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!;
+  const when = document.querySelector('[data-when]')!;
+  let w = 'all';
+  const slotKind = (s: string) => (/Sat|Sun/.test(s) ? 'Wknd' : parseInt(s.split(' ')[1]) >= 17 ? 'Eve' : 'Day');
+  function paint() {
+    const term = q.value.trim().toLowerCase();
+    let n = 0;
+    items.forEach((li) => {
+      const okQ = !term || li.dataset.name!.includes(term);
+      const okW = w === 'all' || li.dataset.sched!.split('|').some((s) => slotKind(s) === w);
+      li.hidden = !(okQ && okW);
+      if (!li.hidden) n++;
+    });
+    document.querySelector('[data-count]')!.textContent = `${n} course${n === 1 ? '' : 's'}`;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  }
+  q.addEventListener('input', paint);
+  when.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    w = b.dataset.w!;
+    when.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paint();
+  });
+  paint();
+</script>

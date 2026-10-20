@@ -1,0 +1,20 @@
+---
+/** Day 043 · Rootwork · about: mission, team, timeline and funders. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { TEAM_PHOTOS } from '../../days/day-043/photos';
+import Shell from '../../components/day-043/Shell.astro';
+
+const B = '/day-043-community-farm';
+const TEAM = [['Farida Haque', 'Founder & director', 'Started Rootwork with a borrowed wheelbarrow and a hunch that neighbours would show up.', '#4f8a3c'], ['Joe Mbeki', 'Head grower', 'Trained at Kew, grows tomatoes the size of fists and teaches like a patient uncle.', '#e2543a'], ['Dev Anand', 'Grower & trainer', 'Our first Green Jobs graduate, now training the next cohort.', '#3b82c4'], ['Lucy Marsh', 'Community & volunteers', 'Knows every volunteer by name, tea order and favourite tool.', '#a0642d']];
+const TIME = [['2014', 'Two acres, one wheelbarrow', 'Farida persuades the council to lease a derelict allotment site for a pound a year.'], ['2017', 'The kitchen opens', 'A shipping container becomes a community kitchen and Thursday suppers begin.'], ['2020', 'The veg box years', 'During lockdown, volunteers deliver 600 boxes a week to neighbours who cannot get out.'], ['2023', 'Green Jobs launches', 'The first cohort of eight trainees completes an accredited course. Seven find work.'], ['Today', 'Still growing', 'Over 340 neighbours grow with us every week, and we have a waiting list for plots.']];
+---
+<Site title="About · Rootwork Community Farm" description="The story of Rootwork Community Farm: our mission, our team and how two derelict acres became the heart of a neighbourhood." themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="about">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">About</li></ol><h1 class="rw-h1">A farm in the <em>middle of the city.</em></h1><p class="rw-lede mt-4">Rootwork exists to make fresh food, useful skills and good company part of everyday life in our neighbourhood.</p></div></header>
+    <section class="rw-section"><div class="rw-wrap rw-two" style="align-items:start"><div><p class="rw-eyebrow">Our mission</p><h2 class="rw-h2 mt-3">Everyone should be able to grow something.</h2></div><div class="rw-prose"><p>We believe that growing food together is one of the simplest ways to build a stronger community. It gets people outdoors, teaches skills that last and puts good food on tables that need it.</p><p>We are a registered charity, run by a small team and hundreds of volunteers. Every penny we earn goes back into the soil.</p></div></div></section>
+    <section class="rw-section rw-section--cream" aria-labelledby="team-t"><div class="rw-wrap"><div class="rw-head"><h2 id="team-t" class="rw-h2">The team</h2></div><ul class="rw-team" role="list">{TEAM.map(([n, r, t, c]) => <li class="rw-person"><Image src={TEAM_PHOTOS[n]} alt={`Portrait of ${n}, ${r.toLowerCase()}`} width={420} height={420} class="rw-person__photo" /><h3 class="rw-h3">{n}</h3><p class="font-bold" style="color:var(--leaf-d)">{r}</p><p>{t}</p></li>)}</ul></div></section>
+    <section class="rw-section" aria-labelledby="time-t"><div class="rw-wrap rw-two" style="align-items:start"><div><p class="rw-eyebrow">Our story</p><h2 id="time-t" class="rw-h2 mt-3">Twelve years in the field</h2></div><ol class="rw-timeline">{TIME.map(([y, t, d]) => <li><b>{y}</b> <span class="rw-h3 ml-2">{t}</span><p>{d}</p></li>)}</ol></div></section>
+    <section class="rw-section rw-section--leaf" aria-labelledby="fund-t"><div class="rw-wrap"><div class="rw-head"><h2 id="fund-t" class="rw-h2">With thanks to our supporters</h2></div><ul class="rw-funders" role="list"><li>Greater Manchester Community Fund</li><li>The Lottery Trust (demo)</li><li>Chorlton Rotary</li><li>Sunnyside Garden Centre</li><li>340 monthly givers</li></ul></div></section>
+  </Shell>
+</Site>

@@ -1,0 +1,32 @@
+---
+/** Day 043 · Rootwork · stories index with category filter. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { STORY_PHOTOS } from '../../../days/day-043/photos';
+import Shell from '../../../components/day-043/Shell.astro';
+
+const B = '/day-043-community-farm';
+const stories = (await getCollection('stories')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const cats = [...new Set(stories.map((s) => s.data.category))];
+const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Site title="Stories · Rootwork Community Farm" description="Stories from Rootwork Community Farm: volunteers, trainees, harvests and the people who make the farm what it is." themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="stories">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Stories</li></ol><h1 class="rw-h1">Stories from the <em>soil.</em></h1></div></header>
+    <section class="rw-section"><div class="rw-wrap">
+      <div class="rw-chips mb-8" role="group" aria-label="Category" data-cats><button type="button" data-cat="all" aria-pressed="true">All</button>{cats.map((c) => <button type="button" data-cat={c} aria-pressed="false">{c}</button>)}</div>
+      <ul class="rw-more" role="list">{stories.map((s) => <li data-story data-cat={s.data.category}><a href={`${B}/stories/${s.id}/`} class="rw-card"><div class="rw-card__img"><Image src={STORY_PHOTOS[s.id]} alt="" width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{s.data.category} · {fmt(s.data.date)}</p><h2 class="rw-h3">{s.data.title}</h2><p>{s.data.excerpt}</p><span class="rw-card__more">Read the story →</span></div></a></li>)}</ul>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('[data-story]')];
+  document.querySelector('[data-cats]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    document.querySelectorAll<HTMLButtonElement>('[data-cats] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    items.forEach((li) => (li.hidden = !(b.dataset.cat === 'all' || li.dataset.cat === b.dataset.cat)));
+  });
+</script>

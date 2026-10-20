@@ -1,0 +1,42 @@
+---
+/** Day 045 · Lingua Lane · header and footer shared by every page. Links are root paths, made relative by the build. */
+import '@fontsource/young-serif';
+import '@fontsource-variable/figtree';
+import '../../days/day-045/styles.css';
+
+interface Props { active?: 'courses' | 'test' | 'teachers' | 'about' | 'enrol' }
+const { active } = Astro.props;
+const B = '/day-045-language-school';
+const NAV = [['courses', 'Courses', `${B}/courses/`], ['test', 'Level test', `${B}/level-test/`], ['teachers', 'Teachers', `${B}/teachers/`], ['about', 'About', `${B}/about/`]] as const;
+const HELLOS = ['Hello', 'Hola', 'Bonjour', 'Hallo', 'Ciao', 'こんにちは', '你好', 'Olá', 'مرحبا', 'Namaste', 'Merhaba', 'Привет'];
+---
+<div class="ll">
+  <header class="ll-header" data-header>
+    <div class="ll-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="ll-logo" aria-label="Lingua Lane, home"><span class="ll-logo__bub" aria-hidden="true">“</span>Lingua Lane</a>
+      <nav aria-label="Main" class="hidden lg:block"><ul class="flex gap-9">{NAV.map(([k, l, h]) => <li><a href={h} class="ll-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-3">
+        <a href={`${B}/enrol/`} class="ll-btn ll-btn--coral hidden sm:inline-flex">Enrol now</a>
+        <button type="button" class="ll-burger lg:hidden" data-burger aria-expanded="false" aria-controls="ll-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="ll-menu" class="ll-menu lg:hidden" aria-label="Mobile" data-menu hidden>
+      <ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/enrol/`} aria-current={active === 'enrol' ? 'page' : undefined}>Enrol now</a></li></ul>
+    </nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <div class="ll-hellos" aria-hidden="true"><div class="ll-hellos__t">{[...HELLOS, ...HELLOS].map((h) => <span>{h}</span>)}</div></div>
+  <footer class="ll-footer">
+    <div class="ll-wrap grid grid-cols-2 gap-10 py-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="ll-logo !text-white"><span class="ll-logo__bub" aria-hidden="true">“</span>Lingua Lane</p><p class="mt-4 max-w-sm text-white/70">A friendly language school in central London. Small classes, brilliant teachers and eight languages to fall in love with.</p></div>
+      <div><h2 class="ll-foot-h">Learn</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/courses/`}>All courses</a></li><li><a href={`${B}/level-test/`}>Free level test</a></li><li><a href={`${B}/teachers/`}>Our teachers</a></li><li><a href={`${B}/enrol/`}>Enrol</a></li></ul></div>
+      <div><h2 class="ll-foot-h">Visit</h2><address class="mt-3 grid gap-1 not-italic text-white/75">14 Gower Mews<br />London WC1E 6HP<br />hello@lingualane.example<br />020 5550 0145</address></div>
+    </div>
+    <div class="ll-wrap border-t border-white/15 py-6 text-sm text-white/55">A fictional school created for Thecore's 100 Days of Web (Day 045). Courses, teachers and prices are invented.</div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+</script>

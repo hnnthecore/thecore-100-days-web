@@ -1,0 +1,29 @@
+---
+/** Day 044 · Fathom · one case study per customer, generated from the "customers" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { BIZ_PHOTOS, PERSON_PHOTOS, PHOTO_ALTS, PERSON_ALTS } from '../../../days/day-044/photos';
+import Shell from '../../../components/day-044/Shell.astro';
+import { mark } from '../../../days/day-044/chart';
+
+export async function getStaticPaths() {
+  const all = await getCollection('customers');
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, next: all[(i + 1) % all.length] } }));
+}
+const B = '/day-044-saas-product';
+const { entry, next } = Astro.props;
+const c = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${c.name} case study · Fathom`} description={c.quote} themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="customers">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/customers/`}>Customers</a></li><li aria-current="page">{c.name}</li></ol>
+      <p class="fa-who mb-6"><span set:html={mark(c.name, c.colour, 56)}></span><span><b class="text-xl">{c.name}</b><span>{c.tag} · {c.size}</span></span></p>
+      <h1 class="fa-quote" style="font-size:clamp(1.7rem,4vw,3rem);max-width:28ch">“{c.quote}”</h1><p class="fa-who mt-6"><Image src={PERSON_PHOTOS[entry.id]} alt={PERSON_ALTS[entry.id]} width={112} height={112} class="fa-face fa-face--lg" /><span><b>{c.person}</b><span>{c.role}, {c.name}</span></span></p></div></header>
+    <section class="fa-section !pb-0"><div class="fa-wrap"><figure class="fa-bizphoto fa-bizphoto--wide"><Image src={BIZ_PHOTOS[entry.id]} alt={PHOTO_ALTS[entry.id]} width={1400} loading="eager" /></figure></div></section>
+    <section class="fa-section !pb-6"><div class="fa-wrap"><ul class="fa-bigstats" role="list">{c.stats.map((s) => <li><b>{s.value}</b><span>{s.label}</span></li>)}</ul></div></section>
+    <section class="fa-section"><div class="fa-wrap"><div class="fa-prose"><Content /></div>
+      <div class="mt-10 flex flex-wrap gap-3"><a href={`${B}/demo/`} class="fa-btn fa-btn--blue">Get results like this</a><a href={`${B}/customers/${next.id}/`} class="fa-btn fa-btn--line">Next: {next.data.name} →</a></div></div></section>
+  </Shell>
+</Site>

@@ -1,0 +1,48 @@
+---
+/** Day 045 · Lingua Lane · one page per language, generated from the "courses" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { TEACHER_PHOTOS, COURSE_PHOTOS, COURSE_ALTS } from '../../../days/day-045/photos';
+import Shell from '../../../components/day-045/Shell.astro';
+
+export async function getStaticPaths() {
+  const all = await getCollection('courses');
+  const teachers = await getCollection('teachers');
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, teacher: teachers.find((t) => t.id === entry.data.teacher)!, next: all[(i + 1) % all.length] } }));
+}
+const B = '/day-045-language-school';
+const { entry, teacher, next } = Astro.props;
+const c = entry.data;
+const { Content } = await render(entry);
+const LEVELS = [['A1', 'Beginner', 'Greetings, numbers and simple everyday phrases.'], ['A2', 'Elementary', 'Talk about your day, past events and plans.'], ['B1', 'Intermediate', 'Handle most situations when travelling or working.'], ['B2', 'Upper-intermediate', 'Discuss ideas and opinions with fluency and nuance.']];
+---
+<Site title={`${c.language} classes · Lingua Lane`} description={c.intro} themeColor={c.colour} icon="💬" day={45}>
+  <Shell active="courses">
+    <header class="ll-pagehead" style={`background:${c.colour};color:${c.ink}`}>
+      <div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb" style="color:inherit"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/courses/`}>Courses</a></li><li aria-current="page">{c.language}</li></ol>
+        <p class="ll-h1" aria-hidden="true">{c.greeting}</p><h1 class="ll-h2 mt-3" style="max-width:22ch">{c.language} classes in London and online</h1><p class="mt-4 max-w-xl text-lg font-semibold">{c.tagline}. {c.speakers}.</p></div>
+    </header>
+
+    <section class="ll-section"><div class="ll-wrap ll-split ll-split--wide">
+      <div>
+        <figure class="ll-coursephoto"><Image src={COURSE_PHOTOS[entry.id]} alt={COURSE_ALTS[entry.id]} width={900} loading="eager" /></figure>
+        <p class="ll-lede" style="color:var(--ink)">{c.intro}</p>
+        <ul class="ll-ticks mt-5">{c.highlights.map((h) => <li>{h}</li>)}</ul>
+        <div class="ll-prose mt-6"><Content /></div>
+      </div>
+      <aside class="ll-box" aria-labelledby="meet-t">
+        <h2 id="meet-t" class="ll-h3">Your teacher</h2>
+        <div class="mt-4 flex items-center gap-4"><Image src={TEACHER_PHOTOS[teacher.id]} alt={`Portrait of ${teacher.data.name}`} width={160} height={160} class="ll-avatar ll-avatar--photo ll-avatar--lg" /><div><b>{teacher.data.name}</b><br /><span style="color:var(--muted)">From {teacher.data.from} · {teacher.data.years} years teaching</span></div></div>
+        <p class="mt-4 font-semibold" style="color:var(--muted)">“{teacher.data.quote}”</p>
+        <h2 class="ll-h3 mt-6">Class times</h2><ul class="ll-sched mt-3" role="list">{c.schedule.map((s) => <li>{s}</li>)}</ul>
+      </aside>
+    </div></section>
+
+    <section class="ll-section ll-section--cream" aria-labelledby="lv-t"><div class="ll-wrap">
+      <div class="ll-head"><div><p class="ll-eyebrow">Levels</p><h2 id="lv-t" class="ll-h2 mt-3">From first words to real fluency.</h2></div></div>
+      <ol class="ll-levels" role="list">{LEVELS.map(([lv, name, d]) => <li class="ll-level"><span class="ll-level__tag" style={`background:${c.colour};color:${c.ink}`}>{lv}</span><div><b>{name}</b><span>{d} 10 weeks · £189</span></div><a href={`${B}/enrol/?course=${entry.id}&level=${lv}`} class="ll-btn">Enrol</a></li>)}</ol>
+      <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/level-test/`} class="ll-btn ll-btn--coral">Not sure of your level?</a><a href={`${B}/courses/${next.id}/`} class="ll-btn">Next: {next.data.language} →</a></div>
+    </div></section>
+  </Shell>
+</Site>

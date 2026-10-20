@@ -1,0 +1,75 @@
+---
+/** Day 044 · Fathom · pricing: monthly/annual toggle, plan recommender, comparison table and FAQ. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-044/Shell.astro';
+
+const B = '/day-044-saas-product';
+const PLANS = [
+  { id: 'starter', name: 'Starter', price: 29, blurb: 'For sole traders and new businesses.', list: ['1 bank connection', '13-week forecast', 'Email alerts', '1 user'], cta: 'Start free' },
+  { id: 'growth', name: 'Growth', price: 79, blurb: 'For growing teams who plan ahead.', list: ['5 bank connections', 'Scenarios and sharing', 'Invoice chasing', 'Slack alerts', '5 users'], cta: 'Start free', pop: true },
+  { id: 'scale', name: 'Scale', price: 199, blurb: 'For finance teams and multi-entity groups.', list: ['Unlimited connections', 'Multi-currency', 'Investor reports', 'Single sign-on and audit log', 'Unlimited users'], cta: 'Talk to us' },
+];
+const ROWS: [string, (boolean | string)[]][] = [
+  ['Forecasting', []], ['13-week rolling forecast', [true, true, true]], ['Bank connections', ['1', '5', 'Unlimited']], ['Scenarios', [false, true, true]], ['Multi-currency', [false, false, true]],
+  ['Getting paid', []], ['Invoice chasing', [false, true, true]], ['Smart alerts', ['Email', 'Email + Slack', 'Email + Slack']],
+  ['Reporting', []], ['Standard reports', [true, true, true]], ['Investor-ready packs', [false, false, true]],
+  ['Teams and security', []], ['Users', ['1', '5', 'Unlimited']], ['Accountant access', [false, true, true]], ['Single sign-on and audit log', [false, false, true]],
+];
+const FAQ = [
+  ['How does the free trial work?', 'You get 14 days of the Growth plan with no card needed. At the end you pick a plan or your account simply pauses; nothing is charged by surprise.'],
+  ['Can I change plan later?', 'Yes, at any time. Upgrades apply immediately and downgrades start at your next billing date.'],
+  ['What does annual billing save me?', 'Paying annually takes 20% off every plan, which is the equivalent of two months free.'],
+  ['Is my bank data safe?', 'Fathom uses read-only open banking connections, so we can see transactions but never move money. Data is encrypted in transit and at rest.'],
+  ['Do you offer discounts for charities?', 'Yes. Registered charities get 30% off any plan. Get in touch and we will set it up.'],
+];
+---
+<Site title="Pricing · Fathom" description="Simple pricing for Fathom: Starter £29, Growth £79, Scale £199 a month. Annual billing saves 20%. Free for 14 days." themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="pricing">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Pricing</li></ol><h1 class="fa-h1">Pricing that <span class="fa-grad">grows with you.</span></h1><p class="fa-lede mt-5">Start free for 14 days, no card needed. Pick a plan when you are ready.</p>
+      <div class="fa-toggle mt-8" role="group" aria-label="Billing period" data-billing><button type="button" data-period="month" aria-pressed="false">Monthly</button><button type="button" data-period="year" aria-pressed="true">Annual <small>Save 20%</small></button></div></div></header>
+
+    <section class="fa-section !pt-10" aria-labelledby="plans-t">
+      <div class="fa-wrap">
+        <h2 id="plans-t" class="sr-only">Plans</h2>
+        <ul class="fa-plans" role="list" data-plans>
+          {PLANS.map((p) => (
+            <li class:list={['fa-plan', p.pop && 'fa-plan--pop']} data-plan={p.id} data-price={p.price}>
+              {p.pop && <span class="fa-plan__flag">Most popular</span>}
+              <h3 class="fa-h3">{p.name}</h3><p class="fa-plan__note">{p.blurb}</p>
+              <p class="fa-plan__price"><b data-amount>£{Math.round(p.price * 0.8)}</b><span>/ month</span></p>
+              <p class="fa-plan__note" data-billed>billed annually</p>
+              <ul role="list">{p.list.map((l) => <li>{l}</li>)}</ul>
+              <a href={`${B}/demo/`} class:list={['fa-btn fa-btn--full', p.pop ? 'fa-btn--mint' : 'fa-btn--ink']}>{p.cta}</a>
+            </li>
+          ))}
+        </ul>
+
+        <div class="fa-rec mt-10" data-rec>
+          <div><label for="r-conn" class="fa-label">Bank accounts to connect</label><select id="r-conn" class="fa-input" data-r="conn"><option value="1">1</option><option value="3">2 to 5</option><option value="9">6 or more</option></select></div>
+          <div><label for="r-team" class="fa-label">People who need access</label><select id="r-team" class="fa-input" data-r="team"><option value="1">Just me</option><option value="4">2 to 5</option><option value="9">6 or more</option></select></div>
+          <div><label for="r-need" class="fa-label">I need</label><select id="r-need" class="fa-input" data-r="need"><option value="0">A simple forecast</option><option value="1">Scenarios and invoice chasing</option><option value="2">Investor reports or multi-currency</option></select></div>
+          <p class="font-bold" role="status" data-rec-out>We suggest <b class="fa-grad">Starter</b></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="fa-section fa-section--tint" aria-labelledby="cmp-t"><div class="fa-wrap">
+      <div class="fa-head"><h2 id="cmp-t" class="fa-h2">Compare plans</h2></div>
+      <div class="fa-tablewrap" tabindex="0" role="region" aria-label="Plan comparison table, scrolls sideways on small screens">
+        <table class="fa-table"><thead><tr><th scope="col"><span class="sr-only">Feature</span></th>{PLANS.map((p) => <th scope="col">{p.name}</th>)}</tr></thead>
+        <tbody>{ROWS.map(([name, vals]) => vals.length === 0
+          ? <tr class="grp"><td colspan="4">{name}</td></tr>
+          : <tr><th scope="row">{name}</th>{vals.map((v) => <td>{v === true ? <span class="fa-yes" aria-label="Included">✓</span> : v === false ? <span class="fa-no" aria-label="Not included">—</span> : v}</td>)}</tr>)}</tbody></table>
+      </div>
+    </div></section>
+
+    <section class="fa-section" aria-labelledby="faq-t"><div class="fa-wrap fa-split">
+      <div><p class="fa-eyebrow">Questions</p><h2 id="faq-t" class="fa-h2 mt-3">Everything you might be wondering.</h2><p class="fa-lede mt-4">Something missing? <a href={`${B}/demo/`} class="fa-link">Talk to a human</a>.</p></div>
+      <div class="fa-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-044/pricing';
+</script>

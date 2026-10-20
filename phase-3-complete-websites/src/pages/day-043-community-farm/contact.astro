@@ -1,0 +1,50 @@
+---
+/** Day 043 · Rootwork · contact: message form, map, visiting information and FAQ. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { GATE_PHOTO } from '../../days/day-043/photos';
+import Shell from '../../components/day-043/Shell.astro';
+
+const B = '/day-043-community-farm';
+const FAQ = [['Do I need experience?', 'None at all. We teach as we go, and there is always a grower on site who is happy to explain things twice.'], ['Can I bring my children?', 'Yes. Under-12s need a grown-up with them. Little Sprouts on Saturday mornings is designed for children aged 4 to 11.'], ['Is the farm accessible?', 'The main paths are step-free and a raised-bed area is designed for wheelchair users. Accessible toilets are in the kitchen building.'], ['What should I wear?', 'Old clothes, sturdy shoes and a layer you can take off. We supply gloves, tools, tea and biscuits.'], ['Can my company volunteer?', 'Absolutely. We host corporate groups on weekdays. Use the form and say how many of you there are.']];
+---
+<Site title="Contact · Rootwork Community Farm" description="Get in touch with Rootwork Community Farm in Manchester. Visiting information, map and answers to common questions." themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="contact">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Contact</li></ol><h1 class="rw-h1">Come and <em>say hello.</em></h1></div></header>
+    <section class="rw-section"><div class="rw-wrap rw-contact">
+      <form class="rw-form" data-contact novalidate>
+        <h2 class="rw-h3">Send us a message</h2>
+        <div class="rw-fields mt-5">
+          <div><label for="m-name" class="rw-label">Name</label><input id="m-name" class="rw-input" autocomplete="name" data-req aria-describedby="m-name-e" /><p class="rw-err" id="m-name-e" hidden>Please add your name.</p></div>
+          <div><label for="m-email" class="rw-label">Email</label><input id="m-email" type="email" class="rw-input" autocomplete="email" data-req aria-describedby="m-email-e" /><p class="rw-err" id="m-email-e" hidden>Enter an email like name@example.com.</p></div>
+          <div class="col-2"><label for="m-topic" class="rw-label">What's it about?</label><select id="m-topic" class="rw-input"><option>Volunteering</option><option>A school or group visit</option><option>Corporate volunteering</option><option>Press or partnerships</option><option>Something else</option></select></div>
+          <div class="col-2"><label for="m-msg" class="rw-label">Your message</label><textarea id="m-msg" class="rw-input" data-req aria-describedby="m-msg-e"></textarea><p class="rw-err" id="m-msg-e" hidden>Please write a few words.</p></div>
+        </div>
+        <button type="submit" class="rw-btn rw-btn--leaf rw-btn--lg mt-5">Send message</button>
+        <p class="rw-ok" role="status" data-ok></p>
+      </form>
+      <div class="grid gap-6">
+        <div class="rw-map">
+          <iframe title="Map of Chorlton, Manchester, near the farm" src="https://www.openstreetmap.org/export/embed.html?bbox=-2.2850%2C53.4360%2C-2.2670%2C53.4450&amp;layer=mapnik&amp;marker=53.4405%2C-2.2760" loading="lazy" referrerpolicy="no-referrer" width="600" height="360"></iframe>
+          <figure class="rw-map__photo"><Image src={GATE_PHOTO} alt="A garden gate leading into the allotments, with polytunnels beyond" width={420} /><figcaption>Through the gate</figcaption></figure>
+          <a class="rw-map__link" href="https://www.openstreetmap.org/?mlat=53.4405&amp;mlon=-2.2760#map=16/53.4405/-2.2760" rel="noopener">Open the full map ↗</a>
+        </div>
+        <address class="not-italic leading-relaxed"><b>Rootwork Farm, Mill Lane, Manchester M14 6AB</b><br />Open for volunteering Tue and Sat, 10 to 4<br />Bus 42 stops at the gate · 8 minutes from Chorlton tram stop</address>
+      </div>
+    </div></section>
+    <section class="rw-section rw-section--cream" aria-labelledby="faq-t"><div class="rw-wrap rw-two" style="align-items:start"><div><p class="rw-eyebrow">Good to know</p><h2 id="faq-t" class="rw-h2 mt-3">Questions we often hear</h2></div><div class="rw-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const form = document.querySelector<HTMLFormElement>('[data-contact]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = document.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = `Thank you ${(document.getElementById('m-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within two working days. (Demo: nothing was sent.)`;
+    form.reset();
+  });
+</script>

@@ -1,0 +1,37 @@
+---
+/** Day 045 · Lingua Lane · free level test: pick a language, answer six questions, get a CEFR level and a course link. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-045/Shell.astro';
+import { QUIZ } from '../../days/day-045/quiz';
+
+const B = '/day-045-language-school';
+---
+<Site title="Free level test · Lingua Lane" description="Find your level in Spanish, French or German with our free six-question placement test and get a course recommendation." themeColor="#ff5a3c" icon="💬" day={45}>
+  <Shell active="test">
+    <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Level test</li></ol><h1 class="ll-h1">What's your <span class="ll-mark">level?</span></h1><p class="ll-lede mt-5">Six questions, about two minutes. No sign-up, no pressure.</p></div></header>
+    <section class="ll-section"><div class="ll-wrap" style="max-width:46rem">
+      <div class="ll-box" data-quiz>
+        <div data-pick>
+          <h2 class="ll-h3">Which language?</h2>
+          <div class="ll-radios mt-4" style="grid-template-columns:repeat(auto-fit,minmax(9rem,1fr))">{Object.entries(QUIZ).map(([k, v]) => <button type="button" class="ll-btn ll-btn--lg" data-lang={k}>{v.hello} · {v.label}</button>)}</div>
+        </div>
+        <div data-run hidden>
+          <div class="mb-5 flex items-center gap-4"><div class="ll-progress flex-1" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" data-bar><i></i></div><p class="font-bold" data-step>1 / 6</p></div>
+          <h2 class="ll-q" data-q tabindex="-1"></h2>
+          <div class="ll-opts" data-opts></div>
+        </div>
+        <div class="ll-result" data-result hidden tabindex="-1">
+          <p class="ll-eyebrow">Your level</p>
+          <p class="ll-result__lvl mt-4" data-lvl></p>
+          <h2 class="ll-h2 mx-auto mt-5" style="max-width:18ch" data-name></h2>
+          <p class="ll-lede mx-auto mt-3" data-text></p>
+          <div class="mt-7 flex flex-wrap justify-center gap-3"><a class="ll-btn ll-btn--coral ll-btn--lg" data-enrol href={`${B}/enrol/`}>Enrol at this level</a><button type="button" class="ll-btn ll-btn--lg" data-again>Try another language</button></div>
+        </div>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-045/quiz-page';
+</script>

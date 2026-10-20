@@ -1,0 +1,60 @@
+---
+/** Day 043 · Rootwork · volunteer shifts (from the "shifts" collection), a sign-up dialog and the full donation box. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-043/Shell.astro';
+import DonateBox from '../../components/day-043/DonateBox.astro';
+
+const B = '/day-043-community-farm';
+const shifts = (await getCollection('shifts')).sort((a, b) => a.data.date.localeCompare(b.data.date));
+const kinds = [...new Set(shifts.map((s) => s.data.kind))];
+const d = (s: string) => new Date(s + 'T00:00');
+---
+<Site title="Get involved · Rootwork Community Farm" description="Pick a volunteer shift at Rootwork Community Farm in Manchester, or make a donation to keep the farm growing." themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="involved">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Get involved</li></ol><h1 class="rw-h1">Pull on some <em>boots.</em></h1><p class="rw-lede mt-4">No experience, no commitment. Choose a session, turn up and we'll hand you a tool and a cup of tea.</p></div></header>
+    <section class="rw-section" aria-labelledby="shifts-title">
+      <div class="rw-wrap">
+        <div class="rw-head"><div><p class="rw-eyebrow">Volunteer</p><h2 id="shifts-title" class="rw-h2 mt-2">Upcoming sessions</h2></div></div>
+        <div class="rw-chips mb-6" role="group" aria-label="Type of session" data-kinds><button type="button" data-kind="all" aria-pressed="true">All</button>{kinds.map((k) => <button type="button" data-kind={k} aria-pressed="false">{k}</button>)}</div>
+        <ul class="grid gap-3" role="list" data-shifts>
+          {shifts.map((s) => {
+            const left = s.data.spots - s.data.taken;
+            return (
+              <li class="rw-shift" data-shift={s.id} data-kind={s.data.kind} data-title={s.data.title} data-when={`${d(s.data.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}, ${s.data.time}`} data-left={left} data-spots={s.data.spots}>
+                <span class="rw-date"><small>{d(s.data.date).toLocaleDateString('en-GB', { month: 'short' })}</small><b>{d(s.data.date).getDate()}</b></span>
+                <div><h3>{s.data.title}</h3><p><span class="rw-kind">{s.data.kind}</span>{d(s.data.date).toLocaleDateString('en-GB', { weekday: 'long' })} at {s.data.time} · {s.data.where}</p></div>
+                <div class:list={['rw-spots', left <= 3 && 'is-low']}><i style={`--w:${(s.data.taken / s.data.spots) * 100}%`}></i><small data-left-text>{left} of {s.data.spots} spots left</small></div>
+                <button type="button" class="rw-btn rw-btn--line" data-join aria-pressed="false">Sign up</button>
+              </li>
+            );
+          })}
+        </ul>
+        <div class="rw-mine" data-mine hidden><p aria-live="polite" data-mine-text></p><button type="button" class="rw-btn rw-btn--sun" data-confirm>Confirm my sessions</button></div>
+      </div>
+    </section>
+    <section id="donate" class="rw-section rw-section--cream" aria-labelledby="donate-title">
+      <div class="rw-wrap rw-two">
+        <div><p class="rw-eyebrow">Donate</p><h2 id="donate-title" class="rw-h2 mt-3">Can't dig? <em>Give.</em></h2><p class="rw-lede mt-5">Rootwork is run by four staff and about 340 volunteers. Your gift pays for seeds, tools, insurance and the training that turns a Saturday habit into a career.</p><ul class="mt-6 grid gap-2 font-semibold"><li>✓ 91p of every £1 goes straight to the farm</li><li>✓ Gift Aid adds 25% at no cost to you</li><li>✓ Cancel a monthly gift any time</li></ul></div>
+        <DonateBox id="gift-donate" />
+      </div>
+    </section>
+    <dialog class="rw-dialog" data-dialog aria-labelledby="vol-title">
+      <div class="rw-dialog__in">
+        <h2 id="vol-title" class="rw-h3">Almost done</h2>
+        <p class="mt-1 text-sm" style="color:var(--muted)" data-d-list></p>
+        <form data-vol novalidate class="mt-4"><div class="rw-fields">
+          <div><label for="v-name" class="rw-label">Name</label><input id="v-name" class="rw-input" autocomplete="name" data-req aria-describedby="v-name-e" /><p class="rw-err" id="v-name-e" hidden>Please add your name.</p></div>
+          <div><label for="v-email" class="rw-label">Email</label><input id="v-email" type="email" class="rw-input" autocomplete="email" data-req aria-describedby="v-email-e" /><p class="rw-err" id="v-email-e" hidden>Enter an email like name@example.com.</p></div>
+          <label class="rw-check col-2"><input type="checkbox" /><span>I have a health condition or access need you should know about</span></label>
+        </div><div class="mt-5 flex gap-3"><button type="submit" class="rw-btn rw-btn--leaf">Sign me up</button><button type="button" class="rw-btn rw-btn--line" data-close>Cancel</button></div></form>
+        <div class="rw-done mt-3" data-d-done hidden tabindex="-1"><h3 class="rw-h3">See you in the field, <em data-d-name></em>!</h3><p class="mt-2" data-d-text></p><button type="button" class="rw-btn rw-btn--line mt-4" data-close>Close</button></div>
+      </div>
+    </dialog>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-043/donate';
+  import '../../days/day-043/involved';
+</script>

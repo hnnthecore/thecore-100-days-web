@@ -1,0 +1,77 @@
+---
+/** Day 043 · Rootwork · home page, built from the programmes, stories and shifts collections. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_volunteers_jpg from '../../assets/day-043/volunteers.jpg';
+import ph_peas_jpg from '../../assets/day-043/peas.jpg';
+import ph_harvest_jpg from '../../assets/day-043/harvest.jpg';
+import ph_garden_jpg from '../../assets/day-043/garden.jpg';
+import Shell from '../../components/day-043/Shell.astro';
+import DonateBox from '../../components/day-043/DonateBox.astro';
+import { PROGRAMME_PHOTOS, STORY_PHOTOS, AMINA_PORTRAIT } from '../../days/day-043/photos';
+
+const B = '/day-043-community-farm';
+const programmes = await getCollection('programmes');
+const stories = (await getCollection('stories')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Site title="Rootwork Community Farm · Manchester" description="A community farm in the middle of Manchester growing food, skills and friendships. Volunteer, learn, cook or donate. (Day 043 of Thecore's 100 Days of Web, a demo site.)" themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="home">
+    <section class="rw-hero rw-hero--collage" aria-labelledby="hero-title">
+      <div class="rw-wrap rw-collage">
+        <div class="rw-collage__text">
+          <p class="rw-eyebrow">Community farm · Manchester · Since 2014</p>
+          <h1 id="hero-title" class="rw-h1 mt-5">Growing food, skills and <em>friendship.</em></h1>
+          <p class="rw-lede mt-6">Rootwork turns two forgotten acres in Chorlton into a place where neighbours grow, cook and learn together. Everyone is welcome, and the kettle is always on.</p>
+          <div class="mt-8 flex flex-wrap justify-center gap-3"><a href={`${B}/get-involved/`} class="rw-btn rw-btn--leaf rw-btn--lg">Come and volunteer</a><a href={`${B}/programmes/`} class="rw-btn rw-btn--line rw-btn--lg">What we do</a></div>
+        </div>
+        <figure class="rw-pic rw-pic--a"><Image src={ph_volunteers_jpg} alt="Two volunteers kneeling to plant seedlings in a raised bed" width={700} loading="eager" /></figure>
+        <figure class="rw-pic rw-pic--b"><Image src={ph_peas_jpg} alt="A child and an adult picking fresh peas together" width={600} loading="eager" /></figure>
+        <figure class="rw-pic rw-pic--c"><Image src={ph_garden_jpg} alt="A sunny community garden with raised beds" width={700} loading="eager" /><p class="rw-badge"><b>12,400 kg</b><span>of food grown last year</span></p></figure>
+        <figure class="rw-pic rw-pic--d"><Image src={ph_harvest_jpg} alt="A volunteer picking greens into a wicker basket" width={600} loading="eager" /></figure>
+      </div>
+    </section>
+
+
+    <section class="rw-section" aria-labelledby="prog-title">
+      <div class="rw-wrap">
+        <div class="rw-head"><div><p class="rw-eyebrow">What we do</p><h2 id="prog-title" class="rw-h2 mt-2">Four ways to <em>join in</em></h2></div><a href={`${B}/programmes/`} class="rw-link">All programmes →</a></div>
+        <ul class="rw-cards" role="list">
+          {programmes.map((p) => (
+            <li><a href={`${B}/programmes/${p.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[p.id]} alt={p.data.title} width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{p.data.when}</p><h3 class="rw-h3">{p.data.title}</h3><p>{p.data.tagline}</p><span class="rw-card__more">Find out more →</span></div></a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="rw-section rw-section--leaf" aria-label="Our impact">
+      <div class="rw-wrap"><dl class="rw-stats" data-stats>
+        <div><dt>Neighbours growing each week</dt><dd data-count="340">340</dd></div><div><dt>Meals cooked and shared</dt><dd data-count="1200">1,200</dd></div><div><dt>Trainees now in work</dt><dd data-count="46">46</dd></div><div><dt>Years of community growing</dt><dd data-count="12">12</dd></div>
+      </dl></div>
+    </section>
+
+    <section class="rw-section" aria-labelledby="stories-title">
+      <div class="rw-wrap">
+        <div class="rw-head"><div><p class="rw-eyebrow">From the farm</p><h2 id="stories-title" class="rw-h2 mt-2">Latest stories</h2></div><a href={`${B}/stories/`} class="rw-link">All stories →</a></div>
+        <ul class="rw-more" role="list">{stories.map((s) => <li><a href={`${B}/stories/${s.id}/`} class="rw-card"><div class="rw-card__img"><Image src={STORY_PHOTOS[s.id]} alt="" width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{s.data.category} · {fmt(s.data.date)}</p><h3 class="rw-h3">{s.data.title}</h3><p>{s.data.excerpt}</p><span class="rw-card__more">Read the story →</span></div></a></li>)}</ul>
+      </div>
+    </section>
+    <section class="rw-section rw-section--soil" aria-label="A volunteer's words">
+      <div class="rw-wrap"><figure class="rw-quote"><Image src={AMINA_PORTRAIT} alt="Amina, a volunteer, smiling in the greenhouse" width={160} height={160} class="rw-quote__face" />“I came for something to do on Saturdays. I stayed because people noticed when I wasn’t there.”<footer>Amina, volunteer since February</footer></figure></div>
+    </section>
+
+    <section class="rw-section rw-section--cream" aria-labelledby="give-title">
+      <div class="rw-wrap rw-two">
+        <div><p class="rw-eyebrow">Support us</p><h2 id="give-title" class="rw-h2 mt-3">A little goes a <em>long way.</em></h2><p class="rw-lede mt-5">Most of our money comes from people like you. A gift of £12 plants twenty seedlings, and a monthly gift lets us plan for the whole year.</p></div>
+        <DonateBox id="home-donate" />
+      </div>
+    </section>
+
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-043/donate';
+  import '../../days/day-043/home';
+</script>

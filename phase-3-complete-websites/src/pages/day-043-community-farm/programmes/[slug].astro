@@ -1,0 +1,36 @@
+---
+/** Day 043 · Rootwork · one page per programme, generated from the "programmes" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-043/Shell.astro';
+import { Image } from 'astro:assets';
+import { PROGRAMME_PHOTOS } from '../../../days/day-043/photos';
+
+export async function getStaticPaths() {
+  const all = await getCollection('programmes');
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry, others: all.filter((p) => p.id !== entry.id) } }));
+}
+const B = '/day-043-community-farm';
+const { entry, others } = Astro.props;
+const p = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${p.title} · Rootwork Community Farm`} description={`${p.title}: ${p.tagline}. ${p.when}. ${p.who}.`} themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="programmes">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/programmes/`}>What we do</a></li><li aria-current="page">{p.title}</li></ol><h1 class="rw-h1">{p.title}</h1><p class="rw-lede mt-4">{p.tagline}</p></div></header>
+    <section class="rw-section">
+      <div class="rw-wrap rw-two" style="align-items:start">
+        <div>
+          <div class="rw-hero-img"><Image src={PROGRAMME_PHOTOS[entry.id]} alt={p.title} width={1200} class="rw-photo" loading="eager" /></div>
+          <dl class="rw-facts"><div><dt>When</dt><dd>{p.when}</dd></div><div><dt>Who it's for</dt><dd>{p.who}</dd></div></dl>
+          <div class="rw-bigstat"><b>{p.stat.value.toLocaleString('en-GB')}</b><span>{p.stat.label}</span></div>
+        </div>
+        <div>
+          <div class="rw-prose"><Content /></div>
+          <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/get-involved/`} class="rw-btn rw-btn--leaf rw-btn--lg">Join in</a><a href={`${B}/get-involved/#donate`} class="rw-btn rw-btn--line rw-btn--lg">Support this</a></div>
+        </div>
+      </div>
+    </section>
+    <section class="rw-section rw-section--cream" aria-labelledby="oth"><div class="rw-wrap"><div class="rw-head"><h2 id="oth" class="rw-h2">More from the farm</h2></div><ul class="rw-cards" role="list">{others.map((o) => <li><a href={`${B}/programmes/${o.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[o.id]} alt="" width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{o.data.when}</p><h3 class="rw-h3">{o.data.title}</h3><p>{o.data.tagline}</p></div></a></li>)}</ul></div></section>
+  </Shell>
+</Site>

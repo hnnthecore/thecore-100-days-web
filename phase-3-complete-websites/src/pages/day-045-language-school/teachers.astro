@@ -1,0 +1,53 @@
+---
+/** Day 045 · Lingua Lane · teachers from the "teachers" collection, filterable by language, with a bio in a native dialog. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { TEACHER_PHOTOS } from '../../days/day-045/photos';
+import Shell from '../../components/day-045/Shell.astro';
+
+const B = '/day-045-language-school';
+const teachers = await getCollection('teachers');
+const langs = [...new Set(teachers.flatMap((t) => t.data.languages))].sort();
+const bios = await Promise.all(teachers.map(async (t) => ({ t, ...(await render(t)) })));
+---
+<Site title="Teachers · Lingua Lane" description="Meet the eight native-speaking teachers at Lingua Lane. Warm, experienced and passionate about languages." themeColor="#ff5a3c" icon="💬" day={45}>
+  <Shell active="teachers">
+    <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Teachers</li></ol><h1 class="ll-h1">People who <span class="ll-mark">love</span> languages.</h1><p class="ll-lede mt-5">Every teacher is a native speaker with at least seven years in the classroom.</p></div></header>
+    <section class="ll-section"><div class="ll-wrap">
+      <div class="ll-chips mb-8" role="group" aria-label="Language" data-langs><button type="button" data-l="all" aria-pressed="true">All</button>{langs.map((l) => <button type="button" data-l={l} aria-pressed="false">{l}</button>)}</div>
+      <ul class="ll-grid ll-grid--4" role="list">{bios.map(({ t, Content }, i) => (
+        <li data-teacher data-tl={t.data.languages.join('|')}>
+          <button type="button" class="ll-teacher" data-open={i}>
+            <Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={480} height={480} class="ll-avatar ll-avatar--photo" />
+            <h2 class="ll-h3">{t.data.name}</h2><p class="font-bold" style="color:var(--coral-d)">{t.data.languages.join(' · ')}</p>
+            <p style="color:var(--muted)">From {t.data.from} · {t.data.years} years</p><span class="font-bold">Read bio →</span>
+          </button>
+          <dialog class="ll-dialog" aria-labelledby={`t-${t.id}`} data-dialog={i}>
+            <div class="ll-dialog__in">
+              <div class="flex items-center gap-4"><Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={160} height={160} class="ll-avatar ll-avatar--photo ll-avatar--lg" /><div><h2 id={`t-${t.id}`} class="ll-h3">{t.data.name}</h2><p class="font-bold" style="color:var(--coral-d)">{t.data.languages.join(' · ')}</p></div></div>
+              <p class="ll-quote mt-5" style="font-size:1.4rem">“{t.data.quote}”</p>
+              <div class="mt-4" style="color:var(--muted)"><Content /></div>
+              <div class="mt-6 flex flex-wrap gap-3"><a href={`${B}/courses/${t.data.languages[0].toLowerCase()}/`} class="ll-btn ll-btn--coral">See {t.data.languages[0]} classes</a><button type="button" class="ll-btn" data-close>Close</button></div>
+            </div>
+          </dialog>
+        </li>
+      ))}</ul>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const open = t.closest<HTMLElement>('[data-open]');
+    if (open) { document.querySelector<HTMLDialogElement>(`[data-dialog="${open.dataset.open}"]`)!.showModal(); return; }
+    if (t.closest('[data-close]')) { t.closest('dialog')!.close(); return; }
+    if (t instanceof HTMLDialogElement) { t.close(); return; }
+    const chip = t.closest<HTMLButtonElement>('[data-langs] button');
+    if (chip) {
+      document.querySelectorAll<HTMLButtonElement>('[data-langs] button').forEach((x) => x.setAttribute('aria-pressed', String(x === chip)));
+      document.querySelectorAll<HTMLElement>('[data-teacher]').forEach((li) => (li.hidden = !(chip.dataset.l === 'all' || li.dataset.tl!.split('|').includes(chip.dataset.l!))));
+    }
+  });
+</script>

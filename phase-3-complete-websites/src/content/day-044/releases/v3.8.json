@@ -1,0 +1,7 @@
+{
+ "date": "2026-07-29",
+ "version": "v3.8",
+ "kind": "feature",
+ "title": "Slack alerts",
+ "text": "Get low-balance and late-payer alerts in the channel of your choice, with a one-click snooze."
+}

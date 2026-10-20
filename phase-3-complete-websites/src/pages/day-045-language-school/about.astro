@@ -1,0 +1,50 @@
+---
+/** Day 045 · Lingua Lane · about the school, how we teach, FAQ and a contact form. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_group from '../../assets/day-045/about-group.jpg';
+import ph_cafe from '../../assets/day-045/about-cafe.jpg';
+import ph_mews from '../../assets/day-045/mews.jpg';
+import Shell from '../../components/day-045/Shell.astro';
+
+const B = '/day-045-language-school';
+const VALUES = [['Speak first', 'Grammar matters, but talking matters more. Every lesson is at least half conversation.'], ['Small and friendly', 'Never more than eight students, so nobody hides and everybody improves.'], ['Real situations', 'Menus, trains, job interviews and gossip. We teach the language you will actually use.'], ['Teachers, not apps', 'Apps are great for practice. Humans are better for confidence, feedback and laughs.']];
+const FAQ = [['Do I need any experience?', 'No. Our A1 courses start from zero. If you have studied before, take the free level test and we will place you in the right group.'], ['Are classes online or in person?', 'Both. Every course runs in our London studio and live online, and you can switch between them week to week.'], ['What if I miss a lesson?', 'Every lesson is recorded for you to catch up, and your teacher will send a short summary of what you missed.'], ['Can I try before I commit?', 'Yes. Your first lesson is free: if you do not love it, we refund the course in full.'], ['Do you prepare for exams?', 'Yes, we prepare students for DELE, DELF, Goethe, JLPT, HSK and more, as part of B1 and B2 courses.']];
+---
+<Site title="About · Lingua Lane" description="About Lingua Lane language school: our approach, our values, answers to common questions and how to contact us." themeColor="#ff5a3c" icon="💬" day={45}>
+  <Shell active="about">
+    <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">About</li></ol><h1 class="ll-h1">A school that <span class="ll-mark">talks back.</span></h1><p class="ll-lede mt-5">Founded in 2012 by two friends who were tired of silent classrooms. Today over 3,000 students have learned to speak with us.</p></div></header>
+    <div class="ll-wrap ll-band ll-band--about" data-photo-band>
+      <figure class="ll-band__main"><Image src={ph_group} alt="Adults chatting in a relaxed group in a bright language classroom" width={1400} loading="eager" /><figcaption>Small groups, real conversation</figcaption></figure>
+      <figure><Image src={ph_cafe} alt="Two friends practising together over coffee with notebooks" width={900} loading="eager" /><figcaption>Practice over a coffee</figcaption></figure>
+    </div>
+
+    <section class="ll-section"><div class="ll-wrap"><div class="ll-head"><h2 class="ll-h2">What we believe</h2></div><ul class="ll-grid ll-grid--4" role="list">{VALUES.map(([t, d], i) => <li class="ll-card"><span class="ll-num">{i + 1}</span><h3 class="ll-h3 mt-4">{t}</h3><p class="mt-2">{d}</p></li>)}</ul></div></section>
+    <section class="ll-section ll-section--cream" aria-labelledby="faq-t"><div class="ll-wrap ll-split"><div><p class="ll-eyebrow">FAQ</p><h2 id="faq-t" class="ll-h2 mt-3">Questions we often hear.</h2></div><div class="ll-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+    <section class="ll-section" aria-labelledby="ct-t"><div class="ll-wrap ll-split"><div><p class="ll-eyebrow">Contact</p><h2 id="ct-t" class="ll-h2 mt-3">Say hello. In any language.</h2><address class="mt-5 not-italic text-lg leading-relaxed"><b>Lingua Lane</b><br />14 Gower Mews, London WC1E 6HP<br />Mon to Fri 9 to 8 · Sat 10 to 4<br />020 5550 0145</address>
+        <div class="ll-map mt-6">
+          <iframe title="Map of Gower Mews in Bloomsbury, London" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1375%2C51.5195%2C-0.1235%2C51.5265&amp;layer=mapnik&amp;marker=51.5231%2C-0.1306" loading="lazy" referrerpolicy="no-referrer" width="600" height="360"></iframe>
+          <figure class="ll-map__photo"><Image src={ph_mews} alt="A cobbled London mews lined with painted brick houses" width={420} /><figcaption>Find us on the mews</figcaption></figure>
+          <a class="ll-map__link" href="https://www.openstreetmap.org/?mlat=51.5231&amp;mlon=-0.1306#map=17/51.5231/-0.1306" rel="noopener">Open the full map ↗</a>
+        </div></div>
+      <form class="ll-box" data-contact novalidate>
+        <div class="ll-fields"><div><label for="c-name" class="ll-label">Name</label><input id="c-name" class="ll-input" autocomplete="name" data-req aria-describedby="c-name-e" /><p class="ll-err" id="c-name-e" hidden>Please add your name.</p></div>
+        <div><label for="c-email" class="ll-label">Email</label><input id="c-email" type="email" class="ll-input" autocomplete="email" data-req aria-describedby="c-email-e" /><p class="ll-err" id="c-email-e" hidden>Enter an email like name@example.com.</p></div>
+        <div class="col-2"><label for="c-msg" class="ll-label">Message</label><textarea id="c-msg" class="ll-input" data-req aria-describedby="c-msg-e"></textarea><p class="ll-err" id="c-msg-e" hidden>Please write a few words.</p></div></div>
+        <button type="submit" class="ll-btn ll-btn--coral ll-btn--lg mt-5">Send message</button><p class="ll-ok" role="status" data-ok></p>
+      </form></div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const form = document.querySelector<HTMLFormElement>('[data-contact]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = `Thanks ${(document.getElementById('c-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within a working day. (Demo: nothing was sent.)`;
+    form.reset();
+  });
+</script>

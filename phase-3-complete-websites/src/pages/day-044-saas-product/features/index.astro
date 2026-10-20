@@ -1,0 +1,24 @@
+---
+/** Day 044 · Fathom · product overview: the six features from the "features" collection and how setup works. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-044/Shell.astro';
+import { icon } from '../../../days/day-044/chart';
+
+const B = '/day-044-saas-product';
+const features = (await getCollection('features')).sort((a, b) => a.data.order - b.data.order);
+const STEPS = [['Connect', 'Link your bank and accounting software with secure, read-only access. It takes about two minutes.'], ['Forecast', 'Fathom builds a 13-week forecast from your real invoices, bills and payment habits.'], ['Act', 'Get a short list of what to do this week: who to chase, what to delay, where you are exposed.']];
+---
+<Site title="Product · Fathom" description="Rolling forecasts, scenarios, invoice chasing, smart alerts, investor-ready reports and accountant access. Everything Fathom does for your cash." themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="features">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Product</li></ol><h1 class="fa-h1">One calm place for <span class="fa-grad">all your cash.</span></h1><p class="fa-lede mt-5">Six tools that work together, built for owners who are brilliant at their business and would rather not be spreadsheet experts.</p></div></header>
+    <section class="fa-section"><div class="fa-wrap">
+      <ul class="fa-grid fa-grid--3" role="list">{features.map((f) => <li><a href={`${B}/features/${f.id}/`} class="fa-card"><span class="fa-ico" set:html={icon(f.data.icon)}></span><h2 class="fa-h3 mt-4">{f.data.title}</h2><p class="mt-2">{f.data.lede}</p><span class="fa-link mt-4">Explore {f.data.title.toLowerCase()} →</span></a></li>)}</ul>
+    </div></section>
+    <section class="fa-section fa-section--tint" aria-labelledby="how-t"><div class="fa-wrap">
+      <div class="fa-head"><div><p class="fa-eyebrow">How it works</p><h2 id="how-t" class="fa-h2 mt-3">From sign-up to first forecast in ten minutes.</h2></div></div>
+      <ol class="fa-grid fa-grid--3" role="list">{STEPS.map(([t, d], i) => <li class="fa-card"><span class="fa-num fa-grad text-5xl font-bold">0{i + 1}</span><h3 class="fa-h3 mt-3">{t}</h3><p class="mt-2">{d}</p></li>)}</ol>
+      <div class="mt-10 flex flex-wrap gap-3"><a href={`${B}/pricing/`} class="fa-btn fa-btn--blue fa-btn--lg">Start free</a><a href={`${B}/demo/`} class="fa-btn fa-btn--line fa-btn--lg">Book a demo</a></div>
+    </div></section>
+  </Shell>
+</Site>

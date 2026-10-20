@@ -1,0 +1,41 @@
+---
+/** Day 044 · Fathom · customer stories from the "customers" collection, filterable by sector. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { BIZ_PHOTOS, PHOTO_ALTS } from '../../../days/day-044/photos';
+import Shell from '../../../components/day-044/Shell.astro';
+import { mark } from '../../../days/day-044/chart';
+
+const B = '/day-044-saas-product';
+const all = await getCollection('customers');
+const sectors = [...new Set(all.map((c) => c.data.sector))];
+---
+<Site title="Customers · Fathom" description="How bakeries, agencies, hauliers and florists use Fathom to see their cash coming and sleep better." themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="customers">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Customers</li></ol><h1 class="fa-h1">Real businesses. <span class="fa-grad">Real runway.</span></h1><p class="fa-lede mt-5">Four stories from owners who stopped guessing about cash.</p></div></header>
+    <section class="fa-section"><div class="fa-wrap">
+      <div class="fa-chips mb-8" role="group" aria-label="Sector" data-sectors><button type="button" data-sector="all" aria-pressed="true">All</button>{sectors.map((s) => <button type="button" data-sector={s} aria-pressed="false">{s}</button>)}</div>
+      <ul class="fa-grid fa-grid--2" role="list">{all.map((c) => (
+        <li data-cust data-sector={c.data.sector}><a href={`${B}/customers/${c.id}/`} class="fa-card fa-cust">
+          <figure class="fa-bizphoto fa-bizphoto--card"><Image src={BIZ_PHOTOS[c.id]} alt={PHOTO_ALTS[c.id]} width={700} /></figure>
+          <p class="fa-who"><span set:html={mark(c.data.name, c.data.colour)}></span><span><b>{c.data.name}</b><span>{c.data.tag}</span></span></p>
+          <blockquote>“{c.data.quote}”</blockquote>
+          <ul class="flex flex-wrap gap-2" role="list"><li class="fa-tag">{c.data.sector}</li><li class="fa-tag">{c.data.size}</li></ul>
+          <span class="fa-link">Read the story →</span>
+        </a></li>
+      ))}</ul>
+      <p class="mt-6 font-semibold" style="color:var(--muted)" hidden data-empty>No stories in this sector yet.</p>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('[data-cust]')];
+  document.querySelector('[data-sectors]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    document.querySelectorAll<HTMLButtonElement>('[data-sectors] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    items.forEach((li) => (li.hidden = !(b.dataset.sector === 'all' || li.dataset.sector === b.dataset.sector)));
+  });
+</script>
