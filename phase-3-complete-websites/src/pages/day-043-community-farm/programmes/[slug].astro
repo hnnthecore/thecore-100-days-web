@@ -5,6 +5,7 @@ import Site from '../../../layouts/Site.astro';
 import Shell from '../../../components/day-043/Shell.astro';
 import { Image } from 'astro:assets';
 import { PROGRAMME_PHOTOS } from '../../../days/day-043/photos';
+import { MONTHS_LONG } from '../../../days/day-043/crops';
 
 export async function getStaticPaths() {
   const all = await getCollection('programmes');
@@ -31,6 +32,10 @@ const { Content } = await render(entry);
         </div>
       </div>
     </section>
-    <section class="rw-section rw-section--cream" aria-labelledby="oth"><div class="rw-wrap"><div class="rw-head"><h2 id="oth" class="rw-h2">More from the farm</h2></div><ul class="rw-cards" role="list">{others.map((o) => <li><a href={`${B}/programmes/${o.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[o.id]} alt="" width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{o.data.when}</p><h3 class="rw-h3">{o.data.title}</h3><p>{o.data.tagline}</p></div></a></li>)}</ul></div></section>
+    <section class="rw-section rw-section--cream" aria-labelledby="day-h"><div class="rw-wrap">
+      <div class="rw-head"><div><p class="rw-eyebrow">What to expect</p><h2 id="day-h" class="rw-h2 mt-3">A day at the <em>farm</em></h2></div><p class="rw-lede">{p.when}. Open {MONTHS_LONG[p.months[0] - 1]} to {MONTHS_LONG[p.months[1] - 1]}.</p></div>
+      <ol class="rw-day" role="list">{p.schedule.map((x, i) => <li class="rw-day__item" style={`--i:${i}`}><time class="rw-day__time">{x.time}</time><div class="rw-day__body"><h3>{x.what}</h3><p>{x.detail}</p></div></li>)}</ol>
+    </div></section>
+    <section class="rw-section rw-section" aria-labelledby="oth"><div class="rw-wrap"><div class="rw-head"><h2 id="oth" class="rw-h2">More from the farm</h2></div><ul class="rw-cards" role="list">{others.map((o) => <li><a href={`${B}/programmes/${o.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[o.id]} alt="" width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{o.data.when}</p><h3 class="rw-h3">{o.data.title}</h3><p>{o.data.tagline}</p></div></a></li>)}</ul></div></section>
   </Shell>
 </Site>

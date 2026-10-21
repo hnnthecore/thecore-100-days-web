@@ -39,19 +39,19 @@ export function forecastChart({ points, baseline, floor, width = 640, height = 2
   const ticks = [0, 0.25, 0.5, 0.75, 1].map((t) => lo + t * (hi - lo));
   const parts: string[] = [];
   parts.push(`<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Cash forecast over ${points.length} weeks. Lowest balance ${gbp(points[minIdx])} in week ${minIdx + 1}." xmlns="http://www.w3.org/2000/svg">`);
-  parts.push(`<defs><linearGradient id="${id}-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d5afe" stop-opacity=".28"/><stop offset="1" stop-color="#3d5afe" stop-opacity="0"/></linearGradient><linearGradient id="${id}-l" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3d5afe"/><stop offset="1" stop-color="#12d6a4"/></linearGradient></defs>`);
+  parts.push(`<defs><linearGradient id="${id}-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d6b4a" stop-opacity=".28"/><stop offset="1" stop-color="#0d6b4a" stop-opacity="0"/></linearGradient><linearGradient id="${id}-l" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0d6b4a"/><stop offset="1" stop-color="#0d6b4a"/></linearGradient></defs>`);
   if (axes) {
-    for (const t of ticks) parts.push(`<line x1="${padL}" x2="${width - padR}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="#0a1230" stroke-opacity=".08"/><text x="${padL - 8}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#5b6485" font-family="JetBrains Mono Variable, monospace">${gbpK(t)}</text>`);
-    for (let i = 0; i < points.length; i += 3) parts.push(`<text x="${x(i).toFixed(1)}" y="${height - 8}" text-anchor="middle" font-size="11" fill="#5b6485" font-family="JetBrains Mono Variable, monospace">W${i + 1}</text>`);
+    for (const t of ticks) parts.push(`<line x1="${padL}" x2="${width - padR}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="#0c110f" stroke-opacity=".08"/><text x="${padL - 8}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#4d5a54" font-family="Onest Variable, sans-serif">${gbpK(t)}</text>`);
+    for (let i = 0; i < points.length; i += 3) parts.push(`<text x="${x(i).toFixed(1)}" y="${height - 8}" text-anchor="middle" font-size="11" fill="#4d5a54" font-family="Onest Variable, sans-serif">W${i + 1}</text>`);
   }
   if (floor !== undefined) parts.push(`<line x1="${padL}" x2="${width - padR}" y1="${y(floor).toFixed(1)}" y2="${y(floor).toFixed(1)}" stroke="#ff6b57" stroke-width="1.5" stroke-dasharray="5 5"/>${axes ? `<text x="${width - padR}" y="${(y(floor) - 6).toFixed(1)}" text-anchor="end" font-size="11" font-weight="700" fill="#e0452f">Safety floor ${gbpK(floor)}</text>` : ''}`);
-  if (baseline) parts.push(`<path d="${smooth(baseline)}" fill="none" stroke="#0a1230" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>`);
+  if (baseline) parts.push(`<path d="${smooth(baseline)}" fill="none" stroke="#0c110f" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>`);
   parts.push(`<path d="${area}" fill="url(#${id}-a)"/><path class="fa-draw" d="${line}" fill="none" stroke="url(#${id}-l)" stroke-width="3.5" stroke-linecap="round" pathLength="1"/>`);
   const below = floor !== undefined && points[minIdx] < floor;
-  parts.push(`<circle cx="${x(minIdx).toFixed(1)}" cy="${y(points[minIdx]).toFixed(1)}" r="6" fill="#fff" stroke="${below ? '#ff6b57' : '#3d5afe'}" stroke-width="3"/>`);
+  parts.push(`<circle cx="${x(minIdx).toFixed(1)}" cy="${y(points[minIdx]).toFixed(1)}" r="6" fill="#fff" stroke="${below ? '#ff6b57' : '#0d6b4a'}" stroke-width="3"/>`);
   if (axes) {
     const lx = Math.min(Math.max(x(minIdx), padL + 60), width - padR - 60);
-    parts.push(`<text x="${lx.toFixed(1)}" y="${(y(points[minIdx]) + 24).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="${below ? '#e0452f' : '#0a1230'}">Lowest: ${gbp(points[minIdx])}</text>`);
+    parts.push(`<text x="${lx.toFixed(1)}" y="${(y(points[minIdx]) + 24).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="${below ? '#e0452f' : '#0c110f'}">Lowest: ${gbp(points[minIdx])}</text>`);
   }
   parts.push('</svg>');
   return parts.join('');

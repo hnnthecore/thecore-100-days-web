@@ -1,0 +1,49 @@
+---
+/** Day 043 · Rootwork · "What's growing now": a seasonal produce guide with a month picker. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-043/Shell.astro';
+import { Image } from 'astro:assets';
+import { CROPS, MONTHS, MONTHS_LONG, inSeason } from '../../days/day-043/crops';
+
+const B = '/day-043-community-farm';
+const span = (c: { from: number; to: number }) => `${MONTHS_LONG[c.from - 1]} to ${MONTHS_LONG[c.to - 1]}`;
+---
+<Site title="What's growing now · Rootwork Community Farm" description="A month-by-month guide to what is in season on the farm: strawberries in June, courgettes in summer, apples and pumpkins in autumn, kale all winter." themeColor="#3b6e2c" icon="🌱" day={43}>
+  <Shell active="growing">
+    <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">What's growing</li></ol><h1 class="rw-h1">What's growing <em>now</em></h1><p class="rw-lede mt-4">Everything we pick follows the weather. Choose a month to see what is in the beds, and what is on the harvest table that week.</p></div></header>
+    <section class="rw-section" aria-labelledby="g-h"><div class="rw-wrap" data-grow>
+      <div class="rw-cal__months rw-grow__months" role="group" aria-label="Choose a month">{MONTHS.map((m, i) => <button type="button" class="rw-cal__m" data-m={i + 1} aria-pressed="false"><span aria-hidden="true">{m}</span><span class="sr-only">{MONTHS_LONG[i]}</span></button>)}</div>
+      <h2 id="g-h" class="rw-h2 mt-8" data-title>In the field</h2>
+      <p class="rw-lede mt-2" role="status" data-say></p>
+      <ul class="rw-crops mt-8" role="list">
+        {CROPS.map((c) => <li class="rw-crop" data-from={c.from} data-to={c.to}>
+          <div class="rw-crop__img"><Image src={c.photo} alt={c.alt} width={560} class="rw-photo" /><span class="rw-crop__tag">In season</span></div>
+          <div class="rw-crop__body"><h3>{c.name}</h3><p class="rw-crop__when">{span(c)}</p><p>{c.note}</p>
+            <div class="rw-crop__bar" aria-hidden="true">{MONTHS.map((_, i) => <span class:list={[inSeason(c, i + 1) && 'is-on']}></span>)}</div></div>
+        </li>)}
+      </ul>
+      <p class="rw-grow__empty" data-empty hidden>The beds are resting. Come back in March for the first sowings, or join a winter work day to mulch and prune.</p>
+      <div class="rw-grow__cta"><p>Want to pick, cook or take some home?</p><a href={`${B}/get-involved/`} class="rw-btn rw-btn--leaf">Join a shift</a><a href={`${B}/programmes/`} class="rw-btn rw-btn--line">See what we run</a></div>
+    </div></section>
+  </Shell>
+</Site>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-grow]')!;
+  const btns = [...root.querySelectorAll<HTMLButtonElement>('.rw-cal__m')];
+  const items = [...root.querySelectorAll<HTMLElement>('.rw-crop')];
+  const title = root.querySelector<HTMLElement>('[data-title]')!;
+  const say = root.querySelector<HTMLElement>('[data-say]')!;
+  const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+  const LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const live = (el: HTMLElement, m: number) => { const f = +el.dataset.from!, t = +el.dataset.to!; return f <= t ? m >= f && m <= t : m >= f || m <= t; };
+  function pick(m: number) {
+    btns.forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.m! === m)));
+    let n = 0;
+    items.forEach((el) => { const on = live(el, m); el.classList.toggle('is-in', on); if (on) n++; });
+    title.textContent = 'In the field in ' + LONG[m - 1];
+    say.textContent = n ? n + (n === 1 ? ' crop is' : ' crops are') + ' in season. The rest are waiting their turn.' : 'Nothing is in season this month.';
+    empty.hidden = n > 0;
+  }
+  btns.forEach((b) => b.addEventListener('click', () => pick(+b.dataset.m!)));
+  pick(new Date().getMonth() + 1);
+</script>

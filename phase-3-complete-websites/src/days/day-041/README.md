@@ -77,3 +77,23 @@ The drawn covers are gone. Every book now has a real photograph from Pexels (fre
 ### About and Contact photography
 
 The About page now shows a real photograph of a sunny bookshop window seat (Pexels 29509137) instead of the drawn shop. The Contact page has a real OpenStreetMap map of Canongate, Edinburgh (an embedded map, so it needs a connection; the "Open the full map" link goes to openstreetmap.org) with a small photograph of a green shop door (Pexels 15232793) and the caption "Look for the green door". The street is real, the shop is fictional.
+
+## Redesign (new design direction)
+
+Rebuilt from `DESIGN.md` with the Taste Skill's "contact sheet" direction. The whole shop is one sheet: every book spine out, mixed with grey pictures of the street it stands in.
+
+- **Files:** `DESIGN.md` (the brief), `sheet.css` (tokens, the sheet system and the inner-page overrides, loaded after `styles.css`), `home.ts` (hover note, shelf sort, drag row), `world.ts` (the open-collection pictures with credits), `components/day-041/SheetFrame.astro`, `components/day-041/Shell.astro` (plain header for inner pages, tile footer with a live Edinburgh clock), `pages/day-041-bookshop/index.astro`.
+- **Type and colour:** Schibsted Grotesk for everything; the book covers keep Literata (they are artefacts). Rose-grey ground, ink, soft ink, and green only on the current-page link and one footer tile.
+- **Home:** the name at display size, a plain line and the address, then a six-column sheet with a dark panel set into it; a narrow text column; the staff shelf (one frame lifted, with a shutter); What's on as two-ended rows; Reserve and collect as a drag row of five moments; The whole shop as a masonry sheet sorted by shelf; one sentence and one button; the footer as a board of tiles.
+- **Live thing:** hover a frame and its bookseller's note appears in the facts row; press a shelf and everything else dims.
+- **Inner pages** keep their markup and follow the same tokens (second half of `sheet.css`).
+
+### Photographs and credits
+
+Seventeen greyscale pictures of Edinburgh's Royal Mile and the book trade from Wikimedia Commons, found with the Taste Skill's `assets.mjs`. Each is credited on the About page (`#credits`) and recorded in `src/assets/day-041-world/credits.json`. Licences are CC BY-SA 2.0/3.0/4.0, CC BY 3.0, CC0 and public domain; the share-alike ones are shown cropped and in greyscale. The twelve book covers are Pexels photographs (listed earlier in this file) with live titles.
+
+### Checks run
+
+- Taste Skill source linter: 0 fail, 0 warn.
+- Taste Skill browser inspector at 1440, 768 and 390: 0 fail. Open warnings: no video, the drag row scrolls sideways by design, the motion check cannot see animations on a PC that reports reduced motion, and a tablet gap beside the Reserve and collect heading.
+- Overflow and contrast sweep at 360, 768, 1024, 1280 and 1536 px on all pages.

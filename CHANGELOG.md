@@ -2,6 +2,101 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Day 44 · Fathom rebuilt around one live forecast
+
+Rebuilt from a written brief (src/days/day-044/DESIGN.md) with the Taste Skill and Impeccable.
+
+- **Idea:** the product itself is the first screen. A huge chart of the next 13 weeks that visitors bend with three sliders (sales change, a new hire, customers paying late). The line, the lowest-balance callout, a plain-English verdict and three readouts update on every move; the dotted line is the current plan and the coral line is the safety floor.
+- **Sections:** a timed morning feed with a photograph, six feature panels that open like an accordion, poster-size numbers, a horizontal customer chooser with photograph and quote, and a large closing sentence.
+- **Look:** green-black and mint with Onest and Hanken Grotesk. The purple-blue gradient headline, floating dashboard mock-up, rounded bento cards and monospace numbers are gone.
+- **Inner pages:** restyled through tokens: dark plain header, flat ink page heads, square controls, flat tiles; the shared chart helper recoloured.
+- **Logo:** the forecast-line mark recoloured to mint on ink.
+- **Checked:** linter 0/0; inspector with only environment notes left; page sweep at five widths.
+
+## Day 43 · Rootwork rebuilt around the current month
+
+Rebuilt from a written brief (src/days/day-043/DESIGN.md) with the Taste Skill and Impeccable.
+
+- **Idea:** a farm that is different every month. The first screen is the name of the current month at poster size, on that season's colour, with the crops being picked right now and a one-line farm note. Twelve month buttons scrub the year. It reads today's date on load.
+- **Sections:** four programme bands, one per season; Come and dig (next shifts and places left); impact numbers on ink; Amina's quote with the stories as an editorial list; the donation box on the season colour; a footer with one large sentence.
+- **Look:** flat, rectangular, saturated seasonal grounds. The rounded collage, pill nav, pillow cards, soft shadows and green arch headers are gone. Bricolage Grotesque (condensed) and Newsreader replace Fraunces.
+- **Inner pages:** restyled through tokens: season-coloured flat page heads, plain header bar, square buttons and fields. The harvest-board footer was removed because the home now does that job.
+- **Logo:** the sun-over-furrows badge recoloured to the new palette.
+- **Checked:** linter 0/0; inspector with only environment and by-design notes left; page sweep at five widths.
+
+## Day 42 · Atelier Nord rebuilt as one street elevation
+
+Rebuilt from a written brief (src/days/day-042/DESIGN.md) with the Taste Skill and Impeccable.
+
+- **Idea:** the studio's work as a single continuous elevation. Eight buildings stand side by side on a ground line with a metre ruler and blue dimension lines; scrolling walks you along them (pinned on wide screens, a plain swipe on phones and with reduced motion). A readout counts the metres and names the building you are passing.
+- **First screen:** Atelier Nord at display size, one sentence, the readout, and the elevation already cut by the right edge. No hero photograph and no card grid.
+- **Sections:** The site decides (three notes), the register of all projects with a hover photograph, four numbers drawn as dimensions, the journal with one large article, a huge Start a project line, and a title-block footer.
+- **Type and colour:** Archivo and Source Serif 4; cold concrete, ink and one dimension blue. The amber and the Schibsted/Newsreader pairing are gone.
+- **Inner pages:** restyled through tokens: flat concrete page heads, flat tiles, plain header, table rows fixed to equal columns.
+- **Logo:** the survey needle recoloured to the new palette.
+- **Checked:** linter 0/0, inspector no overflow or contrast issues, 19-page sweep clean.
+
+## Day 41 · Pagebound Books rebuilt as a contact sheet
+
+Second site rebuilt from a written brief (src/days/day-041/DESIGN.md) with the Taste Skill and Impeccable.
+
+- **Idea:** the whole shop at once. Every book spine out in strict rows, mixed with greyscale pictures of Canongate and the book trade, instead of three featured bestsellers.
+- **First screen:** Pagebound Books at display size, a plain line and the address, then a six-column sheet of covers and street pictures with a dark panel set into the grid. Hover a frame and its bookseller's note appears.
+- **Sections:** the shop in a narrow column, the staff shelf with one lifted frame, What's on as two-ended rows, Reserve and collect as a drag row, The whole shop as a masonry sheet you can sort by shelf, one sentence and one button, and a footer of tiles with a live Edinburgh clock.
+- **Type and colour:** Schibsted Grotesk; rose-grey ground and ink; green only on the current link and one footer tile. The covers are the only colour.
+- **Photographs:** 17 open-licence pictures of the Royal Mile and the book trade from Wikimedia Commons, credited on the About page.
+- **Inner pages:** books, a book, events, basket, about, visit and the staff shelf follow the same tokens: left-aligned headers, flat square tiles, text-style choices, no rules or pills.
+- **Checked:** source linter 0 fail 0 warn; browser inspector 0 fail at 1440, 768 and 390; overflow and contrast sweep at five widths.
+
+**Replaced:** the oxblood and cream look and the old home.
+
+## Day 45 · Lingua Lane rebuilt as the pilot for the new design direction
+
+Client feedback: the sites look AI-made (same hero formula, card grids, fonts and rhythm). Day 45 is rebuilt from a written design brief (src/days/day-045/DESIGN.md) using the Taste Skill and Impeccable tools.
+
+- **Idea:** Gower Mews is a lane of eight painted doors, so one arched door shape runs the whole site: the giant coral hero door (with its number 14), the photographs, the buttons, the teacher bullets and the footer.
+- **First screen:** Eight doors, one lane. A giant door cropped by the viewport, one sentence, one button. No label above the headline, no highlighted word, no row of stats.
+- **Live thing:** Pick a door. Eight languages, each with its photograph, greeting, teacher and class times. The photograph opens with a shutter.
+- **Sections:** statement with arched thumbnails, the eight doors, a horizontal accordion for how a course runs, a two-column teacher list, question cards filed like index cards, one action tile, and a footer built from eight doors in the language colours.
+- **Type and colour:** Switzer (self-hosted), one family; the brand coral, saffron, teal and ink on a cool lilac-white ground. No gradients, no shadows, no outlines, no eyebrow labels.
+- **Inner pages:** the same tokens: left-aligned page headers, flat tiles, arched buttons and chips, door-shaped photos.
+- **Photographs:** the hero door holds a real photograph of Gower Mews, Bloomsbury (CC BY-SA 2.0, David Howard, credited in the footer), found with the skill's open-collection picture finder.
+- **Checked:** the Taste Skill source linter reports 0 fail and 0 warn; the sweep at 360, 768, 1024, 1280 and 1536 px was run on all 15 pages and its findings (clipped footer labels on small phones, several pale text colours) were fixed.
+
+**Replaced:** the rotating hello footer and the old hero.
+
+## Days 41–45 · Real logos and favicons
+
+Client feedback: every site needs its own logo and favicon. The emoji favicons and clip-art logos are replaced by marks drawn for each brand.
+
+| Day | Mark |
+| --- | --- |
+| 41 Pagebound Books | Books on a shelf seen from the spines, one leaning against the others |
+| 42 Atelier Nord | A survey mark: a slim compass needle, half ink and half fjord blue, crossed by a hairline |
+| 43 Rootwork | A round badge: sun rising over furrows in the field |
+| 44 Fathom | A forecast line that turns dashed mint where the forecast begins |
+| 45 Lingua Lane | Two speech bubbles in conversation, saffron where they overlap |
+
+Each site now has mark.svg, favicon.svg, favicon.ico, favicon-32.png, apple-touch-icon.png and icon-512.png under public/<site-folder>/. The header and footer draw the mark inline beside the live wordmark. The artwork is generated by scripts/make-brand.mjs; edit a mark there and run node scripts/make-brand.mjs.
+
+**Next:** the same for Days 46 to 60, then a design.md for each site.
+
+## Days 41–45 · Second round of deeper structure
+
+Each site now has its own collection layout, detail layout, footer, signature moment and one page no other site has (see UNIQUENESS-MATRIX.md).
+
+| Day | Collection | Detail page | Footer | New page |
+| --- | --- | --- | --- | --- |
+| 41 Pagebound Books | Shelves of spines that flip to covers (with a Grid view) | Look inside / Details / In store tabs with an open-book spread | Colophon and library-card hours | Staff shelf; basket gets a pick-up day and slot |
+| 42 Atelier Nord | Drawing-sheet index: numbered rows with hover preview | Title block plus Photograph / Site map toggle (real OpenStreetMap) | Title-block footer | Awards timeline |
+| 43 Rootwork | Seasonal calendar of programmes by month | Hour-by-hour "A day at the farm" | Sunrise strip with this week's harvest board | What's growing now (month picker, 10 crops with real photos) |
+| 44 Fathom | Feature comparison matrix | Tabs: Overview / How it works / Pricing | Status-page footer (uptime strip, latest changes) | Plan quiz |
+| 45 Lingua Lane | Flip tiles that open onto A1 to B2 level paths | Syllabus stepper with weekly outcomes | Rotating hello in eight languages | Free trial lesson booking with calendar file |
+
+**Fixed along the way:** Fathom's mobile menu icon was white on white; a new tab style briefly clashed with the home customer tabs and was renamed.
+
+**Tested:** all pages of Days 41 to 45 are clean at 360, 768, 1024, 1280 and 1536 px in the automated sweep.
+
 ## Days 43–45 · No drawn or sample images left
 
 **Why:** the client asked for real photographs instead of drawn or sample pictures. Every drawn illustration on these three sites is now a real photograph.
@@ -15,31 +110,6 @@ A short record of what changed on each day, how it was tested and what is still 
 **Checked:** every portrait was inspected so the whole face is in frame, brand names and readable logos were avoided, and the automated sweep (360, 768 and 1280 px) is clean on all 43 pages of the three sites.
 
 **Known limits:** all photographs are free stock (Pexels, listed in each day's README) standing in for fictional people, businesses and places. The Day 43 map needs an internet connection.
-
-## Days 41–42 · Distinct home pages, real photography, inner-page headers
-
-**Why:** the same client feedback as Days 21–40, now for the first two complete websites. Both sites also get a distinct page header on every inner page; the page bodies keep their layouts.
-
-| Day | Site | First screen | Navigation | Opens with | Photography |
-| --- | --- | --- | --- | --- | --- |
-| 41 | Pagebound Books | Centred headline over a wooden shelf of standing book covers | Split masthead, logo centred | Bookseller's pick | All 12 book covers are real photographs with live title and author type; shelf band; About photo; real map of Canongate with a shopfront photo |
-| 42 | Atelier Nord (architecture) | Giant full-bleed project photograph, headline set over it, stats on a black bar | Boxed bar, heavy rule | Recent projects | Project photos on the hero, cards and pages; five director portraits |
-
-Inner-page headers: Day 41 a centred bookplate with a double rule; Day 42 a dark band with an amber rule.
-
-**Fixed along the way**
-- Day 41: the events section was dark red on dark red (an old position-based rule had stayed attached to the wrong section after the photo band was added). The rule now targets the newsletter section by its class.
-- Day 41: the drawn book covers are replaced by real photographs (a mood-matched Pexels photo per book, cropped to 2:3, with a hinge and page edge and the title and author as live text) on the shelf, front table, bookseller's pick, catalogue, detail pages, related books and basket.
-- Day 42: the Studio page shows real portraits of the five directors and leads (full faces checked).
-
-**How it was tested**
-- The automated sweep at 360, 768, 1024, 1280 and 1536 px on all 36 built pages of Days 41 and 42: overflow, off-screen elements, clipped text, broken images, alt text, duplicate ids, one heading per page, contrast. All clean.
-- The menu button opens and shows the links at 390 px, and the header has no overlap or wrapping at 800, 1024 and 1280 px.
-
-**Known limits and still open**
-- Photographs are free stock (Pexels, sources in each day's README) and stand in for fictional books and people; replace the portraits with real team photos before launch.
-- The Day 41 map is an embedded OpenStreetMap map and needs an internet connection.
-- Not yet tested on real phones or in Safari, and no keyboard-focus pass on the new navigation bars.
 
 ## Days 31–40 · Distinct layouts, real photography, phone menu
 

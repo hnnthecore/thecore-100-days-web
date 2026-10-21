@@ -20,6 +20,7 @@ const books = defineCollection({
     pattern: z.number().min(0).max(5),
     staffPick: z.string().optional(),
     staff: z.string().optional(),
+    opening: z.string().optional(),
   }),
 });
 
@@ -41,6 +42,8 @@ const events = defineCollection({
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/day-042/projects' }),
   schema: z.object({
+    lat: z.number().optional(),
+    lon: z.number().optional(),
     title: z.string(), location: z.string(),
     type: z.enum(['Residential', 'Cultural', 'Education', 'Workplace']),
     year: z.number(), area: z.number(), status: z.string(), client: z.string(),
@@ -61,6 +64,8 @@ const programmes = defineCollection({
   schema: z.object({
     title: z.string(), tagline: z.string(), scene: z.enum(['beds', 'kitchen', 'kids', 'greenhouse']), when: z.string(), who: z.string(),
     stat: z.object({ value: z.number(), label: z.string() }),
+    months: z.tuple([z.number(), z.number()]),
+    schedule: z.array(z.object({ time: z.string(), what: z.string(), detail: z.string() })),
   }),
 });
 const stories = defineCollection({

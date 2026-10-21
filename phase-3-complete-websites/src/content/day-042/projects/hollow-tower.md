@@ -15,6 +15,8 @@ stats:
   - { value: "BREEAM", label: "Outstanding" }
   - { value: "12", label: "storeys" }
   - { value: "100%", label: "let at completion" }
+lat: 55.8642
+lon: -4.2518
 ---
 
 ## Brief

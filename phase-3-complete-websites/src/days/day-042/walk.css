@@ -1,0 +1,202 @@
+/* ==========================================================================
+   Day 042 · Atelier Nord · "the elevation"
+   Built from DESIGN.md. Loads after styles.css: it redefines the old tokens so every inner page follows,
+   then lays out the home page as one street elevation you walk along.
+   Type: Archivo (width axis) for lettering, Source Serif 4 for reading, Archivo (tabular figures) for dimensions.
+   ========================================================================== */
+html .an {
+  --paper: #dde3e6; --birch: #cfd7db; --birch-2: #c2ccd1; --card: #eef2f4;
+  --ink: #101417; --ink-2: #1b2227; --muted: #47525a;
+  --fjord: #1c4f9c; --fjord-d: #143b78; --amber: #aebcc4; --on-ink: #9db9e6;
+  --line: rgb(16 20 23 / 0.2); --focus: #1c4f9c;
+  --head: 4.25rem; --lab: 4.5rem; --gut: clamp(1.25rem, 4vw, 2.5rem);
+  font-family: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  background: var(--paper);
+}
+html .an ::selection { background: var(--ink); color: var(--paper); }
+html .an :is(.an-serif, .an-lede, .an-prose, .an-prose p) { font-family: "Source Serif 4 Variable", Georgia, serif; }
+html .an :is(.an-h1, .an-h2, .an-h3, .an-prose h2) { font-family: "Archivo Variable", sans-serif; font-weight: 800; font-stretch: 108%; letter-spacing: -0.04em; }
+html .an em { font-family: "Source Serif 4 Variable", Georgia, serif; font-style: italic; font-weight: 400; color: var(--fjord); }
+html .an .an-section--ink { --focus: var(--on-ink); }
+html .an .an-section--ink em, html .an .an-pagehead em { color: var(--on-ink); }
+html .an .an-eyebrow { font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
+html .an .an-lede { color: var(--muted); }
+html .an .an-link { text-decoration-color: var(--fjord) !important; }
+html .an .an-link:hover { color: var(--fjord); }
+html .an .an-btn { border-radius: 0; }
+html .an .an-btn--ink:hover { background: var(--fjord); }
+html .an .an-btn--amber { background: var(--ink); color: #fff; }
+html .an .an-btn--amber:hover { background: var(--fjord); }
+
+/* Header: a plain bar */
+html .an .an-header { position: sticky; top: 0; border-bottom: 0 !important; background: var(--paper) !important; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+html .an .an-header.is-away { transform: translateY(-100%); }
+html .an .an-header > div { height: var(--head) !important; }
+html .an .an-logo { font-stretch: 112%; font-weight: 500; letter-spacing: -0.04em; }
+html .an .an-logo b { font-weight: 800; }
+@media (min-width: 1024px) {
+  html .an .an-header > div > nav { align-self: center; }
+  html .an .an-header > div > nav ul { height: auto; gap: 2.25rem !important; align-items: center; text-transform: none; letter-spacing: 0; font-weight: 600; font-size: 0.9375rem; }
+  html .an .an-header > div > nav a { padding: 0.3rem 0; border: 0 !important; background: none !important; color: var(--ink); }
+  html .an .an-header > div > nav a:hover { color: var(--fjord); }
+  html .an .an-header > div > nav a[aria-current="page"] { color: var(--fjord); }
+}
+html .an .an-menu { background: var(--paper); border-top: 0; }
+html .an .an-menu a { border-bottom: 0; }
+
+/* Inner-page head: flat concrete, left-aligned display type */
+html .an .an-pagehead { background: var(--birch); color: var(--ink); --muted: #47525a; border-bottom: 0; padding-block: clamp(3.5rem, 8vw, 6.5rem) 2.5rem; }
+html .an .an-pagehead .an-h1 { color: var(--ink); font-size: clamp(2.8rem, 7vw, 5.6rem); line-height: 0.98; max-width: 18ch; font-stretch: 112%; }
+html .an .an-pagehead .an-h1 em { color: var(--fjord); }
+html .an .an-pagehead .an-crumbs a:hover { color: var(--fjord); }
+html .an .an-pagehead .an-eyebrow { color: var(--muted); }
+
+/* Flat tiles on inner pages */
+html .an :is(.an-titleblock, .an-tl__card, .an-viewer) { border: 0; }
+html .an :is(.an-titleblock, .an-tl__card) { background: var(--card); }
+html .an .an-sheet__preview { border: 0; }
+html .an .an-viewer { background: var(--ink); }
+html .an .an-viewer__bar button[aria-selected="true"] { background: var(--paper); color: var(--ink); }
+html .an .an-tl::before { background: var(--fjord); border-color: var(--ink); }
+html .an .an-tl__result { background: var(--ink); color: #fff; }
+html .an .an-row__a:hover, html .an .an-row__a:focus-visible { background: var(--ink); color: var(--paper); }
+html .an .an-row__a:hover :is(.an-row__l, .an-row__ty, .an-row__no), html .an .an-row__a:focus-visible :is(.an-row__l, .an-row__ty, .an-row__no) { color: #c9d4dc; }
+html .an .an-post:hover h3, html .an .an-card:hover h3 { color: var(--fjord); }
+html .an .an-hero-img, html .an .an-drawing, html .an .an-card__img { border: 0; }
+
+/* Footer: the drawing title block, solid cells */
+html .an .an-footer a:hover { color: var(--on-ink); }
+html .an .an-tb { border: 0; gap: 4px; background: none; }
+html .an .an-tb > * { border: 0; margin: 0; background: var(--ink-2); }
+html .an .an-tb small { font-size: 0.8125rem; letter-spacing: 0; text-transform: none; color: var(--on-ink); font-weight: 600; font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; }
+html .an .an-tb__links a:hover { color: var(--on-ink); }
+html .an .an-footer > .an-wrap:last-child { border-top: 0 !important; }
+
+/* ---------- Home: the elevation ---------- */
+.wk { position: relative; }
+.wk__stick { display: grid; grid-template-rows: auto minmax(0, 1fr); background: var(--paper); }
+.wk__top { display: grid; gap: 1.25rem 3rem; align-items: end; padding: 1.5rem clamp(1.25rem, 4vw, 2.5rem) 1.5rem; }
+.wk__name { font-size: clamp(3.2rem, 8.6vw, 8.2rem); line-height: 0.88; font-weight: 800; font-stretch: 108%; letter-spacing: -0.055em; margin-left: -0.04em; white-space: nowrap; }
+.wk__lede { font-family: "Source Serif 4 Variable", Georgia, serif; font-size: 1.1875rem; line-height: 1.45; color: var(--ink); max-width: 26rem; }
+.wk__read { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 1rem; align-items: center; padding: 0.9rem 1.1rem; background: var(--ink); color: #fff; max-width: 26rem; }
+.wk__m { font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; font-size: 0.8125rem; color: var(--on-ink); font-variant-numeric: tabular-nums; }
+.wk__now { grid-column: 1; font-weight: 600; font-size: 0.9375rem; line-height: 1.3; min-height: 2.6em; }
+.wk__btns { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: 0.35rem; }
+.wk__btns button { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; background: var(--ink-2); color: #fff; font-size: 1.15rem; transition: background-color 0.2s; }
+.wk__btns button:hover { background: var(--fjord); }
+@media (min-width: 900px) {
+  .wk__top { grid-template-columns: minmax(0, 1fr) 26rem; }
+  .wk__name { grid-row: 1 / span 2; align-self: end; }
+  .wk__lede { align-self: end; }
+  .wk__read { align-self: start; }
+}
+
+.wk__view { position: relative; height: clamp(22rem, 62svh, 40rem); overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; overscroll-behavior-x: contain; outline-offset: -3px; }
+.wk__track { position: relative; width: max-content; height: 100%; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+.wk__strip { display: flex; height: 100%; margin: 0; padding: 0; list-style: none; }
+.wk__strip > li { position: relative; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; padding: 0 3px calc(var(--lab) + 14px); scroll-snap-align: start; scroll-margin-left: var(--gut); }
+.wk__b { display: flex; flex-direction: column; height: calc(var(--f) * 100%); aspect-ratio: var(--ar); color: var(--ink); }
+.wk__dim { position: relative; display: block; flex: none; height: 28px; color: var(--fjord); }
+.wk__dim svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.wk__dim em { position: absolute; left: 50%; top: 50%; translate: -50% -50%; padding: 0 0.5rem; background: var(--paper); font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; font-style: normal; font-size: 0.8125rem; color: var(--fjord); white-space: nowrap; }
+.wk__img { display: block; flex: 1; min-height: 0; overflow: hidden; background: var(--birch); }
+.wk__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.wk__b:hover .wk__img img, .wk__b:focus-visible .wk__img img { scale: 1.04; }
+.wk__lab { position: absolute; left: 3px; right: 3px; bottom: 0; height: var(--lab); display: grid; align-content: start; gap: 0.15rem; padding-top: 0.7rem; line-height: 1.2; }
+.wk__lab b { font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.01em; }
+.wk__lab i { font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; font-style: normal; font-size: 0.8125rem; color: var(--muted); }
+.wk__strip > li:hover .wk__lab b { color: var(--fjord); }
+.wk__ground { position: absolute; left: 0; right: 0; bottom: var(--lab); height: 14px; background-color: var(--ink); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='14'%3E%3Cpath fill='%23dde3e6' d='M0 0h3v10H0zM80 0h2v6h-2zM160 0h2v6h-2zM240 0h2v6h-2zM320 0h2v6h-2z'/%3E%3C/svg%3E"); background-size: 400px 14px; }
+
+/* pinned on wide screens: the page scroll walks the strip sideways */
+.wk.is-pinned .wk__stick { position: sticky; top: var(--head); height: calc(100svh - var(--head) - 3.25rem); }
+.wk.is-pinned .wk__view { height: auto; overflow: hidden; scroll-snap-type: none; }
+.wk.is-pinned .wk__track { will-change: transform; }
+
+/* ---------- The site decides ---------- */
+.wk-how { padding-block: clamp(5rem, 11vw, 10rem); }
+.wk-how__grid { display: grid; gap: 2.5rem; }
+.wk-big { font-size: clamp(2.5rem, 6vw, 5.4rem); line-height: 0.98; font-weight: 800; font-stretch: 112%; letter-spacing: -0.05em; text-wrap: balance; }
+.wk-how__notes { display: grid; gap: 1.6rem; align-content: start; max-width: 36rem; font-family: "Source Serif 4 Variable", Georgia, serif; font-size: 1.3rem; line-height: 1.55; color: var(--ink); }
+.wk-how__notes b { font-family: "Archivo Variable", sans-serif; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+@media (min-width: 900px) { .wk-how__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 5rem; } .wk-big { position: sticky; top: 7rem; align-self: start; } }
+
+/* ---------- The register ---------- */
+.wk-reg { padding-block: clamp(4rem, 8vw, 7rem); background: var(--birch); }
+.wk-reg__grid { display: grid; gap: 2rem; }
+.wk-h { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; font-weight: 800; font-stretch: 110%; letter-spacing: -0.045em; margin-bottom: 1.75rem; }
+.wk-reg__list ul { margin: 0; padding: 0; list-style: none; }
+.wk-reg__list a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.15rem 1.25rem; padding: 1.1rem 0.9rem; margin-inline: -0.9rem; transition: background-color 0.18s, color 0.18s; }
+.wk-reg__list a b { grid-column: 1; font-weight: 700; font-size: 1.35rem; letter-spacing: -0.03em; line-height: 1.15; }
+.wk-reg__list a span, .wk-reg__list a time { font-size: 0.9375rem; color: var(--muted); }
+.wk-reg__list a time { grid-column: 2; grid-row: 1; font-variant-numeric: tabular-nums; align-self: baseline; }
+.wk-reg__list a:hover, .wk-reg__list a:focus-visible { background: var(--ink); color: #fff; }
+.wk-reg__list a:hover :is(span, time), .wk-reg__list a:focus-visible :is(span, time) { color: #c9d4dc; }
+.wk-reg__more { margin-top: 1.5rem; }
+.wk-reg__pane { display: none; }
+@media (min-width: 900px) {
+  .wk-reg__grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 4rem; align-items: start; }
+  .wk-reg__list a { grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.3fr) minmax(0, 1fr) 3.2rem 5rem; align-items: baseline; }
+  .wk-reg__list a time { grid-column: auto; grid-row: auto; }
+  .wk-reg__list .wk-m { text-align: right; font-variant-numeric: tabular-nums; }
+  .wk-reg__pane { display: block; position: sticky; top: 6rem; aspect-ratio: 4 / 5; overflow: hidden; background: var(--birch-2); }
+  .wk-reg__pane figure { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 0.35s; }
+  .wk-reg__pane figure.is-on { opacity: 1; }
+  .wk-reg__pane img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .wk-reg__pane figcaption { position: absolute; left: 0; bottom: 0; padding: 0.55rem 0.9rem; background: var(--ink); color: #fff; font-size: 0.875rem; font-weight: 600; }
+}
+
+/* ---------- Numbers as dimensions ---------- */
+.wk-num { padding-block: clamp(4.5rem, 9vw, 8rem); }
+.wk-num dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 1.5rem; margin: 0; }
+@media (min-width: 900px) { .wk-num dl { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+.wk-num dl > div { display: flex; flex-direction: column; gap: 0.5rem; }
+.wk-d { order: 0; width: 100%; height: 14px; fill: none; stroke: var(--fjord); stroke-width: 1.5; }
+.wk-num dd { order: 1; margin: 0.4rem 0 0; font-size: clamp(3.4rem, 8vw, 7rem); line-height: 0.95; font-weight: 800; font-stretch: 112%; letter-spacing: -0.06em; font-variant-numeric: tabular-nums; }
+.wk-num dt { order: 2; font-size: 0.9375rem; color: var(--muted); }
+
+/* ---------- Journal ---------- */
+.wk-jn { padding-block: 0 clamp(4.5rem, 9vw, 8rem); }
+.wk-jn__more { margin-top: 2.5rem; }
+.wk-jn__grid { display: grid; gap: 2.5rem; }
+@media (min-width: 900px) { .wk-jn__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 3rem 5rem; } .wk-post--lead { grid-row: span 2; } }
+.wk-post { display: block; }
+.wk-post time { display: block; margin-top: 0.9rem; font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; font-size: 0.8125rem; color: var(--muted); }
+.wk-post h3 { margin: 0 0 0.6rem; font-size: 1.6rem; line-height: 1.1; font-weight: 800; font-stretch: 108%; letter-spacing: -0.04em; transition: color 0.2s; }
+.wk-post--lead h3 { font-size: clamp(2.2rem, 4.4vw, 3.8rem); line-height: 1; }
+.wk-post p { font-family: "Source Serif 4 Variable", Georgia, serif; font-size: 1.1rem; line-height: 1.55; color: var(--ink); max-width: 40rem; }
+.wk-post--lead p { font-size: 1.3rem; }
+.wk-post:hover h3 { color: var(--fjord); }
+
+/* ---------- Start a project ---------- */
+.wk-go { padding-block: clamp(2rem, 5vw, 4rem) clamp(4rem, 8vw, 7rem); background: var(--birch); }
+.wk-go__link { display: block; padding-inline: clamp(1.25rem, 4vw, 2.5rem); font-size: clamp(3rem, 12.5vw, 12rem); line-height: 0.92; font-weight: 800; font-stretch: 116%; letter-spacing: -0.06em; transition: color 0.25s; }
+.wk-go__link:hover, .wk-go__link:focus-visible { color: var(--fjord); }
+.wk-go__addr { margin-top: 1.75rem; font-family: "Source Serif 4 Variable", Georgia, serif; font-size: 1.2rem; line-height: 1.5; color: var(--muted); max-width: 44rem; margin-inline: 0; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+
+/* ---------- Motion (only when the visitor allows it) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .an [data-rise] { opacity: 0; translate: 0 1.6rem; transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--d, 0) * 90ms), translate 0.9s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--d, 0) * 90ms); }
+  html.js .an [data-rise].is-in { opacity: 1; translate: none; }
+  .wk__name { animation: wk-name 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .wk__img { animation: wk-build 1.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .wk__strip > li:nth-child(2) .wk__img { animation-delay: 0.12s; } .wk__strip > li:nth-child(3) .wk__img { animation-delay: 0.24s; } .wk__strip > li:nth-child(n+4) .wk__img { animation-delay: 0.36s; }
+  .wk__ground { animation: wk-ground 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: left; }
+  @keyframes wk-name { from { opacity: 0; translate: 0 2rem; } }
+  @keyframes wk-build { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0); } }
+  @keyframes wk-ground { from { scale: 0 1; } }
+}
+@media (prefers-reduced-motion: reduce) { html .an .an-header { transition: none; } }
+
+/* Home header lines up with the elevation below it */
+html .an.an--home .an-wrap { max-width: none; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+html .an .an-tb .an-logo b { font-family: inherit; font-size: inherit; color: inherit; }
+html .an .an-row > .an-row__a { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 899px) { .wk__view { height: clamp(20rem, 54svh, 34rem); } }
+html .an :is(.an-row__no, .an-tb b) { font-family: "Archivo Variable", sans-serif; font-variant-numeric: tabular-nums; }
+@media (min-width: 600px) and (max-width: 899px) {
+  .wk-reg__list a { grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr) 3.2rem; align-items: baseline; }
+  .wk-reg__list a time { grid-column: auto; grid-row: auto; }
+  .wk-reg__list .wk-m { display: none; }
+}

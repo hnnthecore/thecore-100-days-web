@@ -1,0 +1,24 @@
+---
+/** Day 041 · Pagebound Books · one frame of the contact sheet: a book cover or a greyscale picture of the street, with its strip. */
+import { Image } from 'astro:assets';
+import BookCover from './BookCover.astro';
+import { WORLD } from '../../days/day-041/world';
+
+interface Props { kind: 'book' | 'world'; book?: any; world?: number; c: number; r: number; extra?: string; note: string }
+const { kind, book, world = 0, c, r, extra = '', note } = Astro.props;
+const B = '/day-041-bookshop';
+const STRIPS = [['#2b2622', '#ffffff'], ['#4c443f', '#ffffff'], ['#cfc6c2', '#2b2622'], ['#bdb2ad', '#2b2622']] as const;
+const [bg, fg] = STRIPS[(c + r) % 4];
+const w = WORLD[world];
+---
+{kind === 'book' ? (
+  <a class={`pg-f ${extra}`} href={`${B}/books/${book.id}/`} data-note={note} style={`--s:${bg};--sk:${fg}`}>
+    <span class="pg-img" style="aspect-ratio:2/3"><BookCover slug={book.id} title={book.data.title} author={book.data.author} palette={book.data.palette} pattern={book.data.pattern} width={420} eager={r === 0} /></span>
+    <span class="pg-strip">{book.data.title}</span>
+  </a>
+) : (
+  <figure class={`pg-f pg-world ${extra}`} data-note={note} style={`--s:${bg};--sk:${fg}`}>
+    <span class="pg-img" style={`aspect-ratio:1/${w.ratio}`}><Image src={w.src} alt={w.alt} width={520} loading={r === 1 && c < 3 ? 'eager' : 'lazy'} /></span>
+    <figcaption class="pg-strip">{w.cap}</figcaption>
+  </figure>
+)}

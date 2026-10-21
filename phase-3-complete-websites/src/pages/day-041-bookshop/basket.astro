@@ -3,7 +3,7 @@
 import Site from '../../layouts/Site.astro';
 import Shell from '../../components/day-041/Shell.astro';
 ---
-<Site title="Your basket · Pagebound Books" description="Review your basket and reserve your books for free click and collect at Pagebound Books, Edinburgh." themeColor="#7a1f2b" icon="📚" day={41}>
+<Site title="Your basket · Pagebound Books" description="Review your basket and reserve your books for free click and collect at Pagebound Books, Edinburgh." themeColor="#7a1f2b" icon="P" day={41}>
   <Shell active="basket">
     <header class="pb-pagehead">
       <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">Basket</li></ol><h1 class="pb-h1">Your basket</h1></div>
@@ -27,7 +27,10 @@ import Shell from '../../components/day-041/Shell.astro';
               <div class="pb-fields">
                 <div class="col-2"><label for="c-name" class="pb-label">Name</label><input id="c-name" class="pb-input" autocomplete="name" data-req aria-describedby="c-name-e" /><p class="pb-err" id="c-name-e" hidden>Please add your name.</p></div>
                 <div class="col-2"><label for="c-email" class="pb-label">Email</label><input id="c-email" type="email" class="pb-input" autocomplete="email" data-req aria-describedby="c-email-e" /><p class="pb-err" id="c-email-e" hidden>Enter an email like name@example.com.</p></div>
-                <div class="col-2"><label for="c-when" class="pb-label">Collect on</label><select id="c-when" class="pb-input" data-when></select></div>
+                <div class="col-2"><p class="pb-label" id="when-l">Choose a pick-up slot</p>
+                  <div class="pb-days" role="group" aria-labelledby="when-l" data-days></div>
+                  <div class="pb-slots" role="group" aria-label="Time of day" data-slots></div>
+                  <p class="pb-slotnote" role="status" data-slotnote></p></div>
                 <label class="pb-check col-2"><input type="checkbox" id="c-gift" /><span>Gift wrap my order (free)</span></label>
               </div>
               <button type="submit" class="pb-btn pb-btn--ox pb-btn--lg mt-5 w-full">Reserve my books</button>

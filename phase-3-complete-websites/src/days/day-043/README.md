@@ -55,3 +55,25 @@ Every drawn picture is gone. The three stories each have a real photograph (card
 ### Team portraits
 
 The four people on the About page now have real portraits from Pexels (free to use): Farida Haque 30647743, Joe Mbeki 7156436, Dev Anand 36294665, Lucy Marsh 7656127. They are stand-ins for the fictional team; replace them with real photos before launch.
+
+### Second round: deeper structure
+
+- **Seasonal calendar** on "What we do": a twelve-month strip per programme and a month picker that dims programmes that are not running (opens on the current month).
+- **A day at the farm**: every programme page has an hour-by-hour timeline (times and schedules live in each programme's markdown file).
+- **Sunrise footer** on every page with this week's harvest board (crops in season this month) and a sun that sits along the arc by time of day.
+- **What's growing now** (new page): month picker over ten crops with real photographs and season bars. Pexels ids: salad onions 38571492, strawberries 16221480, tomatoes 30309037, courgettes 237635, runner beans 23531561, new potatoes 37740956, carrots 172070, apples 14403, pumpkins 20010980, kale 1634356.
+- The volunteer shift picker and donation impact calculator stay as the signature moment.
+
+## Redesign: the month
+
+Rebuilt from `DESIGN.md`. The old home (a collage of rounded photographs around a centred headline, pill buttons, pillow cards) is replaced by a page that knows what month it is.
+
+- **First screen:** the month's name at poster size, on that season's colour (spring lime, summer yellow, autumn amber, winter frost), with a line about what the farm is doing and the crops in season as upright photographs. Twelve month buttons scrub the year: colour, word, crops and note change together. It opens on today's month. Without JavaScript it shows October.
+- **Files:** `DESIGN.md` (the brief), `season.css` (tokens, the flat inner-page restyle and the home), `season.ts` (the monthly notes and season data, shared by page and script), `month.ts` (reads the date, scrubs the year, fits the word to the width), `pages/day-043-community-farm/index.astro`, `components/day-043/Shell.astro` (plain bar, ink footer).
+- **Home, in order:** the month, four season-coloured programme bands, Come and dig (the next four shifts with places left), the impact numbers at poster size on ink, Amina's quote and the stories as an editorial list, and the donation box on the season colour.
+- **Type:** Bricolage Grotesque with its width axis (condensed for the month and headings) and Newsreader for notes and quotes. Fraunces is gone.
+- **Inner pages** keep their markup and follow the new tokens: rectangular buttons and inputs, flat tiles with no soft shadows, a flat season-coloured page head instead of the rounded green arch, a plain header bar instead of the floating pill. Every page takes today's season colour.
+- **Logo:** the sun-over-furrows badge was recoloured to the new palette (`scripts/make-brand.mjs`).
+
+### Checks run
+Taste Skill source linter 0 fail / 0 warn; browser inspector (1440 / 768 / 390); overflow and contrast sweep of all pages at five widths.

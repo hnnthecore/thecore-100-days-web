@@ -1,0 +1,47 @@
+---
+/** Day 042 · Atelier Nord · recognition: awards and shortlists on a timeline that links to the projects. */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-042/Shell.astro';
+import { PROJECT_PHOTOS } from '../../days/day-042/photos';
+
+const B = '/day-042-architecture';
+const projects = await getCollection('projects');
+const title = (id: string) => projects.find((p) => p.id === id)!.data.title;
+const AWARDS = [
+  [2025, 'Passivhaus Trust Award', 'birch-court-primary-school', 'Winner', 'Best new school for airtightness and daylight, with a plant room the children can visit.'],
+  [2025, 'Civic Trust Award', 'tide-mill-studios', 'Winner', 'For giving a ruined mill a second life as a place where makers can work beside the water.'],
+  [2024, 'RIAS Award', 'ullapool-library-and-archive', 'Winner', 'A quiet landmark for a working harbour town that feels as though it was always there.'],
+  [2024, 'Scottish Design Award', 'house-on-the-skerry', 'Best residential', 'A family house that turns its back on the weather and its face to the sea.'],
+  [2023, 'Wood Awards', 'orchard-pavilion', 'Highly commended', 'For a timber structure that is joined, not fixed, and could be taken apart and reused.'],
+  [2022, 'RIAS Award', 'hollow-tower', 'Shortlisted', 'A workplace with a garden at its heart and a lift that nobody wants to use.'],
+  [2021, 'Housing Design Award', 'lanark-courtyard-houses', 'Winner', 'Twelve homes around a shared garden, with front doors that make people talk to each other.'],
+] as const;
+---
+<Site title="Awards and recognition · Atelier Nord" description="Awards, shortlists and commendations won by Atelier Nord, in order, with the project behind each one." themeColor="#16181b" icon="📐" day={42}>
+  <Shell active="studio">
+    <header class="an-pagehead">
+      <div class="an-wrap"><ol class="an-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Awards</li></ol><h1 class="an-h1">Recognition, <em>in order.</em></h1><p class="an-lede mt-4">Seven awards and shortlists since 2021. Every one belongs to the team, the client and the builder as much as to us.</p></div>
+    </header>
+    <section class="an-section" aria-label="Timeline of awards">
+      <div class="an-wrap">
+        <ol class="an-timeline" role="list">{AWARDS.map(([y, award, id, result, note], i) => (
+          <li class:list={['an-tl', i % 2 === 1 && 'is-alt']}>
+            <p class="an-tl__year" aria-hidden="true">{y}</p>
+            <article class="an-tl__card">
+              <a href={`${B}/projects/${id}/`} class="an-tl__img" aria-label={title(id)}><Image src={PROJECT_PHOTOS[id]} alt="" width={640} /></a>
+              <div>
+                <p class="an-tl__result">{result}</p>
+                <h2 class="an-h3">{award}</h2>
+                <p class="an-tl__proj"><a href={`${B}/projects/${id}/`} class="an-link">{title(id)}</a></p>
+                <p class="an-tl__note">{note}</p>
+              </div>
+            </article>
+          </li>
+        ))}</ol>
+      </div>
+    </section>
+    <section class="an-section an-section--birch"><div class="an-wrap" style="text-align:center"><h2 class="an-h2">Have a site in mind?</h2><p class="an-lede mx-auto mt-3" style="max-width:34rem">We take on a small number of commissions each year. Tell us about the place and we will tell you honestly whether we are the right people.</p><p class="mt-6"><a href={`${B}/contact/`} class="an-btn an-btn--ink an-btn--lg">Start a project</a></p></div></section>
+  </Shell>
+</Site>

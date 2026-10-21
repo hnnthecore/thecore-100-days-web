@@ -15,6 +15,8 @@ stats:
   - { value: "3×", label: "more visitors" }
   - { value: "40,000", label: "archive items" }
   - { value: "£3,400/m²", label: "build cost" }
+lat: 57.895
+lon: -5.16
 ---
 
 ## Brief

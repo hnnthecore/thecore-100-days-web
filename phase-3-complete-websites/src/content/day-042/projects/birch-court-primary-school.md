@@ -15,6 +15,8 @@ stats:
   - { value: "Passivhaus", label: "certified" }
   - { value: "420", label: "pupils" }
   - { value: "100%", label: "classrooms with outdoor access" }
+lat: 56.462
+lon: -2.9707
 ---
 
 ## Brief

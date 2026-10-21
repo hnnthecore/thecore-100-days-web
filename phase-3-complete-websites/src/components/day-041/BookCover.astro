@@ -6,7 +6,7 @@ import { ACCENTS } from '../../days/day-041/bookcover';
 interface Props { slug: string; title: string; author: string; palette: number; pattern: number; width?: number; eager?: boolean }
 const { slug, title, author, palette, pattern, width = 480, eager = false } = Astro.props;
 ---
-<span class="pb-bc" data-lay={pattern % 3} style={`--bc-a:${ACCENTS[palette % 6]}`}>
+<span class="pb-bc" data-ui data-lay={pattern % 3} style={`--bc-a:${ACCENTS[palette % 6]}`}>
   <Image src={BOOK_PHOTOS[slug]} alt="" width={width} height={Math.round(width * 1.5)} loading={eager ? 'eager' : 'lazy'} />
   <span class="pb-bc__t">{title}</span><span class="pb-bc__a">{author}</span>
 </span>

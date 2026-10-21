@@ -1,0 +1,86 @@
+---
+/** Day 044 · Fathom · "Which plan fits?": a five-question quiz that ends in a recommendation with reasons. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-044/Shell.astro';
+import { PLAN_LIST } from '../../days/day-044/plans';
+
+const B = '/day-044-saas-product';
+// level: the lowest plan this answer needs (0 Starter, 1 Growth, 2 Scale). why: shown in the result when it decides the plan.
+const QS = [
+  { id: 'banks', q: 'How many bank accounts or cards run through the business?', a: [['Just one', 0, 'One bank connection is all you need.'], ['Two to five', 1, 'You need up to five bank connections.'], ['Six or more', 2, 'With six or more accounts you need unlimited connections.']] },
+  { id: 'team', q: 'Who needs to see the numbers?', a: [['Only me', 0, 'It is just you, so one user is enough.'], ['Me and an accountant or bookkeeper', 1, 'Your accountant needs their own access.'], ['A small team (up to five)', 1, 'Five users are included from Growth.'], ['A finance team or several companies', 2, 'A finance team needs unlimited users and single sign-on.']] },
+  { id: 'late', q: 'How do your customers pay?', a: [['Mostly on time', 0, 'Payments arrive on time, so alerts by email are plenty.'], ['Sometimes late, and I do chase', 1, 'Late payers are worth chasing automatically.'], ['Chasing late invoices eats my week', 1, 'Invoice chasing will give you hours back each week.']] },
+  { id: 'plan', q: 'What do you want to be able to ask "what if…" about?', a: [['Nothing yet, I want a clear forecast', 0, 'A rolling forecast is the foundation.'], ['Hiring, pricing or a big purchase', 1, 'Scenarios let you test hiring, pricing and purchases.'], ['Raising money or trading in more than one currency', 2, 'Investor-ready packs and multi-currency are on Scale.']] },
+  { id: 'now', q: 'How do you track cash today?', a: [['A spreadsheet I rebuild each month', 0, 'You will swap a monthly rebuild for a forecast that refreshes daily.'], ['My accountant tells me quarterly', 0, 'You will see problems weeks ahead rather than months behind.'], ['I mostly keep an eye on the bank balance', 0, 'You will see what is coming, not only what has happened.']] },
+] as const;
+---
+<Site title="Which plan fits? · Fathom" description="Five quick questions and Fathom recommends the plan that fits your business, with the reasons why." themeColor="#3d5afe" icon="📈" day={44}>
+  <Shell active="pricing">
+    <header class="fa-pagehead"><div class="fa-wrap"><ol class="fa-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/pricing/`}>Pricing</a></li><li aria-current="page">Plan quiz</li></ol><h1 class="fa-h1">Which plan <span class="fa-grad">fits you?</span></h1><p class="fa-lede mt-5">Five questions, about a minute. No email address, no card.</p></div></header>
+    <section class="fa-section"><div class="fa-wrap">
+      <form class="fa-quiz" data-quiz novalidate>
+        <div class="fa-quiz__bar" aria-hidden="true"><span data-bar></span></div>
+        <p class="fa-quiz__step" data-step aria-live="polite">Question 1 of {QS.length}</p>
+        {QS.map((x, i) => <fieldset class="fa-quiz__q" data-q={i} hidden={i > 0}>
+          <legend tabindex="-1">{x.q}</legend>
+          <div class="fa-quiz__opts">{x.a.map(([label, lvl, why], j) => <label class="fa-quiz__opt"><input type="radio" name={x.id} value={lvl} data-why={why} /><span>{label}</span></label>)}</div>
+        </fieldset>)}
+        <div class="fa-quiz__nav"><button type="button" class="fa-btn fa-btn--line" data-back hidden>Back</button><button type="button" class="fa-btn fa-btn--blue" data-next disabled>Next</button></div>
+      </form>
+      <div class="fa-result" data-result hidden tabindex="-1">
+        <p class="fa-eyebrow">Our recommendation</p>
+        <h2 class="fa-h2 mt-3" data-rname>Growth</h2>
+        <p class="fa-result__price"><b data-rprice>£63</b><span>/ month billed annually</span><small data-rmonthly>or £79 billed monthly</small></p>
+        <p class="fa-lede mt-4">Here is why:</p>
+        <ul class="fa-result__why" role="list" data-rwhy></ul>
+        <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/demo/`} class="fa-btn fa-btn--blue fa-btn--lg">Start free for 14 days</a><a href={`${B}/pricing/`} class="fa-btn fa-btn--line fa-btn--lg">Compare all plans</a><button type="button" class="fa-btn fa-btn--line fa-btn--lg" data-again>Start again</button></div>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+<script define:vars={{ PLANS: PLAN_LIST }}>
+  (function () {
+    var form = document.querySelector('[data-quiz]');
+    var qs = Array.prototype.slice.call(form.querySelectorAll('[data-q]'));
+    var next = form.querySelector('[data-next]'), back = form.querySelector('[data-back]');
+    var bar = form.querySelector('[data-bar]'), step = form.querySelector('[data-step]');
+    var result = document.querySelector('[data-result]');
+    var cur = 0;
+    function chosen(i) { return qs[i].querySelector('input:checked'); }
+    function show(i) {
+      cur = i;
+      qs.forEach(function (q, j) { q.hidden = j !== i; });
+      step.textContent = 'Question ' + (i + 1) + ' of ' + qs.length;
+      bar.style.width = ((i + 1) / qs.length) * 100 + '%';
+      back.hidden = i === 0;
+      next.textContent = i === qs.length - 1 ? 'See my plan' : 'Next';
+      next.disabled = !chosen(i);
+      qs[i].querySelector('legend').focus();
+    }
+    function finish() {
+      var level = 0, reasons = [];
+      qs.forEach(function (q, i) {
+        var c = chosen(i), l = Number(c.value);
+        if (l > level) level = l;
+      });
+      qs.forEach(function (q, i) {
+        var c = chosen(i), l = Number(c.value);
+        if (l === level || i === qs.length - 1) reasons.push(c.getAttribute('data-why'));
+      });
+      var p = PLANS[level];
+      document.querySelector('[data-rname]').textContent = p.name;
+      document.querySelector('[data-rprice]').textContent = '£' + Math.round(p.price * 0.8);
+      document.querySelector('[data-rmonthly]').textContent = 'or £' + p.price + ' billed monthly';
+      var ul = document.querySelector('[data-rwhy]');
+      ul.innerHTML = '';
+      reasons.slice(0, 4).forEach(function (r) { var li = document.createElement('li'); li.textContent = r; ul.appendChild(li); });
+      form.hidden = true; result.hidden = false; result.focus();
+    }
+    form.addEventListener('change', function () { next.disabled = !chosen(cur); });
+    next.addEventListener('click', function () { if (!chosen(cur)) return; if (cur === qs.length - 1) finish(); else show(cur + 1); });
+    back.addEventListener('click', function () { if (cur > 0) show(cur - 1); });
+    document.querySelector('[data-again]').addEventListener('click', function () { form.reset(); form.hidden = false; result.hidden = true; show(0); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); });
+    bar.style.width = (1 / qs.length) * 100 + '%';
+  })();
+</script>

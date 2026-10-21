@@ -1,19 +1,22 @@
 ---
 /** Day 042 · Atelier Nord · header and footer shared by every page. Links are root paths, made relative by the build. */
-import '@fontsource-variable/schibsted-grotesk';
-import '@fontsource-variable/newsreader';
-import '@fontsource-variable/newsreader/wght-italic.css';
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/source-serif-4';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
 import '../../days/day-042/styles.css';
+import '../../days/day-042/walk.css';
+import Mark from '../brand/Mark.astro';
 
-interface Props { active?: 'home' | 'projects' | 'journal' | 'studio' | 'contact' }
-const { active } = Astro.props;
+interface Props { active?: 'home' | 'projects' | 'journal' | 'studio' | 'contact'; home?: boolean }
+const { active, home = false } = Astro.props;
 const B = '/day-042-architecture';
 const NAV = [['projects', 'Projects', `${B}/projects/`], ['journal', 'Journal', `${B}/journal/`], ['studio', 'Studio', `${B}/studio/`], ['contact', 'Contact', `${B}/contact/`]] as const;
 ---
-<div class="an">
+<script is:inline>document.documentElement.classList.add('js');</script>
+<div class:list={['an', home && 'an--home']}>
   <header class="an-header" data-header>
     <div class="an-wrap flex h-18 items-center justify-between gap-6">
-      <a href={`${B}/`} class="an-logo" aria-label="Atelier Nord, home"><svg viewBox="0 0 28 28" class="size-7" aria-hidden="true"><rect x="2" y="2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" /><path d="M2 20 14 6l12 14" fill="none" stroke="var(--fjord)" stroke-width="2.2" /></svg><span>Atelier <b>Nord</b></span></a>
+      <a href={`${B}/`} class="an-logo" aria-label="Atelier Nord, home"><Mark site="day-042-architecture" size={28} /><span>Atelier <b>Nord</b></span></a>
       <nav aria-label="Main" class="hidden lg:block">
         <ul class="flex gap-9 text-[15px] font-medium">
           {NAV.map(([k, l, h]) => <li><a href={h} class="an-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}
@@ -32,14 +35,36 @@ const NAV = [['projects', 'Projects', `${B}/projects/`], ['journal', 'Journal', 
   <main id="main"><slot /></main>
 
   <footer class="an-footer">
-    <div class="an-wrap grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="lg:col-span-2"><p class="an-logo !text-white"><span>Atelier <b>Nord</b></span></p><p class="mt-4 max-w-sm text-white/65">An independent architecture studio in Edinburgh. Quiet, low-carbon buildings for people and places that matter.</p></div>
-      <div><h2 class="an-foot-h">Studio</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/projects/`}>Projects</a></li><li><a href={`${B}/journal/`}>Journal</a></li><li><a href={`${B}/studio/`}>About &amp; team</a></li><li><a href={`${B}/contact/`}>Contact</a></li></ul></div>
-      <div><h2 class="an-foot-h">Say hello</h2><address class="mt-3 grid gap-1 not-italic text-white/75">12 Leith Walk Mews<br />Edinburgh EH6 5AA<br />studio@ateliernord.example<br />0131 555 0188</address></div>
+    <div class="an-wrap py-12">
+      <div class="an-tb" role="group" aria-label="Studio details">
+        <div class="an-tb__name"><p class="an-logo !text-white"><Mark site="day-042-architecture" variant="tile" size={32} /><span>Atelier <b>Nord</b></span></p><p>An independent architecture studio in Edinburgh. Quiet, low-carbon buildings for people and places that matter.</p></div>
+        <div class="an-tb__cell"><small>Drawing</small><b>Site map</b></div>
+        <div class="an-tb__cell"><small>Scale</small><b>1:1 · at your pace</b></div>
+        <div class="an-tb__cell an-tb__links"><small>Sheets</small><ul role="list"><li><a href={`${B}/projects/`}>Projects</a></li><li><a href={`${B}/awards/`}>Awards</a></li><li><a href={`${B}/journal/`}>Journal</a></li><li><a href={`${B}/studio/`}>About &amp; team</a></li><li><a href={`${B}/contact/`}>Contact</a></li></ul></div>
+        <div class="an-tb__cell"><small>Address</small><address class="not-italic">12 Leith Walk Mews<br />Edinburgh EH6 5AA<br />studio@ateliernord.example<br />0131 555 0188</address></div>
+        <div class="an-tb__cell"><small>Practice no.</small><b>AN-2011</b></div>
+        <div class="an-tb__cell"><small>Revision</small><b>Rev. 15 · Sheet 1 of 1</b></div>
+      </div>
     </div>
-    <div class="an-wrap border-t border-white/10 py-6 text-sm text-white/55">A fictional practice created for Thecore's 100 Days of Web (Day 042). Projects, clients and people are invented.</div>
+    <div class="an-wrap py-6 text-sm text-white/55">A fictional practice created for Thecore's 100 Days of Web (Day 042). Projects, clients and people are invented.</div>
   </footer>
 </div>
 <script>
   import '../../days/day-042/shell';
+  /* On inner pages the header slides away while you scroll down and returns on the way up. */
+  const bar = document.querySelector<HTMLElement>('[data-header]');
+  if (bar) {
+    const home = !!document.querySelector('.an--home');
+    let last = scrollY;
+    addEventListener('scroll', () => {
+      const y = scrollY, open = document.querySelector('[data-burger]')?.getAttribute('aria-expanded') === 'true';
+      const away = y > last && y > 160 && !open;
+      bar.classList.toggle('is-away', away && !home);
+      document.querySelector('.thecore-badge')?.classList.toggle('is-away', away);
+      last = y;
+    }, { passive: true });
+  }
+  /* Parts of each section enter as they arrive. */
+  const seen = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); } }), { threshold: 0.12 });
+  document.querySelectorAll('[data-rise]').forEach((el) => seen.observe(el));
 </script>

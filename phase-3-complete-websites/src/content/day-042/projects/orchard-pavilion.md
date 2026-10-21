@@ -15,6 +15,8 @@ stats:
   - { value: "220 m²", label: "covered space" }
   - { value: "8 t", label: "apples pressed a year" }
   - { value: "40", label: "events in year one" }
+lat: 56.58
+lon: -3.7
 ---
 
 ## Brief

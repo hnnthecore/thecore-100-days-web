@@ -63,3 +63,18 @@ The first screen is a giant full-bleed project photograph with the headline set 
 ### Team portraits
 
 The five directors and leads on the Studio page now show real portrait photographs from Pexels (free to use, no attribution required): Elin 31646744, Callum 3855643, Maya 31307734, Jonas 3779508, Priyanka 29811345. They are stock stand-ins for the fictional staff; replace them with real photos of the team before launch.
+
+## Redesign: the elevation
+
+Rebuilt from `DESIGN.md` (Taste Skill direction "street elevation"). The home page is no longer a hero photo plus a card grid. It is one long architectural elevation: the studio's eight buildings stand shoulder to shoulder on a ground line with a metre ruler, each with a blue dimension line giving its floor area, and the page walks you along them.
+
+- **Files:** `DESIGN.md` (the brief), `walk.css` (tokens, header, inner-page overrides and the home), `walk.ts` (the walk, the metre counter, the register preview), `pages/day-042-architecture/index.astro`, `components/day-042/Shell.astro` (plain header, title-block footer, scripts).
+- **The live thing:** on screens 900px and wider (and when the visitor has not asked for reduced motion) vertical scroll is turned into a sideways walk along the strip. A readout counts the metres and names the building you are in front of; arrow buttons step building by building. Below 900px, or with reduced motion, it is a normal sideways swipe with snapping.
+- **Type:** Archivo (width axis) for lettering, Source Serif 4 for reading. No monospace.
+- **Colour:** cold concrete `#dde3e6` and ink `#101417`, with dimension blue `#1c4f9c` only on dimension lines and the current link. The old amber is gone.
+- **Home, in order:** the elevation, "The site decides." with three notes, the register of all projects (hover shows the photograph), four numbers drawn as dimensions, the journal, and a huge "Start a project" line above the title-block footer.
+- **Inner pages** keep their markup and follow the new tokens: flat concrete page heads, flat tiles, no amber.
+- **Logo:** the survey needle mark was recoloured to the new palette (`scripts/make-brand.mjs`).
+
+### Checks run
+Taste Skill source linter 0 fail / 0 warn; browser inspector (1440 / 768 / 390) with the remaining notes being the reduced-motion environment, the sideways strip by design and no video; overflow and contrast sweep of all 19 pages at five widths, clean.

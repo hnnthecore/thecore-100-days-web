@@ -31,19 +31,35 @@ $('[data-lines]').addEventListener('click', (e) => {
 });
 addEventListener('basket:change', paint);
 
-/* Collection dates: the next six days the shop is open, Sunday included. */
-const sel = $<HTMLSelectElement>('[data-when]');
-const days = Array.from({ length: 6 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i + 1); return d; });
-sel.innerHTML = days.map((d, i) => `<option value="${d.toISOString().slice(0, 10)}">${d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}${i === 0 ? ' (earliest)' : ''}</option>`).join('');
+/* Pick-up slots: the next six days, one-hour windows at the till. Some are full, always the same ones for the same date. */
+const SLOTS = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+const days = Array.from({ length: 6 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i + 1); return d; }).filter((d) => d.getDay() !== -1);
+const full = (d: Date, t: string) => { let h = 3; for (const c of d.toISOString().slice(0, 10) + t) h = (h * 33 + c.charCodeAt(0)) >>> 0; return h % 4 === 0; };
+const lastHour = (d: Date) => (d.getDay() === 0 ? 15 : 17);
+let pickDay = 0, pickSlot = '';
+const daysEl = $('[data-days]'), slotsEl = $('[data-slots]'), noteEl = $('[data-slotnote]');
+const dayLabel = (d: Date) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+function paintSlots() {
+  const d = days[pickDay];
+  daysEl.innerHTML = days.map((x, i) => `<button type="button" class="pb-day" data-day="${i}" aria-pressed="${i === pickDay}"><b>${x.toLocaleDateString('en-GB', { weekday: 'short' })}</b><span>${x.getDate()}</span></button>`).join('');
+  const open = SLOTS.filter((t) => Number(t.slice(0, 2)) <= lastHour(d) && (d.getDay() !== 0 || Number(t.slice(0, 2)) >= 11));
+  if (!open.some((t) => t === pickSlot && !full(d, t))) pickSlot = open.find((t) => !full(d, t)) ?? '';
+  slotsEl.innerHTML = open.map((t) => `<button type="button" class="pb-slot" data-slot="${t}" aria-pressed="${t === pickSlot}" ${full(d, t) ? 'disabled' : ''}>${t}${full(d, t) ? '<small>Full</small>' : ''}</button>`).join('');
+  noteEl.textContent = pickSlot ? `Collect on ${dayLabel(d)}, ${pickSlot} to ${String(Number(pickSlot.slice(0, 2)) + 1).padStart(2, '0')}:00` : 'No slots left that day. Please try another.';
+}
+daysEl.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-day]'); if (b) { pickDay = Number(b.dataset.day); paintSlots(); } });
+slotsEl.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-slot]'); if (b && !b.disabled) { pickSlot = b.dataset.slot!; paintSlots(); } });
+paintSlots();
 
 const form = $<HTMLFormElement>('[data-checkout]');
 const check = wire(form);
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (!check()) return;
+  if (!pickSlot) { noteEl.textContent = 'Please choose a pick-up slot.'; return; }
   const n = count(), sum = total();
   $('[data-done-name]').textContent = $<HTMLInputElement>('#c-name').value.trim().split(/\s+/)[0];
-  $('[data-done-text]').textContent = `${n} book${n === 1 ? '' : 's'}, ${gbp(sum)} to pay in store. Ready to collect on ${sel.selectedOptions[0].text.replace(' (earliest)', '')} from 10 am${$<HTMLInputElement>('#c-gift').checked ? ', gift wrapped' : ''}.`;
+  $('[data-done-text]').textContent = `${n} book${n === 1 ? '' : 's'}, ${gbp(sum)} to pay in store. Ready to collect on ${dayLabel(days[pickDay])}, ${pickSlot} to ${String(Number(pickSlot.slice(0, 2)) + 1).padStart(2, '0')}:00${$<HTMLInputElement>('#c-gift').checked ? ', gift wrapped' : ''}.`;
   $('[data-ref]').textContent = 'PB-' + Math.random().toString(36).slice(2, 8).toUpperCase();
   finished = true;
   clear();

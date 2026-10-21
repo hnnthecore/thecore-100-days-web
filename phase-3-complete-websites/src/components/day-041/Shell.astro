@@ -3,20 +3,23 @@
  * Day 041 · Pagebound Books · header and footer shared by every page of the site.
  * Links are root-absolute; the build step turns them into relative links, so the site also works from disk.
  */
-import '@fontsource-variable/literata';
+import '@fontsource-variable/schibsted-grotesk';
 import '@fontsource-variable/literata/wght-italic.css';
-import '@fontsource-variable/work-sans';
+import '@fontsource-variable/literata';
 import '../../days/day-041/styles.css';
+import '../../days/day-041/sheet.css';
+import Mark from '../brand/Mark.astro';
 
-interface Props { active?: 'home' | 'books' | 'events' | 'about' | 'contact' | 'basket' }
-const { active } = Astro.props;
+interface Props { active?: 'home' | 'books' | 'events' | 'about' | 'contact' | 'basket'; home?: boolean }
+const { active, home = false } = Astro.props;
 const B = '/day-041-bookshop';
 const NAV = [['books', 'Books', `${B}/books/`], ['events', 'Events', `${B}/events/`], ['about', 'About', `${B}/about/`], ['contact', 'Visit & contact', `${B}/contact/`]] as const;
 ---
-<div class="pb">
+<script is:inline>document.documentElement.classList.add('js');</script>
+<div class:list={['pb', home && 'pb--home']}>
   <header class="pb-header" data-header>
     <div class="pb-wrap flex h-18 items-center justify-between gap-6">
-      <a href={`${B}/`} class="pb-logo" aria-label="Pagebound Books, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect x="3" y="4" width="26" height="24" rx="3" fill="var(--oxblood)" /><path d="M16 8v16M16 8c-3-2-7-2-10 0v16c3-2 7-2 10 0 3-2 7-2 10 0V8c-3-2-7-2-10 0z" fill="none" stroke="var(--cream)" stroke-width="1.8" stroke-linejoin="round" /></svg><span>Pagebound</span></a>
+      <a href={`${B}/`} class="pb-logo" aria-label="Pagebound Books, home"><Mark site="day-041-bookshop" size={30} /><span>Pagebound</span></a>
       <nav aria-label="Main" class="hidden lg:block">
         <ul class="flex gap-9 text-[15px] font-medium">
           {NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined} class="pb-navlink">{l}</a></li>)}
@@ -37,18 +40,44 @@ const NAV = [['books', 'Books', `${B}/books/`], ['events', 'Events', `${B}/event
 
   <main id="main"><slot /></main>
 
-  <footer class="pb-footer">
-    <div class="pb-wrap grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="lg:col-span-2">
-        <p class="pb-logo !text-(--cream)"><span>Pagebound</span></p>
-        <p class="mt-4 max-w-sm text-(--cream)/70">An independent bookshop on Canongate, Edinburgh. Staffed by people who read, with a kettle always on.</p>
-      </div>
-      <div><h2 class="pb-foot-h">Explore</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/books/`}>All books</a></li><li><a href={`${B}/events/`}>Events</a></li><li><a href={`${B}/about/`}>About us</a></li><li><a href={`${B}/basket/`}>Your basket</a></li></ul></div>
-      <div><h2 class="pb-foot-h">Visit</h2><address class="mt-3 grid gap-1 not-italic text-(--cream)/80">42 Canongate<br />Edinburgh EH8 8BN<br />Mon–Sat 9–6 · Sun 11–4<br /><a href={`${B}/contact/`}>Get in touch →</a></address></div>
-    </div>
-    <div class="pb-wrap border-t border-white/10 py-6 text-sm text-(--cream)/60">A fictional bookshop created for Thecore's 100 Days of Web (Day 041). Books, authors and events are invented.</div>
+  <footer class="pg-foot" data-foot>
+    <div class="pg-foot__tile pg-t-state" style="--d:0"><p>Independent since 1998. On Canongate, Edinburgh, every day.</p><small>A fictional bookshop created for Thecore's 100 Days of Web (Day 041). Books, authors and events are invented. <a href={`${B}/about/#credits`}>Picture credits</a>.</small></div>
+    <nav class="pg-foot__tile pg-t-nav" style="--d:1" aria-label="Footer"><ul><li><a href={`${B}/books/`}>Books</a></li><li><a href={`${B}/staff-shelf/`}>Staff shelf</a></li><li><a href={`${B}/events/`}>Events</a></li><li><a href={`${B}/about/`}>About</a></li><li><a href={`${B}/contact/`}>Visit and contact</a></li><li><a href={`${B}/basket/`}>Basket</a></li></ul></nav>
+    <div class="pg-foot__tile pg-t-time" style="--d:2"><b data-time>Edinburgh</b><span data-open>42 Canongate, EH8 8BN</span></div>
+    <div class="pg-foot__tile pg-t-mail" style="--d:3"><a href="mailto:hello@pagebound.example">hello@pagebound.example</a></div>
+    <div class="pg-foot__tile pg-t-name" style="--d:4" aria-hidden="true"><b>pagebound</b></div>
+    <a class="pg-foot__tile pg-t-go" style="--d:5" href={`${B}/books/`}><span>Reserve a book</span><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square" aria-hidden="true"><path d="M10 38 38 10M16 10h22v22" /></svg></a>
   </footer>
 </div>
 <script>
   import '../../days/day-041/shell';
+  /* The header slides away while you scroll down and returns on the way up. */
+  const bar = document.querySelector<HTMLElement>('[data-header]');
+  if (bar) {
+    let last = scrollY;
+    addEventListener('scroll', () => {
+      const y = scrollY, open = document.querySelector('[data-burger]')?.getAttribute('aria-expanded') === 'true';
+      const away = y > last && y > 160 && !open;
+      bar.classList.toggle('is-away', away);
+      document.querySelector('.thecore-badge')?.classList.toggle('is-away', away);
+      last = y;
+    }, { passive: true });
+  }
+  /* Parts of each section enter as they arrive; the lifted frame opens with its shutter. */
+  const seen = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); } }), { threshold: 0.15 });
+  document.querySelectorAll('[data-rise], .pg-lift, [data-foot]').forEach((el) => seen.observe(el));
+  /* The footer clock: Edinburgh time, and whether the shop is open. */
+  const clock = document.querySelector<HTMLElement>('[data-time]');
+  const state = document.querySelector<HTMLElement>('[data-open]');
+  const HOURS: Record<string, [number, number]> = { Mon: [9, 18], Tue: [9, 18], Wed: [9, 18], Thu: [9, 20], Fri: [9, 18], Sat: [9, 18], Sun: [11, 16] };
+  const at = (h: number) => (h > 12 ? h - 12 : h) + (h >= 12 ? 'pm' : 'am');
+  function tick() {
+    if (!clock || !state) return;
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date()).map((p) => [p.type, p.value]));
+    const h = Number(parts.hour) % 24, m = Number(parts.minute), now = h + m / 60, [o, c] = HOURS[parts.weekday] ?? [9, 18];
+    clock.textContent = 'Edinburgh, ' + parts.hour + ':' + parts.minute;
+    state.textContent = now >= o && now < c ? 'Open until ' + at(c) + '. The kettle is on.' : 'Closed now. Back at ' + at(o) + '.';
+  }
+  tick();
+  setInterval(tick, 30000);
 </script>

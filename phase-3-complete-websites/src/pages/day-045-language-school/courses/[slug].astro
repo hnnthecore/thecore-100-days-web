@@ -5,6 +5,7 @@ import Site from '../../../layouts/Site.astro';
 import { Image } from 'astro:assets';
 import { TEACHER_PHOTOS, COURSE_PHOTOS, COURSE_ALTS } from '../../../days/day-045/photos';
 import Shell from '../../../components/day-045/Shell.astro';
+import { LEVELS } from '../../../days/day-045/syllabus';
 
 export async function getStaticPaths() {
   const all = await getCollection('courses');
@@ -15,9 +16,8 @@ const B = '/day-045-language-school';
 const { entry, teacher, next } = Astro.props;
 const c = entry.data;
 const { Content } = await render(entry);
-const LEVELS = [['A1', 'Beginner', 'Greetings, numbers and simple everyday phrases.'], ['A2', 'Elementary', 'Talk about your day, past events and plans.'], ['B1', 'Intermediate', 'Handle most situations when travelling or working.'], ['B2', 'Upper-intermediate', 'Discuss ideas and opinions with fluency and nuance.']];
 ---
-<Site title={`${c.language} classes · Lingua Lane`} description={c.intro} themeColor={c.colour} icon="💬" day={45}>
+<Site title={`${c.language} classes · Lingua Lane`} description={c.intro} themeColor={c.colour} icon="L" day={45}>
   <Shell active="courses">
     <header class="ll-pagehead" style={`background:${c.colour};color:${c.ink}`}>
       <div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb" style="color:inherit"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/courses/`}>Courses</a></li><li aria-current="page">{c.language}</li></ol>
@@ -39,10 +39,37 @@ const LEVELS = [['A1', 'Beginner', 'Greetings, numbers and simple everyday phras
       </aside>
     </div></section>
 
-    <section class="ll-section ll-section--cream" aria-labelledby="lv-t"><div class="ll-wrap">
-      <div class="ll-head"><div><p class="ll-eyebrow">Levels</p><h2 id="lv-t" class="ll-h2 mt-3">From first words to real fluency.</h2></div></div>
-      <ol class="ll-levels" role="list">{LEVELS.map(([lv, name, d]) => <li class="ll-level"><span class="ll-level__tag" style={`background:${c.colour};color:${c.ink}`}>{lv}</span><div><b>{name}</b><span>{d} 10 weeks · £189</span></div><a href={`${B}/enrol/?course=${entry.id}&level=${lv}`} class="ll-btn">Enrol</a></li>)}</ol>
-      <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/level-test/`} class="ll-btn ll-btn--coral">Not sure of your level?</a><a href={`${B}/courses/${next.id}/`} class="ll-btn">Next: {next.data.language} →</a></div>
+    <section class="ll-section ll-section--cream" aria-labelledby="lv-t"><div class="ll-wrap" data-syl>
+      <div class="ll-head"><div><p class="ll-eyebrow">Syllabus</p><h2 id="lv-t" class="ll-h2 mt-3">From first words to real fluency.</h2></div><p class="ll-lede">Four levels, ten weeks each. Pick a step to see what you will be able to do, week by week.</p></div>
+      <div class="ll-syl__steps" role="tablist" aria-label={`${c.language} levels`}>{LEVELS.map((l, i) => <button type="button" role="tab" id={`lv-${l.code}`} aria-controls={`lp-${l.code}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="ll-syl__step" style={`--c:${c.colour};--k:${c.ink}`}><span class="ll-syl__code">{l.code}</span><span class="ll-syl__name">{l.name}</span></button>)}</div>
+      {LEVELS.map((l, i) => <div class="ll-syl__panel" role="tabpanel" id={`lp-${l.code}`} aria-labelledby={`lv-${l.code}`} tabindex="0" hidden={i > 0}>
+        <div class="ll-syl__top"><div><h3 class="ll-h3">{l.code} · {l.name}</h3><p class="mt-2">{l.blurb.replace('{L}', c.language)}</p></div><a href={`${B}/enrol/?course=${entry.id}&level=${l.code}`} class="ll-btn ll-btn--coral">Enrol at {l.code} · £189</a></div>
+        <ol class="ll-syl__weeks" role="list">{l.weeks.map((w, k) => <li><span>Week {k + 1}</span>{w.replace('{L}', c.language)}</li>)}</ol>
+      </div>)}
+      <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/level-test/`} class="ll-btn ll-btn--coral">Not sure of your level?</a><a href={`${B}/trial/?course=${entry.id}`} class="ll-btn">Book a free trial lesson</a><a href={`${B}/courses/${next.id}/`} class="ll-btn">Next: {next.data.language} →</a></div>
     </div></section>
   </Shell>
 </Site>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-syl]')!;
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+  const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')!)!);
+  function show(i: number, focus = false) {
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(i === j)); t.tabIndex = i === j ? 0 : -1; t.classList.toggle('is-done', j < i); panels[j].hidden = i !== j; });
+    root.style.setProperty('--p', String(i / (tabs.length - 1)));
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(i));
+    t.addEventListener('keydown', (e) => {
+      const k = (e as KeyboardEvent).key;
+      if (k === 'ArrowRight') { e.preventDefault(); show(Math.min(i + 1, tabs.length - 1), true); }
+      if (k === 'ArrowLeft') { e.preventDefault(); show(Math.max(i - 1, 0), true); }
+      if (k === 'Home') { e.preventDefault(); show(0, true); }
+      if (k === 'End') { e.preventDefault(); show(tabs.length - 1, true); }
+    });
+  });
+  const want = new URLSearchParams(location.search).get('level');
+  const start = tabs.findIndex((t) => t.id === 'lv-' + want);
+  show(start < 0 ? 0 : start);
+</script>

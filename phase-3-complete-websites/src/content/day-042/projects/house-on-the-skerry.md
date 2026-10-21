@@ -15,6 +15,8 @@ stats:
   - { value: "78%", label: "less energy than typical" }
   - { value: "185 m²", label: "floor area" }
   - { value: "14 months", label: "on site" }
+lat: 57.435
+lon: -6.587
 ---
 
 ## Brief

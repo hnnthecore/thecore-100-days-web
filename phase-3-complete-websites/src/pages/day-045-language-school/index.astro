@@ -1,70 +1,106 @@
 ---
-/** Day 045 · Lingua Lane · home: hero, the eight languages, how classes work, teachers, a testimonial band and the enrol call to action. */
+/** Day 045 · Lingua Lane · home. Built from days/day-045/DESIGN.md: a lane of eight doors, and the arched door is the one shape. */
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import { Image } from 'astro:assets';
-import ph_whiteboard_jpg from '../../assets/day-045/whiteboard.jpg';
-import ph_classroom_jpg from '../../assets/day-045/classroom.jpg';
-import { TEACHER_PHOTOS, COURSE_PHOTOS, COURSE_ALTS } from '../../days/day-045/photos';
 import Shell from '../../components/day-045/Shell.astro';
+import { TEACHER_PHOTOS, COURSE_PHOTOS, COURSE_ALTS } from '../../days/day-045/photos';
+import { LANG_CODE } from '../../days/day-045/syllabus';
+import gowerMews from '../../assets/day-045/gower-mews.jpg';
 
 const B = '/day-045-language-school';
-const courses = await getCollection('courses');
-const teachers = (await getCollection('teachers')).slice(0, 4);
-const BUBBLES: [string, string, string, string][] = [['Hola', 'Spanish', '#ff5a3c', '#fff'], ['你好', 'Mandarin', '#ffb703', '#1b1030'], ['Bonjour', 'French', '#3a5bd9', '#fff'], ['こんにちは', 'Japanese', '#e9defa', '#1b1030'], ['Ciao', 'Italian', '#1f9d6b', '#fff'], ['Hallo', 'German', '#fff', '#1b1030']];
-const STEPS = [['Take the free test', 'Five minutes online tells us your level, so you never sit in a class that is too easy or too hard.'], ['Join a small group', 'Maximum eight people, a teacher who knows your name and a plan for every week.'], ['Speak from day one', 'Every lesson ends with a real conversation. You leave able to say something new.']];
+const ORDER = ['spanish', 'french', 'german', 'italian', 'portuguese', 'japanese', 'mandarin', 'arabic'];
+const courses = (await getCollection('courses')).sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
+const teachers = await getCollection('teachers');
+const teacherOf = (id: string) => teachers.find((t) => t.id === id)!;
+const STAGES = [
+  ['Find your level', 'Take the free five-minute test. It places you at A1, A2, B1 or B2, so you never sit in a class that is too easy or too hard.', 'Take the level test', `${B}/level-test/`, '#1b1030', '#ffffff'],
+  ['Try a lesson', 'Join a real class for thirty minutes, free. Meet your teacher, hear the pace and decide with no obligation.', 'Book a free lesson', `${B}/trial/`, '#0c6f6f', '#ffffff'],
+  ['Ten weeks', 'One level per course, A1 to B2, with a plan for every week. Evenings, lunchtimes and weekends, in the studio or online.', 'See the courses', `${B}/courses/`, '#ff5a3c', '#1b1030'],
+  ['Keep going', 'Move up a level, join the next course or book private lessons. Your teacher tells you what comes next.', 'Enrol', `${B}/enrol/`, '#ffb703', '#1b1030'],
+] as const;
+const FAQ = [
+  ['Experience', 'Do I need any experience?', 'No. Our A1 courses start from zero. If you have studied before, take the free level test and we will place you in the right group.'],
+  ['Format', 'Are classes online or in person?', 'Both. Every course runs in our London studio and live online, and you can switch between them week to week.'],
+  ['Missed lessons', 'What if I miss a lesson?', 'Every lesson is recorded for you to catch up, and your teacher will send a short summary of what you missed.'],
+  ['Trial', 'Can I try before I commit?', 'Yes. Your first lesson is free: if you do not love it, we refund the course in full.'],
+  ['Exams', 'Do you prepare for exams?', 'Yes, we prepare students for DELE, DELF, Goethe, JLPT, HSK and more, as part of the course.'],
+] as const;
+const CARD = [['#ffb703', '#1b1030'], ['#ff5a3c', '#1b1030'], ['#e4e0f2', '#1b1030']] as const;
 ---
-<Site title="Lingua Lane · Language school in London" description="Learn Spanish, French, German, Italian, Japanese, Mandarin, Portuguese or Arabic in small friendly classes in London or online. Free level test." themeColor="#ff5a3c" icon="💬" day={45}>
+<Site title="Lingua Lane · Language school on Gower Mews, London" description="A small language school on Gower Mews in Bloomsbury. Eight languages, ten-week courses from A1 to B2, a free level test and a free first lesson." themeColor="#ff5a3c" icon="L" day={45}>
   <Shell>
-    <section class="ll-hero">
-      <div class="ll-wrap ll-hero__grid">
-        <div>
-          <p class="ll-eyebrow">Language school · London &amp; online</p>
-          <h1 class="ll-h1 mt-4">Say it like you <span class="ll-mark">mean it.</span></h1>
-          <p class="ll-lede mt-6">Eight languages, small classes and teachers who make you laugh. You will be having real conversations by the end of week one.</p>
-          <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/level-test/`} class="ll-btn ll-btn--coral ll-btn--lg">Take the free level test</a><a href={`${B}/courses/`} class="ll-btn ll-btn--lg">Browse courses</a></div>
-          <dl class="ll-proof"><div><dt class="sr-only">Languages</dt><dd><b>8</b><span>languages</span></dd></div><div><dt class="sr-only">Class size</dt><dd><b>8</b><span>students per class</span></dd></div><div><dt class="sr-only">Rating</dt><dd><b>4.9★</b><span>from 1,200 reviews</span></dd></div></dl>
-        </div>
-        <p class="ll-greet" aria-hidden="true">{BUBBLES.map(([w, l, bg, fg], i) => <span style={`--i:${i};--n:${BUBBLES.length}`}>{w}<small style={`background:${bg};color:${fg}`}>{l}</small></span>)}</p>
+    <section class="dr-hero" aria-labelledby="h1">
+      <div class="dr-hero__text">
+        <h1 id="h1" class="dr-h1"><span>Eight doors,</span><span>one lane.</span></h1>
+        <p class="dr-hero__lede">A small language school on Gower Mews in Bloomsbury. Pick a door, try a free lesson, start speaking.</p>
+        <div class="dr-hero__act"><a href={`${B}/trial/`} class="dr-btn dr-btn--coral">Try a free lesson</a><a href="#doors" class="dr-link">See the eight doors</a></div>
       </div>
+      <div class="dr-door"><span class="dr-door__plate" aria-hidden="true">14</span><figure class="dr-door__window"><Image src={gowerMews} alt="Gower Mews in Bloomsbury: a narrow brick lane with yellow lines, seen from its entrance" width={900} loading="eager" /></figure><span class="dr-door__knob" aria-hidden="true"></span></div>
     </section>
 
-    <section class="ll-section ll-section--ink" aria-labelledby="q-t">
-      <div class="ll-wrap ll-split ll-split--wide" style="align-items:center">
-        <div><h2 id="q-t" class="sr-only">What students say</h2><p class="ll-quote">“I was terrified of speaking Italian. Eight weeks later I ordered a whole dinner in Bologna and the waiter asked which part of Italy I was from.”</p><p class="mt-5 font-bold">Priya K. <span style="color:var(--muted);font-weight:600">· Italian, B1</span></p></div>
-        <div class="ll-box" style="color:var(--ink)"><h3 class="ll-h3">Not sure where to start?</h3><p class="mt-2" style="color:var(--muted)">Take our free five-minute test in Spanish, French or German and get a level and a course suggestion.</p><a href={`${B}/level-test/`} class="ll-btn ll-btn--saffron ll-btn--full mt-5" style="color:var(--ink);border-color:var(--ink)">Start the test</a></div>
-      </div>
-    </section>
+    <section class="dr-statement" aria-label="What we do"><div class="dr-wrap">
+      <p data-rise>You start <span class="dr-thumb"><Image src={COURSE_PHOTOS.spanish} alt="" width={120} /></span> speaking in the first minute. Eight <span class="dr-thumb"><Image src={COURSE_PHOTOS.japanese} alt="" width={120} /></span> languages, small groups, ten <span class="dr-thumb"><Image src={COURSE_PHOTOS.arabic} alt="" width={120} /></span> weeks at a time.</p>
+    </div></section>
 
-    <section class="ll-section" aria-labelledby="langs-t">
-      <div class="ll-wrap">
-        <div class="ll-head"><div><p class="ll-eyebrow">Courses</p><h2 id="langs-t" class="ll-h2 mt-3">Pick a language. Fall in love.</h2></div><a href={`${B}/courses/`} class="ll-btn">All courses →</a></div>
-        <ul class="ll-grid ll-grid--4" role="list">{courses.map((c) => <li><a href={`${B}/courses/${c.id}/`} class="ll-lang" style={`background:${c.data.colour};color:${c.data.ink}`}><span class="ll-lang__photo"><Image src={COURSE_PHOTOS[c.id]} alt="" width={520} /></span><span class="ll-lang__hi" lang={c.id === 'japanese' ? 'ja' : undefined}>{c.data.greeting}</span><span><h3>{c.data.language}</h3><p>{c.data.speakers}</p></span></a></li>)}</ul>
+    <section id="doors" class="dr-doors" aria-labelledby="doors-t"><div class="dr-wrap dr-doors__grid" data-doors>
+      <figure class="dr-plate" data-plate>{courses.map((c, i) => <div class:list={['dr-plate__img', i === 0 && 'is-on']} data-img={c.id}><Image src={COURSE_PHOTOS[c.id]} alt={COURSE_ALTS[c.id]} width={900} loading={i === 0 ? 'eager' : 'lazy'} /></div>)}</figure>
+      <div>
+        <h2 id="doors-t" class="dr-h2" data-rise>Pick a door</h2>
+        <div class="dr-tabs" role="tablist" aria-label="Languages">{courses.map((c, i) => <button type="button" role="tab" class="dr-tab" id={`dt-${c.id}`} aria-controls={`dp-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} style={`--c:${c.data.colour}`}>{c.data.language}</button>)}</div>
+        {courses.map((c, i) => {
+          const t = teacherOf(c.data.teacher);
+          return (
+            <div role="tabpanel" id={`dp-${c.id}`} aria-labelledby={`dt-${c.id}`} class:list={['dr-panel', i === 0 && 'is-on']} tabindex="0">
+              <p class="dr-panel__hi" lang={LANG_CODE[c.id]}>{c.data.greeting}</p>
+              <p class="dr-panel__what">{c.data.language} ({c.data.native}). {c.data.tagline}.</p>
+              <div class="dr-panel__teacher"><Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={120} height={140} /><p><b>{t.data.name}</b><br /><span style="color:var(--muted)">From {t.data.from}, {t.data.years} years teaching</span></p></div>
+              <dl class="dr-panel__meta"><dt>Class times</dt><dd>{c.data.schedule.join(' · ')}</dd></dl>
+              <div class="dr-panel__act"><a href={`${B}/courses/${c.id}/`} class="dr-btn dr-btn--coral">See {c.data.language}</a><a href={`${B}/trial/?course=${c.id}`} class="dr-link">Book a free lesson</a></div>
+            </div>
+          );
+        })}
       </div>
-    </section>
+    </div></section>
 
-    <div class="ll-wrap ll-band" data-photo-band>
-        <figure class="ll-band__main"><Image src={ph_whiteboard_jpg} alt="A teacher writing example sentences on a whiteboard in a bright classroom" width={1400} /><figcaption>Small classes, real conversation</figcaption></figure>
-        <figure><Image src={ph_classroom_jpg} alt="A teacher talking with a group of students seated at desks" width={900} /><figcaption>Taught by native speakers</figcaption></figure>
+    <section class="dr-run" aria-labelledby="run-t"><div class="dr-wrap">
+      <div class="dr-run__intro"><h2 id="run-t" class="dr-h2" data-rise>How a course runs</h2><p data-rise style="--d:1">From your first question to your first conversation, in four steps. Open one to read it.</p></div>
+      <ul class="dr-stages" data-stages role="list">{STAGES.map(([name, text, cta, href, bg, fg], i) => (
+        <li class:list={['dr-stage', i === 0 && 'is-on']} style={`--bg:${bg};--fg:${fg}`}>
+          <button type="button" class="dr-stage__btn" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`st-${i}`}>{name}</button>
+          <div class="dr-stage__body" id={`st-${i}`}><p>{text}</p><a href={href} class="dr-link">{cta}</a></div>
+        </li>
+      ))}</ul>
+    </div></section>
+
+    <section class="dr-teachers" aria-labelledby="tt-t"><div class="dr-wrap">
+      <div class="dr-teachers__head"><h2 id="tt-t" class="dr-h2" data-rise>Your teachers</h2><p class="dr-teachers__count">{teachers.length} teachers</p></div>
+      <ul class="dr-tlist" role="list">{teachers.map((t, i) => (
+        <li class="dr-t" data-rise style={`--d:${i % 4}`}><Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={160} height={192} /><div><b>{t.data.name}</b><span>From {t.data.from}. {t.data.languages.join(' and ')}.</span></div><em>{t.data.years} years</em></li>
+      ))}</ul>
+      <p class="mt-8"><a href={`${B}/teachers/`} class="dr-link">Meet everyone</a></p>
+    </div></section>
+
+    <section id="faq" class="dr-faq" aria-labelledby="faq-t"><div class="dr-faq__in">
+      <h2 id="faq-t" class="dr-h2" data-rise>Questions</h2>
+      <ul class="dr-cards" data-cards role="list">{FAQ.map(([topic, q, a], i) => (
+        <li class:list={['dr-card', i === 0 && 'is-on']} style={`--bg:${CARD[i % CARD.length][0]};--fg:${CARD[i % CARD.length][1]};--i:${i}`}>
+          <span class="dr-card__tab" aria-hidden="true">{topic}</span>
+          <button type="button" class="dr-card__q" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`fq-${i}`}>{q}</button>
+          <p class="dr-card__a" id={`fq-${i}`}>{a}</p>
+        </li>
+      ))}</ul>
+    </div></section>
+
+    <section class="dr-act" aria-labelledby="act-t">
+      <div class="dr-act__row" data-rise-row>
+        <div class="dr-act__tile dr-act__photo" style="--d:0"><Image src={COURSE_PHOTOS.portuguese} alt="" width={700} /></div>
+        <div class="dr-act__tile dr-act__main" style="--d:1"><h2 id="act-t">Book a free lesson</h2><p>Thirty minutes in a real class with a real teacher. No card and no obligation.</p><div><a href={`${B}/trial/`} class="dr-btn dr-btn--ink">Choose your language</a></div><div class="dr-act__faces" aria-hidden="true">{teachers.slice(0, 3).map((t) => <Image src={TEACHER_PHOTOS[t.id]} alt="" width={240} height={300} />)}</div></div>
+        <div class="dr-act__tile dr-act__flat" aria-hidden="true" style="--d:2"></div>
       </div>
-
-    <section class="ll-section ll-section--cream" aria-labelledby="how-t">
-      <div class="ll-wrap">
-        <div class="ll-head"><div><p class="ll-eyebrow">How it works</p><h2 id="how-t" class="ll-h2 mt-3">Three steps to your first conversation.</h2></div></div>
-        <ol class="ll-grid ll-grid--3" role="list">{STEPS.map(([t, d], i) => <li class="ll-card"><span class="ll-num">{i + 1}</span><h3 class="ll-h3 mt-4">{t}</h3><p class="mt-2">{d}</p></li>)}</ol>
-      </div>
-    </section>
-
-    <section class="ll-section" aria-labelledby="tch-t">
-      <div class="ll-wrap">
-        <div class="ll-head"><div><p class="ll-eyebrow">Teachers</p><h2 id="tch-t" class="ll-h2 mt-3">Meet the people you will be speaking with.</h2></div><a href={`${B}/teachers/`} class="ll-btn">All teachers →</a></div>
-        <ul class="ll-grid ll-grid--4" role="list">{teachers.map((t) => <li><a href={`${B}/teachers/`} class="ll-teacher"><Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={360} height={360} class="ll-avatar ll-avatar--photo" /><h3 class="ll-h3">{t.data.name}</h3><p class="font-bold" style="color:var(--coral-d)">{t.data.languages.join(' · ')}</p><blockquote>“{t.data.quote}”</blockquote></a></li>)}</ul>
-      </div>
-    </section>
-
-    <section class="ll-section" aria-labelledby="cta-t">
-      <div class="ll-wrap"><div class="ll-cta"><h2 id="cta-t" class="ll-h2" style="max-width:16ch">Your next ten weeks, in a new language.</h2><p class="mt-4 max-w-xl text-lg">Classes from £189. New groups start every Monday. Your first lesson is free if you do not love it.</p><div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/enrol/`} class="ll-btn ll-btn--ink ll-btn--lg" style="border-color:var(--ink)">Enrol now</a><a href={`${B}/courses/`} class="ll-btn ll-btn--lg" style="color:#fff;border-color:#fff">See the courses</a></div></div></div>
     </section>
   </Shell>
 </Site>
-
+<script>
+  import '../../days/day-045/home';
+</script>

@@ -6,6 +6,7 @@ import { Image } from 'astro:assets';
 import { FEATURE_PHOTOS, PHOTO_ALTS } from '../../../days/day-044/photos';
 import Shell from '../../../components/day-044/Shell.astro';
 import { icon } from '../../../days/day-044/chart';
+import { PLAN_LIST, MATRIX } from '../../../days/day-044/plans';
 
 export async function getStaticPaths() {
   const all = (await getCollection('features')).sort((a, b) => a.data.order - b.data.order);
@@ -14,7 +15,16 @@ export async function getStaticPaths() {
 const B = '/day-044-saas-product';
 const { entry, index, others } = Astro.props;
 const f = entry.data;
-const { Content } = await render(entry);
+const secs: Record<string, string[]> = {};
+for (const part of (entry.body ?? '').split(/^## /m).filter((x) => x.trim())) {
+  const [head, ...rest] = part.replace(/\r/g, '').split('\n');
+  secs[head.trim()] = rest.join('\n').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
+}
+const overview = [['What you get', secs['What you get'] ?? []], ['Why it matters', secs['Why it matters'] ?? []]] as const;
+const how = secs['How it works'] ?? [];
+const row = MATRIX[entry.id];
+const first = row.plans.findIndex((v) => v !== false);
+const TABS = [['overview', 'Overview'], ['how', 'How it works'], ['pricing', 'Pricing']] as const;
 ---
 <Site title={`${f.title} · Fathom`} description={f.lede} themeColor="#3d5afe" icon="📈" day={44}>
   <Shell active="features">
@@ -23,10 +33,46 @@ const { Content } = await render(entry);
         <div><span class="fa-ico" set:html={icon(f.icon, 28)} style="width:3.6rem;height:3.6rem"></span><h1 class="fa-h1 mt-5" style="font-size:clamp(2.4rem,5vw,4rem)">{f.tagline}</h1><p class="fa-lede mt-5">{f.lede}</p><div class="mt-7 flex flex-wrap gap-3"><a href={`${B}/pricing/`} class="fa-btn fa-btn--blue fa-btn--lg">Try {f.title}</a><a href={`${B}/demo/`} class="fa-btn fa-btn--line fa-btn--lg">See it live</a></div></div>
         <figure class="fa-featphoto"><Image src={FEATURE_PHOTOS[entry.id]} alt={PHOTO_ALTS[entry.id]} width={900} loading="eager" /></figure>
       </div></div></header>
-    <section class="fa-section"><div class="fa-wrap"><div class="fa-prose"><Content /></div></div></section>
+    <section class="fa-section" aria-label="About this feature"><div class="fa-wrap" data-tabs>
+      <div class="fa-ftabs" role="tablist" aria-label={`${f.title} details`}>{TABS.map(([k, l], i) => <button type="button" role="tab" id={`tab-${k}`} aria-controls={`panel-${k}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{l}</button>)}</div>
+      <div class="fa-tabpanel" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
+        <div class="fa-split fa-split--tabs">{overview.map(([h, ps]) => <div><h2 class="fa-h3">{h}</h2><div class="fa-prose mt-3">{ps.map((p) => <p>{p}</p>)}</div></div>)}</div>
+      </div>
+      <div class="fa-tabpanel" role="tabpanel" id="panel-how" aria-labelledby="tab-how" tabindex="0" hidden>
+        <div class="fa-split fa-split--tabs"><div><h2 class="fa-h3">How it works</h2><div class="fa-prose mt-3">{how.map((p) => <p>{p}</p>)}</div></div>
+          <ol class="fa-fsteps" role="list">{[['Connect', 'Link your bank and accounting tools with read-only access.'], ['Learn', 'Fathom studies how your customers and suppliers really behave.'], ['Act', 'You get a short list of decisions for this week, nothing more.']].map(([t, d], i) => <li><b class="fa-grad">0{i + 1}</b><div><h3>{t}</h3><p>{d}</p></div></li>)}</ol></div>
+      </div>
+      <div class="fa-tabpanel" role="tabpanel" id="panel-pricing" aria-labelledby="tab-pricing" tabindex="0" hidden>
+        <h2 class="fa-h3">{f.title} is included from {PLAN_LIST[first].name}</h2>
+        <ul class="fa-plans fa-plans--mini mt-5" role="list">{PLAN_LIST.map((p, i) => <li class:list={['fa-plan', row.plans[i] === false && 'is-off']}><h3 class="fa-h3">{p.name}</h3><p class="fa-plan__price"><b>£{Math.round(p.price * 0.8)}</b><span>/ month, billed annually</span></p><p class="fa-plan__note">{row.plans[i] === false ? 'Not included. Upgrade to unlock.' : row.plans[i]}</p></li>)}</ul>
+        <div class="mt-6 flex flex-wrap gap-3"><a href={`${B}/pricing/`} class="fa-btn fa-btn--blue">See all plans</a><a href={`${B}/fit/`} class="fa-btn fa-btn--line">Which plan fits me?</a></div>
+      </div>
+    </div></section>
     <section class="fa-section fa-section--tint" aria-labelledby="more-t"><div class="fa-wrap">
       <div class="fa-head"><h2 id="more-t" class="fa-h2">More from Fathom</h2></div>
       <ul class="fa-grid fa-grid--3" role="list">{others.slice(0, 3).map((o) => <li><a href={`${B}/features/${o.id}/`} class="fa-card"><span class="fa-ico" set:html={icon(o.data.icon)}></span><h3 class="fa-h3 mt-4">{o.data.title}</h3><p class="mt-2">{o.data.tagline}</p></a></li>)}</ul>
     </div></section>
   </Shell>
 </Site>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-tabs]')!;
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+  const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')!)!);
+  function show(i: number, focus = false) {
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(i === j)); t.tabIndex = i === j ? 0 : -1; panels[j].hidden = i !== j; });
+    if (focus) tabs[i].focus();
+    history.replaceState(null, '', '#' + tabs[i].id.replace('tab-', ''));
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(i));
+    t.addEventListener('keydown', (e) => {
+      const k = (e as KeyboardEvent).key;
+      if (k === 'ArrowRight') { e.preventDefault(); show((i + 1) % tabs.length, true); }
+      if (k === 'ArrowLeft') { e.preventDefault(); show((i + tabs.length - 1) % tabs.length, true); }
+      if (k === 'Home') { e.preventDefault(); show(0, true); }
+      if (k === 'End') { e.preventDefault(); show(tabs.length - 1, true); }
+    });
+  });
+  const start = tabs.findIndex((t) => t.id === 'tab-' + location.hash.slice(1));
+  show(start < 0 ? 0 : start);
+</script>

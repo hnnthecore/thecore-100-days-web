@@ -102,7 +102,7 @@ textarea.rw-input { min-height: 8rem; }
 .rw-badge { position: absolute; left: 1rem; bottom: 1rem; padding: 0.7rem 1rem; border-radius: 1rem; background: #fff; box-shadow: 0 16px 30px -14px rgb(0 0 0 / 0.4); animation: rw-float 5s ease-in-out infinite; }
 @keyframes rw-float { 50% { translate: 0 -6px; } }
 .rw-badge b { display: block; font-size: 1.6rem; line-height: 1; letter-spacing: -0.04em; color: var(--leaf-d); }
-.rw-badge span { font-size: 0.78rem; font-weight: 600; color: var(--muted); }
+.rw-badge span { font-size: 0.8125rem; font-weight: 600; color: var(--muted); }
 .rw-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 1.5rem; }
 .rw-stats div { display: flex; flex-direction: column-reverse; gap: 0.2rem; }
 .rw-stats dd { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 800; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; color: var(--sprout); }
@@ -285,3 +285,66 @@ html .rw-map__link { position: absolute; right: 0.6rem; top: 0.6rem; padding: 0.
 
 /* Real portraits for the team */
 html .rw-person__photo { width: 100%; aspect-ratio: 1; border-radius: 1.1rem; object-fit: cover; display: block; }
+
+/* Second round: seasonal calendar, day timeline, sunrise footer, what's growing */
+html .rw-cal__months { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.4rem; }
+@media (min-width: 720px) { html .rw-cal__months { grid-template-columns: repeat(12, 1fr); } }
+html .rw-cal__m { padding: 0.65rem 0; border-radius: 0.8rem; border: 1.5px solid rgb(59 110 44 / 0.3); background: #fff; color: #3b6e2c; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+html .rw-cal__m:hover { background: #eef5e6; }
+html .rw-cal__m[aria-pressed="true"] { background: #3b6e2c; border-color: #3b6e2c; color: #fff; }
+html .rw-cal__rows { display: grid; gap: 0.7rem; margin-top: 1.4rem; }
+html .rw-cal__row { display: grid; gap: 0.5rem; padding: 0.9rem 1rem; border-radius: 1rem; background: #fff; border: 1px solid rgb(0 0 0 / 0.08); transition: opacity 0.25s; }
+@media (min-width: 900px) { html .rw-cal__row { grid-template-columns: 16rem 1fr; align-items: center; gap: 1.5rem; } }
+html .rw-cal__row.is-off { opacity: 0.5; }
+html .rw-cal__name { display: grid; color: #2b2118; text-decoration: none; }
+html .rw-cal__name b { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.1rem; }
+html .rw-cal__name span { font-size: 0.85rem; color: #5c5246; }
+html .rw-cal__name:hover b { color: #3b6e2c; }
+html .rw-cal__track { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
+html .rw-cal__cell { height: 1.1rem; border-radius: 4px; background: #ece6d4; }
+html .rw-cal__cell.is-on { background: #7db85f; }
+html .rw-cal__cell.is-now { outline: 2px solid #2b2118; outline-offset: 1px; }
+html .rw-cal__say { margin-top: 1rem; font-weight: 700; color: #3b6e2c; }
+html [data-prog].is-off { opacity: 0.45; }
+html [data-prog].is-off .rw-card { filter: grayscale(0.6); }
+
+html .rw-day { position: relative; display: grid; gap: 1.2rem; margin-top: 2rem; padding-left: 0; }
+html .rw-day::before { content: ""; position: absolute; left: 4.6rem; top: 0.6rem; bottom: 0.6rem; width: 2px; background: repeating-linear-gradient(#7db85f 0 6px, transparent 6px 12px); }
+html .rw-day__item { position: relative; display: grid; grid-template-columns: 4rem 1fr; gap: 1.6rem; align-items: start; }
+html .rw-day__item::before { content: ""; position: absolute; left: 4.6rem; top: 0.5rem; width: 12px; height: 12px; margin-left: -5px; border-radius: 50%; background: #fff; border: 3px solid #3b6e2c; }
+html .rw-day__time { font-family: "Fraunces Variable", Georgia, serif; font-weight: 700; font-size: 1.15rem; color: #3b6e2c; padding-top: 0.1rem; }
+html .rw-day__body { padding-left: 1.2rem; }
+html .rw-day__body h3 { font-weight: 800; font-size: 1.05rem; }
+html .rw-day__body p { margin-top: 0.2rem; color: #4d4438; max-width: 46ch; }
+
+html .rw-sun { position: relative; overflow: hidden; color: #fff; background: linear-gradient(180deg, #2e5522 0%, #1d3c15 100%); border-bottom: 1px solid rgb(255 255 255 / 0.12); padding: 2.4rem 0 2rem; }
+html .rw-sun__arc { position: absolute; inset: 0 0 auto 0; width: 100%; height: 100%; color: rgb(255 212 94 / 0.55); pointer-events: none; }
+html .rw-sun__orb { filter: drop-shadow(0 0 18px #ffd45e); }
+html .rw-sun__in { position: relative; display: grid; gap: 1rem; align-items: center; }
+@media (min-width: 900px) { html .rw-sun__in { grid-template-columns: 16rem 1fr auto; gap: 2rem; } }
+html .rw-sun__lead { display: grid; gap: 0.3rem; }
+html .rw-sun__lead b { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.4rem; font-weight: 600; }
+html .rw-sun__list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+html .rw-sun__list li { padding: 0.35rem 0.85rem; border-radius: 999px; background: rgb(255 255 255 / 0.12); border: 1px solid rgb(255 255 255 / 0.22); font-weight: 700; font-size: 0.9rem; }
+html .rw-sun__link { color: #ffd45e; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+
+html .rw-grow__months { margin-top: 0; }
+html .rw-crops { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 1.25rem; }
+html .rw-crop { border-radius: 1.2rem; overflow: hidden; background: #fff; border: 1px solid rgb(0 0 0 / 0.08); display: flex; flex-direction: column; opacity: 0.4; filter: grayscale(0.85); transition: opacity 0.3s, filter 0.3s, transform 0.3s; }
+html .rw-crop.is-in { opacity: 1; filter: none; }
+html .rw-crop.is-in:hover { transform: translateY(-4px); }
+html .rw-crop__img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+html .rw-crop__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+html .rw-crop__tag { position: absolute; left: 0.7rem; top: 0.7rem; padding: 0.25rem 0.7rem; border-radius: 999px; background: #ffd45e; color: #2b2118; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; display: none; }
+html .rw-crop.is-in .rw-crop__tag { display: block; }
+html .rw-crop__body { padding: 1.1rem 1.2rem 1.3rem; display: grid; gap: 0.35rem; }
+html .rw-crop__body h3 { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.3rem; font-weight: 700; }
+html .rw-crop__when { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #3b6e2c; }
+html .rw-crop__body p:not(.rw-crop__when) { color: #4d4438; line-height: 1.5; }
+html .rw-crop__bar { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin-top: 0.5rem; }
+html .rw-crop__bar span { height: 6px; border-radius: 2px; background: #ece6d4; }
+html .rw-crop__bar span.is-on { background: #4f8a3c; }
+html .rw-grow__empty { margin-top: 1.5rem; padding: 1.2rem 1.4rem; border-radius: 1rem; background: #f6f1e4; font-weight: 700; }
+html .rw-grow__cta { margin-top: 2.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1rem; padding: 1.4rem; border-radius: 1.2rem; background: #f6f1e4; }
+html .rw-grow__cta p { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.2rem; font-weight: 600; margin-right: auto; }
+@media (prefers-reduced-motion: reduce) { html .rw-crop, html .rw-cal__row, html .rw-cal__m { transition: none; } }

@@ -11,6 +11,9 @@ stock: 20
 featured: true
 palette: 3
 pattern: 3
+opening: "Start with a window. Most of the joys in this book cost nothing and take under a minute. The first is the easiest: stand where there is light, and wait until you notice something you walked past yesterday."
+staffPick: "The small-joys shelf lives by the till for a reason. I buy it for people who say they are fine."
+staff: "Moira"
 ---
 
 A year of noticing: frost on a gate, the first swift, the perfect cup of tea. Part nature diary, part gentle manifesto for paying attention.

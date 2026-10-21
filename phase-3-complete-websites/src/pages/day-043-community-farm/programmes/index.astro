@@ -5,6 +5,7 @@ import Site from '../../../layouts/Site.astro';
 import Shell from '../../../components/day-043/Shell.astro';
 import { Image } from 'astro:assets';
 import { PROGRAMME_PHOTOS } from '../../../days/day-043/photos';
+import { MONTHS, MONTHS_LONG } from '../../../days/day-043/crops';
 
 const B = '/day-043-community-farm';
 const programmes = await getCollection('programmes');
@@ -12,8 +13,41 @@ const programmes = await getCollection('programmes');
 <Site title="What we do · Rootwork Community Farm" description="Community growing, cooking skills, a children's garden club and green jobs training at Rootwork Community Farm, Manchester." themeColor="#3b6e2c" icon="🌱" day={43}>
   <Shell active="programmes">
     <header class="rw-pagehead"><div class="rw-wrap"><ol class="rw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">What we do</li></ol><h1 class="rw-h1">Four programmes. <em>One farm.</em></h1><p class="rw-lede mt-4">Everything we run is free or pay-what-you-can, and everything starts with a seed.</p></div></header>
+    <section class="rw-section rw-section--cream" aria-labelledby="cal-h"><div class="rw-wrap">
+      <div class="rw-head"><div><p class="rw-eyebrow">The farming year</p><h2 id="cal-h" class="rw-h2 mt-3">What runs <em>when</em></h2></div><p class="rw-lede">Pick a month to see which programmes are open. Most pause in the depths of winter, when the beds rest.</p></div>
+      <div class="rw-cal" data-cal>
+        <div class="rw-cal__months" role="group" aria-label="Choose a month">{MONTHS.map((m, i) => <button type="button" class="rw-cal__m" data-m={i + 1} aria-pressed="false"><span aria-hidden="true">{m}</span><span class="sr-only">{MONTHS_LONG[i]}</span></button>)}</div>
+        <ol class="rw-cal__rows" role="list">
+          {programmes.map((p) => <li class="rw-cal__row" data-from={p.data.months[0]} data-to={p.data.months[1]}>
+            <a href={`${B}/programmes/${p.id}/`} class="rw-cal__name"><b>{p.data.title}</b><span>{p.data.when}</span></a>
+            <div class="rw-cal__track" aria-hidden="true">{MONTHS.map((_, i) => <span data-c={i + 1} class:list={['rw-cal__cell', i + 1 >= p.data.months[0] && i + 1 <= p.data.months[1] && 'is-on']}></span>)}</div>
+            <p class="sr-only">Runs {MONTHS_LONG[p.data.months[0] - 1]} to {MONTHS_LONG[p.data.months[1] - 1]}.</p>
+          </li>)}
+        </ol>
+        <p class="rw-cal__say" role="status" data-say></p>
+      </div>
+    </div></section>
     <section class="rw-section"><div class="rw-wrap"><ul class="rw-cards" role="list">
-      {programmes.map((p) => <li><a href={`${B}/programmes/${p.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[p.id]} alt={p.data.title} width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{p.data.when} · {p.data.who}</p><h2 class="rw-h3">{p.data.title}</h2><p>{p.data.tagline}</p><span class="rw-card__more">Find out more →</span></div></a></li>)}
+      {programmes.map((p) => <li data-prog data-from={p.data.months[0]} data-to={p.data.months[1]}><a href={`${B}/programmes/${p.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[p.id]} alt={p.data.title} width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{p.data.when} · {p.data.who}</p><h2 class="rw-h3">{p.data.title}</h2><p>{p.data.tagline}</p><span class="rw-card__more">Find out more →</span></div></a></li>)}
     </ul></div></section>
   </Shell>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-cal]')!;
+  const btns = [...root.querySelectorAll<HTMLButtonElement>('.rw-cal__m')];
+  const rows = [...root.querySelectorAll<HTMLElement>('.rw-cal__row')];
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-prog]')];
+  const say = root.querySelector<HTMLElement>('[data-say]')!;
+  const LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const on = (el: HTMLElement, m: number) => m >= +el.dataset.from! && m <= +el.dataset.to!;
+  function pick(m: number) {
+    btns.forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.m! === m)));
+    root.querySelectorAll<HTMLElement>('[data-c]').forEach((c) => c.classList.toggle('is-now', +c.dataset.c! === m));
+    rows.forEach((r) => r.classList.toggle('is-off', !on(r, m)));
+    cards.forEach((c) => c.classList.toggle('is-off', !on(c, m)));
+    const open = rows.filter((r) => on(r, m)).length;
+    say.textContent = open ? `In ${LONG[m - 1]}, ${open} of ${rows.length} programmes are open.` : `Everything is resting in ${LONG[m - 1]}.`;
+  }
+  btns.forEach((b) => b.addEventListener('click', () => pick(+b.dataset.m!)));
+  pick(new Date().getMonth() + 1);
+</script>
 </Site>

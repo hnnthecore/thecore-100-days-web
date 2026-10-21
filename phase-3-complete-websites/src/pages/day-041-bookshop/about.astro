@@ -4,6 +4,7 @@ import Site from '../../layouts/Site.astro';
 import { Image } from 'astro:assets';
 import ph_about from '../../assets/day-041/about-shop.jpg';
 import Shell from '../../components/day-041/Shell.astro';
+import { WORLD } from '../../days/day-041/world';
 
 const TEAM = [
   ['Hana Rahimi', 'Owner & fiction buyer', 'Opened Pagebound after fifteen years at a big chain, and has never looked back. Ask her for something to read after your favourite novel.', '#7a1f2b'],
@@ -19,7 +20,7 @@ const TIMELINE = [
   ['Today', 'Twelve thousand books', 'Still independent, still choosing every title ourselves, still talking you out of the wrong one.'],
 ];
 ---
-<Site title="About · Pagebound Books" description="The story of Pagebound Books: an independent Edinburgh bookshop run by people who read." themeColor="#7a1f2b" icon="📚" day={41}>
+<Site title="About · Pagebound Books" description="The story of Pagebound Books: an independent Edinburgh bookshop run by people who read." themeColor="#7a1f2b" icon="P" day={41}>
   <Shell active="about">
     <header class="pb-pagehead">
       <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">About</li></ol><h1 class="pb-h1">A shop with <em>opinions.</em></h1><p class="pb-lede mt-4">Pagebound is run by four booksellers who read everything we stock. No algorithms, no promotions we don’t believe in.</p></div>
@@ -50,5 +51,10 @@ const TIMELINE = [
     <section class="pb-section pb-section--ox" aria-label="Pagebound in numbers">
       <div class="pb-wrap"><dl class="pb-stats"><div><dt>Books on the shelves</dt><dd>12,000</dd></div><div><dt>Years independent</dt><dd>28</dd></div><div><dt>Events a year</dt><dd>60+</dd></div><div><dt>Cups of tea poured</dt><dd>41,000</dd></div></dl></div>
     </section>
+    <section id="credits" class="pb-section" aria-labelledby="cr-t"><div class="pb-wrap">
+      <h2 id="cr-t" class="pb-h2">Picture credits</h2>
+      <p class="pb-lede" style="margin-top:0.75rem;max-width:40rem">The greyscale pictures on the home page show Edinburgh's Royal Mile and the book trade. They come from Wikimedia Commons, are shown in greyscale and cropped, and are credited below. The book covers are photographs set with live titles.</p>
+      <ul class="pb-credits" role="list">{WORLD.map((w) => <li><a href={w.page} rel="noopener">{w.title}</a>, by {w.creator}, {w.license}.</li>)}</ul>
+    </div></section>
   </Shell>
 </Site>

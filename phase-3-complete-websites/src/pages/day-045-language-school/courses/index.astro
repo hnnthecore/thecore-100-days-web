@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import Site from '../../../layouts/Site.astro';
 import { Image } from 'astro:assets';
 import { COURSE_PHOTOS } from '../../../days/day-045/photos';
+import { LEVELS } from '../../../days/day-045/syllabus';
 import Shell from '../../../components/day-045/Shell.astro';
 
 const B = '/day-045-language-school';
@@ -11,7 +12,7 @@ const courses = await getCollection('courses');
 const teachers = await getCollection('teachers');
 const nameOf = (id: string) => teachers.find((t) => t.id === id)?.data.name ?? '';
 ---
-<Site title="Courses · Lingua Lane" description="Eight languages from beginner to upper-intermediate. Evening, lunchtime and weekend classes in London and online." themeColor="#ff5a3c" icon="💬" day={45}>
+<Site title="Courses · Lingua Lane" description="Eight languages from beginner to upper-intermediate. Evening, lunchtime and weekend classes in London and online." themeColor="#ff5a3c" icon="L" day={45}>
   <Shell active="courses">
     <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Courses</li></ol><h1 class="ll-h1">Eight languages. <span class="ll-mark">Your pick.</span></h1><p class="ll-lede mt-5">Ten-week courses from A1 to B2. Evenings, lunchtimes and weekends.</p></div></header>
     <section class="ll-section"><div class="ll-wrap">
@@ -22,10 +23,20 @@ const nameOf = (id: string) => teachers.find((t) => t.id === id)?.data.name ?? '
       <p class="mb-5 font-bold" style="color:var(--muted)" role="status" data-count></p>
       <ul class="ll-grid ll-grid--3" role="list" data-list>{courses.map((c) => (
         <li data-course data-name={c.data.language.toLowerCase() + ' ' + c.data.native.toLowerCase()} data-sched={c.data.schedule.join('|')}>
-          <a href={`${B}/courses/${c.id}/`} class="ll-lang" style={`background:${c.data.colour};color:${c.data.ink}`}>
-            <span class="ll-lang__photo"><Image src={COURSE_PHOTOS[c.id]} alt="" width={520} /></span><span class="ll-lang__hi">{c.data.greeting}</span>
-            <span><h2 class="ll-h3">{c.data.language}</h2><p>{c.data.tagline}</p><p class="mt-2 font-bold">With {nameOf(c.data.teacher)} · from £189</p></span>
-          </a>
+          <div class="ll-flip" data-flip style={`--c:${c.data.colour};--k:${c.data.ink}`}>
+            <div class="ll-flip__in">
+              <div class="ll-flip__face ll-flip__front" data-face="front">
+                <span class="ll-lang__photo"><Image src={COURSE_PHOTOS[c.id]} alt="" width={520} /></span><span class="ll-lang__hi">{c.data.greeting}</span>
+                <span><h2 class="ll-h3"><a href={`${B}/courses/${c.id}/`} class="ll-flip__title">{c.data.language}</a></h2><p>{c.data.tagline}</p><p class="mt-2 font-bold">With {nameOf(c.data.teacher)} · from £189</p></span>
+                <button type="button" class="ll-flip__btn" data-flipbtn aria-expanded="false" aria-controls={`path-${c.id}`}>See the level path <span aria-hidden="true">↻</span></button>
+              </div>
+              <div class="ll-flip__face ll-flip__back" data-face="back" id={`path-${c.id}`}>
+                <p class="ll-flip__kicker">{c.data.language} · A1 to B2</p>
+                <ol class="ll-flip__path" role="list">{LEVELS.map((l) => <li><b>{l.code}</b><span><strong>{l.name}</strong>{l.short}</span></li>)}</ol>
+                <div class="ll-flip__act"><a href={`${B}/courses/${c.id}/`} class="ll-btn ll-btn--coral">Open {c.data.language}</a><button type="button" class="ll-flip__btn" data-flipbtn aria-expanded="true" aria-controls={`path-${c.id}`}><span aria-hidden="true">↺</span> Flip back</button></div>
+              </div>
+            </div>
+          </div>
         </li>
       ))}</ul>
       <p class="ll-lede mt-8" hidden data-empty>No courses match. Try a different day or search.</p>
@@ -34,6 +45,22 @@ const nameOf = (id: string) => teachers.find((t) => t.id === id)?.data.name ?? '
 </Site>
 
 <script>
+  const flips = [...document.querySelectorAll<HTMLElement>('[data-flip]')];
+  function setFlip(f: HTMLElement, on: boolean) {
+    f.classList.toggle('is-flipped', on);
+    f.querySelector<HTMLElement>('[data-face="front"]')!.inert = on;
+    f.querySelector<HTMLElement>('[data-face="back"]')!.inert = !on;
+    f.querySelectorAll<HTMLButtonElement>('[data-flipbtn]').forEach((b) => b.setAttribute('aria-expanded', String(on)));
+  }
+  flips.forEach((f) => {
+    setFlip(f, false);
+    f.querySelectorAll<HTMLButtonElement>('[data-flipbtn]').forEach((b) => b.addEventListener('click', () => {
+      const on = !f.classList.contains('is-flipped');
+      setFlip(f, on);
+      (f.querySelector<HTMLElement>(on ? '.ll-flip__act .ll-btn' : '[data-flipbtn]'))?.focus();
+    }));
+    f.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Escape' && f.classList.contains('is-flipped')) { setFlip(f, false); f.querySelector<HTMLElement>('[data-flipbtn]')!.focus(); } });
+  });
   const items = [...document.querySelectorAll<HTMLElement>('[data-course]')];
   const q = document.querySelector<HTMLInputElement>('[data-q]')!;
   const when = document.querySelector('[data-when]')!;

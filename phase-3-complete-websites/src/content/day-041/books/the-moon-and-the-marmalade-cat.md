@@ -11,6 +11,9 @@ stock: 30
 featured: false
 palette: 0
 pattern: 4
+opening: "Every night the moon came down to the garden wall to sit with Marmalade. “Tell me about the day,” said the moon. And Marmalade, who had a great deal to say about mice, began."
+staffPick: "The most requested bedtime book at story time. Bring a spare voice for the moon."
+staff: "Priya"
 ---
 
 A marmalade cat wants to touch the moon. A bedtime book with gorgeous night-time illustrations and a lullaby ending.

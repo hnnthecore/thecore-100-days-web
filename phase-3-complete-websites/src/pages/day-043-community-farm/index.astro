@@ -1,77 +1,106 @@
 ---
-/** Day 043 · Rootwork · home page, built from the programmes, stories and shifts collections. */
+/** Day 043 · Rootwork · home. Built from days/day-043/DESIGN.md: a farm that is different every month, read from today's date. */
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import { Image } from 'astro:assets';
-import ph_volunteers_jpg from '../../assets/day-043/volunteers.jpg';
-import ph_peas_jpg from '../../assets/day-043/peas.jpg';
-import ph_harvest_jpg from '../../assets/day-043/harvest.jpg';
-import ph_garden_jpg from '../../assets/day-043/garden.jpg';
 import Shell from '../../components/day-043/Shell.astro';
 import DonateBox from '../../components/day-043/DonateBox.astro';
 import { PROGRAMME_PHOTOS, STORY_PHOTOS, AMINA_PORTRAIT } from '../../days/day-043/photos';
+import { CROPS, MONTHS, MONTHS_LONG, inSeason } from '../../days/day-043/crops';
+import { NOTES, seasonOf } from '../../days/day-043/season';
 
 const B = '/day-043-community-farm';
+const BUILD_MONTH = 10;
 const programmes = await getCollection('programmes');
+const ORDER = ['little-sprouts', 'grow-together', 'seed-to-plate', 'green-jobs'];
+const SEASON_OF = { 'little-sprouts': 'spring', 'grow-together': 'summer', 'seed-to-plate': 'autumn', 'green-jobs': 'winter' } as Record<string, string>;
+const panels = ORDER.map((id) => programmes.find((p) => p.id === id)!).filter(Boolean);
 const stories = (await getCollection('stories')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const today = new Date().toISOString().slice(0, 10);
+const allShifts = (await getCollection('shifts')).sort((a, b) => a.data.date.localeCompare(b.data.date));
+const upcoming = allShifts.filter((s) => s.data.date >= today);
+const shifts = (upcoming.length >= 4 ? upcoming : allShifts.slice(-4)).slice(0, 4);
 const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const day = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 ---
-<Site title="Rootwork Community Farm · Manchester" description="A community farm in the middle of Manchester growing food, skills and friendships. Volunteer, learn, cook or donate. (Day 043 of Thecore's 100 Days of Web, a demo site.)" themeColor="#3b6e2c" icon="🌱" day={43}>
-  <Shell active="home">
-    <section class="rw-hero rw-hero--collage" aria-labelledby="hero-title">
-      <div class="rw-wrap rw-collage">
-        <div class="rw-collage__text">
-          <p class="rw-eyebrow">Community farm · Manchester · Since 2014</p>
-          <h1 id="hero-title" class="rw-h1 mt-5">Growing food, skills and <em>friendship.</em></h1>
-          <p class="rw-lede mt-6">Rootwork turns two forgotten acres in Chorlton into a place where neighbours grow, cook and learn together. Everyone is welcome, and the kettle is always on.</p>
-          <div class="mt-8 flex flex-wrap justify-center gap-3"><a href={`${B}/get-involved/`} class="rw-btn rw-btn--leaf rw-btn--lg">Come and volunteer</a><a href={`${B}/programmes/`} class="rw-btn rw-btn--line rw-btn--lg">What we do</a></div>
-        </div>
-        <figure class="rw-pic rw-pic--a"><Image src={ph_volunteers_jpg} alt="Two volunteers kneeling to plant seedlings in a raised bed" width={700} loading="eager" /></figure>
-        <figure class="rw-pic rw-pic--b"><Image src={ph_peas_jpg} alt="A child and an adult picking fresh peas together" width={600} loading="eager" /></figure>
-        <figure class="rw-pic rw-pic--c"><Image src={ph_garden_jpg} alt="A sunny community garden with raised beds" width={700} loading="eager" /><p class="rw-badge"><b>12,400 kg</b><span>of food grown last year</span></p></figure>
-        <figure class="rw-pic rw-pic--d"><Image src={ph_harvest_jpg} alt="A volunteer picking greens into a wicker basket" width={600} loading="eager" /></figure>
+<Site title="Rootwork Community Farm · Manchester" description="A community farm in the middle of Manchester growing food, skills and friendships. See what is in season this month, volunteer, learn, cook or donate. (Day 043 of Thecore's 100 Days of Web, a demo site.)" themeColor="#f4a63a" icon="R" day={43}>
+  <Shell active="home" home>
+    <section class="sn" data-sn aria-labelledby="h1">
+      <div class="sn__top">
+        <h1 id="h1" class="sn__h1">Rootwork Community Farm</h1>
+        <p class="sn__lede">Two acres in Chorlton, Manchester, where neighbours grow, cook and learn together. Here is what the farm is doing this month.</p>
       </div>
-    </section>
-
-
-    <section class="rw-section" aria-labelledby="prog-title">
-      <div class="rw-wrap">
-        <div class="rw-head"><div><p class="rw-eyebrow">What we do</p><h2 id="prog-title" class="rw-h2 mt-2">Four ways to <em>join in</em></h2></div><a href={`${B}/programmes/`} class="rw-link">All programmes →</a></div>
-        <ul class="rw-cards" role="list">
-          {programmes.map((p) => (
-            <li><a href={`${B}/programmes/${p.id}/`} class="rw-card"><div class="rw-card__img"><Image src={PROGRAMME_PHOTOS[p.id]} alt={p.data.title} width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{p.data.when}</p><h3 class="rw-h3">{p.data.title}</h3><p>{p.data.tagline}</p><span class="rw-card__more">Find out more →</span></div></a></li>
-          ))}
-        </ul>
+      <p class="sn__month" data-month aria-live="polite">{MONTHS_LONG[BUILD_MONTH - 1]}</p>
+      <div class="sn__mid">
+        <p class="sn__note" data-note>{NOTES[BUILD_MONTH - 1]}</p>
+        <ul class="sn__crops" role="list" data-crops>{CROPS.map((c) => (
+          <li data-from={c.from} data-to={c.to} hidden={!inSeason(c, BUILD_MONTH)}><a href={`${B}/whats-growing/`}><span class="sn__pic"><Image src={c.photo} alt={c.alt} width={360} loading="eager" /></span><b>{c.name}</b></a></li>
+        ))}</ul>
       </div>
+      <div class="sn__months" role="group" aria-label="Pick a month of the year" data-months>{MONTHS.map((m, i) => (
+        <button type="button" data-m={i + 1} aria-pressed={i + 1 === BUILD_MONTH} aria-label={MONTHS_LONG[i]}>{m}</button>
+      ))}</div>
     </section>
 
-    <section class="rw-section rw-section--leaf" aria-label="Our impact">
-      <div class="rw-wrap"><dl class="rw-stats" data-stats>
-        <div><dt>Neighbours growing each week</dt><dd data-count="340">340</dd></div><div><dt>Meals cooked and shared</dt><dd data-count="1200">1,200</dd></div><div><dt>Trainees now in work</dt><dd data-count="46">46</dd></div><div><dt>Years of community growing</dt><dd data-count="12">12</dd></div>
-      </dl></div>
+    <section class="sn-pan" aria-labelledby="pan-t">
+      <h2 id="pan-t" class="sr-only">Four programmes, one for each season</h2>
+      {panels.map((p, i) => (
+        <article class={`sn-pan__card sn-pan__card--${SEASON_OF[p.id]}`} style={`--i:${i}`}>
+          <div class="sn-pan__text">
+            <h3 class="sn-pan__t" data-rise><a href={`${B}/programmes/${p.id}/`}>{p.data.title}</a></h3>
+            <p class="sn-pan__tag" data-rise style="--d:1">{p.data.tagline}</p>
+            <p class="sn-pan__stat" data-rise style="--d:2"><b>{p.data.stat.value}</b> {p.data.stat.label}</p>
+            <p class="sn-pan__facts" data-rise style="--d:3">{p.data.when}. {p.data.who}.</p>
+            <p data-rise style="--d:4"><a class="sn-btn" href={`${B}/programmes/${p.id}/`}>Find out more</a></p>
+          </div>
+          <figure class="sn-pan__pic"><Image src={PROGRAMME_PHOTOS[p.id]} alt={p.data.title} width={1000} loading="lazy" /></figure>
+        </article>
+      ))}
     </section>
 
-    <section class="rw-section" aria-labelledby="stories-title">
-      <div class="rw-wrap">
-        <div class="rw-head"><div><p class="rw-eyebrow">From the farm</p><h2 id="stories-title" class="rw-h2 mt-2">Latest stories</h2></div><a href={`${B}/stories/`} class="rw-link">All stories →</a></div>
-        <ul class="rw-more" role="list">{stories.map((s) => <li><a href={`${B}/stories/${s.id}/`} class="rw-card"><div class="rw-card__img"><Image src={STORY_PHOTOS[s.id]} alt="" width={700} class="rw-photo" /></div><div class="rw-card__body"><p class="rw-card__meta">{s.data.category} · {fmt(s.data.date)}</p><h3 class="rw-h3">{s.data.title}</h3><p>{s.data.excerpt}</p><span class="rw-card__more">Read the story →</span></div></a></li>)}</ul>
-      </div>
-    </section>
-    <section class="rw-section rw-section--soil" aria-label="A volunteer's words">
-      <div class="rw-wrap"><figure class="rw-quote"><Image src={AMINA_PORTRAIT} alt="Amina, a volunteer, smiling in the greenhouse" width={160} height={160} class="rw-quote__face" />“I came for something to do on Saturdays. I stayed because people noticed when I wasn’t there.”<footer>Amina, volunteer since February</footer></figure></div>
-    </section>
+    <section class="sn-dig" aria-labelledby="dig-t"><div class="rw-wrap sn-dig__grid">
+      <div class="sn-dig__head"><h2 id="dig-t" class="sn-h" data-rise>Come and dig</h2><p data-rise><a class="sn-btn" href={`${B}/get-involved/`}>See every shift</a></p></div>
+      <ul class="sn-shifts" role="list">{shifts.map((s, i) => {
+        const left = s.data.spots - s.data.taken;
+        return (
+          <li data-rise style={`--d:${i}`}><a href={`${B}/get-involved/`}>
+            <time datetime={s.data.date}>{day(s.data.date)}</time>
+            <b>{s.data.title}</b>
+            <span>{s.data.kind}, {s.data.time}, {s.data.where}</span>
+            <span class="sn-left" data-ui><i style={`--w:${Math.round((s.data.taken / s.data.spots) * 100)}%`}></i><em>{left} {left === 1 ? 'place' : 'places'} left</em></span>
+          </a></li>
+        );
+      })}</ul>
+    </div></section>
 
-    <section class="rw-section rw-section--cream" aria-labelledby="give-title">
-      <div class="rw-wrap rw-two">
-        <div><p class="rw-eyebrow">Support us</p><h2 id="give-title" class="rw-h2 mt-3">A little goes a <em>long way.</em></h2><p class="rw-lede mt-5">Most of our money comes from people like you. A gift of £12 plants twenty seedlings, and a monthly gift lets us plan for the whole year.</p></div>
-        <DonateBox id="home-donate" />
-      </div>
-    </section>
+    <section class="sn-num" aria-label="Our impact"><div class="rw-wrap"><dl class="rw-stats" data-stats>
+      <div><dt>Neighbours growing each week</dt><dd data-count="340">340</dd></div><div><dt>Meals cooked and shared</dt><dd data-count="1200">1,200</dd></div><div><dt>Trainees now in work</dt><dd data-count="46">46</dd></div><div><dt>Years of community growing</dt><dd data-count="12">12</dd></div>
+    </dl></div></section>
 
+    <section class="sn-farm" aria-labelledby="farm-t"><div class="rw-wrap">
+      <figure class="sn-quote" data-rise>
+        <Image src={AMINA_PORTRAIT} alt="Amina, a volunteer, smiling in the greenhouse" width={240} height={240} class="sn-quote__face" />
+        <blockquote>“I came for something to do on Saturdays. I stayed because people noticed when I wasn’t there.”</blockquote>
+        <figcaption>Amina, volunteer since February</figcaption>
+      </figure>
+      <h2 id="farm-t" class="sn-h sn-h--sub" data-rise>Stories from the farm</h2>
+      <ul class="sn-stories" role="list">{stories.map((s, i) => (
+        <li data-rise style={`--d:${i}`}><a href={`${B}/stories/${s.id}/`}>
+          <span class="sn-stories__pic"><Image src={STORY_PHOTOS[s.id]} alt="" width={360} height={360} /></span>
+          <span class="sn-stories__txt"><b>{s.data.title}</b><span>{s.data.excerpt} <time datetime={s.data.date}>{s.data.category}, {fmt(s.data.date)}.</time></span></span>
+        </a></li>
+      ))}</ul>
+      <p data-rise><a class="rw-link" href={`${B}/stories/`}>All stories</a></p>
+    </div></section>
+
+    <section class="sn-give" aria-labelledby="give-t"><div class="rw-wrap rw-two">
+      <div><h2 id="give-t" class="sn-h" data-rise>A little goes a long way.</h2><p class="sn-give__p" data-rise style="--d:1">Most of our money comes from people like you. A gift of £12 plants twenty seedlings, and a monthly gift lets us plan for the whole year.</p></div>
+      <DonateBox id="home-donate" />
+    </div></section>
   </Shell>
 </Site>
-
 <script>
   import '../../days/day-043/donate';
   import '../../days/day-043/home';
+  import '../../days/day-043/month';
 </script>

@@ -14,6 +14,9 @@ interface Props {
   lang?: string;
 }
 const { title, description, themeColor, icon, day, lang = 'en' } = Astro.props;
+// Sites that have brand files (see scripts/make-brand.mjs) get a real favicon set; the rest keep their emoji.
+const BRAND_FOLDERS: Record<number, string> = { 41: 'day-041-bookshop', 42: 'day-042-architecture', 43: 'day-043-community-farm', 44: 'day-044-saas-product', 45: 'day-045-language-school' };
+const brand = BRAND_FOLDERS[day];
 const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${icon}</text></svg>`)}`;
 // The hub lives three folders above a day's index page; pages nested deeper need more "../".
 const depth = Astro.url.pathname.split('/').filter(Boolean).length;
@@ -30,7 +33,16 @@ const hub = '../'.repeat(depth + 2) + 'index.html';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <link rel="icon" href={favicon} />
+    {brand ? (
+      <>
+        <link rel="icon" href={`/${brand}/favicon.svg`} type="image/svg+xml" />
+        <link rel="icon" href={`/${brand}/favicon-32.png`} type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href={`/${brand}/favicon.ico`} />
+        <link rel="apple-touch-icon" href={`/${brand}/apple-touch-icon.png`} />
+      </>
+    ) : (
+      <link rel="icon" href={favicon} />
+    )}
     <slot name="head" />
   </head>
   <body>
@@ -42,13 +54,14 @@ const hub = '../'.repeat(depth + 2) + 'index.html';
         position: fixed; left: 1rem; bottom: 1rem; z-index: 60;
         display: inline-flex; align-items: center; gap: 0.5rem;
         padding: 0.4rem 0.8rem 0.4rem 0.4rem; border-radius: 999px;
-        background: oklch(18% 0.02 280 / 0.85); color: #fff; backdrop-filter: blur(10px);
-        font: 600 12px/1 var(--font-sans); letter-spacing: 0.02em; text-decoration: none;
-        box-shadow: 0 8px 24px -8px oklch(0% 0 0 / 0.5);
+        background: oklch(18% 0.02 280); color: #fff;
+        font: 600 13px/1 var(--font-sans); letter-spacing: 0.02em; text-decoration: none;
+        
         transition: transform 0.3s var(--ease-spring);
       }
       .thecore-badge:hover { transform: translateY(-2px); }
-      .thecore-badge span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); font-size: 11px; }
+      .thecore-badge.is-away { transform: translateY(160%); }
+      .thecore-badge span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); font-size: 13px; }
     </style>
   </body>
 </html>

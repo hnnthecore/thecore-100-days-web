@@ -3,9 +3,12 @@
 import { getCollection } from 'astro:content';
 import Site from '../../../layouts/Site.astro';
 import Shell from '../../../components/day-042/Shell.astro';
-import ProjectCard from '../../../components/day-042/ProjectCard.astro';
+import { Image } from 'astro:assets';
+import { PROJECT_PHOTOS } from '../../../days/day-042/photos';
 
 const projects = (await getCollection('projects')).sort((a, b) => b.data.year - a.data.year);
+const byYear = [...projects].sort((a, b) => a.data.year - b.data.year || a.id.localeCompare(b.id));
+const no = (id: string, year: number) => `AN-${year}-${String(byYear.findIndex((x) => x.id === id) + 1).padStart(2, '0')}`;
 const types = [...new Set(projects.map((p) => p.data.type))];
 ---
 <Site title="Projects · Atelier Nord" description="Homes, libraries, schools and workplaces designed by Atelier Nord, Edinburgh. Filter by type and explore each case study." themeColor="#16181b" icon="📐" day={42}>
@@ -20,10 +23,27 @@ const types = [...new Set(projects.map((p) => p.data.type))];
             <button type="button" data-type="all" aria-pressed="true">All</button>
             {types.map((t) => <button type="button" data-type={t} aria-pressed="false">{t}</button>)}
           </div>
-          <div class="an-chips" role="group" aria-label="View" data-views><button type="button" data-view="grid" aria-pressed="true">Grid</button><button type="button" data-view="list" aria-pressed="false">List</button></div>
+          <p class="an-count" aria-live="polite" data-count>{projects.length} projects</p>
         </div>
-        <p class="an-count" aria-live="polite" data-count>{projects.length} projects</p>
-        <ul class="an-grid" role="list" data-grid>{projects.map((p) => <ProjectCard slug={p.id} {...p.data} />)}</ul>
+        <div class="an-sheet">
+          <div class="an-sheet__list">
+            <div class="an-sheet__head" aria-hidden="true"><span>No.</span><span>Project</span><span>Location</span><span>Type</span><span>Year</span><span>m²</span></div>
+            <ol class="an-rows" role="list" data-grid>{projects.map((p) => (
+              <li class="an-row" data-project data-slug={p.id} data-type={p.data.type} data-year={p.data.year} data-title={p.data.title.toLowerCase()} data-area={p.data.area}>
+                <a href={`/day-042-architecture/projects/${p.id}/`} class="an-row__a">
+                  <span class="an-row__no">{no(p.id, p.data.year)}</span>
+                  <span class="an-row__t">{p.data.title}</span>
+                  <span class="an-row__l">{p.data.location}</span>
+                  <span class="an-row__ty">{p.data.type}</span>
+                  <span class="an-row__yr">{p.data.year}</span>
+                  <span class="an-row__m">{p.data.area.toLocaleString('en-GB')}</span>
+                  <Image src={PROJECT_PHOTOS[p.id]} alt="" width={240} class="an-row__thumb" />
+                </a>
+              </li>
+            ))}</ol>
+          </div>
+          <div class="an-sheet__preview" aria-hidden="true">{projects.map((p, i) => <figure data-for={p.id} class:list={[i === 0 && 'is-on']}><Image src={PROJECT_PHOTOS[p.id]} alt="" width={900} /><figcaption>{p.data.title} · {p.data.location} · {p.data.year}</figcaption></figure>)}</div>
+        </div>
       </div>
     </section>
   </Shell>

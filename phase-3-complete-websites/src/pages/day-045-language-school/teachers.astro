@@ -11,7 +11,7 @@ const teachers = await getCollection('teachers');
 const langs = [...new Set(teachers.flatMap((t) => t.data.languages))].sort();
 const bios = await Promise.all(teachers.map(async (t) => ({ t, ...(await render(t)) })));
 ---
-<Site title="Teachers · Lingua Lane" description="Meet the eight native-speaking teachers at Lingua Lane. Warm, experienced and passionate about languages." themeColor="#ff5a3c" icon="💬" day={45}>
+<Site title="Teachers · Lingua Lane" description="Meet the eight native-speaking teachers at Lingua Lane. Warm, experienced and passionate about languages." themeColor="#ff5a3c" icon="L" day={45}>
   <Shell active="teachers">
     <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Teachers</li></ol><h1 class="ll-h1">People who <span class="ll-mark">love</span> languages.</h1><p class="ll-lede mt-5">Every teacher is a native speaker with at least seven years in the classroom.</p></div></header>
     <section class="ll-section"><div class="ll-wrap">

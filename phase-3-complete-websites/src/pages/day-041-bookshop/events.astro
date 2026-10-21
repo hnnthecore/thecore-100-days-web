@@ -8,7 +8,7 @@ const events = (await getCollection('events')).sort((a, b) => a.data.date.locale
 const kinds = [...new Set(events.map((e) => e.data.kind))];
 const d = (s: string) => new Date(s + 'T00:00');
 ---
-<Site title="Events · Pagebound Books" description="Author talks, book clubs, story times and workshops at Pagebound Books, Edinburgh. Reserve your seat online." themeColor="#7a1f2b" icon="📚" day={41}>
+<Site title="Events · Pagebound Books" description="Author talks, book clubs, story times and workshops at Pagebound Books, Edinburgh. Reserve your seat online." themeColor="#7a1f2b" icon="P" day={41}>
   <Shell active="events">
     <header class="pb-pagehead">
       <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href="/day-041-bookshop/">Home</a></li><li aria-current="page">Events</li></ol><h1 class="pb-h1">What’s on</h1><p class="pb-lede mt-4">Readings, clubs and workshops, mostly with wine, always with books. Seats are limited, so reserve yours.</p></div>

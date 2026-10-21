@@ -15,6 +15,8 @@ stats:
   - { value: "12", label: "homes" }
   - { value: "300+", label: "on the waiting list" }
   - { value: "A", label: "EPC rating" }
+lat: 55.9186
+lon: -3.265
 ---
 
 ## Brief

@@ -1,0 +1,21 @@
+---
+/** A book standing on a shelf: only the spine shows. Hover or focus pulls the cover out with its price. */
+import BookCover from './BookCover.astro';
+import { PALETTES, hash } from '../../days/day-041/shelves';
+interface Props { slug: string; title: string; author: string; genre: string; price: number; stock: number; pages: number; palette: number; pattern: number }
+const { slug, title, author, genre, price, stock, pages, palette, pattern } = Astro.props;
+const [bg, ink] = PALETTES[palette % 6];
+const L = title.length;
+const h = (L > 26 ? 18 : L > 20 ? 16.8 : 15.8) + (hash(slug) % 4) * 0.4;
+const fs = L > 26 ? 0.6 : L > 20 ? 0.7 : 0.82;
+const w = Math.min(3.9, Math.max(2.5, pages / 125));
+const href = `/day-041-bookshop/books/${slug}/`;
+---
+<li class="pb-spine" data-book={slug} data-genre={genre} data-title={title.toLowerCase()} data-author={author.toLowerCase()} data-price={price} data-stock={stock} style={`--h:${h}rem;--w:${w}rem;--bg:${bg};--ink:${ink};--fs:${fs}rem`}>
+  <a href={href} class="pb-spine__a" aria-label={`${title} by ${author}, £${price.toFixed(2)}`}>
+    <span class="pb-spine__band" aria-hidden="true"></span>
+    <span class="pb-spine__t">{title}</span>
+    <span class="pb-spine__au">{author.split(' ').slice(-1)[0]}</span>
+  </a>
+  <span class="pb-spine__pull" aria-hidden="true"><span class="pb-spine__cover"><BookCover slug={slug} title={title} author={author} palette={palette} pattern={pattern} width={300} /></span><b>{title}</b><small>£{price.toFixed(2)}</small></span>
+</li>

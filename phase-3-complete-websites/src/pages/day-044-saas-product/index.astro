@@ -1,126 +1,113 @@
 ---
-/** Day 044 · Fathom · home: hero with a product mock-up, key numbers, feature bento, live what-if, customer tabs and a call to action. */
+/** Day 044 · Fathom · home. Built from days/day-044/DESIGN.md: the forecast itself is the first screen, and the visitor bends it. */
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import { Image } from 'astro:assets';
-import { BIZ_PHOTOS, PERSON_PHOTOS, PHOTO_ALTS, PERSON_ALTS } from '../../days/day-044/photos';
+import { BIZ_PHOTOS, PERSON_PHOTOS, PHOTO_ALTS, PERSON_ALTS, FEATURE_PHOTOS } from '../../days/day-044/photos';
 import Shell from '../../components/day-044/Shell.astro';
-import { forecastChart, demoPoints, icon, mark, gbp } from '../../days/day-044/chart';
+import { icon } from '../../days/day-044/chart';
+import { model, verdict, heroChart, FLOOR } from '../../days/day-044/forecast';
+import { gbp } from '../../days/day-044/chart';
 
 const B = '/day-044-saas-product';
 const features = (await getCollection('features')).sort((a, b) => a.data.order - b.data.order);
 const customers = await getCollection('customers');
-const pts = demoPoints(1);
+const base = model(0, 0, 0);
+const pts = model(0, 4500, 14);
+const v = verdict(pts);
+const low = Math.min(...pts);
+const MORNING = [
+  ['07:02', 'Forecast updated.', 'Thirteen weeks rebuilt from last night’s bank feed.'],
+  ['07:03', 'Invoice #1042 is 9 days late.', 'A polite reminder to Harbourline is drafted and waiting for your yes.'],
+  ['07:04', 'Week 8 dips toward your floor.', 'It only happens if the new hire starts in March. Try April.'],
+  ['07:05', 'Payroll of £18,000 is covered.', 'Due on the 28th. Nothing to do.'],
+  ['07:06', 'Your accountant opened the shared scenario.', 'She left one comment on week 11.'],
+] as const;
 ---
-<Site title="Fathom · Cash-flow forecasting for small businesses" description="Fathom forecasts your cash 13 weeks ahead, chases late invoices and warns you before trouble arrives. Free for 14 days." themeColor="#3d5afe" icon="📈" day={44}>
-  <Shell>
-    <section class="fa-hero">
-      <div class="fa-wrap fa-hero__grid">
-        <div>
-          <p class="fa-pill"><b>New</b> Scenarios you can share with your accountant</p>
-          <h1 class="fa-h1 mt-6">Know your cash <span class="fa-grad">13 weeks</span> before it happens.</h1>
-          <p class="fa-lede mt-6">Fathom connects to your bank and invoices, forecasts your cash every morning and warns you while there is still time to do something about it.</p>
-          <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/pricing/`} class="fa-btn fa-btn--blue fa-btn--lg">Start free for 14 days</a><a href={`${B}/demo/`} class="fa-btn fa-btn--line fa-btn--lg">Book a demo</a></div>
-          <ul class="fa-trust" role="list"><li>No card needed</li><li>Set up in 10 minutes</li><li>Bank-grade security</li></ul>
+<Site title="Fathom · Cash-flow forecasting for small businesses" description="Fathom forecasts your cash 13 weeks ahead, chases late invoices and warns you before trouble arrives. Move three sliders and watch your cash respond. Free for 14 days." themeColor="#0c110f" icon="F" day={44}>
+  <Shell home>
+    <section class="fh" data-whatif aria-labelledby="h1">
+      <div class="fh__top">
+        <h1 id="h1" class="fh__h1">Know your cash 13 weeks before it happens.</h1>
+        <div class="fh__say">
+          <p class:list={['fh__verdict', v.bad && 'is-bad']} data-verdict role="status" aria-live="polite">{v.text}</p>
+          <dl class="fh__read" aria-live="polite">
+            <div data-low class:list={[v.bad && 'is-bad']}><dt>Lowest balance</dt><dd data-o="low">{gbp(low)}</dd></div>
+            <div><dt>In week</dt><dd data-o="week">{pts.indexOf(low) + 1}</dd></div>
+            <div><dt>After 13 weeks</dt><dd data-o="end">{gbp(pts[12])}</dd></div>
+          </dl>
         </div>
-        <div class="fa-mockwrap">
-          <div class="fa-mock" role="img" aria-label="Fathom dashboard showing a 13-week cash forecast">
-            <div class="fa-mock__bar"><i></i><i></i><i></i><span>app.fathom.example · Forecast</span></div>
-            <div class="fa-mock__body">
-              <div class="fa-kpis"><div class="fa-kpi"><small>Cash today</small><b>{gbp(pts[0] - 4200)}</b><em>▲ 6.2%</em></div><div class="fa-kpi"><small>Runway</small><b>11.4 mo</b><em>▲ 0.8</em></div><div class="fa-kpi"><small>Lowest</small><b>{gbp(Math.min(...pts))}</b><em>Week {pts.indexOf(Math.min(...pts)) + 1}</em></div></div>
-              <div set:html={forecastChart({ points: pts, floor: 30000, id: 'hero', height: 250, width: 560 })}></div>
+      </div>
+      <div class="fh__chart" data-chart set:html={heroChart(pts, base, 1360, 360)}></div>
+      <div class="fh__ctl">
+        <div class="fh__c"><label for="w-g">Sales change</label><output for="w-g" data-out="g">0%</output><input id="w-g" type="range" min="-30" max="30" step="1" value="0" data-in="g" /></div>
+        <div class="fh__c"><label for="w-h">New hire per month</label><output for="w-h" data-out="h">£4,500</output><input id="w-h" type="range" min="0" max="9000" step="250" value="4500" data-in="h" /></div>
+        <div class="fh__c"><label for="w-l">Customers pay late by</label><output for="w-l" data-out="l">14 days</output><input id="w-l" type="range" min="0" max="45" step="1" value="14" data-in="l" /></div>
+        <div class="fh__act"><a href={`${B}/pricing/`} class="fa-btn fa-btn--mint fa-btn--lg">Start free for 14 days</a><button type="button" class="fh__reset" data-reset>Reset to the current plan</button></div>
+      </div>
+    </section>
+
+    <section class="fm" aria-labelledby="fm-t"><div class="fa-wrap fm__grid">
+      <div class="fm__lead"><h2 id="fm-t" class="fm__h fa-reveal">Every morning at 7:02.</h2><figure class="fm__pic fa-reveal"><Image src={FEATURE_PHOTOS.alerts} alt={PHOTO_ALTS.alerts} width={760} loading="lazy" /></figure></div>
+      <ol class="fm__feed" role="list">{MORNING.map(([t, h, p], i) => (
+        <li class="fa-reveal" style={`--d:${i}`}><time>{t}</time><b>{h}</b><span>{p}</span></li>
+      ))}</ol>
+    </div></section>
+
+    <section class="fx-sec" aria-labelledby="fx-t"><div class="fa-wrap">
+      <h2 id="fx-t" class="fx-h fa-reveal">What Fathom does</h2>
+    </div>
+      <div class="fx" data-fx>{features.map((f, i) => (
+        <article class:list={['fx__p', i === 0 && 'is-open']}>
+          <button type="button" class="fx__tab" aria-expanded={String(i === 0)} aria-controls={`fx-${f.id}`}><span class="fx__ico" set:html={icon(f.data.icon, 28)}></span><b>{f.data.title}</b></button>
+          <div class="fx__body" id={`fx-${f.id}`}>
+            <span class="fx__img"><Image src={FEATURE_PHOTOS[f.id]} alt={PHOTO_ALTS[f.id]} width={760} loading="lazy" /></span>
+            <h3>{f.data.title}</h3>
+            <p class="fx__tag">{f.data.tagline}</p>
+            <p>{f.data.lede}</p>
+            <a class="fx__go" href={`${B}/features/${f.id}/`}>See {f.data.title}<span class="sr-only"> in detail</span></a>
+          </div>
+        </article>
+      ))}</div>
+    </section>
+
+    <section class="fn" aria-label="Fathom in numbers"><div class="fa-wrap">
+      <ul class="fn__list" role="list">
+        <li class="fa-reveal"><b data-count="9" data-suffix=" days">9 days</b><span>faster payment on average</span></li>
+        <li class="fa-reveal" style="--d:1"><b data-count="94" data-suffix="%">94%</b><span>forecast accuracy at 4 weeks</span></li>
+        <li class="fa-reveal" style="--d:2"><b data-count="10" data-suffix=" min">10 min</b><span>to set up and connect</span></li>
+        <li class="fa-reveal" style="--d:3"><b data-count="4200" data-suffix="">4,200</b><span>businesses use Fathom</span></li>
+      </ul>
+    </div></section>
+
+    <section class="fc" aria-labelledby="cu-t"><div class="fa-wrap">
+      <h2 id="cu-t" class="fx-h fa-reveal">Owners sleep better.</h2>
+      <div class="fc__tabs" data-tabs>
+        <div class="fc__list" role="tablist" aria-label="Customer stories">
+          {customers.map((c, i) => <button type="button" role="tab" id={`tab-${c.id}`} aria-controls={`panel-${c.id}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1}>{c.data.name}</button>)}
+        </div>
+        {customers.map((c, i) => (
+          <div class="fc__panel" role="tabpanel" id={`panel-${c.id}`} aria-labelledby={`tab-${c.id}`} hidden={i !== 0} tabindex="0">
+            <figure class="fc__pic"><Image src={BIZ_PHOTOS[c.id]} alt={PHOTO_ALTS[c.id]} width={900} /></figure>
+            <div class="fc__say">
+              <p class="fc__quote">“{c.data.quote}”</p>
+              <ul class="fc__stats" role="list">{c.data.stats.map((s) => <li><b>{s.value}</b><span>{s.label}</span></li>)}</ul>
+              <p class="fc__who"><Image src={PERSON_PHOTOS[c.id]} alt={PERSON_ALTS[c.id]} width={96} height={96} class="fa-face" /><span><b>{c.data.person}</b><span>{c.data.role}, {c.data.name}</span></span></p>
+              <a href={`${B}/customers/${c.id}/`} class="fa-btn fa-btn--ink">Read the full story</a>
             </div>
           </div>
-          <div class="fa-float fa-float--a" aria-hidden="true"><span class="fa-float__dot">!</span><span>Invoice #1042 is 9 days late<br /><small style="color:var(--muted)">Reminder drafted for you</small></span></div>
-          <div class="fa-float fa-float--b" aria-hidden="true"><span class="fa-float__dot" style="background:#e1fbf3;color:#08684f">✓</span><span>Forecast updated<br /><small style="color:var(--muted)">7:02 this morning</small></span></div>
-        </div>
+        ))}
       </div>
-    </section>
+    </div></section>
 
-    <section class="fa-section fa-section--tint" aria-labelledby="wi-t">
-      <div class="fa-wrap">
-        <div class="fa-head fa-reveal"><div><p class="fa-eyebrow">Try it</p><h2 id="wi-t" class="fa-h2 mt-3">Ask "what if?" and watch your cash respond.</h2></div><p class="fa-lede" style="max-width:26rem">Move the sliders. The dotted line is your current plan; the solid line is your scenario.</p></div>
-        <div class="fa-whatif fa-reveal" data-whatif>
-          <div>
-            <div class="fa-ctl"><label for="w-g">Sales change <output id="w-go" data-out="g">0%</output></label><input id="w-g" type="range" min="-30" max="30" step="1" value="0" data-in="g" /></div>
-            <div class="fa-ctl"><label for="w-h">New hire per month <output data-out="h">£4,500</output></label><input id="w-h" type="range" min="0" max="9000" step="250" value="4500" data-in="h" /></div>
-            <div class="fa-ctl"><label for="w-l">Customers pay late by <output data-out="l">14 days</output></label><input id="w-l" type="range" min="0" max="45" step="1" value="14" data-in="l" /></div>
-            <button type="button" class="fa-btn fa-btn--line mt-6" data-reset>Reset to current plan</button>
-          </div>
-          <div>
-            <div class="fa-readout" aria-live="polite"><div data-low><small>Lowest balance</small><b data-o="low">£0</b></div><div><small>In week</small><b data-o="week">0</b></div><div><small>After 13 weeks</small><b data-o="end">£0</b></div></div>
-            <div data-chart></div>
-            <p class="fa-verdict" data-verdict role="status"></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="fa-section !pb-0 fa-reveal" aria-label="Fathom in numbers">
-      <div class="fa-wrap">
-        <p class="mb-6 text-center font-semibold" style="color:var(--muted)">Trusted by 4,200 small businesses across the UK</p>
-        <ul class="fa-logos mb-14" role="list"><li>Northbound</li><li>Lattice</li><li>Harbourline</li><li>Petal &amp; Stem</li><li>Oakhurst</li><li>Brightwell</li></ul>
-        <ul class="fa-nums" role="list">
-          <li><b data-count="9" data-suffix=" days">9 days</b><span>faster payment on average</span></li>
-          <li><b data-count="94" data-suffix="%">94%</b><span>forecast accuracy at 4 weeks</span></li>
-          <li><b data-count="10" data-suffix=" min">10 min</b><span>to set up and connect</span></li>
-          <li><b data-count="4200" data-suffix="">4,200</b><span>businesses using Fathom</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="fa-section" aria-labelledby="feat-t">
-      <div class="fa-wrap">
-        <div class="fa-head fa-reveal"><div><p class="fa-eyebrow">The product</p><h2 id="feat-t" class="fa-h2 mt-3">Everything you need to stay ahead of your cash.</h2></div><a href={`${B}/features/`} class="fa-link">See all features →</a></div>
-        <ul class="fa-bento" role="list">
-          {features.map((f, i) => (
-            <li class="fa-reveal"><a href={`${B}/features/${f.id}/`} class="fa-card">
-              <span class="fa-ico" set:html={icon(f.data.icon, 24)}></span>
-              <h3 class="fa-h3 mt-4">{f.data.title}</h3><p class="mt-2">{f.data.tagline}</p>
-              {i === 0 && <div class="mt-4 hidden md:block" set:html={forecastChart({ points: demoPoints(3), id: 'bento', height: 150, width: 560, axes: false })}></div>}
-              <span class="fa-link mt-4">Learn more →</span>
-            </a></li>
-          ))}
-        </ul>
-      </div>
-    </section>
-
-    <section class="fa-section fa-section--ink" aria-labelledby="cu-t">
-      <div class="fa-wrap">
-        <div class="fa-head fa-reveal"><div><p class="fa-eyebrow" style="color:var(--mint)">Customers</p><h2 id="cu-t" class="fa-h2 mt-3">Owners sleep better with Fathom.</h2></div><a href={`${B}/customers/`} class="fa-link" style="color:var(--mint)">Read their stories →</a></div>
-        <div class="fa-tabs fa-reveal" data-tabs>
-          <div class="fa-tablist" role="tablist" aria-label="Customer stories" aria-orientation="vertical">
-            {customers.map((c, i) => <button type="button" role="tab" id={`tab-${c.id}`} aria-controls={`panel-${c.id}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1}><span set:html={mark(c.data.name, c.data.colour, 34)}></span>{c.data.name}</button>)}
-          </div>
-          <div>
-            {customers.map((c, i) => (
-              <div role="tabpanel" id={`panel-${c.id}`} aria-labelledby={`tab-${c.id}`} hidden={i !== 0} tabindex="0">
-                <figure class="fa-bizphoto"><Image src={BIZ_PHOTOS[c.id]} alt={PHOTO_ALTS[c.id]} width={900} /></figure>
-                <p class="fa-quote">“{c.data.quote}”</p>
-                <p class="fa-who mt-6"><Image src={PERSON_PHOTOS[c.id]} alt={PERSON_ALTS[c.id]} width={96} height={96} class="fa-face" /><span><b>{c.data.person}</b><span>{c.data.role}, {c.data.name}</span></span></p>
-                <div class="fa-statrow">{c.data.stats.map((s) => <div><b>{s.value}</b><span>{s.label}</span></div>)}</div>
-                <a href={`${B}/customers/${c.id}/`} class="fa-btn fa-btn--mint mt-6">Read the full story</a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="fa-section" aria-labelledby="cta-t">
-      <div class="fa-wrap fa-reveal">
-        <div class="fa-cta">
-          <p class="fa-eyebrow" style="color:var(--mint)">Plans from £29 a month</p>
-          <h2 id="cta-t" class="fa-h2 mt-3" style="max-width:18ch">See your next 13 weeks in ten minutes.</h2>
-          <p class="mt-4 max-w-xl text-lg">Connect your bank, and Fathom builds your first forecast while you finish your tea. Free for 14 days, no card needed.</p>
-          <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/pricing/`} class="fa-btn fa-btn--mint fa-btn--lg">Start free</a><a href={`${B}/demo/`} class="fa-btn fa-btn--lg" style="background:rgb(255 255 255/.12);color:#fff">Talk to us</a></div>
-        </div>
-      </div>
-    </section>
+    <section class="fs" aria-labelledby="cta-t"><div class="fa-wrap">
+      <h2 id="cta-t" class="fs__h fa-reveal">See your next 13 weeks.</h2>
+      <p class="fs__p fa-reveal">Connect your bank and Fathom builds your first forecast while you finish your tea. Free for 14 days, no card needed. Plans from £29 a month.</p>
+      <ul class="fs__biz" role="list">{customers.map((c) => <li class="fa-reveal"><Image src={BIZ_PHOTOS[c.id]} alt={PHOTO_ALTS[c.id]} width={520} loading="lazy" /><span>{c.data.name}</span></li>)}</ul>
+      <p class="fs__act fa-reveal"><a href={`${B}/pricing/`} class="fa-btn fa-btn--mint fa-btn--lg">Start free</a><a href={`${B}/demo/`} class="fa-btn fa-btn--lg fs__ghost">Book a demo</a></p>
+    </div></section>
   </Shell>
 </Site>
-
 <script>
   import '../../days/day-044/home';
 </script>
-

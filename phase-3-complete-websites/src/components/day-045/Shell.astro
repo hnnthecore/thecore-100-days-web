@@ -1,42 +1,66 @@
 ---
-/** Day 045 · Lingua Lane · header and footer shared by every page. Links are root paths, made relative by the build. */
-import '@fontsource/young-serif';
-import '@fontsource-variable/figtree';
+/** Day 045 · Lingua Lane · header and footer shared by every page. Links are root paths, made relative by the build. See days/day-045/DESIGN.md. */
 import '../../days/day-045/styles.css';
+import '../../days/day-045/door.css';
+import Mark from '../brand/Mark.astro';
+import { getCollection } from 'astro:content';
+const ORDER = ['spanish', 'french', 'german', 'italian', 'portuguese', 'japanese', 'mandarin', 'arabic'];
+const courses = (await getCollection('courses')).sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
-interface Props { active?: 'courses' | 'test' | 'teachers' | 'about' | 'enrol' }
+interface Props { active?: 'courses' | 'test' | 'teachers' | 'about' | 'enrol' | 'trial' }
 const { active } = Astro.props;
 const B = '/day-045-language-school';
-const NAV = [['courses', 'Courses', `${B}/courses/`], ['test', 'Level test', `${B}/level-test/`], ['teachers', 'Teachers', `${B}/teachers/`], ['about', 'About', `${B}/about/`]] as const;
-const HELLOS = ['Hello', 'Hola', 'Bonjour', 'Hallo', 'Ciao', 'こんにちは', '你好', 'Olá', 'مرحبا', 'Namaste', 'Merhaba', 'Привет'];
+const NAV = [['courses', 'Courses', `${B}/courses/`], ['test', 'Level test', `${B}/level-test/`], ['trial', 'Free trial', `${B}/trial/`], ['teachers', 'Teachers', `${B}/teachers/`], ['about', 'About', `${B}/about/`]] as const;
+// The footer lane: each language is a door. Heights differ, bottoms sit on one line.
+const HEIGHTS = [100, 78, 92, 66, 86, 72, 96, 60];
+const doors = courses.map((c, i) => ({ id: c.id, language: c.data.language, hello: c.data.greeting, colour: c.data.colour, ink: c.data.ink, h: HEIGHTS[i % HEIGHTS.length] }));
 ---
+<script is:inline>document.documentElement.classList.add('js');</script>
 <div class="ll">
   <header class="ll-header" data-header>
-    <div class="ll-wrap flex h-[4.5rem] items-center justify-between gap-6">
-      <a href={`${B}/`} class="ll-logo" aria-label="Lingua Lane, home"><span class="ll-logo__bub" aria-hidden="true">“</span>Lingua Lane</a>
-      <nav aria-label="Main" class="hidden lg:block"><ul class="flex gap-9">{NAV.map(([k, l, h]) => <li><a href={h} class="ll-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+    <div class="dr-bar">
+      <a href={`${B}/`} class="ll-logo" aria-label="Lingua Lane, home"><Mark site="day-045-language-school" size={30} />Lingua Lane</a>
+      <nav aria-label="Main" class="dr-nav">{NAV.map(([k, l, h]) => <a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a>)}</nav>
       <div class="flex items-center gap-3">
-        <a href={`${B}/enrol/`} class="ll-btn ll-btn--coral hidden sm:inline-flex">Enrol now</a>
+        <a href={`${B}/trial/`} class="dr-btn dr-btn--coral dr-bar__cta">Free lesson</a>
         <button type="button" class="ll-burger lg:hidden" data-burger aria-expanded="false" aria-controls="ll-menu" aria-label="Open menu"><span></span><span></span></button>
       </div>
     </div>
     <nav id="ll-menu" class="ll-menu lg:hidden" aria-label="Mobile" data-menu hidden>
-      <ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/enrol/`} aria-current={active === 'enrol' ? 'page' : undefined}>Enrol now</a></li></ul>
+      <ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/enrol/`} aria-current={active === 'enrol' ? 'page' : undefined}>Enrol</a></li></ul>
     </nav>
   </header>
 
   <main id="main"><slot /></main>
 
-  <div class="ll-hellos" aria-hidden="true"><div class="ll-hellos__t">{[...HELLOS, ...HELLOS].map((h) => <span>{h}</span>)}</div></div>
-  <footer class="ll-footer">
-    <div class="ll-wrap grid grid-cols-2 gap-10 py-14 lg:grid-cols-4">
-      <div class="col-span-2"><p class="ll-logo !text-white"><span class="ll-logo__bub" aria-hidden="true">“</span>Lingua Lane</p><p class="mt-4 max-w-sm text-white/70">A friendly language school in central London. Small classes, brilliant teachers and eight languages to fall in love with.</p></div>
-      <div><h2 class="ll-foot-h">Learn</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/courses/`}>All courses</a></li><li><a href={`${B}/level-test/`}>Free level test</a></li><li><a href={`${B}/teachers/`}>Our teachers</a></li><li><a href={`${B}/enrol/`}>Enrol</a></li></ul></div>
-      <div><h2 class="ll-foot-h">Visit</h2><address class="mt-3 grid gap-1 not-italic text-white/75">14 Gower Mews<br />London WC1E 6HP<br />hello@lingualane.example<br />020 5550 0145</address></div>
+  <footer class="dr-foot">
+    <nav class="dr-lane" aria-label="The eight languages" data-lane>{doors.map((d, i) => <a href={`${B}/courses/${d.id}/`} style={`--c:${d.colour};--k:${d.ink};--n:${i};height:${d.h}%`} aria-label={`${d.language} classes`}><span lang="">{d.hello}</span></a>)}</nav>
+    <div class="dr-foot__cols">
+      <div class="dr-foot__links">
+        <div><h2>Learn</h2><ul><li><a href={`${B}/courses/`}>All courses</a></li><li><a href={`${B}/level-test/`}>Free level test</a></li><li><a href={`${B}/trial/`}>Free trial lesson</a></li><li><a href={`${B}/enrol/`}>Enrol</a></li></ul></div>
+        <div><h2>School</h2><ul><li><a href={`${B}/teachers/`}>Our teachers</a></li><li><a href={`${B}/about/`}>About us</a></li><li><a href={`${B}/about/#faq-t`}>Questions</a></li></ul></div>
+        <div class="dr-foot__langs"><h2>Languages</h2><ul>{doors.map((d) => <li><a href={`${B}/courses/${d.id}/`}>{d.language}</a></li>)}</ul></div>
+      </div>
+      <address><b>Lingua Lane</b><br />14 Gower Mews, Bloomsbury<br />London WC1E 6HP<br />hello@lingualane.example<br />020 5550 0145</address>
     </div>
-    <div class="ll-wrap border-t border-white/15 py-6 text-sm text-white/55">A fictional school created for Thecore's 100 Days of Web (Day 045). Courses, teachers and prices are invented.</div>
+    <div class="dr-foot__end"><span>A fictional school created for Thecore's 100 Days of Web (Day 045). Courses, teachers and prices are invented. Hero photograph: <a href="https://commons.wikimedia.org/wiki/File:Gower_Mews,_Bloomsbury_-_geograph.org.uk_-_7724574.jpg" rel="noopener">Gower Mews, Bloomsbury</a> by David Howard, <a href="https://creativecommons.org/licenses/by-sa/2.0" rel="noopener">CC BY-SA 2.0</a>, via Wikimedia Commons.</span><a href={`${B}/level-test/`} class="dr-btn">Take the free level test</a></div>
   </footer>
 </div>
 <script>
   import '../../days/shared/shell';
+  /* The header slides away while you scroll down and returns when you scroll up. */
+  const bar = document.querySelector<HTMLElement>('[data-header]');
+  if (bar) {
+    let last = scrollY;
+    addEventListener('scroll', () => {
+      const y = scrollY, open = document.querySelector('[data-burger]')?.getAttribute('aria-expanded') === 'true';
+      const away = y > last && y > 160 && !open;
+      bar.classList.toggle('is-away', away);
+      document.querySelector('.thecore-badge')?.classList.toggle('is-away', away);
+      last = y;
+    }, { passive: true });
+  }
+  /* The doors of the footer open when the footer comes into view; parts of each section enter as they arrive. */
+  const seen = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); } }), { threshold: 0.18 });
+  document.querySelectorAll('[data-lane], [data-rise], [data-rise-row]').forEach((el) => seen.observe(el));
 </script>

@@ -5,6 +5,13 @@ scene: "beds"
 when: "Tuesdays and Saturdays"
 who: "All ages"
 stat: { value: 340, label: "neighbours growing food each week" }
+months: [3, 10]
+schedule:
+  - { time: "10:00", what: "Open the gates", detail: "Kettle on, coffee out, sign in with a first name only." }
+  - { time: "10:30", what: "Choose a job", detail: "Weeding, watering, sowing, composting. No experience needed." }
+  - { time: "12:00", what: "Shared lunch", detail: "Whatever came out of the ground, plus whatever people brought." }
+  - { time: "13:00", what: "Take-home bag", detail: "Fill a bag from the harvest table. Pay what you can, or nothing." }
+  - { time: "14:00", what: "Close up", detail: "Tools cleaned and counted, gates locked." }
 ---
 
 ## What happens

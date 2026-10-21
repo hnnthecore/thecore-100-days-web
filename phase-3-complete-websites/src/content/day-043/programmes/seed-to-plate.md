@@ -5,6 +5,13 @@ scene: "kitchen"
 when: "Thursday evenings"
 who: "Over 16s"
 stat: { value: 1200, label: "meals cooked and shared this year" }
+months: [3, 12]
+schedule:
+  - { time: "17:30", what: "Doors open", detail: "Aprons on and a look at what came in that day." }
+  - { time: "18:00", what: "Meet the ingredients", detail: "Your cook introduces the harvest and the plan." }
+  - { time: "18:30", what: "Chop, cook and taste", detail: "Pairs work on each dish, with plenty of tasting." }
+  - { time: "19:30", what: "Eat together", detail: "Long table, everything we made." }
+  - { time: "20:15", what: "Fill a jar", detail: "Everyone leaves with a jar of something preserved." }
 ---
 
 ## What happens

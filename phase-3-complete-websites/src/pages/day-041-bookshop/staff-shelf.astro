@@ -1,0 +1,40 @@
+---
+/** Day 041 · Pagebound Books · the staff shelf: booksellers' notes on the books they press into people's hands. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-041/Shell.astro';
+import BookCover from '../../components/day-041/BookCover.astro';
+import { STAFF, BAYS } from '../../days/day-041/shelves';
+
+const B = '/day-041-bookshop';
+const books = (await getCollection('books')).filter((b) => b.data.staffPick);
+const people = Object.entries(STAFF).map(([k, v]) => ({ key: k, ...v, picks: books.filter((b) => b.data.staff === k) })).filter((p) => p.picks.length);
+---
+<Site title="Staff shelf · Pagebound Books" description="The books our booksellers press into people's hands, with a note on why. Every one is on the shelf in Edinburgh and ready to reserve." themeColor="#7a1f2b" icon="P" day={41}>
+  <Shell active="books">
+    <header class="pb-pagehead">
+      <div class="pb-wrap"><ol class="pb-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Staff shelf</li></ol><h1 class="pb-h1">The <em>staff shelf</em></h1><p class="pb-lede mt-4">Books our booksellers press into people's hands, with a note on why. Written on the little cards you find tucked into the shelves.</p>
+      <ul class="pb-chips mt-6" role="list">{people.map((p) => <li><a href={`#${p.key.toLowerCase()}`} class="pb-chip">{p.name.split(' ')[0]} <small>{p.picks.length}</small></a></li>)}</ul></div>
+    </header>
+    {people.map((p) => (
+      <section class="pb-section pb-staff" id={p.key.toLowerCase()} aria-labelledby={`s-${p.key}`}>
+        <div class="pb-wrap">
+          <div class="pb-head"><div><p class="pb-eyebrow">{p.role}</p><h2 id={`s-${p.key}`} class="pb-h2 mt-2">{p.name}'s shelf</h2></div></div>
+          <ul class="pb-talkers" role="list">{p.picks.map((b, i) => (
+            <li class="pb-talker" style={`--tilt:${[-1.2, 0.8, -0.5, 1.1][i % 4]}deg`}>
+              <a href={`${B}/books/${b.id}/`} class="pb-talker__cover" aria-label={`${b.data.title} by ${b.data.author}`}><BookCover slug={b.id} title={b.data.title} author={b.data.author} palette={b.data.palette} pattern={b.data.pattern} width={240} /></a>
+              <div class="pb-talker__card">
+                <p class="pb-talker__pin" aria-hidden="true"></p>
+                <blockquote>“{b.data.staffPick}”</blockquote>
+                <p class="pb-talker__by">— {p.name.split(' ')[0]}, on <b>{b.data.title}</b></p>
+                <p class="pb-talker__bay">{BAYS[b.data.genre]}</p>
+                <a href={`${B}/books/${b.id}/`} class="pb-link">See the book →</a>
+              </div>
+            </li>
+          ))}</ul>
+        </div>
+      </section>
+    ))}
+    <section class="pb-section pb-section--cream"><div class="pb-wrap" style="text-align:center"><h2 class="pb-h2">Not sure what to ask for?</h2><p class="pb-lede mx-auto mt-3" style="max-width:34rem">Tell a bookseller the last thing you loved. We'll find you the next one, or talk you out of the wrong one.</p><p class="mt-6"><a href={`${B}/contact/`} class="pb-btn pb-btn--ox pb-btn--lg">Ask a bookseller</a></p></div></section>
+  </Shell>
+</Site>

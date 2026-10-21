@@ -13,6 +13,8 @@ desktop.ini
 
 # Local tooling (not part of the project)
 .claude/
+.taste-skill/
+.taste-skill-history.json
 .vscode/
 .idea/
 

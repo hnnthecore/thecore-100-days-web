@@ -15,6 +15,8 @@ stats:
   - { value: "600", label: "members" }
   - { value: "0 kWh", label: "mains electricity" }
   - { value: "40 m²", label: "floor area" }
+lat: 56.2216
+lon: -2.6993
 ---
 
 ## Brief

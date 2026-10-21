@@ -2,6 +2,8 @@
 const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const grid = $('[data-grid]');
 const cards = [...grid.querySelectorAll<HTMLElement>('[data-book]')];
+const spines = [...document.querySelectorAll<HTMLElement>('.pb-spine[data-book]')];
+const shelves = [...document.querySelectorAll<HTMLElement>('[data-shelf]')];
 const q = $<HTMLInputElement>('#q'), sort = $<HTMLSelectElement>('#sort'), cheap = $<HTMLInputElement>('#cheap');
 let genre = 'all';
 
@@ -12,6 +14,9 @@ function paint() {
   list.sort((a, b) => key === 'price-asc' ? Number(a.dataset.price) - Number(b.dataset.price) : key === 'price-desc' ? Number(b.dataset.price) - Number(a.dataset.price) : key === 'author' ? a.dataset.author!.localeCompare(b.dataset.author!) : a.dataset.title!.localeCompare(b.dataset.title!));
   const shown = new Set(list);
   cards.forEach((c) => (c.hidden = !shown.has(c)));
+  const shownSlugs = new Set(list.map((c) => c.dataset.book));
+  spines.forEach((sp) => (sp.hidden = !shownSlugs.has(sp.dataset.book)));
+  shelves.forEach((sh) => (sh.hidden = ![...sh.querySelectorAll<HTMLElement>('.pb-spine')].some((sp) => !sp.hidden)));
   list.forEach((c) => grid.append(c));
   $('[data-count]').textContent = `${list.length} ${list.length === 1 ? 'book' : 'books'}${genre !== 'all' ? ` in ${genre}` : ''}${term ? ` matching “${q.value.trim()}”` : ''}`;
   $('[data-empty]').hidden = list.length > 0;
@@ -28,3 +33,11 @@ $<HTMLFormElement>('[data-filters]').addEventListener('submit', (e) => e.prevent
 const fromHash = decodeURIComponent(location.hash.slice(1));
 const known = [...document.querySelectorAll<HTMLButtonElement>('[data-genres] button')].map((b) => b.dataset.genre);
 setGenre(known.includes(fromHash) ? fromHash : 'all');
+
+/* Shelves or grid */
+document.querySelector('[data-view]')?.addEventListener('click', (e) => {
+  const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+  if (!b) return;
+  document.querySelector<HTMLElement>('.pb-catalogue')!.dataset.mode = b.dataset.mode!;
+  b.parentElement!.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+});

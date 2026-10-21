@@ -4,11 +4,13 @@ import { getCollection } from 'astro:content';
 import Site from '../../../layouts/Site.astro';
 import Shell from '../../../components/day-041/Shell.astro';
 import BookCard from '../../../components/day-041/BookCard.astro';
+import Spine from '../../../components/day-041/Spine.astro';
+import { BAYS } from '../../../days/day-041/shelves';
 
 const books = (await getCollection('books')).sort((a, b) => a.data.title.localeCompare(b.data.title));
 const genres = [...new Set(books.map((b) => b.data.genre))];
 ---
-<Site title="All books · Pagebound Books" description="Browse every book on the Pagebound shelves. Filter by genre, search by title or author, and reserve for click and collect." themeColor="#7a1f2b" icon="📚" day={41}>
+<Site title="All books · Pagebound Books" description="Browse every book on the Pagebound shelves. Filter by genre, search by title or author, and reserve for click and collect." themeColor="#7a1f2b" icon="P" day={41}>
   <Shell active="books">
     <header class="pb-pagehead">
       <div class="pb-wrap">
@@ -30,10 +32,24 @@ const genres = [...new Set(books.map((b) => b.data.genre))];
             <label class="pb-check"><input type="checkbox" id="cheap" /><span>Under £10 only</span></label>
           </div>
         </form>
-        <p class="pb-count" aria-live="polite" data-count>{books.length} books</p>
-        <ul class="pb-grid" role="list" data-grid>
-          {books.map((b) => <BookCard slug={b.id} {...b.data} />)}
-        </ul>
+        <div class="pb-viewbar">
+          <p class="pb-count" aria-live="polite" data-count>{books.length} books</p>
+          <div class="pb-viewtoggle" role="group" aria-label="Choose a view" data-view><button type="button" data-mode="shelves" aria-pressed="true">Shelves</button><button type="button" data-mode="grid" aria-pressed="false">Grid</button></div>
+        </div>
+        <div class="pb-catalogue" data-mode="shelves">
+          <div class="pb-shelves" data-shelves>
+            {genres.map((g) => (
+              <section class="pb-bshelf" data-shelf={g} aria-label={g}>
+                <h2 class="pb-bshelf__label">{g}<small>{BAYS[g].split(' · ')[1]}</small></h2>
+                <ul class="pb-spines" role="list">{books.filter((b) => b.data.genre === g).map((b) => <Spine slug={b.id} {...b.data} />)}</ul>
+                <div class="pb-bshelf__board" aria-hidden="true"></div>
+              </section>
+            ))}
+          </div>
+          <ul class="pb-grid pb-gridview" role="list" data-grid>
+              {books.map((b) => <BookCard slug={b.id} {...b.data} />)}
+            </ul>
+        </div>
         <p class="pb-empty" data-empty hidden>Nothing on the shelves matches that. Try a different word, or <a href="/day-041-bookshop/contact/" class="pb-link">ask a bookseller</a>.</p>
       </div>
     </section>

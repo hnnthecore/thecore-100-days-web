@@ -11,11 +11,13 @@ export async function getStaticPaths() {
   const all = (await getCollection('projects')).sort((a, b) => b.data.year - a.data.year || a.id.localeCompare(b.id));
   return all.map((entry, i) => ({
     params: { slug: entry.id },
-    props: { entry, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length], related: all.filter((p) => p.id !== entry.id && p.data.type === entry.data.type).concat(all.filter((p) => p.id !== entry.id && p.data.type !== entry.data.type)).slice(0, 3) },
+    props: { entry, all, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length], related: all.filter((p) => p.id !== entry.id && p.data.type === entry.data.type).concat(all.filter((p) => p.id !== entry.id && p.data.type !== entry.data.type)).slice(0, 3) },
   }));
 }
-const { entry, prev, next, related } = Astro.props;
+const { entry, all, prev, next, related } = Astro.props;
 const p = entry.data;
+const byYear = [...all].sort((x, y) => x.data.year - y.data.year || x.id.localeCompare(y.id));
+const no = `AN-${p.year}-${String(byYear.findIndex((x) => x.id === entry.id) + 1).padStart(2, '0')}`;
 const { Content } = await render(entry);
 ---
 <Site title={`${p.title}, ${p.location} · Atelier Nord`} description={`${p.title}: ${p.summary} ${p.type} project in ${p.location}, ${p.year}, ${p.area.toLocaleString('en-GB')} m².`} themeColor="#16181b" icon="📐" day={42}>
@@ -29,17 +31,35 @@ const { Content } = await render(entry);
       </div>
     </header>
     <section class="an-section">
-      <div class="an-wrap">
-        <div class="an-hero-img"><Image src={PROJECT_PHOTOS[entry.id]} alt={p.title} width={1400} class="an-photo" loading="eager" /></div>
-        <dl class="an-facts mt-8">
-          <div><dt>Location</dt><dd>{p.location}</dd></div><div><dt>Year</dt><dd>{p.year}</dd></div><div><dt>Floor area</dt><dd>{p.area.toLocaleString('en-GB')} m²</dd></div>
-          <div><dt>Client</dt><dd>{p.client}</dd></div><div><dt>Status</dt><dd>{p.status}</dd></div><div><dt>Type</dt><dd>{p.type}</dd></div>
-        </dl>
-        <div class="an-case">
-          <div>
-            <h2 class="an-h3">Materials</h2>
-            <ul class="an-mats" role="list">{p.materials.map((m) => <li>{m}</li>)}</ul>
-            <dl class="an-stats">{p.stats.map((s) => <div><dt>{s.label}</dt><dd>{s.value}</dd></div>)}</dl>
+      <div class="an-wrap an-sheetpage">
+        <aside class="an-titleblock" aria-label="Project title block">
+          <p class="an-titleblock__h">Title block</p>
+          <table><caption class="sr-only">Project facts</caption><tbody>
+            <tr><th scope="row">Project no.</th><td>{no}</td></tr>
+            <tr><th scope="row">Project</th><td>{p.title}</td></tr>
+            <tr><th scope="row">Client</th><td>{p.client}</td></tr>
+            <tr><th scope="row">Location</th><td>{p.location}</td></tr>
+            <tr><th scope="row">Year</th><td>{p.year}</td></tr>
+            <tr><th scope="row">Floor area</th><td>{p.area.toLocaleString('en-GB')} m²</td></tr>
+            <tr><th scope="row">Status</th><td>{p.status}</td></tr>
+            <tr><th scope="row">Type</th><td>{p.type}</td></tr>
+          </tbody></table>
+          <h2 class="an-titleblock__h mt-6">Materials</h2>
+          <ul class="an-mats" role="list">{p.materials.map((m) => <li>{m}</li>)}</ul>
+          <dl class="an-stats">{p.stats.map((s) => <div><dt>{s.label}</dt><dd>{s.value}</dd></div>)}</dl>
+          <a href="/day-042-architecture/contact/" class="an-btn an-btn--ink mt-6 w-full">Start a project like this</a>
+        </aside>
+        <div class="an-chapters">
+          <div class="an-viewer" data-viewer>
+            <div class="an-viewer__bar" role="tablist" aria-label="View the project">
+              <button type="button" role="tab" id="v-photo" aria-controls="vp-photo" aria-selected="true">Photograph</button>
+              <button type="button" role="tab" id="v-map" aria-controls="vp-map" aria-selected="false" tabindex="-1">Site map</button>
+            </div>
+            <div role="tabpanel" id="vp-photo" aria-labelledby="v-photo" class="an-viewer__panel"><Image src={PROJECT_PHOTOS[entry.id]} alt={p.title} width={1400} class="an-photo" loading="eager" /></div>
+            <div role="tabpanel" id="vp-map" aria-labelledby="v-map" class="an-viewer__panel" hidden>
+              <iframe title={`Map of the area around ${p.title}, ${p.location}`} src={`https://www.openstreetmap.org/export/embed.html?bbox=${(p.lon ?? -3) - 0.03}%2C${(p.lat ?? 56) - 0.015}%2C${(p.lon ?? -3) + 0.03}%2C${(p.lat ?? 56) + 0.015}&layer=mapnik&marker=${p.lat ?? 56}%2C${p.lon ?? -3}`} loading="lazy" referrerpolicy="no-referrer" width="900" height="520"></iframe>
+              <p class="an-viewer__note">The site, {p.location}. Position is approximate.</p>
+            </div>
           </div>
           <div class="an-prose"><Content /></div>
         </div>
@@ -51,3 +71,16 @@ const { Content } = await render(entry);
     </section>
   </Shell>
 </Site>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-viewer]')!;
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const select = (t: HTMLButtonElement, focus = false) => {
+    tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; root.querySelector<HTMLElement>('#' + x.getAttribute('aria-controls'))!.hidden = !on; });
+    if (focus) t.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => { const k = (e as KeyboardEvent).key; const to = k === 'ArrowRight' || k === 'ArrowLeft' ? tabs[(i + 1) % tabs.length] : k === 'Home' ? tabs[0] : k === 'End' ? tabs[tabs.length - 1] : null; if (to) { e.preventDefault(); select(to, true); } });
+  });
+</script>

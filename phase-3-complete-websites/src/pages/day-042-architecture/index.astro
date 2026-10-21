@@ -1,78 +1,100 @@
 ---
-/** Day 042 · Atelier Nord · home page. Projects and journal posts come from content collections. */
+/** Day 042 · Atelier Nord · home. Built from days/day-042/DESIGN.md: the studio's work as one long street elevation. */
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import { Image } from 'astro:assets';
-import ph_white_house_jpg from '../../assets/day-042/white-house.jpg';
-import ph_brick_terrace_jpg from '../../assets/day-042/brick-terrace.jpg';
-import ph_facade_jpg from '../../assets/day-042/facade.jpg';
 import Shell from '../../components/day-042/Shell.astro';
-import ProjectCard from '../../components/day-042/ProjectCard.astro';
 import { PROJECT_PHOTOS } from '../../days/day-042/photos';
 
-const projects = (await getCollection('projects')).sort((a, b) => b.data.year - a.data.year);
-const featured = projects.filter((p) => p.data.featured).slice(0, 4);
-const hero = projects.find((p) => p.id === 'house-on-the-skerry')!;
+const B = '/day-042-architecture';
+const all = await getCollection('projects');
+const byYear = [...all].sort((a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title));
+/* The elevation: order and height of each building as a share of the tallest. */
+const WALK = [['house-on-the-skerry', 0.8], ['hollow-tower', 1], ['birch-court-primary-school', 0.84], ['lanark-courtyard-houses', 0.78], ['orchard-pavilion', 0.92], ['harbour-sauna', 0.66], ['tide-mill-studios', 0.74], ['ullapool-library-and-archive', 0.86]] as const;
+const strip = WALK.map(([id, f]) => ({ p: all.find((x) => x.id === id)!, f }));
 const posts = (await getCollection('journal')).sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const m2 = (n: number) => n.toLocaleString('en-GB') + ' m²';
 ---
-<Site title="Atelier Nord · Architecture studio, Edinburgh" description="An independent architecture studio in Edinburgh designing quiet, low-carbon buildings for homes, schools, libraries and workplaces. (Day 042 of Thecore's 100 Days of Web, a demo site.)" themeColor="#16181b" icon="📐" day={42}>
-  <Shell active="home">
-    <section class="an-hero an-hero--full" aria-labelledby="hero-title">
-      <Image src={PROJECT_PHOTOS[hero.id]} alt="" width={2000} class="an-hero__img" loading="eager" />
-      <div class="an-hero__shade" aria-hidden="true"></div>
-      <div class="an-wrap an-hero__text">
-        <p class="an-eyebrow">Architecture · Edinburgh · Since 2011</p>
-        <h1 id="hero-title" class="an-h1 mt-5">Buildings that <em>listen</em> to their place.</h1>
-        <p class="an-lede mt-6">We design quiet, low-carbon homes, schools and civic buildings with a small team, a big pencil and a lot of patience.</p>
-        <div class="mt-8 flex flex-wrap gap-3"><a href="/day-042-architecture/projects/" class="an-btn an-btn--lg an-btn--paper">See our work</a><a href="/day-042-architecture/contact/" class="an-btn an-btn--lg an-btn--ghost">Start a project</a></div>
-      </div>
-      <a href={`/day-042-architecture/projects/${hero.id}/`} class="an-hero__tag">{hero.data.title} · {hero.data.location} →</a>
-    </section>
-    <div class="an-statsbar"><div class="an-wrap">
-      <dl class="an-stats !mt-0"><div><dt>Projects completed</dt><dd>64</dd></div><div><dt>Awards and shortlists</dt><dd>21</dd></div><div><dt>Average energy saving</dt><dd>72%</dd></div><div><dt>Years in practice</dt><dd>15</dd></div></dl>
-    </div></div>
-
-    <section class="an-section" aria-labelledby="featured-title">
-      <div class="an-wrap">
-        <div class="an-head"><div><p class="an-eyebrow">Selected work</p><h2 id="featured-title" class="an-h2 mt-3">Recent projects</h2></div><a href="/day-042-architecture/projects/" class="an-link">All {projects.length} projects →</a></div>
-        <ul class="an-grid" role="list">{featured.map((p) => <ProjectCard slug={p.id} {...p.data} />)}</ul>
-      </div>
-    </section>
-
-    <div class="an-wrap an-band" data-photo-band>
-        <figure class="an-band__main"><Image src={ph_white_house_jpg} alt="A white modern house with dark brick panels and a balcony" width={1400} /><figcaption>Quiet, low-carbon homes</figcaption></figure>
-        <figure><Image src={ph_brick_terrace_jpg} alt="A contemporary brick townhouse with a stepped gable and neat hedge" width={900} /><figcaption>Built to last</figcaption></figure>
-        <figure><Image src={ph_facade_jpg} alt="A white facade with tall translucent windows" width={900} /><figcaption>Light by design</figcaption></figure>
-      </div>
-
-    <section class="an-section an-section--ink" aria-labelledby="how-title">
-      <div class="an-wrap">
-        <div class="an-head"><div><p class="an-eyebrow !text-(--amber)">How we work</p><h2 id="how-title" class="an-h2 mt-3">Three beliefs. <em>Every project.</em></h2></div></div>
-        <div class="an-principles">
-          <div class="an-principle"><b>01</b><h3 class="an-h3">Start with the site</h3><p>Weather, light, ground and neighbours decide the building. We spend more time looking than drawing.</p></div>
-          <div class="an-principle"><b>02</b><h3 class="an-h3">Carbon is a design brief</h3><p>Natural materials, thick walls and honest detailing. Our buildings use about a quarter of the energy of a typical new one.</p></div>
-          <div class="an-principle"><b>03</b><h3 class="an-h3">Make it last</h3><p>Repairable, adaptable and loved. A building that is still wanted in a hundred years is the most sustainable one.</p></div>
+<Site title="Atelier Nord · Architecture studio, Edinburgh" description="An independent architecture studio in Edinburgh designing quiet, low-carbon buildings for homes, schools, libraries and workplaces. (Day 042 of Thecore's 100 Days of Web, a demo site.)" themeColor="#dde3e6" icon="A" day={42}>
+  <Shell active="home" home>
+    <section class="wk" data-walk aria-labelledby="h1">
+      <div class="wk__stick">
+        <div class="wk__top">
+          <h1 id="h1" class="wk__name">Atelier Nord</h1>
+          <p class="wk__lede">An architecture studio in Edinburgh. We design quiet, low-carbon homes, schools and libraries, and here they stand side by side.</p>
+          <div class="wk__read" data-read data-ui>
+            <p class="wk__m"><span data-metres>0</span> m walked</p>
+            <p class="wk__now" data-now aria-live="off">{strip[0].p.data.title}, {strip[0].p.data.location}</p>
+            <div class="wk__btns"><button type="button" data-prev aria-label="Previous building">←</button><button type="button" data-next aria-label="Next building">→</button></div>
+          </div>
+        </div>
+        <div class="wk__view" data-view tabindex="0" role="region" aria-label="Eight buildings in one elevation. Scroll or use the arrow keys to walk along it.">
+          <div class="wk__track" data-track>
+            <ol class="wk__strip" role="list">{strip.map(({ p, f }, i) => (
+              <li style={`--f:${f}`} data-b data-name={`${p.data.title}, ${p.data.location}`} data-m={`${p.data.year} · ${m2(p.data.area)}`}>
+                <a href={`${B}/projects/${p.id}/`} class="wk__b" style={`--ar:${(PROJECT_PHOTOS[p.id].width / PROJECT_PHOTOS[p.id].height).toFixed(3)}`}>
+                  <span class="wk__dim" data-ui aria-hidden="true"><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H100M1 0V12M99 0V12" vector-effect="non-scaling-stroke" /></svg><em>{m2(p.data.area)}</em></span>
+                  <span class="wk__img"><Image src={PROJECT_PHOTOS[p.id]} alt={`${p.data.title}, ${p.data.location}`} width={i === 1 ? 760 : 900} loading={i < 2 ? 'eager' : 'lazy'} /></span>
+                </a>
+                <span class="wk__lab"><b>{p.data.title}</b><i>{p.data.location}, {p.data.year}</i></span>
+              </li>
+            ))}</ol>
+            <div class="wk__ground" aria-hidden="true"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="an-section" aria-labelledby="journal-title">
-      <div class="an-wrap">
-        <div class="an-head"><div><p class="an-eyebrow">Journal</p><h2 id="journal-title" class="an-h2 mt-3">What we’re thinking about</h2></div><a href="/day-042-architecture/journal/" class="an-link">All articles →</a></div>
-        <ul class="an-posts" role="list">
-          {posts.map((p) => (
-            <li><a href={`/day-042-architecture/journal/${p.id}/`} class="an-post"><time datetime={p.data.date}>{fmt(p.data.date)}</time><div><h3 class="an-h3">{p.data.title}</h3><p>{p.data.excerpt}</p></div><span class="an-post__cat">{p.data.category}</span></a></li>
-          ))}
-        </ul>
+    <section class="wk-how" aria-labelledby="how-t"><div class="an-wrap wk-how__grid">
+      <h2 id="how-t" class="wk-big" data-rise>The site decides.</h2>
+      <div class="wk-how__notes">
+        <p data-rise><b>Start with the site.</b> Weather, light, ground and neighbours decide the building. We spend more time looking than drawing.</p>
+        <p data-rise style="--d:1"><b>Carbon is a design brief.</b> Natural materials, thick walls and honest detailing. Our buildings use about a quarter of the energy of a typical new one.</p>
+        <p data-rise style="--d:2"><b>Make it last.</b> Repairable, adaptable and loved. A building that is still wanted in a hundred years is the most sustainable one.</p>
+        <p data-rise style="--d:3"><a class="an-link" href={`${B}/studio/`}>Meet the studio</a></p>
       </div>
-    </section>
+    </div></section>
 
-    <section class="an-section an-section--birch" aria-labelledby="cta-title">
-      <div class="an-wrap an-cta">
-        <div><h2 id="cta-title" class="an-h2">Got a site, a brief or just <em>a feeling?</em></h2><p class="an-lede mt-3">The first conversation is free. Bring a photo of the plot and a list of what matters.</p></div>
-        <a href="/day-042-architecture/contact/" class="an-btn an-btn--ink an-btn--lg">Start a conversation</a>
+    <section class="wk-reg" aria-labelledby="reg-t"><div class="an-wrap wk-reg__grid">
+      <div class="wk-reg__list">
+        <h2 id="reg-t" class="wk-h" data-rise>All {all.length} projects</h2>
+        <ul role="list" data-reg>{byYear.map((p) => (
+          <li data-rise><a href={`${B}/projects/${p.id}/`} data-for={p.id}><b>{p.data.title}</b><span>{p.data.location}</span><span>{p.data.type}</span><time>{p.data.year}</time><span class="wk-m">{m2(p.data.area)}</span></a></li>
+        ))}</ul>
+        <p class="wk-reg__more" data-rise><a class="an-link" href={`${B}/projects/`}>Filter the whole portfolio</a></p>
       </div>
+      <div class="wk-reg__pane" aria-hidden="true" data-pane data-ui>{byYear.map((p, i) => (
+        <figure data-pic={p.id} class:list={[i === 0 && 'is-on']}><Image src={PROJECT_PHOTOS[p.id]} alt="" width={900} loading="lazy" /><figcaption>{p.data.title}</figcaption></figure>
+      ))}</div>
+    </div></section>
+
+    <section class="wk-num" aria-label="The studio in numbers"><div class="an-wrap"><dl>
+      <div data-rise><dt>Projects completed</dt><dd>64</dd><svg class="wk-d" data-ui aria-hidden="true" viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H100M1 0V12M99 0V12" vector-effect="non-scaling-stroke" /></svg></div>
+      <div data-rise style="--d:1"><dt>Awards and shortlists</dt><dd>21</dd><svg class="wk-d" data-ui aria-hidden="true" viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H100M1 0V12M99 0V12" vector-effect="non-scaling-stroke" /></svg></div>
+      <div data-rise style="--d:2"><dt>Average energy saving</dt><dd>72%</dd><svg class="wk-d" data-ui aria-hidden="true" viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H100M1 0V12M99 0V12" vector-effect="non-scaling-stroke" /></svg></div>
+      <div data-rise style="--d:3"><dt>Years in practice</dt><dd>15</dd><svg class="wk-d" data-ui aria-hidden="true" viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H100M1 0V12M99 0V12" vector-effect="non-scaling-stroke" /></svg></div>
+    </dl></div></section>
+
+    <section class="wk-jn" aria-labelledby="jn-t"><div class="an-wrap">
+      <h2 id="jn-t" class="wk-h" data-rise>Journal</h2>
+      <div class="wk-jn__grid">{posts.map((p, i) => (
+        <a href={`${B}/journal/${p.id}/`} class:list={['wk-post', i === 0 && 'wk-post--lead']} data-rise style={`--d:${i}`}>
+          <h3>{p.data.title}</h3>
+          <p>{p.data.excerpt}</p>
+          <time datetime={p.data.date}>{fmt(p.data.date)}, {p.data.category}</time>
+        </a>
+      ))}</div>
+      <p class="wk-jn__more" data-rise><a class="an-link" href={`${B}/journal/`}>All articles</a></p>
+    </div></section>
+
+    <section class="wk-go" aria-labelledby="go-t">
+      <h2 id="go-t" class="sr-only">Start a project</h2>
+      <a href={`${B}/contact/`} class="wk-go__link" data-rise>Start a project</a>
+      <p class="an-wrap wk-go__addr" data-rise>Bring a photo of the plot and a list of what matters. The first conversation is free. 12 Leith Walk Mews, Edinburgh EH6 5AA.</p>
     </section>
   </Shell>
 </Site>
+<script>
+  import '../../days/day-042/walk';
+</script>

@@ -15,6 +15,8 @@ stats:
   - { value: "11", label: "studios" }
   - { value: "70%", label: "of stone reused" }
   - { value: "1", label: "working waterwheel" }
+lat: 56.26
+lon: -2.63
 ---
 
 ## Brief

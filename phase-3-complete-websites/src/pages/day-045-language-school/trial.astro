@@ -1,0 +1,130 @@
+---
+/** Day 045 · Lingua Lane · free trial lesson: pick a language, pick a taster slot, leave your details, get a calendar file. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-045/Shell.astro';
+
+const B = '/day-045-language-school';
+const courses = await getCollection('courses');
+const teachers = await getCollection('teachers');
+const data = courses.map((c) => ({ id: c.id, language: c.data.language, greeting: c.data.greeting, colour: c.data.colour, ink: c.data.ink, schedule: c.data.schedule, teacher: teachers.find((t) => t.id === c.data.teacher)?.data.name ?? '' }));
+---
+<Site title="Free trial lesson · Lingua Lane" description="Book a free 30-minute taster lesson in any of our eight languages. Meet your teacher, try the method and decide with no obligation." themeColor="#ff5a3c" icon="L" day={45}>
+  <Shell active="trial">
+    <header class="ll-pagehead"><div class="ll-wrap"><ol class="ll-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Free trial lesson</li></ol><h1 class="ll-h1">Try a lesson. <span class="ll-mark">On us.</span></h1><p class="ll-lede mt-5">Thirty minutes with one of our teachers, in a real class. No card, no obligation, and you can still change your mind afterwards.</p></div></header>
+    <section class="ll-section !pt-10"><div class="ll-wrap ll-split ll-split--wide" data-trial data-courses={JSON.stringify(data)}>
+      <form class="ll-box" data-form novalidate>
+        <ol class="ll-steps" aria-label="Progress" role="list"><li class="is-on" data-bar></li><li data-bar></li><li data-bar></li></ol>
+        <fieldset class="ll-set"><legend class="ll-h3">1. Choose a language</legend>
+          <div class="ll-tl" role="radiogroup">{data.map((c, i) => <label class="ll-tl__opt" style={`--c:${c.colour};--k:${c.ink}`}><input type="radio" name="lang" value={c.id} checked={false} /><span><b>{c.greeting}</b>{c.language}</span></label>)}</div>
+        </fieldset>
+        <fieldset class="ll-set mt-8" data-slotset disabled><legend class="ll-h3">2. Pick a time</legend>
+          <p class="ll-hint" data-slothint>Choose a language to see taster times.</p>
+          <div class="ll-slots" role="radiogroup" data-slots></div>
+        </fieldset>
+        <fieldset class="ll-set mt-8" data-details disabled><legend class="ll-h3">3. Your details</legend>
+          <div class="ll-fields mt-4">
+            <div><label for="t-name" class="ll-label">Full name</label><input id="t-name" class="ll-input" autocomplete="name" aria-describedby="t-name-e" /><p class="ll-err" id="t-name-e" hidden>Please add your name.</p></div>
+            <div><label for="t-email" class="ll-label">Email</label><input id="t-email" type="email" class="ll-input" autocomplete="email" aria-describedby="t-email-e" /><p class="ll-err" id="t-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div class="col-2"><label for="t-note" class="ll-label">Anything the teacher should know? (optional)</label><textarea id="t-note" class="ll-input" placeholder="Your level, what you want to use it for..."></textarea></div>
+          </div>
+        </fieldset>
+        <p class="ll-err mt-4" role="alert" data-err hidden></p>
+        <button type="submit" class="ll-btn ll-btn--coral ll-btn--lg ll-btn--full mt-6">Book my free lesson</button>
+      </form>
+      <aside class="ll-box ll-trial__sum" aria-live="polite" data-sum>
+        <h2 class="ll-h3">Your free lesson</h2>
+        <dl class="ll-trial__rows"><div><dt>Language</dt><dd data-s="lang">Not chosen yet</dd></div><div><dt>When</dt><dd data-s="when">Pick a time</dd></div><div><dt>Teacher</dt><dd data-s="teacher">Assigned once you choose</dd></div><div><dt>Where</dt><dd>14 Gower Mews, London WC1E 6HP, or online</dd></div><div><dt>Price</dt><dd><b>£0</b> · 30 minutes</dd></div></dl>
+        <ul class="ll-ticks mt-5"><li>Join a real class, not a sales call</li><li>Cancel any time before the lesson</li><li>Enrolling later? Your lesson counts toward week one</li></ul>
+      </aside>
+      <div class="ll-box ll-trial__done" data-done hidden tabindex="-1">
+        <p class="ll-eyebrow">You are booked</p>
+        <h2 class="ll-h2 mt-3" data-d="title">See you soon!</h2>
+        <p class="ll-lede mt-3" data-d="text"></p>
+        <div class="mt-6 flex flex-wrap gap-3"><button type="button" class="ll-btn ll-btn--coral ll-btn--lg" data-ics>Add to my calendar</button><a href={`${B}/enrol/`} class="ll-btn ll-btn--lg">Enrol instead</a><button type="button" class="ll-btn ll-btn--lg" data-again>Book another</button></div>
+        <p class="mt-5 text-sm" style="color:var(--muted)">This is a demo, so nothing was actually booked and no email was sent.</p>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+<script>
+  interface C { id: string; language: string; greeting: string; schedule: string[]; teacher: string }
+  interface Slot { date: Date; label: string; full: boolean }
+  const root = document.querySelector<HTMLElement>('[data-trial]')!;
+  const courses: C[] = JSON.parse(root.dataset.courses!);
+  const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+  const slotset = root.querySelector<HTMLFieldSetElement>('[data-slotset]')!;
+  const details = root.querySelector<HTMLFieldSetElement>('[data-details]')!;
+  const slotsEl = root.querySelector<HTMLElement>('[data-slots]')!;
+  const hint = root.querySelector<HTMLElement>('[data-slothint]')!;
+  const sum = root.querySelector<HTMLElement>('[data-sum]')!;
+  const done = root.querySelector<HTMLElement>('[data-done]')!;
+  const err = root.querySelector<HTMLElement>('[data-err]')!;
+  const bars = [...root.querySelectorAll<HTMLElement>('[data-bar]')];
+  const s = (k: string) => sum.querySelector<HTMLElement>(`[data-s="${k}"]`)!;
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const long = (d: Date) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }) + ' at ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  let course: C | null = null, slot: Slot | null = null;
+
+  function slotsFor(c: C): Slot[] {
+    const out: Slot[] = [];
+    for (const sch of c.schedule) {
+      const [dn, hm] = sch.split(' '); const [h, m] = hm.split(':').map(Number);
+      for (let w = 0; w < 3; w++) {
+        const d = new Date(); d.setHours(h, m, 0, 0);
+        let add = (DAYS.indexOf(dn) - d.getDay() + 7) % 7; if (add === 0) add = 7;
+        d.setDate(d.getDate() + add + w * 7);
+        const key = (c.id + d.getDate() + d.getMonth()).split('').reduce((a, ch) => a + ch.charCodeAt(0), 0);
+        out.push({ date: d, label: d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + ', ' + hm, full: key % 5 === 0 });
+      }
+    }
+    return out.sort((a, b) => +a.date - +b.date).slice(0, 8);
+  }
+  function step(n: number) { bars.forEach((b, i) => b.classList.toggle('is-on', i < n)); }
+  function paintSum() {
+    s('lang').textContent = course ? course.greeting + ' · ' + course.language : 'Not chosen yet';
+    s('when').textContent = slot ? long(slot.date) : 'Pick a time';
+    s('teacher').textContent = course ? course.teacher : 'Assigned once you choose';
+  }
+  function chooseLang(id: string) {
+    course = courses.find((c) => c.id === id) ?? null; slot = null;
+    if (!course) return;
+    slotset.disabled = false; details.disabled = true;
+    hint.textContent = 'Thirty-minute tasters run inside real ' + course.language + ' classes. Greyed times are full.';
+    slotsEl.innerHTML = '';
+    slotsFor(course).forEach((sl, i) => {
+      const l = document.createElement('label'); l.className = 'll-slot' + (sl.full ? ' is-full' : '');
+      const inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'slot'; inp.value = String(i); inp.disabled = sl.full;
+      inp.addEventListener('change', () => { slot = sl; details.disabled = false; step(3); paintSum(); });
+      const sp = document.createElement('span'); sp.textContent = sl.label; if (sl.full) { const f = document.createElement('small'); f.textContent = 'Full'; sp.appendChild(f); }
+      l.append(inp, sp); slotsEl.appendChild(l);
+    });
+    step(2); paintSum();
+  }
+  form.querySelectorAll<HTMLInputElement>('input[name="lang"]').forEach((r) => r.addEventListener('change', () => chooseLang(r.value)));
+  const want = new URLSearchParams(location.search).get('course');
+  if (want) { const r = form.querySelector<HTMLInputElement>(`input[name="lang"][value="${want}"]`); if (r) { r.checked = true; chooseLang(want); } }
+
+  const name = form.querySelector<HTMLInputElement>('#t-name')!, email = form.querySelector<HTMLInputElement>('#t-email')!;
+  const flag = (el: HTMLInputElement, bad: boolean) => { el.setAttribute('aria-invalid', String(bad)); document.getElementById(el.id + '-e')!.hidden = !bad; };
+  form.addEventListener('submit', (e) => {
+    e.preventDefault(); err.hidden = true;
+    if (!course || !slot) { err.textContent = !course ? 'Please choose a language first.' : 'Please pick a time for your lesson.'; err.hidden = false; return; }
+    const badN = name.value.trim().length < 2, badE = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+    flag(name, badN); flag(email, badE);
+    if (badN || badE) { (badN ? name : email).focus(); return; }
+    form.hidden = true; sum.hidden = true; done.hidden = false;
+    done.querySelector('[data-d="title"]')!.textContent = 'See you soon, ' + name.value.trim().split(' ')[0] + '!';
+    done.querySelector('[data-d="text"]')!.textContent = 'Your free ' + course.language + ' lesson with ' + course.teacher + ' is on ' + long(slot.date) + '. We will email a reminder the day before.';
+    done.focus();
+  });
+  root.querySelector('[data-ics]')!.addEventListener('click', () => {
+    if (!course || !slot) return;
+    const z = (n: number) => String(n).padStart(2, '0');
+    const f = (d: Date) => d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + 'T' + z(d.getHours()) + z(d.getMinutes()) + '00';
+    const end = new Date(slot.date.getTime() + 30 * 60000);
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Lingua Lane//Trial//EN', 'BEGIN:VEVENT', 'UID:' + Date.now() + '@lingualane.example', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(slot.date), 'DTEND:' + f(end), 'SUMMARY:Free ' + course.language + ' lesson at Lingua Lane', 'LOCATION:14 Gower Mews\\, London WC1E 6HP', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'lingua-lane-trial.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  root.querySelector('[data-again]')!.addEventListener('click', () => { form.reset(); form.hidden = false; sum.hidden = false; done.hidden = true; course = slot = null; slotset.disabled = true; details.disabled = true; slotsEl.innerHTML = ''; hint.textContent = 'Choose a language to see taster times.'; step(1); paintSum(); });
+</script>
