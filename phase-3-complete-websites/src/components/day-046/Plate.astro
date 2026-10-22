@@ -1,0 +1,9 @@
+---
+/** A botanical plate printed onto the herb's own colour. The plate's paper is white, so `multiply` lets the field show through. */
+import { Image } from 'astro:assets';
+import { PLATES, byId } from '../../days/day-046/products';
+interface Props { id: string; width?: number; loading?: 'lazy' | 'eager'; class?: string; alt?: string }
+const { id, width = 700, loading = 'lazy', class: cls = '', alt } = Astro.props;
+const p = byId(id);
+---
+<span class:list={['wh-plate', cls]} style={`--f:${p.field}`}><Image src={PLATES[p.plate]} alt={alt ?? `Botanical plate of ${p.latin}`} width={width} loading={loading} /></span>

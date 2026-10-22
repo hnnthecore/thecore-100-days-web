@@ -1,0 +1,52 @@
+---
+/** Day 046 · Wildcombe Herbal · the tea club: how it works, three plans, and a short sign-up. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-046/Shell.astro';
+import Plate from '../../components/day-046/Plate.astro';
+import { Image } from 'astro:assets';
+import tea from '../../assets/day-046-photos/tea-infuser.jpg';
+const B = '/day-046-herbal-shop';
+const PLANS = [['two', 'Two teas', '£12 a month', 'Two 50 g teas of our choosing, about 50 cups.'], ['three', 'Three teas', '£17 a month', 'Three 50 g teas, about 75 cups.'], ['plus', 'Three teas and a treat', '£24 a month', 'Three teas, plus a salve, honey or bath salts every third month.']] as const;
+const LAST = [['June', 'Chamomile, lemon balm, peppermint'], ['July', 'Lime blossom, nettle, Quiet Hours'], ['August', 'Peppermint, lemon balm, chamomile']] as const;
+---
+<Site title="Tea club · Wildcombe Herbal" description="Two or three Wildcombe herbal teas, chosen by us and posted on the first Monday of every month. Pause, skip or stop whenever you like." themeColor="#d7e46b" icon="W" day={46}>
+  <Shell active="club">
+    <section class="wq" aria-labelledby="h1"><div class="wh-wrap wq__grid">
+      <div>
+        <h1 id="h1" class="ws__h">The tea club.</h1>
+        <p class="wh-lead">Each month we choose two or three teas that are at their best, pack them and post them on the first Monday. There is nothing to remember and nothing to cancel in writing: pause, skip or stop from your account, or send us a message.</p>
+        <ol class="wq__steps" role="list">
+          <li><b>Choose a plan.</b> Two teas, three teas, or three teas and a treat.</li>
+          <li><b>We pick.</b> Whatever is freshest on the racks that month, never the same set twice in a row.</li>
+          <li><b>Posted on the first Monday.</b> In a letterbox-sized box, with a brewing card and a note.</li>
+        </ol>
+      </div>
+      <figure class="wq__pic"><Image src={tea} alt="A glass cup of herbal tea with an infuser, on a wooden board" width={1000} /></figure>
+    </div></section>
+
+    <section class="wq__plans" aria-labelledby="plans-t"><div class="wh-wrap">
+      <h2 id="plans-t" class="wh-h">Choose your plan.</h2>
+      <form data-club novalidate class="wq__form">
+        <fieldset class="wq__radio"><legend class="sr-only">Plan</legend>
+          {PLANS.map(([k, n, p, d], i) => <label class="wq__plan"><input type="radio" name="plan" value={k} checked={i === 1} /><span><b>{n}</b><i class="wh-latin">{p}</i><span>{d}</span></span></label>)}
+        </fieldset>
+        <div class="wq__fields">
+          <div><label class="wh-label" for="q-name">Your name</label><input class="wh-input" id="q-name" autocomplete="name" required /><p class="wh-err" data-err="name"></p></div>
+          <div><label class="wh-label" for="q-email">Email</label><input class="wh-input" id="q-email" type="email" autocomplete="email" required /><p class="wh-err" data-err="email"></p></div>
+          <label class="wq__check"><input type="checkbox" id="q-gift" /> This is a gift: we will add a handwritten card.</label>
+        </div>
+        <button type="submit" class="wh-btn">Start the club</button>
+        <p class="wq__ok" data-ok role="status"></p>
+      </form>
+    </div></section>
+
+    <section class="wq__last" aria-labelledby="last-t"><div class="wh-wrap wq__lastgrid">
+      <h2 id="last-t" class="wh-h">What came last summer.</h2>
+      <ul role="list">{LAST.map(([m, t]) => <li><b>{m}</b><span>{t}</span></li>)}</ul>
+      <div class="wq__plates" aria-hidden="true"><Plate id="chamomile" width={320} /><Plate id="lemon-balm" width={320} /><Plate id="peppermint" width={320} /></div>
+    </div></section>
+  </Shell>
+</Site>
+<script>
+  import '../../days/day-046/club';
+</script>

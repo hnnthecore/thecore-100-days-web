@@ -1,0 +1,46 @@
+---
+/** Day 047 · Solstice Sound · header and footer shared by every page. Links are root paths, made relative by the build. */
+import '@fontsource-variable/syne';
+import '@fontsource-variable/albert-sans';
+import Mark from '../brand/Mark.astro';
+import '../../days/day-047/styles.css';
+
+interface Props { active?: 'lineup' | 'schedule' | 'tickets' | 'info' }
+const { active } = Astro.props;
+const B = '/day-047-music-festival';
+const NAV = [['lineup', 'Line-up', `${B}/lineup/`], ['schedule', 'Schedule', `${B}/schedule/`], ['tickets', 'Tickets', `${B}/tickets/`], ['info', 'Info', `${B}/info/`]] as const;
+---
+<div class="sf">
+  <header class="sf-header" data-header>
+    <div class="sf-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="sf-logo" aria-label="Solstice Sound, home"><Mark site="day-047-music-festival" size={34} />Solstice Sound</a>
+      <nav aria-label="Main" class="hidden lg:block"><ul class="flex gap-9">{NAV.map(([k, l, h]) => <li><a href={h} class="sf-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-3">
+        <a href={`${B}/schedule/#plan`} class="sf-planpill hidden sm:inline-flex" aria-label="My plan">My plan <b data-plan-count>0</b></a>
+        <a href={`${B}/tickets/`} class="sf-btn sf-btn--hot hidden sm:inline-flex">Get tickets</a>
+        <button type="button" class="sf-burger lg:hidden" data-burger aria-expanded="false" aria-controls="sf-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="sf-menu" class="sf-menu lg:hidden" aria-label="Mobile" data-menu hidden>
+      <ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul>
+    </nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="sf-footer">
+    <div class="sf-wrap pt-14"><div class="sd-foot"><p class="sd-foot__big">Solstice <span>Sound</span></p><p class="sd-foot__when">16 · 17 · 18 July 2027<br />The Cotswolds</p><a href={`${B}/tickets/`} class="sf-btn sf-btn--hot">Get tickets</a></div></div>
+    <div class="sf-wrap grid grid-cols-2 gap-10 py-12 lg:grid-cols-3">
+      <div><h2 class="sf-foot-h">Festival</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/lineup/`}>Line-up</a></li><li><a href={`${B}/schedule/`}>Schedule</a></li><li><a href={`${B}/tickets/`}>Tickets</a></li></ul></div>
+      <div><h2 class="sf-foot-h">Plan your trip</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/getting-here/`}>Getting here and camping</a></li><li><a href={`${B}/info/`}>Info and FAQ</a></li></ul></div>
+      <div class="col-span-2 lg:col-span-1"><h2 class="sf-foot-h">Contact</h2><address class="mt-3 grid gap-1 not-italic" style="color:var(--muted)">hello@solsticesound.co.uk<br />Press: press@solsticesound.co.uk<br />01632 960146</address></div>
+    </div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import { plan } from '../../days/day-047/plan';
+  const paint = () => document.querySelectorAll('[data-plan-count]').forEach((el) => (el.textContent = String(plan.all().length)));
+  paint();
+  addEventListener('plan:change', paint);
+</script>

@@ -1,0 +1,57 @@
+---
+/** Day 046 · Wildcombe Herbal · about: the farm, how things are made, and the credits for every plate and picture. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-046/Shell.astro';
+import { Image } from 'astro:assets';
+import credits from '../../assets/day-046-plates/credits.json';
+import drying from '../../assets/day-046-photos/drying-herbs.jpg';
+import board from '../../assets/day-046-photos/herbs-on-board.jpg';
+import lavender from '../../assets/day-046-photos/lavender-rows.jpg';
+import honey from '../../assets/day-046-photos/honeycomb.jpg';
+import bottles from '../../assets/day-046-photos/amber-bottles.jpg';
+const B = '/day-046-herbal-shop';
+const PHOTOS = [['Drying herbs', 'drying-herbs', 5808450], ['Herbs on a board', 'herbs-on-board', 4113927], ['Lavender rows', 'lavender-rows', 8669165], ['Honeycomb', 'honeycomb', 4921856], ['Amber bottles', 'amber-bottles', 7797449], ['Chamomile stems', 'chamomile-stems', 13641676], ['Stone cottages', 'stone-cottages', 39590851], ['Chamomile tea', 'chamomile-cup', 8257749], ['Tea with infuser', 'tea-infuser', 34344554]] as const;
+const FACTS = [['2011', 'First sold at Totnes market'], ['14', 'Small beds on the combe'], ['2', 'Packing days a week, Tuesday and Friday'], ['0', 'Herbs sold that we have not tasted']] as const;
+---
+<Site title="About · Wildcombe Herbal" description="The story of a herb farm on a south-facing combe on the edge of Dartmoor: how we grow, dry and pack, and who does it." themeColor="#8fc27a" icon="W" day={46}>
+  <Shell active="about">
+    <section class="wa" aria-labelledby="h1"><div class="wh-wrap wa__grid">
+      <div class="wa__text">
+        <h1 id="h1" class="ws__h">A herb farm on a south-facing slope.</h1>
+        <p class="wh-lead">Wildcombe began as a stall at the Friday market in Totnes, with a dozen herbs, a hand scale and a lot of paper bags. We are still small enough that the person who picks your chamomile is probably the person who packs it.</p>
+        <p>The farm is fourteen beds on a combe above the Dart, where the ground faces south and the wind comes over the moor. We grow everything we can: the teas, the herbs that go into the salves, the elderberries and the thyme for the honey. When we cannot grow something ourselves, such as valerian, we buy it from a grower we have met, and the label says where it came from.</p>
+        <p>We dry our herbs on racks in the barn within hours of picking, and we pack to order, so what arrives at your door has been on the shelf for weeks, not months.</p>
+      </div>
+      <figure class="wa__pic"><Image src={board} alt="Fresh herbs and paper packets on a wooden board" width={1000} /></figure>
+    </div></section>
+
+    <section class="wa__facts" aria-label="Wildcombe in numbers"><div class="wh-wrap"><dl>{FACTS.map(([n, t]) => <div><dt>{t}</dt><dd>{n}</dd></div>)}</dl></div></section>
+
+    <section class="wa__how" aria-labelledby="how-t"><div class="wh-wrap">
+      <h2 id="how-t" class="wh-h">How things are made.</h2>
+      <div class="wa__cols">
+        <div><h3>Teas</h3><p>Picked by hand on dry mornings, dried in a single layer on mesh racks with the barn doors open, and kept whole. We crush nothing, which is why the flavour lasts.</p></div>
+        <div><h3>Salves and balms</h3><p>Petals and roots are steeped in oil on the warm shelf above the kitchen range for six weeks, strained, and set with beeswax from the next farm.</p></div>
+        <div><h3>Syrups and tinctures</h3><p>Small batches, simmered or steeped in the farm kitchen. Elderberries are picked from our hedges in September and cooked the same day.</p></div>
+      </div>
+    </div></section>
+
+    <section class="wa__gal" aria-label="Pictures from the farm"><div class="wh-wrap">
+      <div class="wa__strip">
+        <figure><Image src={drying} alt="Bunches of herbs hanging to dry" width={800} /></figure>
+        <figure><Image src={lavender} alt="Rows of lavender in flower" width={800} /></figure>
+        <figure><Image src={honey} alt="Honeycomb in a glass jar" width={800} /></figure>
+        <figure><Image src={bottles} alt="Amber glass bottles on a wooden tray" width={800} /></figure>
+      </div>
+    </div></section>
+
+    <section class="wa__cred" id="credits" aria-labelledby="cred-t"><div class="wh-wrap">
+      <h2 id="cred-t" class="wh-h">Plate and picture credits.</h2>
+      <p class="wh-lead">The botanical plates are public-domain scans from Wikimedia Commons, made from Franz Eugen Köhler's <em>Medizinal-Pflanzen</em> (1887) and other 18th and 19th century herbals. The photographs are free to use under the Pexels licence. Thank you to everyone who made them.</p>
+      <h3>Plates</h3>
+      <ul class="wa__list" role="list">{(credits as any[]).map((c) => <li><a href={c.page} class="wh-link">{c.title}, {c.creator}</a></li>)}</ul>
+      <h3>Photographs</h3>
+      <ul class="wa__list" role="list">{PHOTOS.map(([t, , id]) => <li><a href={`https://www.pexels.com/photo/${id}/`} class="wh-link">{t}</a>, Pexels</li>)}</ul>
+    </div></section>
+  </Shell>
+</Site>

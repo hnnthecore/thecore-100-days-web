@@ -1,0 +1,71 @@
+---
+/** Day 047 · Solstice Sound · one page per act, generated from the "artists" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import Shell from '../../../components/day-047/Shell.astro';
+import { STAGE_COLOUR } from '../../../days/day-047/art';
+import { ACT_PHOTOS, ACT_ALTS } from '../../../days/day-047/photos';
+import { toMin } from '../../../days/day-047/plan';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('artists')).sort((a, b) => a.data.day.localeCompare(b.data.day) || a.data.start.localeCompare(b.data.start));
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, prev: all[(i + all.length - 1) % all.length], next: all[(i + 1) % all.length], same: all.filter((x) => x.data.day === entry.data.day && x.id !== entry.id) } }));
+}
+const B = '/day-047-music-festival';
+const { entry, prev, next, same } = Astro.props;
+const a = entry.data;
+const { Content } = await render(entry);
+const FULL = { Fri: 'Friday 16 July', Sat: 'Saturday 17 July', Sun: 'Sunday 18 July' } as const;
+---
+<Site title={`${a.name} · Solstice Sound`} description={a.blurb} themeColor="#140824" icon="🌅" day={47}>
+  <Shell active="lineup">
+    <header class="sf-pagehead"><div class="sf-wrap"><ol class="sf-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/lineup/`}>Line-up</a></li><li aria-current="page">{a.name}</li></ol>
+      <div class="sf-artist">
+        <div class="sf-artist__art"><Image src={ACT_PHOTOS[entry.id]} alt={ACT_ALTS[entry.id]} width={640} loading="eager" /></div>
+        <div>
+          {a.headliner && <p class="sf-eyebrow" style="color:var(--yellow)">{a.day} headliner</p>}
+          <h1 class="sf-h1 mt-3" style="font-size:clamp(2.4rem,6vw,5rem)">{a.name}</h1>
+          <p class="sf-lede mt-5" style="color:#e9dcf8">{a.blurb}</p>
+          <dl class="sf-facts"><div><dt>When</dt><dd>{FULL[a.day]}</dd></div><div><dt>Time</dt><dd>{a.start} to {a.end}</dd></div><div><dt>Stage</dt><dd><span class="sf-stage" style={`--c:${STAGE_COLOUR[a.stage]}`}>{a.stage}</span></dd></div><div><dt>From</dt><dd>{a.origin} · {a.genre}</dd></div></dl>
+          <div class="mt-7 flex flex-wrap gap-3"><button type="button" class="sf-btn sf-btn--sun sf-btn--lg" data-star={entry.id} data-name={a.name} data-text aria-pressed="false">☆ Add to my plan</button><a href={`${B}/tickets/`} class="sf-btn sf-btn--lg">Get tickets</a></div>
+        </div>
+      </div></div></header>
+    <section class="sf-section !pb-6" aria-labelledby="set-t"><div class="sf-wrap">
+      <div class="sf-head"><div><p class="sf-eyebrow">Set time</p><h2 id="set-t" class="sf-h2 mt-3" style="font-size:clamp(1.6rem,3vw,2.2rem)">Where {a.name} sits in the day</h2></div></div>
+      <div class="sf-daybar" data-daybar data-id={entry.id} data-day={a.day} data-start={a.start} data-end={a.end} role="img" aria-label={`${a.name} play the ${a.stage} stage from ${a.start} to ${a.end}`}>
+        {['Sunset', 'Forest', 'Dome'].map((st) => (
+          <div class="sf-daybar__lane" style={`--c:${STAGE_COLOUR[st]}`}><span class="sf-daybar__name">{st}</span><div class="sf-daybar__track">
+            {[entry, ...same].filter((x) => x.data.stage === st).map((x) => <span class:list={['sf-daybar__set', x.id === entry.id && 'is-this']} data-set={x.id} data-d={x.data.day} data-s={x.data.start} data-e={x.data.end} style={`left:${((toMin(x.data.start) - 960) / 480) * 100}%;width:${((toMin(x.data.end) - toMin(x.data.start)) / 480) * 100}%`}>{x.data.name}</span>)}
+          </div></div>
+        ))}
+        <div class="sf-daybar__ticks" aria-hidden="true"><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>24:00</span></div>
+      </div>
+      <p class="sf-clashnote mt-5" role="status" data-clash hidden></p>
+    </div></section>
+    <section class="sf-section"><div class="sf-wrap"><div class="sf-prose"><Content /></div></div></section>
+    <section class="sf-section sf-section--alt" aria-labelledby="same-t"><div class="sf-wrap">
+      <div class="sf-head"><h2 id="same-t" class="sf-h2">Also on {FULL[a.day].split(' ')[0]}</h2></div>
+      <ul class="sf-grid3" role="list" style="grid-template-columns:repeat(auto-fit,minmax(14rem,1fr))">{same.map((s) => <li><a href={`${B}/artists/${s.id}/`} class="sf-card block"><p class="sf-stage" style={`--c:${STAGE_COLOUR[s.data.stage]}`}>{s.data.stage} · {s.data.start}</p><h3 class="sf-h3 mt-2" style="font-size:1.3rem">{s.data.name}</h3><p>{s.data.blurb}</p></a></li>)}</ul>
+      <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/artists/${prev.id}/`} class="sf-btn">← {prev.data.name}</a><a href={`${B}/artists/${next.id}/`} class="sf-btn">{next.data.name} →</a></div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../../days/day-047/stars';
+  import { plan, toMin } from '../../../days/day-047/plan';
+  const bar = document.querySelector<HTMLElement>('[data-daybar]')!;
+  const note = document.querySelector<HTMLElement>('[data-clash]')!;
+  const sets = [...bar.querySelectorAll<HTMLElement>('[data-set]')].map((el) => ({ id: el.dataset.set!, day: el.dataset.d!, start: el.dataset.s!, end: el.dataset.e!, name: el.textContent!.trim(), el }));
+  const overlap = (a: (typeof sets)[number], b: (typeof sets)[number]) => a.day === b.day && toMin(a.start) < toMin(b.end) && toMin(b.start) < toMin(a.end);
+  function paintClash() {
+    const me = sets.find((x) => x.id === bar.dataset.id)!;
+    const hits = sets.filter((x) => x.id !== me.id && plan.has(x.id) && overlap(me, x));
+    sets.forEach((x) => x.el.classList.toggle('is-clash', hits.includes(x)));
+    note.hidden = !hits.length;
+    if (hits.length) note.textContent = 'Heads up: this set overlaps with ' + hits.map((x) => x.name).join(' and ') + ' from your plan.';
+  }
+  addEventListener('plan:change', paintClash);
+  paintClash();
+</script>

@@ -1,0 +1,59 @@
+---
+/** Day 046 · Wildcombe Herbal · header, basket drawer and footer shared by every page. Links are root paths, made relative by the build. See days/day-046/DESIGN.md. */
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/instrument-sans';
+import '../../days/day-046/herb.css';
+import { Image } from 'astro:assets';
+import Mark from '../brand/Mark.astro';
+import { PLATES, PRODUCTS } from '../../days/day-046/products';
+
+interface Props { active?: 'shop' | 'club' | 'journal' | 'about' | 'help' }
+const { active } = Astro.props;
+const B = '/day-046-herbal-shop';
+const NAV = [['shop', 'Shop', `${B}/shop/`], ['club', 'Tea club', `${B}/tea-club/`], ['journal', 'Journal', `${B}/journal/`], ['about', 'About', `${B}/about/`]] as const;
+---
+<script is:inline>document.documentElement.classList.add('js');</script>
+<div class="wh">
+  <header class="wh-header" data-header>
+    <div class="wh-header__in">
+      <a href={`${B}/`} class="wh-logo" aria-label="Wildcombe Herbal, home"><Mark site="day-046-herbal-shop" size={34} /><span>Wildcombe <i>Herbal</i></span></a>
+      <nav class="wh-nav" aria-label="Main"><ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-2">
+        <button type="button" class="wh-basketbtn" data-drawer-open aria-haspopup="dialog" aria-controls="wh-drawer">Basket <b data-cart-count>0</b></button>
+        <button type="button" class="wh-burger" data-burger aria-expanded="false" aria-controls="wh-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="wh-menu" class="wh-menu" aria-label="Mobile" data-menu hidden>
+      <ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/shipping/`}>Shipping and returns</a></li><li><a href={`${B}/contact/`}>Contact</a></li></ul>
+    </nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <aside class="wh-drawer" id="wh-drawer" data-drawer hidden role="dialog" aria-modal="true" aria-labelledby="wh-drawer-t" data-lenis-prevent>
+    <div class="wh-drawer__veil" data-drawer-close></div>
+    <div class="wh-drawer__panel">
+      <div class="wh-drawer__head"><h2 id="wh-drawer-t">Your basket</h2><button type="button" class="wh-drawer__x" data-drawer-close aria-label="Close basket">×</button></div>
+      <div class="wh-drawer__lines" data-drawer-lines></div>
+      <div class="wh-drawer__foot" data-drawer-foot></div>
+    </div>
+  </aside>
+  <p class="wh-toast" role="status" data-toast hidden></p>
+  <div hidden aria-hidden="true" data-plate-bank>{PRODUCTS.map((p) => <Image src={PLATES[p.plate]} alt="" width={160} data-pid={p.id} loading="eager" />)}</div>
+
+  <footer class="wh-footer">
+    <div class="wh-foot__cols">
+      <div><h2>Grown on the edge of Dartmoor</h2><p>Herbs grown, dried and blended on a south-facing combe in Devon, and posted from the farm. First sold at Totnes market in 2011.</p>
+        <form class="wh-news" data-news novalidate><label class="sr-only" for="wh-news-in">Email address</label><input id="wh-news-in" type="email" placeholder="Your email address" autocomplete="email" /><button type="submit">Sign up</button></form><p class="wh-foot__ok" data-news-ok role="status"></p></div>
+      <div><h2>Shop</h2><ul><li><a href={`${B}/collections/teas/`}>Loose-leaf teas</a></li><li><a href={`${B}/collections/salves/`}>Salves and balms</a></li><li><a href={`${B}/collections/syrups/`}>Syrups and tinctures</a></li><li><a href={`${B}/collections/bath/`}>Bath</a></li><li><a href={`${B}/collections/gifts/`}>Gifts and kits</a></li></ul></div>
+      <div><h2>Help</h2><ul><li><a href={`${B}/shipping/`}>Shipping and returns</a></li><li><a href={`${B}/faq/`}>Questions</a></li><li><a href={`${B}/contact/`}>Contact</a></li><li><a href={`${B}/tea-club/`}>Tea club</a></li><li><a href={`${B}/journal/`}>Journal</a></li></ul></div>
+      <div><h2>Find us</h2><address>Wildcombe Farm, Combe Lane<br />Ashprington, Totnes TQ9 7UT<br />hello@wildcombeherbal.co.uk<br />01632 960463</address><p>Open for collection Thursday to Saturday, 10 to 4.</p></div>
+    </div>
+    <p class="wh-foot__big" aria-hidden="true">Wildcombe <i>Herbal</i></p>
+    <div class="wh-foot__end"><span>© Wildcombe Herbal Ltd. Registered in England and Wales.</span><span><a href={`${B}/about/#credits`}>Plate and picture credits</a></span></div>
+  </footer>
+</div>
+<script>
+  import '../../days/day-046/shell';
+</script>

@@ -1,0 +1,77 @@
+---
+/** Day 047 · Solstice Sound · the schedule: pick a day, see three stage lanes, star sets and get clash warnings and a printable plan. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-047/Shell.astro';
+import { STAGE_COLOUR } from '../../days/day-047/art';
+
+const B = '/day-047-music-festival';
+const artists = (await getCollection('artists')).sort((a, b) => a.data.start.localeCompare(b.data.start));
+const sets = artists.map((a) => ({ id: a.id, name: a.data.name, day: a.data.day, stage: a.data.stage, start: a.data.start, end: a.data.end }));
+const STAGES = ['Sunset', 'Forest', 'Dome'] as const;
+---
+<Site title="Schedule · Solstice Sound" description="The full Solstice Sound timetable by day and stage. Star your sets to build a personal plan and spot clashes." themeColor="#140824" icon="🌅" day={47}>
+  <Shell active="schedule">
+    <header class="sf-pagehead"><div class="sf-wrap"><ol class="sf-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Schedule</li></ol><h1 class="sf-h1" style="font-size:clamp(2.4rem,7vw,5.6rem)">Your <span class="sf-sun">schedule</span></h1><p class="sf-lede mt-5">Star the sets you cannot miss. We will warn you if two of them overlap.</p></div></header>
+    <section class="sf-section !pt-10"><div class="sf-wrap">
+      <div class="sf-chips mb-8" role="group" aria-label="Day" data-days><button type="button" data-d="Fri" aria-pressed="true">Friday 16</button><button type="button" data-d="Sat" aria-pressed="false">Saturday 17</button><button type="button" data-d="Sun" aria-pressed="false">Sunday 18</button></div>
+      <p class="sf-warn mb-6" role="status" data-warn hidden></p>
+      <div class="sf-tt">{STAGES.map((st) => (
+        <section class="sf-lane" style={`--c:${STAGE_COLOUR[st]}`} aria-labelledby={`lane-${st}`}>
+          <h3 id={`lane-${st}`}>{st} stage</h3>
+          <ol role="list">{sets.filter((s) => s.stage === st).map((s) => (
+            <li class="sf-slot" data-slot={s.id} data-day={s.day} hidden>
+              <div><time>{s.start} to {s.end}</time><b><a href={`${B}/artists/${s.id}/`}>{s.name}</a></b></div>
+              <button type="button" class="sf-star" data-star={s.id} data-name={s.name} aria-pressed="false" aria-label={`Add ${s.name} to my plan`}>★</button>
+            </li>
+          ))}</ol>
+        </section>
+      ))}</div>
+
+      <section class="sf-plan" id="plan" aria-labelledby="plan-t">
+        <div class="flex flex-wrap items-center justify-between gap-3"><h2 id="plan-t" class="sf-h3" style="font-size:1.4rem">My plan</h2><div class="flex gap-2"><button type="button" class="sf-btn" data-print>Print plan</button><button type="button" class="sf-btn" data-clear>Clear all</button></div></div>
+        <p style="color:var(--muted)" data-empty class="mt-3">Nothing here yet. Tap ★ on a set to add it.</p>
+        <ol role="list" data-list></ol>
+      </section>
+    </div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ sets }}>
+  window.__sets = sets;
+</script>
+<script>
+  import '../../days/day-047/stars';
+  import { plan, clashes, toMin } from '../../days/day-047/plan';
+
+  const sets = (window as unknown as { __sets: { id: string; name: string; day: string; stage: string; start: string; end: string }[] }).__sets;
+  const FULL: Record<string, string> = { Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday' };
+  let day = 'Fri';
+
+  function paint() {
+    document.querySelectorAll<HTMLElement>('[data-slot]').forEach((li) => { li.hidden = li.dataset.day !== day; li.classList.toggle('is-mine', plan.has(li.dataset.slot!)); });
+    const pairs = clashes(sets);
+    const clashIds = new Set(pairs.flat());
+    document.querySelectorAll<HTMLElement>('[data-slot]').forEach((li) => li.classList.toggle('is-clash', clashIds.has(li.dataset.slot!)));
+    const name = (id: string) => sets.find((s) => s.id === id)!.name;
+    const warn = document.querySelector<HTMLElement>('[data-warn]')!;
+    warn.hidden = pairs.length === 0;
+    warn.textContent = pairs.length ? `Clash: ${pairs.map(([a, b]) => `${name(a)} and ${name(b)}`).join('; ')} overlap. You will have to choose, or catch half of each.` : '';
+
+    const mine = sets.filter((s) => plan.has(s.id)).sort((a, b) => ['Fri', 'Sat', 'Sun'].indexOf(a.day) - ['Fri', 'Sat', 'Sun'].indexOf(b.day) || toMin(a.start) - toMin(b.start));
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = mine.length > 0;
+    document.querySelector('[data-list]')!.innerHTML = mine.map((s) => `<li><b>${s.name}</b><span>${FULL[s.day]} · ${s.start}–${s.end} · ${s.stage} stage${clashIds.has(s.id) ? ' · clash' : ''}</span></li>`).join('');
+  }
+
+  document.querySelector('[data-days]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    day = b.dataset.d!;
+    document.querySelectorAll('[data-days] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paint();
+  });
+  document.querySelector('[data-clear]')!.addEventListener('click', () => plan.clear());
+  document.querySelector('[data-print]')!.addEventListener('click', () => print());
+  addEventListener('plan:change', paint);
+  paint();
+</script>

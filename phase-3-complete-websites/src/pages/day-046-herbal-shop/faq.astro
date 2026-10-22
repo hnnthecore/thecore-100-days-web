@@ -1,0 +1,28 @@
+---
+/** Day 046 · Wildcombe Herbal · questions we are asked most, as an accordion. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-046/Shell.astro';
+const B = '/day-046-herbal-shop';
+const QA = [
+  ['How much tea is in a 50 g bag?', 'About 25 to 30 cups, depending on the herb. Whole leaves are light, so 50 g is more than it looks.'],
+  ['How long does loose herbal tea keep?', 'Stored in a cool, dark, dry place in the tin or pouch it came in, our teas are at their best for about twelve months. The date is on the label.'],
+  ['Are your herbs organic?', 'We grow without sprays or artificial fertiliser, but we are not certified organic. We are happy to talk about how we grow if you write to us.'],
+  ['Can I drink herbal tea if I am pregnant or on medication?', 'Some herbs are not suitable. Each product page has a note, and if you are pregnant, breastfeeding or take regular medication, please ask a pharmacist or your doctor before trying a new herbal product.'],
+  ['What is in the Quiet Hours blend?', 'Chamomile, lemon balm, lime blossom and a small amount of valerian root. Valerian has a strong earthy smell and is not suitable for everyone, so read the note on its page.'],
+  ['Do you sell by weight or by cup?', 'By weight. Each page tells you roughly how many cups to expect.'],
+  ['Can I change or cancel my tea club?', 'Yes, at any time before the first Monday of the month, from your account or by writing to us. There is no minimum term.'],
+  ['Can I collect from the farm?', 'Yes. Choose collection at checkout and come to the farm on a Thursday, Friday or Saturday between 10 and 4. We will email you when it is ready.'],
+  ['Do you do wholesale?', 'We supply a small number of cafés, delis and shops in Devon. Write to us and we will send a price list.'],
+] as const;
+---
+<Site title="Questions · Wildcombe Herbal" description="Answers to the questions we are asked most about our herbs, delivery, the tea club and collection." themeColor="#c4bdeb" icon="W" day={46}>
+  <Shell active="help">
+    <section class="wi" aria-labelledby="h1"><div class="wh-wrap wi__grid">
+      <div class="wi__main">
+        <h1 id="h1" class="ws__h">Questions.</h1>
+        <div class="wpd__acc wi__acc">{QA.map(([q, a], i) => <details open={i === 0}><summary>{q}</summary><div><p>{a}</p></div></details>)}</div>
+      </div>
+      <aside class="wi__side"><h2>Not here?</h2><p>Write to us and a person at the farm will answer, usually within a day.</p><p><a class="wh-btn" href={`${B}/contact/`}>Contact us</a></p></aside>
+    </div></section>
+  </Shell>
+</Site>

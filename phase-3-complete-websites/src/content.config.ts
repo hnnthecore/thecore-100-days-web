@@ -77,6 +77,11 @@ const shifts = defineCollection({
   schema: z.object({ date: z.string(), time: z.string(), title: z.string(), kind: z.enum(['Growing', 'Cooking', 'Building', 'Events']), spots: z.number(), taken: z.number(), where: z.string() }),
 });
 
+const herbJournal = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-046/journal' }),
+  schema: z.object({ title: z.string(), date: z.string(), category: z.string(), excerpt: z.string(), read: z.string() }),
+});
+
 const features = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/day-044/features' }),
   schema: z.object({ title: z.string(), tagline: z.string(), icon: z.enum(['line', 'branch', 'mail', 'bell', 'chart', 'users']), order: z.number(), lede: z.string() }),
@@ -106,7 +111,7 @@ const teachers = defineCollection({
 });
 
 const artists = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-046/artists' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-047/artists' }),
   schema: z.object({
     name: z.string(), day: z.enum(['Fri', 'Sat', 'Sun']), stage: z.enum(['Sunset', 'Forest', 'Dome']), genre: z.string(), start: z.string(), end: z.string(),
     headliner: z.boolean(), hue: z.number(), origin: z.string(), blurb: z.string(),
@@ -114,30 +119,30 @@ const artists = defineCollection({
 });
 
 const articles = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-047/articles' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-048/articles' }),
   schema: z.object({
     title: z.string(), dek: z.string(), section: z.enum(['Science', 'Culture', 'Cities', 'Food']), author: z.string(), date: z.string(), hue: z.number(), reads: z.number(), quote: z.string(),
   }),
 });
 const authors = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-047/authors' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-048/authors' }),
   schema: z.object({ name: z.string(), role: z.string() }),
 });
 
 const treatments = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-048/treatments' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-049/treatments' }),
   schema: z.object({
     title: z.string(), category: z.enum(['Everyday', 'Cosmetic', 'Restorative', 'Family', 'Urgent']), price: z.number(), minutes: z.number(),
     icon: z.enum(['tooth', 'spark', 'sun', 'align', 'anchor', 'shield', 'smile', 'bolt']), summary: z.string(),
   }),
 });
 const dentists = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-048/dentists' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-049/dentists' }),
   schema: z.object({ name: z.string(), role: z.string(), special: z.string(), years: z.number(), colour: z.string(), treatments: z.array(z.string()) }),
 });
 
 const recipes = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-049/recipes' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-050/recipes' }),
   schema: z.object({
     title: z.string(), tagline: z.string(), cuisine: z.string(), minutes: z.number(), serves: z.number(), difficulty: z.enum(['Easy', 'Medium', 'Hard']), kcal: z.number(),
     diets: z.array(z.string()), hue: z.number(), tip: z.string(),
@@ -147,11 +152,11 @@ const recipes = defineCollection({
 });
 
 const companies = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-050/companies' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-051/companies' }),
   schema: z.object({ name: z.string(), tagline: z.string(), industry: z.string(), size: z.string(), colour: z.string(), city: z.string() }),
 });
 const jobs = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-050/jobs' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-051/jobs' }),
   schema: z.object({
     title: z.string(), company: z.string(), location: z.string(), mode: z.enum(['Remote', 'Hybrid', 'On-site']), type: z.enum(['Full-time', 'Part-time', 'Contract']),
     level: z.enum(['Junior', 'Mid', 'Senior']), min: z.number(), max: z.number(), category: z.string(), posted: z.string(), tags: z.array(z.string()), summary: z.string(),
@@ -159,23 +164,15 @@ const jobs = defineCollection({
 });
 
 const yogaClasses = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-051/classes' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-052/classes' }),
   schema: z.object({
     title: z.string(), tagline: z.string(), level: z.enum(['Beginner', 'All levels', 'Intermediate']), minutes: z.number(), intensity: z.number(), hue: z.number(),
     teacher: z.string(), benefits: z.array(z.string()),
   }),
 });
 const yogaTeachers = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-051/teachers' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/day-052/teachers' }),
   schema: z.object({ name: z.string(), role: z.string(), years: z.number(), colour: z.string(), styles: z.string() }),
-});
-
-const plants = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/day-052/plants' }),
-  schema: z.object({
-    title: z.string(), latin: z.string(), kind: z.enum(['leafy', 'tall', 'trail', 'round', 'palm', 'cactus']), light: z.enum(['Low', 'Medium', 'Bright']), pet: z.boolean(),
-    water: z.string(), difficulty: z.string(), hue: z.number(), sizes: z.array(z.object({ n: z.string(), p: z.number() })), tags: z.array(z.string()), blurb: z.string(),
-  }),
 });
 
 const shows = defineCollection({
@@ -258,4 +255,4 @@ const sites = defineCollection({
   }),
 });
 
-export const collections = { books, events, projects, journal, programmes, stories, shifts, features, customers, releases, courses, teachers, artists, articles, authors, treatments, dentists, recipes, companies, jobs, yogaClasses, yogaTeachers, plants, shows, episodes, collegeCourses, openDays, packages, weddings, objects, timeline, exhibitions, guides, regions, reportStories, renoProjects, sites };
+export const collections = { herbJournal, books, events, projects, journal, programmes, stories, shifts, features, customers, releases, courses, teachers, artists, articles, authors, treatments, dentists, recipes, companies, jobs, yogaClasses, yogaTeachers, shows, episodes, collegeCourses, openDays, packages, weddings, objects, timeline, exhibitions, guides, regions, reportStories, renoProjects, sites };

@@ -1,0 +1,31 @@
+---
+/**
+ * A drawn pack: tin, pouch, jar, bottle or box, in the herb's colour with its real label (name, Latin name, weight).
+ * These stand in for product photography; swapping photographs in later changes nothing else on the page.
+ */
+import { byId } from '../../days/day-046/products';
+interface Props { id: string; size?: string; class?: string }
+const { id, size, class: cls = '' } = Astro.props;
+const p = byId(id);
+const weight = (p.sizes.find((s) => s.id === size) ?? p.sizes[0]).label;
+const words = p.name.split(' ');
+const lines: string[] = [];
+for (const w of words) { const last = lines[lines.length - 1]; if (last && (last + ' ' + w).length <= 13) lines[lines.length - 1] = last + ' ' + w; else lines.push(w); }
+const INK = '#14110f', PAPER = '#f2f1ee';
+/* The pack is the herb's colour made a little deeper, so it stands out from the field behind it. */
+const deepen = (hex: string, amt: number) => '#' + [1, 3, 5].map((i) => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - amt) + 0x14 * amt).toString(16).padStart(2, '0')).join(''); // taste-skill-ignore
+const F = deepen(p.field, 0.3);
+const LIGHT = deepen(p.field, 0.12);
+const ly = 128 - (lines.length - 1) * 8;
+---
+<svg viewBox="0 0 200 240" class:list={['wh-pack', cls]} role="img" aria-label={`${p.name}, ${weight}`} xmlns="http://www.w3.org/2000/svg" data-ui>
+  {p.pack === 'tin' && (<><rect x="42" y="64" width="116" height="146" fill={F} /><rect x="38" y="46" width="124" height="26" fill={INK} /><rect x="42" y="196" width="116" height="14" fill={INK} opacity=".22" /><rect x="42" y="64" width="10" height="132" fill={LIGHT} opacity=".5" /></>)}
+  {p.pack === 'pouch' && (<><path d="M50 58h100l10 16v132a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V74z" fill={F} /><rect x="50" y="46" width="100" height="16" fill={INK} opacity=".85" /><path d="M54 52h92M54 57h92" stroke={F} stroke-width="1.4" opacity=".6" /></>)}
+  {p.pack === 'jar' && (<><rect x="50" y="42" width="100" height="26" fill={INK} /><rect x="38" y="68" width="124" height="142" rx="10" fill={F} /><rect x="38" y="68" width="124" height="14" fill={INK} opacity=".16" /><rect x="46" y="86" width="8" height="112" rx="4" fill={LIGHT} opacity=".45" /></>)}
+  {p.pack === 'bottle' && (<><rect x="82" y="28" width="36" height="30" fill={INK} /><rect x="86" y="58" width="28" height="26" fill="#3a2316" /><rect x="52" y="84" width="96" height="126" rx="12" fill="#3a2316" /><rect x="52" y="84" width="96" height="14" rx="6" fill={F} opacity=".9" /></>)}
+  {p.pack === 'box' && (<><rect x="30" y="58" width="140" height="152" fill={F} /><rect x="30" y="58" width="140" height="22" fill={INK} /><rect x="30" y="196" width="140" height="14" fill={INK} opacity=".16" /></>)}
+  <rect x="54" y="98" width="92" height="84" fill={PAPER} />
+  <text x="100" y={ly} text-anchor="middle" font-family="Fraunces Variable, Georgia, serif" font-size="14" font-weight="500" fill={INK}>{lines.map((l, i) => <tspan x="100" dy={i ? 16 : 0}>{l}</tspan>)}</text>
+  <text x="100" y={ly + lines.length * 16 + 4} text-anchor="middle" font-family="Fraunces Variable, Georgia, serif" font-size="8.5" font-style="italic" fill={INK}>{p.latin.length > 26 ? p.latin.slice(0, 24) + '…' : p.latin}</text>
+  <text x="100" y="172" text-anchor="middle" font-family="Instrument Sans Variable, sans-serif" font-size="8" fill={INK}>{weight} · Wildcombe Herbal</text>
+</svg>

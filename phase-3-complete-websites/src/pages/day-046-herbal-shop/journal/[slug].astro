@@ -1,0 +1,24 @@
+---
+/** Day 046 · Wildcombe Herbal · one journal note, set in a reading column. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-046/Shell.astro';
+export async function getStaticPaths() { return (await getCollection('herbJournal')).map((p) => ({ params: { slug: p.id }, props: { post: p } })); }
+const { post } = Astro.props;
+const { Content } = await render(post);
+const B = '/day-046-herbal-shop';
+const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const all = (await getCollection('herbJournal')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const next = all[(all.findIndex((x) => x.id === post.id) + 1) % all.length];
+---
+<Site title={`${post.data.title} · Wildcombe Herbal`} description={post.data.excerpt} themeColor="#e9e19a" icon="W" day={46}>
+  <Shell active="journal">
+    <article class="wj2__art"><div class="wh-wrap">
+      <nav class="wh-crumbs" aria-label="Breadcrumb"><a href={`${B}/journal/`}>Journal</a></nav>
+      <h1 class="wj2__h">{post.data.title}</h1>
+      <p class="wj2__meta">{post.data.category}, {fmt(post.data.date)}. {post.data.read}.</p>
+      <div class="wj2__body"><Content /></div>
+      <p class="wj2__next">Next note: <a class="wh-link" href={`${B}/journal/${next.id}/`}>{next.data.title}</a></p>
+    </div></article>
+  </Shell>
+</Site>

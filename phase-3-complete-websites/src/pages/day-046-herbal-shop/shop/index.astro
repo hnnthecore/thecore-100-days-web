@@ -1,0 +1,34 @@
+---
+/** Day 046 · Wildcombe Herbal · the shop: every product in the cabinet, with the chooser, a category filter and a sort. */
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-046/Shell.astro';
+import ProductCard from '../../../components/day-046/ProductCard.astro';
+import { PRODUCTS, CATS, TIMES, TASTES } from '../../../days/day-046/products';
+const B = '/day-046-herbal-shop';
+---
+<Site title="Shop · Wildcombe Herbal" description="Loose-leaf herbal teas, salves and balms, syrups and tinctures, bath salts and gifts, grown and made on the edge of Dartmoor." themeColor="#f5a623" icon="W" day={46}>
+  <Shell active="shop">
+    <section class="ws" data-cabinet data-shop aria-labelledby="h1">
+      <div class="wh-wrap">
+        <h1 id="h1" class="ws__h">The cabinet.</h1>
+        <p class="wh-lead ws__lead">Fourteen plates, one for each of our herbs and the things we make from them. Choose by hour and taste, by kind, or just look.</p>
+        <div class="ws__tools">
+          <div role="group" aria-label="Kind of product" class="wc__row"><span class="wc__lab">Kind</span>
+            <button type="button" aria-pressed="true" data-cat="">Everything</button>{(Object.entries(CATS)).map(([k, v]) => <button type="button" aria-pressed="false" data-cat={k}>{v.name}</button>)}</div>
+          <div role="group" aria-label="Time of day" class="wc__row"><span class="wc__lab">At</span>
+            <button type="button" aria-pressed="true" data-time="">Any hour</button>{(Object.entries(TIMES)).map(([k, v]) => <button type="button" aria-pressed="false" data-time={k}>{v}</button>)}</div>
+          <div role="group" aria-label="Taste" class="wc__row"><span class="wc__lab">Tasting</span>
+            <button type="button" aria-pressed="true" data-taste="">Anything</button>{(Object.entries(TASTES)).map(([k, v]) => <button type="button" aria-pressed="false" data-taste={k}>{v}</button>)}</div>
+          <div class="ws__sort"><label for="ws-sort" class="wh-label">Sort by</label>
+            <select id="ws-sort" class="wh-input" data-sort><option value="">Our order</option><option value="low">Price, low to high</option><option value="high">Price, high to low</option><option value="name">Name, A to Z</option></select></div>
+        </div>
+        <p class="wc__say" data-say role="status" aria-live="polite">Fourteen plates in the cabinet. Pick an hour or a taste and the right ones come forward.</p>
+        <ul class="wh-cab" data-cab role="list">{PRODUCTS.map((p, i) => <ProductCard id={p.id} eager={i < 4} />)}</ul>
+        <p class="ws__none" data-none hidden>Nothing in that kind matches. Try another hour or taste.</p>
+      </div>
+    </section>
+  </Shell>
+</Site>
+<script>
+  import '../../../days/day-046/shop';
+</script>

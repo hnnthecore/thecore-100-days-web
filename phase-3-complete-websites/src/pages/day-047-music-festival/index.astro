@@ -1,0 +1,137 @@
+---
+/** Day 047 · Solstice Sound · home: the festival as a clock face (a dial of every act), the headliners, the stages, light times, tickets. See days/day-047/DESIGN.md. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import Shell from '../../components/day-047/Shell.astro';
+import { STAGE_COLOUR } from '../../days/day-047/art';
+import { PHOTOS, PHOTO_ALTS } from '../../days/day-047/photos';
+import { toMin } from '../../days/day-047/plan';
+
+const B = '/day-047-music-festival';
+const artists = await getCollection('artists');
+const heads = artists.filter((a) => a.data.headliner).sort((a, b) => ['Fri', 'Sat', 'Sun'].indexOf(a.data.day) - ['Fri', 'Sat', 'Sun'].indexOf(b.data.day));
+const DAYS = [['Fri', 'Friday', 16], ['Sat', 'Saturday', 17], ['Sun', 'Sunday', 18]] as const;
+const STAGES = [['Sunset', 'The main stage, facing west over the valley. Doors open at four and the sun sets behind the stage.', 206], ['Forest', 'A lantern-lit clearing in the beech wood for folk, indie and big singalongs.', 170], ['Dome', 'A 3,000-capacity dome with lasers, bass and no curfew till 2am.', 134]] as const;
+const TIERS = [['Day pass', '£79', 'One day, any stage.'], ['Weekend', '£189', 'All three days, plus a festival tote.'], ['VIP weekend', '£349', 'Fast-track entry, a private bar and the viewing deck.']];
+
+/* The dial: 16:00 at the top, 23:00 back round to the top. Each act is an arc on the ring of its stage. */
+const T0 = 16 * 60, SPAN = 7 * 60, CX = 240, CY = 240, W = 28;
+const ang = (m: number) => ((m - T0) / SPAN) * 360;
+const pt = (r: number, a: number) => { const t = ((a - 90) * Math.PI) / 180; return [CX + r * Math.cos(t), CY + r * Math.sin(t)]; };
+const arc = (r: number, a0: number, a1: number) => { const [x0, y0] = pt(r, a0), [x1, y1] = pt(r, a1); return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+const dial = DAYS.map(([k]) => artists.filter((a) => a.data.day === k).map((a) => {
+  const ring = STAGES.find((s) => s[0] === a.data.stage)![2];
+  return { id: a.id, name: a.data.name, genre: a.data.genre, stage: a.data.stage, start: a.data.start, end: a.data.end, head: a.data.headliner, d: arc(ring, ang(toMin(a.data.start)) + 1.2, ang(toMin(a.data.end)) - 1.2) };
+}));
+const hourLabels = Array.from({ length: 7 }, (_, i) => { const [x, y] = pt(232, ang(T0 + i * 60)); return { t: `${16 + i}`, x, y }; });
+
+/* Sunrise and sunset for the site (51.8 N, 1.8 W), NOAA's simple method, shown in British Summer Time. */
+function sun(day: number) {
+  const lat = 51.8, lon = -1.8, n = Math.floor((Date.UTC(2027, 6, day) - Date.UTC(2027, 0, 0)) / 864e5);
+  const g = ((2 * Math.PI) / 365) * (n - 1 + (12 - 12) / 24);
+  const eq = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+  const dec = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g) - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+  const r = Math.PI / 180, ha = Math.acos(Math.cos(90.833 * r) / (Math.cos(lat * r) * Math.cos(dec)) - Math.tan(lat * r) * Math.tan(dec)) / r;
+  /* taste-skill-ignore: clock times */
+  const f = (m: number) => { const t = m + 60; return `${String(Math.floor(t / 60) % 24).padStart(2, '0')}:${String(Math.round(t % 60)).padStart(2, '0')}`; };
+  return { rise: f(720 - 4 * (lon + ha) - eq), set: f(720 - 4 * (lon - ha) - eq) };
+}
+const LIGHT = DAYS.map(([, l, d]) => ({ l, d, ...sun(d) }));
+---
+<Site title="Solstice Sound · Music festival, 16–18 July 2027" description="Three days, three stages and twelve acts in a Cotswolds valley, 16 to 18 July 2027. Tickets from £79." themeColor="#0b1530" day={47}>
+  <Shell>
+    <section class="sd-hero" aria-labelledby="sd-h">
+      <div class="sf-wrap sd-hero__in">
+        <div class="sd-hero__text">
+          <h1 id="sd-h" class="sd-h1 mt-0">Three days.<br />One <span>sunset.</span></h1>
+          <p class="sf-lede mt-6">16 to 18 July 2027 in the Cotswolds: twelve acts on three stages in a valley that faces west. The whole weekend is on the dial. Pick a day, press an act, build your plan.</p>
+          <div class="mt-8 flex flex-wrap gap-3"><a href={`${B}/tickets/`} class="sf-btn sf-btn--hot sf-btn--lg">Get tickets</a><a href={`${B}/schedule/`} class="sf-btn sf-btn--lg">Full schedule</a></div>
+        </div>
+
+        <div class="sd-dial" data-dial>
+          <div class="sd-tabs" role="group" aria-label="Day">{DAYS.map(([k, l], i) => <button type="button" data-day={i} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}</div>
+          <div class="sd-dial__stage">
+            <svg viewBox="0 0 480 480" class="sd-svg" role="group" aria-label="The programme as a dial, 16:00 at the top, going clockwise to 23:00">
+              {STAGES.map(([n, , r]) => <circle cx={CX} cy={CY} r={r} fill="none" stroke="rgb(255 255 255 / 0.08)" stroke-width={W} />)}
+              {hourLabels.map((h) => <text x={h.x} y={h.y} text-anchor="middle" dominant-baseline="central" class="sd-hr">{h.t}</text>)}
+              {dial.map((acts, i) => <g data-set={i} hidden={i !== 0}>{acts.map((a) => <path d={a.d} fill="none" stroke={STAGE_COLOUR[a.stage]} stroke-width={W - 4} stroke-linecap="butt" class="sd-arc" data-id={a.id} data-name={a.name} data-genre={a.genre} data-stage={a.stage} data-start={a.start} data-end={a.end} tabindex="0" role="button" aria-label={`${a.name}, ${a.stage} stage, ${a.start} to ${a.end}`} />)}</g>)}
+            </svg>
+            <div class="sd-centre" aria-live="polite" data-centre>
+              <p class="sd-centre__t" data-c-time>Press an act</p>
+              <p class="sd-centre__n" data-c-name>The whole weekend, on one dial</p>
+              <p class="sd-centre__m" data-c-meta>Outer ring Sunset, middle Forest, inner Dome</p>
+              <button type="button" class="sf-btn sf-btn--sun sd-centre__b" data-c-add hidden>Add to my plan</button>
+            </div>
+          </div>
+          <ul class="sd-key" role="list">{STAGES.map(([n]) => <li style={`--c:${STAGE_COLOUR[n]}`}>{n}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <noscript><section class="sf-section"><div class="sf-wrap"><h2 class="sf-h2">The three days</h2>{DAYS.map(([k, l], i) => <div class="mt-6"><h3 class="sf-h3">{l}</h3><ul>{dial[i].map((a) => <li>{a.start} {a.name}, {a.stage}</li>)}</ul></div>)}</div></section></noscript>
+
+    <section class="sf-section" aria-labelledby="head-t"><div class="sf-wrap" data-rise>
+      <div class="sf-head"><h2 id="head-t" class="sf-h2">The headliners</h2></div>
+      <ol class="sd-heads" role="list">{heads.map((a) => <li><a href={`${B}/artists/${a.id}/`}><span class="sd-heads__d">{a.data.day}</span><b>{a.data.name}</b><span class="sd-heads__m">{a.data.genre}, {a.data.origin}. {a.data.start} on the {a.data.stage} stage.</span></a></li>)}</ol>
+      <p class="mt-8"><a href={`${B}/lineup/`} class="sf-btn">All twelve acts</a></p>
+    </div></section>
+
+    <section class="sf-section sf-section--alt" aria-labelledby="stg-t"><div class="sf-wrap" data-rise>
+      <div class="sf-head"><h2 id="stg-t" class="sf-h2">Three stages</h2></div>
+      <ul class="sd-stages" role="list">{STAGES.map(([n, d]) => <li style={`--c:${STAGE_COLOUR[n]}`}><div class="sd-stages__img"><Image src={PHOTOS[`stage-${n.toLowerCase()}`]} alt={PHOTO_ALTS[`stage-${n.toLowerCase()}`]} width={800} /></div><h3>{n}</h3><p>{d}</p></li>)}</ul>
+    </div></section>
+
+    <section class="sf-section" aria-labelledby="light-t"><div class="sf-wrap sd-light" data-rise>
+      <div><h2 id="light-t" class="sf-h2">Timed to the sun</h2><p class="sf-lede mt-4">The Sunset stage faces west, so each evening headliner is timed to the real sunset over the valley. These are the light times for the field.</p></div>
+      <table class="sd-table"><caption class="sr-only">Sunrise and sunset in the valley, British Summer Time</caption><thead><tr><th scope="col">Day</th><th scope="col">Sunrise</th><th scope="col">Sunset</th></tr></thead><tbody>{LIGHT.map((x) => <tr><th scope="row">{x.l} {x.d} July</th><td>{x.rise}</td><td>{x.set}</td></tr>)}</tbody></table>
+    </div></section>
+
+    <section class="sf-section sf-section--alt" aria-labelledby="tix-t"><div class="sf-wrap">
+      <div class="sf-head"><h2 id="tix-t" class="sf-h2">Tickets</h2><a href={`${B}/tickets/`} class="sf-btn sf-btn--sun">Choose tickets</a></div>
+      <ul class="sf-grid3" role="list">{TIERS.map(([n, p, d]) => <li class="sf-card"><h3 class="sf-h3">{n}</h3><p class="sd-price">{p}</p><p>{d}</p></li>)}</ul>
+    </div></section>
+
+    <div class="sf-wrap sd-field" data-rise><figure class="sd-field__a"><Image src={PHOTOS['camp-lawn']} alt={PHOTO_ALTS['camp-lawn']} width={1000} /><figcaption>Camping on the hillside</figcaption></figure><figure><Image src={PHOTOS['food']} alt={PHOTO_ALTS['food']} width={700} /><figcaption>Street food all weekend</figcaption></figure><figure><Image src={PHOTOS['wristbands']} alt={PHOTO_ALTS['wristbands']} width={700} /><figcaption>Your pass is a wristband</figcaption></figure><figure><Image src={PHOTOS['shuttle']} alt={PHOTO_ALTS['shuttle']} width={700} /><figcaption>Shuttle buses from the station</figcaption></figure></div>
+
+    <section class="sf-section"><div class="sf-wrap sd-end"><h2 class="sf-h2">See you in the valley.</h2><p class="sf-lede">Camping, shuttle buses from Kemble and Cheltenham, and a family field are all on the <a href={`${B}/getting-here/`}>getting here</a> page.</p></div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { plan } from '../../days/day-047/plan';
+  const root = document.querySelector<HTMLElement>('[data-dial]')!;
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-day]')];
+  const sets = [...root.querySelectorAll<SVGGElement>('[data-set]')];
+  const t = root.querySelector('[data-c-time]')!, n = root.querySelector('[data-c-name]')!, m = root.querySelector('[data-c-meta]')!;
+  const add = root.querySelector<HTMLButtonElement>('[data-c-add]')!;
+  let cur: SVGPathElement | null = null;
+  const paint = () => root.querySelectorAll<SVGPathElement>('.sd-arc').forEach((p) => p.classList.toggle('is-mine', plan.has(p.dataset.id!)));
+  const label = () => { if (cur) add.textContent = plan.has(cur.dataset.id!) ? 'In my plan' : 'Add to my plan'; };
+  function show(p: SVGPathElement) {
+    cur = p; t.textContent = `${p.dataset.start} to ${p.dataset.end}`; n.textContent = p.dataset.name!; m.textContent = `${p.dataset.genre}, ${p.dataset.stage} stage`;
+    add.hidden = false; label();
+    root.querySelectorAll('.sd-arc').forEach((x) => x.classList.toggle('is-on', x === p));
+  }
+  tabs.forEach((b) => b.addEventListener('click', () => {
+    tabs.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    sets.forEach((s, i) => (s.hidden = i !== Number(b.dataset.day)));
+    cur = null; add.hidden = true; t.textContent = 'Press an act'; n.textContent = 'Pick one to see its time'; m.textContent = 'Outer ring Sunset, middle Forest, inner Dome';
+    root.querySelectorAll('.sd-arc').forEach((x) => x.classList.remove('is-on'));
+  }));
+  root.querySelectorAll<SVGPathElement>('.sd-arc').forEach((p) => {
+    p.addEventListener('click', () => show(p));
+    p.addEventListener('focus', () => show(p));
+    p.addEventListener('mouseenter', () => show(p));
+    p.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); plan.toggle(p.dataset.id!); } });
+  });
+  add.addEventListener('click', () => { if (cur) plan.toggle(cur.dataset.id!); });
+  addEventListener('plan:change', () => { paint(); label(); });
+  paint();
+  /* Sections rise into place as they arrive; skipped for reduced motion. */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('sd-js');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('[data-rise]').forEach((el) => io.observe(el));
+  }
+</script>

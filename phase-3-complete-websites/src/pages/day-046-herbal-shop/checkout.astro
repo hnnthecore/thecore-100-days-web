@@ -1,0 +1,47 @@
+---
+/** Day 046 · Wildcombe Herbal · checkout: your details, delivery and payment on one page, with a summary beside it, then a confirmation. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-046/Shell.astro';
+import { DELIVERY, money } from '../../days/day-046/cart';
+const B = '/day-046-herbal-shop';
+---
+<Site title="Checkout · Wildcombe Herbal" description="Enter your details, choose delivery and pay for your order." themeColor="#f5a623" icon="W" day={46}>
+  <Shell>
+    <section class="wk" aria-labelledby="h1" data-checkout><div class="wh-wrap">
+      <h1 id="h1" class="ws__h">Checkout.</h1>
+      <div class="wk__empty" data-empty hidden><p class="wh-lead">Your basket is empty, so there is nothing to pay for yet.</p><p><a class="wh-btn" href={`${B}/shop/`}>Shop the cabinet</a></p></div>
+      <div class="wk__grid" data-flow>
+        <form class="wk__form" data-form novalidate>
+          <fieldset><legend>Your details</legend>
+            <div class="wk__f"><label class="wh-label" for="c-email">Email</label><input class="wh-input" id="c-email" name="email" type="email" autocomplete="email" required /><p class="wh-err" data-err="email"></p></div>
+            <div class="wk__2"><div class="wk__f"><label class="wh-label" for="c-first">First name</label><input class="wh-input" id="c-first" name="first" autocomplete="given-name" required /><p class="wh-err" data-err="first"></p></div>
+              <div class="wk__f"><label class="wh-label" for="c-last">Last name</label><input class="wh-input" id="c-last" name="last" autocomplete="family-name" required /><p class="wh-err" data-err="last"></p></div></div>
+            <div class="wk__f"><label class="wh-label" for="c-phone">Phone, for the courier</label><input class="wh-input" id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" /><p class="wh-err" data-err="phone"></p></div>
+          </fieldset>
+          <fieldset><legend>Delivery address</legend>
+            <div class="wk__f"><label class="wh-label" for="c-addr">Address</label><input class="wh-input" id="c-addr" name="addr" autocomplete="address-line1" required /><p class="wh-err" data-err="addr"></p></div>
+            <div class="wk__2"><div class="wk__f"><label class="wh-label" for="c-city">Town or city</label><input class="wh-input" id="c-city" name="city" autocomplete="address-level2" required /><p class="wh-err" data-err="city"></p></div>
+              <div class="wk__f"><label class="wh-label" for="c-post">Postcode</label><input class="wh-input" id="c-post" name="post" autocomplete="postal-code" required /><p class="wh-err" data-err="post"></p></div></div>
+          </fieldset>
+          <fieldset><legend>Delivery</legend>
+            <label class="wk__opt"><input type="radio" name="ship" value="standard" checked /><span><b>{DELIVERY.standard.label}</b><span data-ship-price="standard">{money(DELIVERY.standard.price)}, free over £35</span></span></label>
+            <label class="wk__opt"><input type="radio" name="ship" value="next" /><span><b>{DELIVERY.next.label}</b><span data-ship-price="next">{money(DELIVERY.next.price)}, order before 1pm</span></span></label>
+          </fieldset>
+          <fieldset><legend>Payment</legend>
+            <div class="wk__f"><label class="wh-label" for="c-card">Card number</label><input class="wh-input" id="c-card" name="card" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" required /><p class="wh-err" data-err="card"></p></div>
+            <div class="wk__2"><div class="wk__f"><label class="wh-label" for="c-exp">Expiry</label><input class="wh-input" id="c-exp" name="exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY" required /><p class="wh-err" data-err="exp"></p></div>
+              <div class="wk__f"><label class="wh-label" for="c-cvc">Security code</label><input class="wh-input" id="c-cvc" name="cvc" inputmode="numeric" autocomplete="cc-csc" placeholder="123" required /><p class="wh-err" data-err="cvc"></p></div></div>
+            <div class="wk__f"><label class="wh-label" for="c-name">Name on card</label><input class="wh-input" id="c-name" name="cname" autocomplete="cc-name" required /><p class="wh-err" data-err="cname"></p></div>
+          </fieldset>
+          <button type="submit" class="wh-btn wk__pay" data-pay>Pay now</button>
+          <p class="wh-soft" data-form-msg role="alert"></p>
+        </form>
+        <aside class="wk__side"><div class="wk__sum" aria-label="Order summary"><h2>Your order</h2><div data-lines></div><div data-sum></div></div><ul class="wk__assure" role="list"><li><b>Posted within two working days</b>Packed to order at the farm.</li><li><b>Free delivery over £35</b>Standard delivery is otherwise £3.95.</li><li><b>30 days to change your mind</b>Send back anything unopened for a refund.</li></ul></aside>
+      </div>
+      <div class="wk__done" data-done hidden tabindex="-1" role="status"><h2 class="wh-h">Thank you, <span data-d-name></span>.</h2><p class="wh-lead" data-d-text></p><p class="wk__ref">Order <b data-d-ref></b></p><p><a class="wh-btn" href={`${B}/shop/`}>Back to the cabinet</a></p></div>
+    </div></section>
+  </Shell>
+</Site>
+<script>
+  import '../../days/day-046/checkout';
+</script>

@@ -1,0 +1,23 @@
+---
+/** Day 046 · Wildcombe Herbal · one collection: a kind of product, its plates, and the other kinds to move on to. */
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-046/Shell.astro';
+import ProductCard from '../../../components/day-046/ProductCard.astro';
+import { PRODUCTS, CATS, catOf, type Cat } from '../../../days/day-046/products';
+
+export function getStaticPaths() { return (Object.keys(CATS) as Cat[]).map((cat) => ({ params: { cat } })); }
+const { cat } = Astro.params as { cat: Cat };
+const c = CATS[cat], B = '/day-046-herbal-shop';
+const items = catOf(cat);
+---
+<Site title={`${c.name} · Wildcombe Herbal`} description={`${c.line} Grown and made on the edge of Dartmoor by Wildcombe Herbal.`} themeColor="#f5a623" icon="W" day={46}>
+  <Shell active="shop">
+    <section class="ws" aria-labelledby="h1"><div class="wh-wrap">
+      <nav class="wh-crumbs" aria-label="Breadcrumb"><a href={`${B}/`}>Home</a><span aria-hidden="true">/</span><a href={`${B}/shop/`}>Shop</a><span aria-hidden="true">/</span><span>{c.name}</span></nav>
+      <h1 id="h1" class="ws__h">{c.name}.</h1>
+      <p class="wh-lead ws__lead">{c.line}</p>
+      <ul class="wh-cab" role="list">{items.map((p, i) => <ProductCard id={p.id} eager={i < 4} />)}</ul>
+      <div class="ws__other"><p class="wh-label">Also in the cabinet</p><ul role="list">{(Object.entries(CATS) as [Cat, { name: string }][]).filter(([k]) => k !== cat).map(([k, v]) => <li><a href={`${B}/collections/${k}/`}>{v.name}</a></li>)}</ul></div>
+    </div></section>
+  </Shell>
+</Site>

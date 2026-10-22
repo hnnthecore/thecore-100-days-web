@@ -1,0 +1,61 @@
+---
+/** Day 047 · Solstice Sound · getting here: routes compared in a table, a camping planner with a packing list, and a real map. */
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-047/Shell.astro';
+import { PHOTOS, PHOTO_ALTS } from '../../days/day-047/photos';
+
+const B = '/day-047-music-festival';
+const WAYS = [
+  ['Train and shuttle', 'About 1 h 30 from London', '£12 shuttle, return', 'Trains to Moreton station, then a shuttle every 20 minutes from 10 am on Friday. The easiest way to arrive.'],
+  ['Car share', 'About 2 h from London', '£20 parking, whole weekend', 'Parking is limited and goes to cars with three or more people. Book it with your ticket.'],
+  ['Coach', 'About 2 h 30 from London', 'From £25, return', 'Group coaches leave London and Birmingham on Friday morning and return on Monday.'],
+  ['Cycle', 'Any time', 'Free', 'Secure bike parking by the main gate and a repair stand. Lights are essential after dark.'],
+] as const;
+const CAMPS = [
+  ['tent', 'Your own tent', '£45 a pitch, up to four people', 'Pick a spot on the hill. Showers, charging points and a 24-hour café are a short walk away.', ['Tent, pegs and a mallet', 'Sleeping bag and a warm layer', 'Roll mat or air bed', 'Head torch and spare batteries', 'Wellies and a waterproof', 'Power bank for your phone', 'Reusable bottle and cup', 'Ear plugs']],
+  ['bell', 'Ready-pitched bell tent', '£210 for a weekend, sleeps four', 'Beds, blankets and lanterns are waiting for you. Arrive any time after 2 pm on Thursday.', ['Your ticket and a photo ID', 'Warm layer for the evenings', 'Toiletries and a towel', 'Head torch', 'Power bank for your phone', 'Reusable bottle and cup', 'Sun cream and a hat']],
+  ['van', 'Campervan pitch', '£60 for the weekend', 'Level pitches with an electric hook-up near the lower field. Ask for one when you book.', ['Hook-up cable and adaptor', 'Levelling blocks', 'Water carrier', 'Waste bags', 'Ticket and vehicle pass', 'Reusable bottle and cup', 'Ear plugs']],
+] as const;
+---
+<Site title="Getting here and camping · Solstice Sound" description="How to reach the Solstice Sound valley by train, car share, coach or bike, and a camping planner with a packing list." themeColor="#140824" icon="🌅" day={47}>
+  <Shell active="info">
+    <header class="sf-pagehead"><div class="sf-wrap"><ol class="sf-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/info/`}>Info</a></li><li aria-current="page">Getting here</li></ol><h1 class="sf-h1" style="font-size:clamp(2.4rem,7vw,5.2rem)">Getting to the <span class="sf-sun">valley</span></h1><p class="sf-lede mt-4" style="max-width:40rem">Pick the way that suits you, then plan where you will sleep and what to pack.</p></div></header>
+
+    <section class="sf-section !pb-6" aria-labelledby="ways-t"><div class="sf-wrap">
+      <div class="sf-head"><div><p class="sf-eyebrow">Routes</p><h2 id="ways-t" class="sf-h2 mt-3">Four ways to arrive</h2></div></div>
+      <div class="sf-ways__wrap">
+        <table class="sf-ways"><caption class="sr-only">Ways to reach the festival compared</caption><thead><tr><th scope="col">Way</th><th scope="col">Time</th><th scope="col">Cost</th><th scope="col">Good to know</th></tr></thead>
+          <tbody>{WAYS.map(([w, t, c, n]) => <tr><th scope="row">{w}</th><td>{t}</td><td>{c}</td><td>{n}</td></tr>)}</tbody></table>
+        <figure class="sf-ways__photo"><Image src={PHOTOS.shuttle} alt={PHOTO_ALTS.shuttle} width={800} /><figcaption>Shuttles run every 20 minutes</figcaption></figure>
+      </div>
+    </div></section>
+
+    <section class="sf-section sf-section--alt" aria-labelledby="camp-t"><div class="sf-wrap" data-camp>
+      <div class="sf-head"><div><p class="sf-eyebrow">Camping planner</p><h2 id="camp-t" class="sf-h2 mt-3">Where will you sleep?</h2></div></div>
+      <div class="sf-camp">
+        <div>
+          <fieldset style="border:0;padding:0;min-width:0"><legend class="sr-only">Choose how you will camp</legend>
+            <div class="sf-camptypes">{CAMPS.map(([id, n, p, d], i) => <label class="sf-camptype"><input type="radio" name="camp" value={id} checked={i === 0} /><b>{n}</b><span class="sf-camptype__p">{p}</span><span>{d}</span></label>)}</div>
+          </fieldset>
+          <figure class="sf-camp__photo"><Image src={PHOTOS.camp} alt={PHOTO_ALTS.camp} width={1000} /></figure>
+        </div>
+        <div class="sf-pack">
+          <div class="flex items-baseline justify-between gap-3"><h3 class="sf-h3" style="font-size:1.4rem">Packing list</h3><span class="sf-pack__count" data-count aria-live="polite"></span></div>
+          <div class="sf-pack__bar" data-bar aria-hidden="true"><i></i></div>
+          {CAMPS.map(([id, , , , items], i) => <ul class="sf-pack__list" role="list" data-panel={id} hidden={i !== 0}>{items.map((it) => <li><label><input type="checkbox" value={`${id}:${it}`} /><span>{it}</span></label></li>)}</ul>)}
+          <button type="button" class="sf-btn mt-5" data-reset>Clear ticks</button>
+        </div>
+      </div>
+    </div></section>
+
+    <section class="sf-section" aria-labelledby="map-t"><div class="sf-wrap sf-split" style="align-items:center">
+      <div><p class="sf-eyebrow">Find us</p><h2 id="map-t" class="sf-h2 mt-3">Fifteen minutes from the station</h2><p class="sf-lede mt-4">Follow the lanterns from Moreton station, or take the shuttle to the main gate. Camping opens on Thursday from 2 pm.</p><a href={`${B}/tickets/`} class="sf-btn sf-btn--hot sf-btn--lg mt-6">Add camping to your ticket</a></div>
+      <div class="sf-map"><iframe title="Map of the area around Moreton-in-Marsh in the Cotswolds" src="https://www.openstreetmap.org/export/embed.html?bbox=-1.7300%2C51.9780%2C-1.6600%2C52.0100&amp;layer=mapnik&amp;marker=51.9930%2C-1.7000" loading="lazy" referrerpolicy="no-referrer" width="600" height="360"></iframe><a class="sf-map__link" href="https://www.openstreetmap.org/?mlat=51.9930&amp;mlon=-1.7000#map=14/51.9930/-1.7000" rel="noopener">Open the full map ↗</a></div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-047/trip';
+</script>

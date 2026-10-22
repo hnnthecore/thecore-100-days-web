@@ -1,0 +1,20 @@
+---
+/** Day 046 · Wildcombe Herbal · the journal: notes from the farm and the kitchen. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-046/Shell.astro';
+const B = '/day-046-herbal-shop';
+const posts = (await getCollection('herbJournal')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Site title="Journal · Wildcombe Herbal" description="Notes from the farm and the kitchen: how to brew, how to dry, and what is happening on the combe." themeColor="#e9e19a" icon="W" day={46}>
+  <Shell active="journal">
+    <section class="wj2" aria-labelledby="h1"><div class="wh-wrap">
+      <h1 id="h1" class="ws__h">The journal.</h1>
+      <p class="wh-lead ws__lead">Notes from the farm and the kitchen.</p>
+      <div class="wj2__list">{posts.map((p, i) => (
+        <a href={`${B}/journal/${p.id}/`} class="wj2__post"><h2>{p.data.title}</h2><p>{p.data.excerpt} <span>{p.data.category}, {fmt(p.data.date)}. {p.data.read}.</span></p></a>
+      ))}</div>
+    </div></section>
+  </Shell>
+</Site>

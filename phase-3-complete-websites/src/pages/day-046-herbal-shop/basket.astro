@@ -1,0 +1,25 @@
+---
+/** Day 046 · Wildcombe Herbal · the basket page: every line, quantities, a promo code and the totals. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-046/Shell.astro';
+const B = '/day-046-herbal-shop';
+---
+<Site title="Your basket · Wildcombe Herbal" description="Review your basket, add a promo code and go to checkout." themeColor="#f5a623" icon="W" day={46}>
+  <Shell>
+    <section class="wk" aria-labelledby="h1"><div class="wh-wrap">
+      <h1 id="h1" class="ws__h">Your basket.</h1>
+      <div class="wk__grid" data-basket>
+        <div class="wk__lines" data-lines aria-live="polite"></div>
+        <aside class="wk__sum" aria-label="Order summary">
+          <div data-sum></div>
+          <form class="wk__promo" data-promo novalidate><label for="promo" class="wh-label">Promo code</label><div class="wh-news wk__promo-row"><input id="promo" class="wh-input" type="text" placeholder="WILD10" autocomplete="off" /><button type="submit" class="wh-btn">Apply</button></div><p class="wh-soft" data-promo-msg role="status"></p></form>
+          <a class="wh-btn wk__go" href={`${B}/checkout/`} data-go>Go to checkout</a>
+          <p class="wh-soft">Delivery is chosen at checkout. Free over £35.</p>
+        </aside>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+<script>
+  import '../../days/day-046/basket';
+</script>

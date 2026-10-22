@@ -1,0 +1,59 @@
+---
+/** Day 046 · Wildcombe Herbal · one product: its plate on its field, a drawn pack, sizes, quantity, and the details a buyer wants. */
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-046/Shell.astro';
+import Plate from '../../../components/day-046/Plate.astro';
+import Pack from '../../../components/day-046/Pack.astro';
+import ProductCard from '../../../components/day-046/ProductCard.astro';
+import { PRODUCTS, CATS, TIMES, TASTES, byId, money } from '../../../days/day-046/products';
+
+export function getStaticPaths() { return PRODUCTS.map((p) => ({ params: { slug: p.id } })); }
+const { slug } = Astro.params as { slug: string };
+const p = byId(slug), B = '/day-046-herbal-shop';
+const related = PRODUCTS.filter((x) => x.id !== p.id && (x.cat === p.cat || x.time.some((t) => p.time.includes(t)))).slice(0, 4);
+const mix = (p.mix ?? []).map(byId);
+---
+<Site title={`${p.name} · Wildcombe Herbal`} description={`${p.line} ${p.about[0].split('. ')[0]}.`} themeColor={p.field} icon="W" day={46}>
+  <Shell active="shop">
+    <article class="wpd" style={`--f:${p.field}`} data-product={p.id}>
+      <div class="wpd__stage">
+        <Plate id={p.id} width={1000} loading="eager" class="wpd__plate" />
+        <div class="wpd__pack"><Pack id={p.id} /></div>
+      </div>
+      <div class="wpd__info">
+        <nav class="wh-crumbs" aria-label="Breadcrumb"><a href={`${B}/shop/`}>Shop</a><span aria-hidden="true">/</span><a href={`${B}/collections/${p.cat}/`}>{CATS[p.cat].name}</a></nav>
+        <p class="wh-latin wpd__latin">{p.latin}</p>
+        <h1 class="wpd__h">{p.name}</h1>
+        <p class="wpd__price" data-price>{money(p.sizes[0].price)}</p>
+        <p class="wh-lead wpd__line">{p.line}</p>
+        <form class="wpd__buy" data-buy novalidate>
+          <fieldset class="wpd__sizes"><legend class="wh-label">{p.sizes.length > 1 ? 'Size' : 'Pack'}</legend>
+            {p.sizes.map((s, i) => <label class="wpd__size"><input type="radio" name="size" value={s.id} data-price={s.price} checked={i === 0} /><span><b>{s.label}</b><span>{money(s.price)}</span></span></label>)}
+          </fieldset>
+          <div class="wpd__row">
+            <div class="wh-qty wpd__qty" role="group" aria-label="Quantity"><button type="button" data-q="-1" aria-label="One fewer">−</button><output data-qty>1</output><button type="button" data-q="1" aria-label="One more">+</button></div>
+            <button type="submit" class="wh-btn wpd__add" data-add-page>Add to basket</button>
+          </div>
+          <p class="wh-soft wpd__ship">{p.weightNote}. Free delivery over £35. Posted within two working days.</p>
+        </form>
+        <dl class="wpd__tags">
+          {p.time.length > 0 && <div><dt>Best at</dt><dd>{p.time.map((t) => TIMES[t]).join(', ')}</dd></div>}
+          {p.taste.length > 0 && <div><dt>Tasting</dt><dd>{p.taste.map((t) => TASTES[t]).join(', ')}</dd></div>}
+        </dl>
+        <div class="wpd__acc">
+          <details open><summary>About this {p.cat === 'teas' ? 'tea' : p.cat === 'gifts' ? 'set' : 'product'}</summary><div>{p.about.map((t) => <p>{t}</p>)}</div></details>
+          <details><summary>Ingredients</summary><div><p>{p.ingredients}</p></div></details>
+          <details><summary>How to use</summary><div><p>{p.use}</p></div></details>
+          <details><summary>Good to know</summary><div><p>{p.note}</p></div></details>
+          <details><summary>Delivery and returns</summary><div><p>Standard delivery is £3.95, or free over £35, and takes two to four working days (see Shipping and returns in the footer). Next working day is £6.95 when ordered before 1pm. If you are not happy with an unopened product, send it back within 30 days for a refund.</p></div></details>
+        </div>
+        {mix.length > 0 && <div class="wpd__mix"><h2>What is in it</h2><ul role="list">{mix.map((m) => <li><a href={`${B}/shop/${m.id}/`} style={`--f:${m.field}`}><i aria-hidden="true"></i>{m.name}</a></li>)}</ul></div>}
+      </div>
+    </article>
+    <section class="wpd__rel" aria-labelledby="rel-t"><div class="wh-wrap"><h2 id="rel-t" class="wh-h">Plates that go with it.</h2>
+      <ul class="wh-cab" role="list">{related.map((r) => <ProductCard id={r.id} />)}</ul></div></section>
+  </Shell>
+</Site>
+<script>
+  import '../../../days/day-046/product';
+</script>

@@ -1,0 +1,58 @@
+---
+/** Day 047 · Solstice Sound · tickets: choose a pass and quantity, add extras, see a live total and check out in a dialog. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { PHOTOS, PHOTO_ALTS } from '../../days/day-047/photos';
+import Shell from '../../components/day-047/Shell.astro';
+
+const B = '/day-047-music-festival';
+const TIERS = [['day', 'Day pass', 79, 'Choose one day. Access to all three stages.'], ['weekend', 'Weekend', 189, 'All three days, plus a free festival tote bag.'], ['vip', 'VIP weekend', 349, 'Fast-track entry, private bar, viewing deck and your own toilets.']] as const;
+const EXTRAS = [['camp', 'Camping pitch', 'Per pitch, up to 4 people', 45], ['park', 'Car parking', 'Per car, whole weekend', 20], ['shuttle', 'Shuttle bus', 'Per person, return from the station', 12]] as const;
+---
+<Site title="Tickets · Solstice Sound" description="Day passes from £79, weekend tickets £189 and VIP £349. Add camping, parking and shuttle buses. Early-bird prices while stocks last." themeColor="#140824" icon="🌅" day={47}>
+  <Shell active="tickets">
+    <header class="sf-pagehead"><div class="sf-wrap"><ol class="sf-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Tickets</li></ol><h1 class="sf-h1" style="font-size:clamp(2.4rem,7vw,5.6rem)">Get your <span class="sf-sun">tickets</span></h1><p class="sf-lede mt-5">Early-bird prices while stocks last. Free cancellation up to 30 days before.</p></div></header>
+    <div class="sf-wrap"><figure class="sf-wide sf-wide--short"><Image src={PHOTOS.wristbands} alt={PHOTO_ALTS.wristbands} width={1400} loading="eager" /><figcaption>Your pass is a wristband. Tap in, dance, repeat.</figcaption></figure></div>
+    <section class="sf-section !pt-10"><div class="sf-wrap sf-split">
+      <div data-tix class="grid gap-10">
+        <fieldset style="border:0;padding:0;min-width:0"><legend class="sf-h3 mb-4" style="font-size:1.3rem">1. Choose a pass</legend>
+          <div class="sf-tiers">{TIERS.map(([id, n, p, d], i) => <label class="sf-tier"><input type="radio" name="tier" value={id} data-price={p} data-name={n} checked={i === 1} /><b>{n}</b><span class="sf-price">£{p}</span><p>{d}</p></label>)}</div>
+        </fieldset>
+        <div data-dayrow hidden><label for="t-day" class="sf-label">Which day?</label><select id="t-day" class="sf-input" style="max-width:16rem" data-day><option>Friday 16 July</option><option>Saturday 17 July</option><option>Sunday 18 July</option></select></div>
+        <div><p class="sf-h3 mb-4" style="font-size:1.3rem" id="qty-l">2. How many?</p>
+          <div class="sf-qty" role="group" aria-labelledby="qty-l"><button type="button" aria-label="One fewer ticket" data-q="-1">−</button><output data-qty aria-live="polite">2</output><button type="button" aria-label="One more ticket" data-q="1">+</button></div>
+          <p class="mt-2 text-sm" style="color:var(--muted)">Up to 8 per order.</p></div>
+        <fieldset style="border:0;padding:0;min-width:0"><legend class="sf-h3 mb-4" style="font-size:1.3rem">3. Extras</legend>
+          <div class="grid gap-3">{EXTRAS.map(([id, n, d, p]) => <label class="sf-addon"><input type="checkbox" data-extra={id} data-price={p} data-name={n} /><span>{n}<small>{d}</small></span><em>£{p}</em></label>)}</div>
+        </fieldset>
+      </div>
+
+      <aside class="sf-order" aria-labelledby="ord-t">
+        <h2 id="ord-t" class="sf-h3" style="font-size:1.4rem">Your order</h2>
+        <dl data-lines aria-live="polite"></dl>
+        <div class="sf-total"><span style="color:var(--muted);font-weight:700">Total</span><b data-total>£0</b></div>
+        <button type="button" class="sf-btn sf-btn--hot sf-btn--lg sf-btn--full" data-checkout>Checkout</button>
+        <p class="mt-3 text-sm" style="color:var(--muted)">A £4.50 booking fee per order is included in the total.</p>
+      </aside>
+    </div></section>
+
+    <dialog class="sf-dialog" data-dialog aria-labelledby="co-t">
+      <div class="sf-dialog__in">
+        <div data-pay>
+          <h2 id="co-t" class="sf-h3" style="font-size:1.4rem">Almost there</h2>
+          <p class="mt-1" style="color:var(--muted)" data-summary></p>
+          <form data-form novalidate class="mt-5"><div class="sf-fields">
+            <div><label for="c-name" class="sf-label">Full name</label><input id="c-name" class="sf-input" autocomplete="name" data-req aria-describedby="c-name-e" /><p class="sf-err" id="c-name-e" hidden>Please add your name.</p></div>
+            <div><label for="c-email" class="sf-label">Email for your tickets</label><input id="c-email" type="email" class="sf-input" autocomplete="email" data-req aria-describedby="c-email-e" /><p class="sf-err" id="c-email-e" hidden>Enter an email like name@example.com.</p></div>
+          </div><p class="mt-3 text-sm" style="color:var(--muted)">Demo checkout: no payment is taken.</p>
+          <div class="mt-5 flex gap-3"><button type="button" class="sf-btn" data-close>Cancel</button><button type="submit" class="sf-btn sf-btn--hot" style="flex:1">Pay now</button></div></form>
+        </div>
+        <div data-done hidden tabindex="-1" class="text-center"><p class="sf-h2 sf-sun">You're in!</p><p class="mt-3" data-done-text></p><p class="mt-4"><span class="sf-ref" data-ref></span></p><button type="button" class="sf-btn mt-6" data-close>Close</button></div>
+      </div>
+    </dialog>
+  </Shell>
+</Site>
+
+<script>
+  import '../../days/day-047/tickets';
+</script>

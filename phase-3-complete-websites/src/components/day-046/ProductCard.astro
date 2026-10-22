@@ -1,0 +1,16 @@
+---
+/** One plate in the cabinet: the plate on its field, the name with its Latin name, the price, and a quick Add. */
+import Plate from './Plate.astro';
+import { byId, fromPrice, money, TIMES } from '../../days/day-046/products';
+interface Props { id: string; eager?: boolean }
+const { id, eager = false } = Astro.props;
+const p = byId(id), B = '/day-046-herbal-shop';
+---
+<li class="wh-card" data-rise data-card={p.id} data-cat={p.cat} data-time={p.time.join(' ')} data-taste={p.taste.join(' ')} data-price={fromPrice(p)} data-name={p.name} style={`--f:${p.field}`}>
+  <a href={`${B}/shop/${p.id}/`} class="wh-card__link">
+    <Plate id={p.id} width={520} loading={eager ? 'eager' : 'lazy'} />
+    <span class="wh-card__t"><b>{p.name}</b><span class="wh-latin">{p.latin}</span></span>
+    <span class="wh-card__p">{p.sizes.length > 1 ? 'From ' : ''}{money(fromPrice(p))}</span>
+  </a>
+  <button type="button" class="wh-card__add" data-add={p.id} data-size={p.sizes[0].id} aria-label={`Add ${p.name} to the basket`}>Add</button>
+</li>

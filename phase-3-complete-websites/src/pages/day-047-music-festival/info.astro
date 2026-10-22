@@ -1,0 +1,45 @@
+---
+/** Day 047 · Solstice Sound · practical info: getting there, camping, accessibility, FAQ and a contact form. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { PHOTOS, PHOTO_ALTS } from '../../days/day-047/photos';
+import Shell from '../../components/day-047/Shell.astro';
+
+const B = '/day-047-music-festival';
+const BLOCKS = [['Getting there', 'The site is 15 minutes from Moreton station. Shuttle buses run every 20 minutes from 10am on Friday. Car parking is limited, so please car-share.'], ['Camping', 'Pitch your own tent or choose a ready-pitched bell tent. Showers, charging points and a 24-hour cafe are open all weekend.'], ['Access', 'Step-free viewing platforms at every stage, accessible camping and personal assistants go free. Email us before you book and we will help.'], ['Food and drink', 'More than 40 independent traders, a free water refill point at every stage and a bar that stays open until 1am.'], ['Families', 'Under-12s go free with a ticket-holding adult. There is a quiet family field with a kids’ craft tent and early shows.'], ['Sustainability', 'Powered by solar and biofuel, plastic-free and a deposit scheme on every cup. Leave no trace but memories.']];
+const FAQ = [['What time do gates open?', 'Camping opens on Thursday from 2pm. Gates open on Friday at 12 noon, Saturday and Sunday at 11am.'], ['Can I bring my own food and drink?', 'You can bring food for camping, but no glass and no alcohol over 6 litres of beer or 2 bottles of wine per adult.'], ['Is there phone signal?', 'Yes. We have a temporary mast on site, though it can be patchy when everyone posts the sunset at once.'], ['What if it rains?', 'Rain or shine. Wellies are recommended, and there is plenty of covered space at the Forest and Dome stages.'], ['Can I get a refund?', 'Free cancellation up to 30 days before the festival. After that you can transfer your ticket to a friend for free.']];
+---
+<Site title="Info · Solstice Sound" description="Everything you need to know about Solstice Sound: getting there, camping, accessibility, families, sustainability and FAQs." themeColor="#140824" icon="🌅" day={47}>
+  <Shell active="info">
+    <header class="sf-pagehead"><div class="sf-wrap"><ol class="sf-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Info</li></ol><h1 class="sf-h1" style="font-size:clamp(2.4rem,7vw,5.6rem)">Good to <span class="sf-sun">know</span></h1></div></header>
+    <div class="sf-wrap sf-band" data-photo-band>
+      <figure class="sf-band__main"><Image src={PHOTOS.shuttle} alt={PHOTO_ALTS.shuttle} width={1000} /><figcaption>Shuttles every 20 minutes</figcaption></figure>
+      <figure><Image src={PHOTOS['camp-lawn']} alt={PHOTO_ALTS['camp-lawn']} width={900} /><figcaption>Camp on the hill</figcaption></figure>
+      <figure><Image src={PHOTOS.food} alt={PHOTO_ALTS.food} width={900} /><figcaption>Street food all weekend</figcaption></figure>
+    </div>
+    <div class="sf-wrap"><a href={`${B}/getting-here/`} class="sf-planlink"><span><b>Plan your trip</b> Routes, shuttle times and a camping packing list that remembers what you have packed.</span><span class="sf-btn sf-btn--sun">Open the planner →</span></a></div>
+    <section class="sf-section"><div class="sf-wrap"><ul class="sf-grid3" role="list">{BLOCKS.map(([t, d]) => <li class="sf-card"><h2 class="sf-h3" style="font-size:1.3rem">{t}</h2><p>{d}</p></li>)}</ul></div></section>
+    <section class="sf-section sf-section--alt" aria-labelledby="faq-t"><div class="sf-wrap sf-split" style="grid-template-columns:1fr"><div><h2 id="faq-t" class="sf-h2">FAQ</h2></div><div class="sf-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+    <section class="sf-section" aria-labelledby="ct-t"><div class="sf-wrap sf-split" style="grid-template-columns:1fr">
+      <div style="max-width:34rem"><h2 id="ct-t" class="sf-h2">Ask us anything</h2>
+        <form data-contact novalidate class="mt-6"><div class="sf-fields">
+          <div><label for="m-name" class="sf-label">Name</label><input id="m-name" class="sf-input" autocomplete="name" data-req aria-describedby="m-name-e" /><p class="sf-err" id="m-name-e" hidden>Please add your name.</p></div>
+          <div><label for="m-email" class="sf-label">Email</label><input id="m-email" type="email" class="sf-input" autocomplete="email" data-req aria-describedby="m-email-e" /><p class="sf-err" id="m-email-e" hidden>Enter an email like name@example.com.</p></div>
+          <div><label for="m-msg" class="sf-label">Message</label><textarea id="m-msg" class="sf-input" data-req aria-describedby="m-msg-e"></textarea><p class="sf-err" id="m-msg-e" hidden>Please write a few words.</p></div>
+        </div><button type="submit" class="sf-btn sf-btn--hot sf-btn--lg mt-5">Send message</button><p class="sf-ok" role="status" data-ok></p></form></div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const form = document.querySelector<HTMLFormElement>('[data-contact]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = `Thanks ${(document.getElementById('m-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within two working days.`;
+    form.reset();
+  });
+</script>
