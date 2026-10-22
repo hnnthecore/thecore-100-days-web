@@ -59,3 +59,6 @@ Rebuilt from `DESIGN.md`. The old home (a gradient headline, a floating dashboar
 
 ### Checks run
 Taste Skill source linter 0 fail / 0 warn; browser inspector (1440 / 768 / 390) with only the reduced-motion environment note and no footage left; overflow and contrast sweep of all pages at five widths.
+
+### Second pass: the product, not a template
+The hero (the live forecast) stays. Below it, "Thirteen weeks, one scroll" pins the section on wide screens and scrolling draws the 13 weeks (`storyChart` and `storyGeom` in `forecast.ts`, driven from `home.ts`), with the late invoice, payroll, the hire and the warning appearing as they happen. "What Fathom does" shows six product screens built in HTML and CSS (`SCREENS` in the page), with a list that follows the screen in view. On phones and with reduced motion the story shows the finished chart.

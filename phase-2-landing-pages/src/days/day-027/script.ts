@@ -167,5 +167,5 @@ visit.addEventListener('submit', (e) => {
   if (bad.length) { $('[data-visit-ok]').textContent = ''; bad[0].focus(); return; }
   const kind = (visit.elements.namedItem('kind') as RadioNodeList).value.toLowerCase();
   const when = new Date(dateIn.value + 'T00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
-  $('[data-visit-ok]').textContent = `Thank you, ${$<HTMLInputElement>('#v-name').value.trim().split(/\s+/)[0]}. We’ve pencilled in your ${kind} for ${when} at ${$<HTMLSelectElement>('#v-time').value}. (Demo: nothing was sent.)`;
+  $('[data-visit-ok]').textContent = `Thank you, ${$<HTMLInputElement>('#v-name').value.trim().split(/\s+/)[0]}. We’ve pencilled in your ${kind} for ${when} at ${$<HTMLSelectElement>('#v-time').value}.`;
 });

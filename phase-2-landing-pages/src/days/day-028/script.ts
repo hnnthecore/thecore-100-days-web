@@ -191,5 +191,5 @@ contact.addEventListener('submit', (e) => {
   const bad = $$<HTMLInputElement>('[data-req]', contact).filter((i) => !valid(i));
   if (bad.length) { $('[data-ok]').textContent = ''; bad[0].focus(); return; }
   const first = $<HTMLInputElement>('#c-name').value.trim().split(/\s+/)[0];
-  $('[data-ok]').textContent = `Thanks ${first}. Your report (score ${score}/100) and a quote for “${planText}” will arrive within one working day. (Demo: nothing was sent.)`;
+  $('[data-ok]').textContent = `Thanks ${first}. Your report (score ${score}/100) and a quote for “${planText}” will arrive within one working day.`;
 });

@@ -23,7 +23,7 @@ const shifts = (upcoming.length >= 4 ? upcoming : allShifts.slice(-4)).slice(0, 
 const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const day = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 ---
-<Site title="Rootwork Community Farm · Manchester" description="A community farm in the middle of Manchester growing food, skills and friendships. See what is in season this month, volunteer, learn, cook or donate. (Day 043 of Thecore's 100 Days of Web, a demo site.)" themeColor="#f4a63a" icon="R" day={43}>
+<Site title="Rootwork Community Farm · Manchester" description="A community farm in the middle of Manchester growing food, skills and friendships. See what is in season this month, volunteer, learn, cook or donate." themeColor="#f4a63a" icon="R" day={43}>
   <Shell active="home" home>
     <section class="sn" data-sn aria-labelledby="h1">
       <div class="sn__top">

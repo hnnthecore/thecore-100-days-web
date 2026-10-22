@@ -49,6 +49,9 @@ const hub = '../'.repeat(depth + 2) + 'index.html';
     <a class="sr-only-focusable rounded-full bg-black px-4 py-2 font-semibold text-white" href="#main">Skip to content</a>
     <slot />
     <a class="thecore-badge" href={hub} aria-label={`Thecore 100 Days of Web, day ${day}. Back to all projects`}><span aria-hidden="true">T</span> Day {String(day).padStart(3, '0')} · Thecore</a>
+    <script>
+      import '../scripts/smooth';
+    </script>
     <style is:global>
       .thecore-badge {
         position: fixed; left: 1rem; bottom: 1rem; z-index: 60;

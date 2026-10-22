@@ -186,7 +186,7 @@ function paintHood(i: number, focus = false) {
     <ul class="ll-hood__tags" role="list">${h.tags.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
     <dl class="ll-hood__nums"><div><dt>Average price</dt><dd>${gbp(h.price)}</dd></div><div><dt>Average rent</dt><dd>${gbp(h.rent)}</dd></div><div><dt>To city centre</dt><dd>${h.commute} min</dd></div></dl></div>
     <ul class="ll-bars" role="list" aria-label="Area scores out of 5">${bar('Schools', h.schools)}${bar('Green space', h.green)}${bar('Nightlife', h.night)}</ul>
-    <div class="ll-hood__cta"><button type="button" class="ll-btn ll-btn--ink" data-see-area="${esc(h.id)}">See homes in ${esc(h.id)}</button><p class="text-sm" style="color:#5b6679">Scores are our agents’ ratings (demo data).</p></div>`;
+    <div class="ll-hood__cta"><button type="button" class="ll-btn ll-btn--ink" data-see-area="${esc(h.id)}">See homes in ${esc(h.id)}</button><p class="text-sm" style="color:#5b6679">Scores are our agents’ ratings.</p></div>`;
 }
 tabs.forEach((t, i) => {
   t.addEventListener('click', () => paintHood(i));

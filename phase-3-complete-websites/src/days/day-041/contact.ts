@@ -22,6 +22,6 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   const ok = $('[data-ok]');
   if (!check()) { ok.textContent = ''; return; }
-  ok.textContent = `Thanks ${$<HTMLInputElement>('#m-name').value.trim().split(/\s+/)[0]}, we’ll reply within a working day. (Demo: nothing was sent.)`;
+  ok.textContent = `Thanks ${$<HTMLInputElement>('#m-name').value.trim().split(/\s+/)[0]}, we’ll reply within a working day.`;
   form.reset();
 });

@@ -64,6 +64,6 @@ f2.addEventListener('submit', (e) => {
   const first = (document.getElementById('e-name') as HTMLInputElement).value.trim().split(/\s+/)[0];
   const email = (document.getElementById('e-email') as HTMLInputElement).value.trim();
   root.querySelector('[data-d-name]')!.textContent = first;
-  root.querySelector('[data-d-text]')!.textContent = `You are booked on ${course.selectedOptions[0].textContent} ${level.value}, starting ${longDate(mondays[Number(start.value)])}. Confirmation and joining details are on their way to ${email}. (Demo: nothing was sent and nothing was charged.)`;
+  root.querySelector('[data-d-text]')!.textContent = `You are booked on ${course.selectedOptions[0].textContent} ${level.value}, starting ${longDate(mondays[Number(start.value)])}. Confirmation and joining details are on their way to ${email}.`;
   pane(3);
 });

@@ -16,7 +16,7 @@ const posts = (await getCollection('journal')).sort((a, b) => b.data.date.locale
 const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 const m2 = (n: number) => n.toLocaleString('en-GB') + ' m²';
 ---
-<Site title="Atelier Nord · Architecture studio, Edinburgh" description="An independent architecture studio in Edinburgh designing quiet, low-carbon buildings for homes, schools, libraries and workplaces. (Day 042 of Thecore's 100 Days of Web, a demo site.)" themeColor="#dde3e6" icon="A" day={42}>
+<Site title="Atelier Nord · Architecture studio, Edinburgh" description="An independent architecture studio in Edinburgh designing quiet, low-carbon buildings for homes, schools, libraries and workplaces." themeColor="#dde3e6" icon="A" day={42}>
   <Shell active="home" home>
     <section class="wk" data-walk aria-labelledby="h1">
       <div class="wk__stick">

@@ -41,7 +41,7 @@ document.querySelectorAll<HTMLFormElement>('[data-donate]').forEach((form) => {
     e.preventDefault();
     if (!ok()) { err.hidden = false; otherIn.setAttribute('aria-invalid', 'true'); otherIn.focus(); return; }
     const a = amount(), gift = q<HTMLInputElement>('[data-gift]').checked;
-    q('[data-ok]').textContent = `Thank you! Your ${gbp(a)}${monthly() ? ' monthly gift' : ' gift'} ${impactFor(a)}${gift ? ` With Gift Aid it's worth ${gbp(a * 1.25)}.` : ''} (Demo: no money was taken.)`;
+    q('[data-ok]').textContent = `Thank you! Your ${gbp(a)}${monthly() ? ' monthly gift' : ' gift'} ${impactFor(a)}${gift ? ` With Gift Aid it's worth ${gbp(a * 1.25)}.` : ''}`;
   });
   paint();
 });

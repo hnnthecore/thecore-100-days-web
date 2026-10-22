@@ -55,7 +55,7 @@ form.addEventListener('submit', (e) => {
   if (!check()) return;
   const n = picked.size;
   $('[data-d-name]').textContent = $<HTMLInputElement>('#v-name').value.trim().split(/\s+/)[0];
-  $('[data-d-text]').textContent = `You're booked on ${n} session${n === 1 ? '' : 's'}. Wear old clothes and sturdy shoes; we'll supply gloves, tools and tea. (Demo: nothing was sent.)`;
+  $('[data-d-text]').textContent = `You're booked on ${n} session${n === 1 ? '' : 's'}. Wear old clothes and sturdy shoes; we'll supply gloves, tools and tea.`;
   form.hidden = true;
   const done = $('[data-d-done]'); done.hidden = false; done.focus();
 });

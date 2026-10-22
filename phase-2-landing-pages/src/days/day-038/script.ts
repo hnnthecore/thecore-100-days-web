@@ -123,7 +123,7 @@ drawer.addEventListener('keydown', (e) => {
   else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 $('[data-lines]').addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-rm]'); if (b) { lines.splice(Number(b.dataset.rm), 1); paintBag(); } });
-$('[data-checkout]').addEventListener('click', () => { $('[data-checkout-msg]').textContent = 'Thank you! This is a demo, so nothing was charged.'; lines = []; paintBag(); });
+$('[data-checkout]').addEventListener('click', () => { $('[data-checkout-msg]').textContent = 'Thank you! Your order is confirmed.'; lines = []; paintBag(); });
 paintBag();
 
 /* ---------- Brew guide ---------- */
@@ -253,7 +253,7 @@ $('[data-deliv]').addEventListener('click', (e) => { const b = (e.target as HTML
 sub.addEventListener('submit', (e) => {
   e.preventDefault();
   const c = byId($<HTMLSelectElement>('#s-coffee').value);
-  $('[data-sub-msg]').textContent = `Subscribed: ${c.name}, ${$<HTMLSelectElement>('#s-size').selectedOptions[0].text}, ${$<HTMLSelectElement>('#s-grind').value.toLowerCase()}. First bag roasted for you next roast day. (Demo: nothing was charged.)`;
+  $('[data-sub-msg]').textContent = `Subscribed: ${c.name}, ${$<HTMLSelectElement>('#s-size').selectedOptions[0].text}, ${$<HTMLSelectElement>('#s-grind').value.toLowerCase()}. First bag roasted for you next roast day.`;
 });
 paintSub();
 
@@ -284,5 +284,5 @@ wf.addEventListener('submit', (e) => {
   e.preventDefault();
   const bad = $$<HTMLInputElement>('[data-req]', wf).filter((i) => !valid(i));
   if (bad.length) { $('[data-w-ok]').textContent = ''; bad[0].focus(); return; }
-  $('[data-w-ok]').textContent = `Thanks ${$<HTMLInputElement>('#w-name').value.trim().split(/\s+/)[0]}! A tasting box for ${$<HTMLInputElement>('#w-biz').value.trim()} will be on its way, and we’ll call to talk through about ${$('[data-kg-out]').textContent} a week. (Demo: nothing was sent.)`;
+  $('[data-w-ok]').textContent = `Thanks ${$<HTMLInputElement>('#w-name').value.trim().split(/\s+/)[0]}! A tasting box for ${$<HTMLInputElement>('#w-biz').value.trim()} will be on its way, and we’ll call to talk through about ${$('[data-kg-out]').textContent} a week.`;
 });

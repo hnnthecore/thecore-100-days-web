@@ -1,4 +1,6 @@
 /** Day 042 · Atelier Nord · home page behaviour: walk the elevation (pinned on wide screens, a plain swipe elsewhere) and the project preview. */
+export {};
+declare global { interface Window { __lenis?: { scrollTo: (y: number, o?: { duration?: number }) => void } } }
 const sec = document.querySelector<HTMLElement>('[data-walk]');
 const view = document.querySelector<HTMLElement>('[data-view]');
 const track = document.querySelector<HTMLElement>('[data-track]');
@@ -13,14 +15,20 @@ let pinned = false, max = 0, ticking = false, last = -1;
 const pos = () => (pinned ? Math.min(Math.max(-sec!.getBoundingClientRect().top + stickTop(), 0), max) : view!.scrollLeft);
 const stickTop = () => parseFloat(getComputedStyle(document.querySelector('.wk__stick')!).top) || 0;
 
+/** The building the visitor is standing in front of: the last one that has started by the left edge of the view (plus the page gutter). */
+function current(x: number) {
+  const probe = x + 80;
+  let at = 0;
+  items.forEach((li, i) => { if (li.offsetLeft <= probe) at = i; });
+  return at;
+}
+
 function paint() {
   ticking = false;
   const x = pos();
   if (pinned) track!.style.transform = `translate3d(${-x}px,0,0)`;
   metres!.textContent = String(Math.round(x / PX_PER_M));
-  const probe = x + view!.clientWidth * 0.4;
-  let at = 0;
-  items.forEach((li, i) => { if (li.offsetLeft <= probe) at = i; });
+  const at = current(x);
   if (at !== last) { last = at; now!.textContent = `${items[at].dataset.name} · ${items[at].dataset.m}`; }
 }
 const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(paint); } };
@@ -35,13 +43,19 @@ function measure() {
   paint();
 }
 
-/* Previous / next building: move the page (pinned) or the strip (plain). */
+/* Previous / next building: move the page (pinned) or the strip (plain). Next always goes to the following building, previous to the start of this one or the one before it. */
+const GUTTER = 40;
 function go(dir: number) {
-  const x = pos();
-  const target = dir > 0 ? items.find((li) => li.offsetLeft > x + 8) : [...items].reverse().find((li) => li.offsetLeft < x - 8);
-  const to = target ? Math.min(target.offsetLeft - 24, max || Infinity) : dir > 0 ? max || view!.scrollWidth : 0;
-  if (pinned) scrollTo({ top: sec!.getBoundingClientRect().top + scrollY - stickTop() + Math.max(to, 0), behavior: 'smooth' });
-  else view!.scrollTo({ left: Math.max(to, 0), behavior: 'smooth' });
+  const x = pos(), i = current(x);
+  const startOf = (k: number) => Math.max(0, items[k].offsetLeft - GUTTER);
+  let k = i;
+  if (dir > 0) k = Math.min(items.length - 1, i + 1);
+  else k = x > startOf(i) + 24 ? i : Math.max(0, i - 1);
+  const to = Math.min(startOf(k), pinned ? max : view!.scrollWidth - view!.clientWidth);
+  if (pinned) {
+    const top = sec!.getBoundingClientRect().top + scrollY - stickTop() + to;
+    if (window.__lenis) window.__lenis.scrollTo(top, { duration: 1.2 }); else scrollTo({ top, behavior: 'smooth' });
+  } else view!.scrollTo({ left: to, behavior: 'smooth' });
 }
 
 if (sec && view && track && metres && now) {

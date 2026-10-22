@@ -21,7 +21,7 @@ const FAQ = [['Do I need any experience?', 'No. Our A1 courses start from zero. 
 
     <section class="ll-section"><div class="ll-wrap"><div class="ll-head"><h2 class="ll-h2">What we believe</h2></div><ul class="ll-grid ll-grid--4" role="list">{VALUES.map(([t, d], i) => <li class="ll-card"><span class="ll-num">{i + 1}</span><h3 class="ll-h3 mt-4">{t}</h3><p class="mt-2">{d}</p></li>)}</ul></div></section>
     <section class="ll-section ll-section--cream" aria-labelledby="faq-t"><div class="ll-wrap ll-split"><div><p class="ll-eyebrow">FAQ</p><h2 id="faq-t" class="ll-h2 mt-3">Questions we often hear.</h2></div><div class="ll-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
-    <section class="ll-section" aria-labelledby="ct-t"><div class="ll-wrap ll-split"><div><p class="ll-eyebrow">Contact</p><h2 id="ct-t" class="ll-h2 mt-3">Say hello. In any language.</h2><address class="mt-5 not-italic text-lg leading-relaxed"><b>Lingua Lane</b><br />14 Gower Mews, London WC1E 6HP<br />Mon to Fri 9 to 8 · Sat 10 to 4<br />020 5550 0145</address>
+    <section class="ll-section" aria-labelledby="ct-t"><div class="ll-wrap ll-split"><div><p class="ll-eyebrow">Contact</p><h2 id="ct-t" class="ll-h2 mt-3">Say hello. In any language.</h2><address class="mt-5 not-italic text-lg leading-relaxed"><b>Lingua Lane</b><br />14 Gower Mews, London WC1E 6HP<br />Mon to Fri 9 to 8 · Sat 10 to 4<br />020 7946 0145</address>
         <div class="ll-map mt-6">
           <iframe title="Map of Gower Mews in Bloomsbury, London" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1375%2C51.5195%2C-0.1235%2C51.5265&amp;layer=mapnik&amp;marker=51.5231%2C-0.1306" loading="lazy" referrerpolicy="no-referrer" width="600" height="360"></iframe>
           <figure class="ll-map__photo"><Image src={ph_mews} alt="A cobbled London mews lined with painted brick houses" width={420} /><figcaption>Find us on the mews</figcaption></figure>
@@ -44,7 +44,7 @@ const FAQ = [['Do I need any experience?', 'No. Our A1 courses start from zero. 
     e.preventDefault();
     const ok = form.querySelector<HTMLElement>('[data-ok]')!;
     if (!check()) { ok.textContent = ''; return; }
-    ok.textContent = `Thanks ${(document.getElementById('c-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within a working day. (Demo: nothing was sent.)`;
+    ok.textContent = `Thanks ${(document.getElementById('c-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within a working day.`;
     form.reset();
   });
 </script>

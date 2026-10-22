@@ -40,7 +40,7 @@ const LABEL = { feature: 'New', improvement: 'Improved', fix: 'Fixed' } as const
     e.preventDefault();
     const ok = form.querySelector<HTMLElement>('[data-ok]')!;
     if (!check()) { ok.textContent = ''; return; }
-    ok.textContent = 'You are subscribed. (Demo: nothing was sent.)';
+    ok.textContent = 'You are subscribed.';
     form.reset();
   });
 </script>

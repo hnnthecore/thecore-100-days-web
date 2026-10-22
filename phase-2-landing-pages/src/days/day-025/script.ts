@@ -268,7 +268,7 @@ contact.addEventListener('submit', (e) => {
   const bad = fields.filter((f) => !validField(f));
   if (bad.length) { okMsg.textContent = ''; bad[0].focus(); return; }
   const first = fields[0].value.trim().split(/\s+/)[0];
-  okMsg.textContent = `Thanks ${first}, a logistics manager will call you back within 2 working hours. (Demo: nothing was sent.)`;
+  okMsg.textContent = `Thanks ${first}, a logistics manager will call you back within 2 working hours.`;
   contact.reset();
   fields.forEach((f) => f.removeAttribute('aria-invalid'));
 });
@@ -279,5 +279,5 @@ $$<HTMLButtonElement>('[data-apply]').forEach((b) => b.addEventListener('click',
   if (b.classList.contains('is-applied')) return;
   b.classList.add('is-applied');
   b.textContent = 'Application started ✓';
-  applyOk.textContent = `Great choice. We’ve saved your place for “${b.dataset.apply}”. Our recruiter will text you a 2-minute form. (Demo: nothing was sent.)`;
+  applyOk.textContent = `Great choice. We’ve saved your place for “${b.dataset.apply}”. Our recruiter will text you a 2-minute form.`;
 }));

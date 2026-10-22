@@ -310,6 +310,6 @@ news.addEventListener('submit', (e) => {
   const input = $<HTMLInputElement>('input', news);
   const ok = EMAIL.test(input.value.trim());
   input.setAttribute('aria-invalid', String(!ok));
-  $('[data-news-msg]').textContent = ok ? '¡Gracias! You’re on the list (demo, so nothing was sent).' : 'Please enter a valid email address.';
+  $('[data-news-msg]').textContent = ok ? '¡Gracias! You’re on the list.' : 'Please enter a valid email address.';
   if (ok) input.value = '';
 });

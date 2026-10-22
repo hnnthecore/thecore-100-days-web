@@ -2,6 +2,16 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Days 21–45 · Smooth scrolling, Day 42 arrows, Day 44 rebuilt, genuine footers
+
+Feedback from the client after the Days 41–45 review.
+
+- **Lenis smooth scrolling** on every landing page and website (the Lenis library, loaded once from a shared script). It is switched off for visitors who set reduced motion in their system, and dialogs, menus and the basket drawer keep normal scrolling inside them.
+- **Day 42 arrows fixed:** Next and Previous now step building by building from wherever you are. Before, the first press barely moved and the readout could name a different building from the one on screen. The metre counter and the name now agree.
+- **Genuine footers:** removed every line saying a site is a fictional project made for the 100 Days of Web, every "Demo only: nothing was sent" note, the "(demo)" labels and the demo sentences in confirmation messages, and the project tail from each page's search description. Safety notes that matter (call 999, call a vet, check entry rules, finance subject to status) stay. The small Day number badge that links back to the project list is still there.
+- **Believable contact details:** the placeholder .example emails and 555 numbers are replaced by ordinary UK-style addresses and by the number ranges Ofcom reserves for TV and drama (they never connect to a real line).
+- **Day 44 Fathom rebuilt below the hero:** the live forecast hero stays. "Thirteen weeks, one scroll" is new: the section pins and scrolling draws the 13 weeks, with the invoice, payroll, hire and warning appearing as you pass them. "What Fathom does" now shows six real product screens built in code (forecast, scenarios, invoice chasing with a drafted reminder, an alert, a report, a team list) instead of stock photographs.
+
 ## Days 21–40 · Real logos and favicons for every landing page
 
 The same client feedback as Days 41–45: no emoji tab icons, and a real logo on every page. Each of the 20 landing pages now has its own mark and favicon set.

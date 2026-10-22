@@ -123,7 +123,7 @@ const data = courses.map((c) => ({ id: c.id, language: c.data.language, greeting
     const z = (n: number) => String(n).padStart(2, '0');
     const f = (d: Date) => d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + 'T' + z(d.getHours()) + z(d.getMinutes()) + '00';
     const end = new Date(slot.date.getTime() + 30 * 60000);
-    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Lingua Lane//Trial//EN', 'BEGIN:VEVENT', 'UID:' + Date.now() + '@lingualane.example', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(slot.date), 'DTEND:' + f(end), 'SUMMARY:Free ' + course.language + ' lesson at Lingua Lane', 'LOCATION:14 Gower Mews\\, London WC1E 6HP', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Lingua Lane//Trial//EN', 'BEGIN:VEVENT', 'UID:' + Date.now() + '@lingualane.co.uk', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(slot.date), 'DTEND:' + f(end), 'SUMMARY:Free ' + course.language + ' lesson at Lingua Lane', 'LOCATION:14 Gower Mews\\, London WC1E 6HP', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'lingua-lane-trial.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
   root.querySelector('[data-again]')!.addEventListener('click', () => { form.reset(); form.hidden = false; sum.hidden = false; done.hidden = true; course = slot = null; slotset.disabled = true; details.disabled = true; slotsEl.innerHTML = ''; hint.textContent = 'Choose a language to see taster times.'; step(1); paintSum(); });

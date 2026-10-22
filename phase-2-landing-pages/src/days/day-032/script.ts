@@ -229,7 +229,7 @@ call.addEventListener('submit', (e) => {
   e.preventDefault();
   const bad = $$<HTMLInputElement>('[data-creq]', call).filter((i) => !valid(i));
   if (bad.length) { $('[data-call-ok]').textContent = ''; bad[0].focus(); return; }
-  $('[data-call-ok]').textContent = `Thanks ${$<HTMLInputElement>('#c-name').value.trim().split(/\s+/)[0]}! We’ll ring ${$<HTMLSelectElement>('#c-when').value.toLowerCase()}. (Demo: nothing was sent.)`;
+  $('[data-call-ok]').textContent = `Thanks ${$<HTMLInputElement>('#c-name').value.trim().split(/\s+/)[0]}! We’ll ring ${$<HTMLSelectElement>('#c-when').value.toLowerCase()}.`;
 });
 
 paintDays(); paintSlots(); selectRoom(0); checkPostcode(); paintQuote();

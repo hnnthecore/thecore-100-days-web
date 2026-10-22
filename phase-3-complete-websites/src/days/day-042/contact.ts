@@ -49,5 +49,5 @@ form.addEventListener('submit', (e) => {
   const status = $('[data-status]');
   const bad = req.filter((el) => !valid(el));
   if (bad.length) { status.textContent = ''; bad[0].focus(); return; }
-  status.textContent = `Thank you ${$<HTMLInputElement>('#f-name').value.trim().split(/\s+/)[0]}. We have your ${val('type').toLowerCase()} brief${files.length ? ` and ${files.length} file${files.length > 1 ? 's' : ''}` : ''}. Elin or Callum will reply within two working days. (Demo: nothing was sent.)`;
+  status.textContent = `Thank you ${$<HTMLInputElement>('#f-name').value.trim().split(/\s+/)[0]}. We have your ${val('type').toLowerCase()} brief${files.length ? ` and ${files.length} file${files.length > 1 ? 's' : ''}` : ''}. Elin or Callum will reply within two working days.`;
 });

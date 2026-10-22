@@ -37,6 +37,6 @@ $('[data-book]').addEventListener('click', () => {
   const name = (document.getElementById('d-name') as HTMLInputElement).value.trim().split(/\s+/)[0];
   const email = (document.getElementById('d-email') as HTMLInputElement).value.trim();
   $('[data-d-name]').textContent = name;
-  $('[data-d-text]').textContent = `${label(days[day])} at ${TIMES[time]}. A calendar invite is on its way to ${email}. (Demo: nothing was sent.)`;
+  $('[data-d-text]').textContent = `${label(days[day])} at ${TIMES[time]}. A calendar invite is on its way to ${email}.`;
   step(3);
 });

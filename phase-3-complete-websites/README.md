@@ -51,3 +51,6 @@ Build with `npm run build`. Open `site/day-0xx-name/index.html`; the pages also 
 - Each day has its own scoped CSS layer, palette and typefaces, so no two sites look alike.
 - Forms are validated in the browser with inline messages. They are demos: nothing is sent.
 - Every site is accessible: skip link, landmarks, breadcrumbs, `aria-current`, keyboard-friendly menus and dialogs, and `prefers-reduced-motion`.
+
+## Smooth scrolling
+Every page loads `src/scripts/smooth.ts` (Lenis) from the layout. It is off when the visitor asks for reduced motion. Anything that scrolls by itself (dialogs, menus, drawers) gets `data-lenis-prevent` so it scrolls normally.

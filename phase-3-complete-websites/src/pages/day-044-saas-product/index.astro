@@ -3,10 +3,10 @@
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import { Image } from 'astro:assets';
-import { BIZ_PHOTOS, PERSON_PHOTOS, PHOTO_ALTS, PERSON_ALTS, FEATURE_PHOTOS } from '../../days/day-044/photos';
+import { BIZ_PHOTOS, PERSON_PHOTOS, PHOTO_ALTS, PERSON_ALTS } from '../../days/day-044/photos';
 import Shell from '../../components/day-044/Shell.astro';
-import { icon } from '../../days/day-044/chart';
-import { model, verdict, heroChart, FLOOR } from '../../days/day-044/forecast';
+import { demoPoints } from '../../days/day-044/chart';
+import { model, verdict, heroChart, storyChart, FLOOR } from '../../days/day-044/forecast';
 import { gbp } from '../../days/day-044/chart';
 
 const B = '/day-044-saas-product';
@@ -16,13 +16,28 @@ const base = model(0, 0, 0);
 const pts = model(0, 4500, 14);
 const v = verdict(pts);
 const low = Math.min(...pts);
-const MORNING = [
-  ['07:02', 'Forecast updated.', 'Thirteen weeks rebuilt from last night’s bank feed.'],
-  ['07:03', 'Invoice #1042 is 9 days late.', 'A polite reminder to Harbourline is drafted and waiting for your yes.'],
-  ['07:04', 'Week 8 dips toward your floor.', 'It only happens if the new hire starts in March. Try April.'],
-  ['07:05', 'Payroll of £18,000 is covered.', 'Due on the 28th. Nothing to do.'],
-  ['07:06', 'Your accountant opened the shared scenario.', 'She left one comment on week 11.'],
+const EVENTS = [
+  [1, 'Today', `You have ${gbp(pts[0])} after the first week. Fathom has just read last night’s bank feed.`],
+  [3, 'Invoice #1042 is 9 days late', 'A polite reminder to Harbourline is drafted and waiting for your yes.'],
+  [4, 'Payroll of £18,000 leaves on the 28th', 'Covered. Nothing to do.'],
+  [8, 'The new hire starts', 'Your weekly cost rises by £1,038. Fathom shows the effect now, not in March.'],
+  [12, `Lowest point: ${gbp(low)}`, 'Below your £25,000 floor. You can see it in week 1, not in week 12.'],
 ] as const;
+/* A line drawn as a small sparkline for the product screens below. */
+const spark = (arr: number[], w: number, h: number, col: string) => {
+  const lo = Math.min(...arr), hi = Math.max(...arr), pad = 6;
+  const pts2 = arr.map((v, i) => [pad + (i / (arr.length - 1)) * (w - pad * 2), pad + (1 - (v - lo) / (hi - lo || 1)) * (h - pad * 2)]);
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none" aria-hidden="true"><path d="${pts2.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join('')}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+};
+const dp = demoPoints(1), dp2 = demoPoints(3);
+const SCREENS: Record<string, string> = {
+  forecast: `<div class="ui__kpis"><div><b>${gbp(dp[0])}</b><span>Cash today</span></div><div><b>11.4 months</b><span>Runway</span></div><div><b>${gbp(Math.min(...dp))}</b><span>Lowest, week ${dp.indexOf(Math.min(...dp)) + 1}</span></div></div>${spark(dp, 520, 120, '#0d6b4a')}<p class="ui__note">Updated 7:02 this morning from 3 bank accounts and 41 open invoices.</p>`,
+  scenarios: `<div class="ui__cmp"><div><p class="ui__tag">Current plan</p>${spark(dp, 240, 70, '#4d5a54')}<b>${gbp(Math.min(...dp))}</b><span>lowest balance</span></div><div class="is-pick"><p class="ui__tag">Hire in April</p>${spark(dp2, 240, 70, '#0d6b4a')}<b>${gbp(Math.min(...dp2) - 9200)}</b><span>lowest balance</span></div></div><p class="ui__note">Shared with Priya, your accountant. She can comment on week 11.</p>`,
+  invoices: `<table class="ui__tbl"><tbody><tr><td>#1042 Harbourline</td><td>£4,800</td><td class="is-late">9 days late</td></tr><tr><td>#1038 Northbound</td><td>£1,250</td><td class="is-late">3 days late</td></tr><tr><td>#1041 Lattice Studio</td><td>£2,900</td><td>Due Friday</td></tr></tbody></table><div class="ui__mail"><p>Hi Imogen, a quick nudge on invoice #1042 for £4,800. It was due on the 12th. Could you let me know when to expect it?</p><span class="ui__btn">Send reminder</span></div>`,
+  alerts: `<div class="ui__slack"><b>Fathom</b><time>7:04</time><p>Week 8 dips to <strong>${gbp(Math.min(...pts))}</strong>, below your £25,000 safety floor. It only happens if the new hire starts in March.</p><span class="ui__btn">Open the forecast</span></div><p class="ui__note">Sent to #finance in Slack and to two people by email.</p>`,
+  reports: `<table class="ui__tbl"><tbody><tr><td>Runway</td><td>11.4 months</td></tr><tr><td>Weekly burn</td><td>£19,000</td></tr><tr><td>Cash conversion</td><td>41 days</td></tr><tr><td>Largest customer</td><td>23% of revenue</td></tr></tbody></table><p class="ui__note">Exported as a board pack in one click, as PDF or a shared link.</p>`,
+  teams: `<ul class="ui__team"><li><i>I</i><b>Imogen Tate</b><span>Owner</span></li><li><i>M</i><b>Mo Haddad</b><span>Bookkeeper, can edit</span></li><li><i>P</i><b>Priya Shah</b><span>Accountant, can comment</span></li></ul><p class="ui__note">Everyone sees the same numbers, so there is one forecast, not three spreadsheets.</p>`,
+};
 ---
 <Site title="Fathom · Cash-flow forecasting for small businesses" description="Fathom forecasts your cash 13 weeks ahead, chases late invoices and warns you before trouble arrives. Move three sliders and watch your cash respond. Free for 14 days." themeColor="#0c110f" icon="F" day={44}>
   <Shell home>
@@ -47,29 +62,31 @@ const MORNING = [
       </div>
     </section>
 
-    <section class="fm" aria-labelledby="fm-t"><div class="fa-wrap fm__grid">
-      <div class="fm__lead"><h2 id="fm-t" class="fm__h fa-reveal">Every morning at 7:02.</h2><figure class="fm__pic fa-reveal"><Image src={FEATURE_PHOTOS.alerts} alt={PHOTO_ALTS.alerts} width={760} loading="lazy" /></figure></div>
-      <ol class="fm__feed" role="list">{MORNING.map(([t, h, p], i) => (
-        <li class="fa-reveal" style={`--d:${i}`}><time>{t}</time><b>{h}</b><span>{p}</span></li>
-      ))}</ol>
-    </div></section>
+    <section class="fw" data-story aria-labelledby="fw-t">
+      <div class="fw__stick">
+        <div class="fw__head"><h2 id="fw-t" class="fw__h">Thirteen weeks, one scroll.</h2><p class="fw__wk" aria-hidden="true">Week <b data-wk>1</b></p></div>
+        <div class="fw__body">
+          <div class="fw__chart" data-story-chart set:html={storyChart(pts, 1000, 380)}></div>
+          <ol class="fw__ev" role="list" data-events>{EVENTS.map(([w, t, d]) => (
+            <li data-w={w}><b>Week {w}. {t}</b><span>{d}</span></li>
+          ))}</ol>
+        </div>
+      </div>
+    </section>
 
-    <section class="fx-sec" aria-labelledby="fx-t"><div class="fa-wrap">
-      <h2 id="fx-t" class="fx-h fa-reveal">What Fathom does</h2>
-    </div>
-      <div class="fx" data-fx>{features.map((f, i) => (
-        <article class:list={['fx__p', i === 0 && 'is-open']}>
-          <button type="button" class="fx__tab" aria-expanded={String(i === 0)} aria-controls={`fx-${f.id}`}><span class="fx__ico" set:html={icon(f.data.icon, 28)}></span><b>{f.data.title}</b></button>
-          <div class="fx__body" id={`fx-${f.id}`}>
-            <span class="fx__img"><Image src={FEATURE_PHOTOS[f.id]} alt={PHOTO_ALTS[f.id]} width={760} loading="lazy" /></span>
-            <h3>{f.data.title}</h3>
-            <p class="fx__tag">{f.data.tagline}</p>
-            <p>{f.data.lede}</p>
-            <a class="fx__go" href={`${B}/features/${f.id}/`}>See {f.data.title}<span class="sr-only"> in detail</span></a>
-          </div>
+    <section class="fp" aria-labelledby="fp-t"><div class="fa-wrap"><h2 id="fp-t" class="fp__h">What Fathom does</h2><div class="fp__grid">
+      <div class="fp__side">
+        <ul class="fp__nav" role="list" data-nav>{features.map((f, i) => <li><a href={`#fp-${f.id}`} class:list={[i === 0 && 'is-on']}>{f.data.title}</a></li>)}</ul>
+      </div>
+      <div class="fp__screens">{features.map((f) => (
+        <article class="fp__s" id={`fp-${f.id}`} data-s>
+          <h3>{f.data.tagline}</h3>
+          <p>{f.data.lede}</p>
+          <div class="ui" data-ui set:html={SCREENS[f.id]}></div>
+          <a class="fp__go" href={`${B}/features/${f.id}/`}>See {f.data.title}<span class="sr-only"> in detail</span></a>
         </article>
       ))}</div>
-    </section>
+    </div></div></section>
 
     <section class="fn" aria-label="Fathom in numbers"><div class="fa-wrap">
       <ul class="fn__list" role="list">
@@ -81,7 +98,7 @@ const MORNING = [
     </div></section>
 
     <section class="fc" aria-labelledby="cu-t"><div class="fa-wrap">
-      <h2 id="cu-t" class="fx-h fa-reveal">Owners sleep better.</h2>
+      <h2 id="cu-t" class="fp__h fa-reveal">Owners sleep better.</h2>
       <div class="fc__tabs" data-tabs>
         <div class="fc__list" role="tablist" aria-label="Customer stories">
           {customers.map((c, i) => <button type="button" role="tab" id={`tab-${c.id}`} aria-controls={`panel-${c.id}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1}>{c.data.name}</button>)}

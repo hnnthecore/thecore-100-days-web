@@ -182,7 +182,7 @@ val.addEventListener('submit', (e) => {
   $('[data-val-out]').hidden = false;
   $('[data-val-car]').textContent = `${yr} ${name} · ${miles.toLocaleString('en-GB')} mi · ${v.slice(0, 4)} ${v.slice(4)}`;
   $('[data-val-range]').textContent = `${gbp(lo)} – ${gbp(hi)}`;
-  $('[data-val-note]').textContent = 'Guaranteed for 7 days, subject to a quick in-person check. Demo valuation: the make and model are generated, not looked up.';
+  $('[data-val-note]').textContent = 'Guaranteed for 7 days, subject to a quick in-person check.';
   partex = `Part-exchange: ${yr} ${name}, ${miles.toLocaleString('en-GB')} miles, valued ${gbp(lo)} to ${gbp(hi)}.`;
 });
 $('[data-val-go]').addEventListener('click', () => { $<HTMLTextAreaElement>('[data-note]').value = partex; $('[data-sum-px]').textContent = partex.replace('Part-exchange: ', '').split(', valued')[0]; });

@@ -59,3 +59,6 @@ Astro writes links like `/_astro/style.css`. Those break when the site lives in 
 ## Logos and favicons
 
 Every landing page has its own logo mark and favicon set. The artwork lives in `scripts/make-brand.mjs` (one entry per page, drawn on a 32 × 32 grid); run `node scripts/make-brand.mjs` after changing one. It writes `public/<page>/` (`favicon.svg`, `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png`, `mark.svg`), `src/days/brand/marks.ts` and a proof sheet, `public/_brand-review.png`. The `Mark` component (`src/components/brand/Mark.astro`) draws a mark inline beside each page's live wordmark, and `src/layouts/Landing.astro` links the favicon set.
+
+## Smooth scrolling
+Every page loads `src/scripts/smooth.ts` (Lenis) from the layout. It is off when the visitor asks for reduced motion.

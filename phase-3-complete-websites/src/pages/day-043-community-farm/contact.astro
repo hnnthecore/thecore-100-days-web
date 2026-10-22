@@ -44,7 +44,7 @@ const FAQ = [['Do I need experience?', 'None at all. We teach as we go, and ther
     e.preventDefault();
     const ok = document.querySelector<HTMLElement>('[data-ok]')!;
     if (!check()) { ok.textContent = ''; return; }
-    ok.textContent = `Thank you ${(document.getElementById('m-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within two working days. (Demo: nothing was sent.)`;
+    ok.textContent = `Thank you ${(document.getElementById('m-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We'll reply within two working days.`;
     form.reset();
   });
 </script>

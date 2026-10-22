@@ -1,6 +1,6 @@
 /** Day 044 · Fathom · home page behaviour: the live forecast, the feature panels, count-up numbers and the customer tabs. */
 import { gbp } from './chart';
-import { model, verdict, heroChart } from './forecast';
+import { model, verdict, heroChart, storyChart, storyGeom } from './forecast';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -39,16 +39,61 @@ if (box) {
   render();
 }
 
-/* Feature panels: one open, the rest collapsed. Hover or focus opens another. */
-const fx = document.querySelector<HTMLElement>('[data-fx]');
-if (fx) {
-  const panels = [...fx.querySelectorAll<HTMLElement>('.fx__p')];
-  const open = (p: HTMLElement) => panels.forEach((o) => { const on = o === p; o.classList.toggle('is-open', on); o.querySelector('.fx__tab')!.setAttribute('aria-expanded', String(on)); });
-  panels.forEach((p) => {
-    p.querySelector('.fx__tab')!.addEventListener('click', () => open(p));
-    p.addEventListener('mouseenter', () => { if (matchMedia('(hover: hover) and (min-width: 900px)').matches) open(p); });
-    p.addEventListener('focusin', () => open(p));
-  });
+/* The scroll story: on wide screens the section is pinned and scrolling draws the 13 weeks; elsewhere the finished chart is shown. */
+const story = document.querySelector<HTMLElement>('[data-story]');
+if (story) {
+  const stick = story.querySelector<HTMLElement>('.fw__stick')!;
+  const holder = story.querySelector<HTMLElement>('[data-story-chart]')!;
+  const wk = story.querySelector<HTMLElement>('[data-wk]')!;
+  const events = [...story.querySelectorAll<HTMLElement>('[data-events] li')];
+  const pts = model(0, 4500, 14);
+  const wide = matchMedia('(min-width: 1000px) and (prefers-reduced-motion: no-preference)');
+  let W = 1000, H = 380, pinned = false, total = 0, ticking = false;
+  const setWeek = (v: number) => {
+    const g = storyGeom(pts, W, H), pt = g.at(v);
+    holder.querySelector('[data-clip]')?.setAttribute('width', String(pt.x + 2));
+    holder.querySelector('[data-cursor]')?.setAttribute('d', `M${pt.x.toFixed(1)} ${g.padT}V${H - g.padB}`);
+    holder.querySelector('[data-dot]')?.setAttribute('cx', pt.x.toFixed(1));
+    holder.querySelector('[data-dot]')?.setAttribute('cy', pt.y.toFixed(1));
+    wk.textContent = String(Math.min(13, Math.round(v) + 1));
+    let now = -1;
+    events.forEach((li, i) => { const seen = Number(li.dataset.w) - 1 <= v + 0.05; li.classList.toggle('is-seen', seen); if (seen) now = i; });
+    events.forEach((li, i) => li.classList.toggle('is-now', i === now));
+  };
+  const draw = () => {
+    W = Math.max(320, Math.round(holder.clientWidth || 1000));
+    H = Math.round(Math.min(420, Math.max(W < 560 ? 230 : 280, innerHeight * 0.42)));
+    holder.innerHTML = storyChart(pts, W, H);
+  };
+  const update = () => {
+    ticking = false;
+    if (!pinned) { setWeek(12); return; }
+    const top = story.getBoundingClientRect().top, px = Math.min(Math.max(72 - top, 0), total);
+    setWeek(Math.min(1, px / (total * 0.85)) * 12);
+  };
+  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  const measure = () => {
+    pinned = wide.matches;
+    story.classList.toggle('is-pinned', pinned);
+    story.classList.add('is-js');
+    draw();
+    if (pinned) { total = innerHeight * 3; story.style.height = stick.offsetHeight + total + 'px'; } else story.style.height = '';
+    update();
+  };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', measure);
+  wide.addEventListener('change', measure);
+  measure();
+}
+
+/* Product tour: the list on the left follows the screen in view. */
+const nav = document.querySelector<HTMLElement>('[data-nav]');
+if (nav) {
+  const links = [...nav.querySelectorAll<HTMLAnchorElement>('a')];
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) links.forEach((a) => a.classList.toggle('is-on', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-12% 0px -55% 0px' });
+  document.querySelectorAll('[data-s]').forEach((el) => io.observe(el));
 }
 
 /* Count-up numbers when they scroll into view. */

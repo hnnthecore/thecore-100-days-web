@@ -102,48 +102,68 @@ html .fa .fa-status__v { font-family: "Onest Variable", sans-serif; }
 .fh__reset { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .fh__reset:hover { color: var(--mint); }
 
-/* ---------- A morning with Fathom ---------- */
-.fm { padding-block: clamp(4.5rem, 9vw, 8rem); }
-.fm__grid { display: grid; gap: 2.5rem; }
-.fm__h { font-family: "Onest Variable", sans-serif; font-size: clamp(2.6rem, 6.4vw, 5.6rem); line-height: 0.98; font-weight: 700; letter-spacing: -0.055em; text-wrap: balance; max-width: 10ch; }
-.fm__feed { margin: 0; padding: 0; list-style: none; max-width: 40rem; display: grid; gap: 0.25rem; }
-.fm__feed li { display: grid; grid-template-columns: 4.75rem minmax(0, 1fr); gap: 0.15rem 1.25rem; padding: 1.1rem 0; }
-.fm__feed time { grid-row: 1 / span 2; font-family: "Onest Variable", sans-serif; font-size: 1.05rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); padding-top: 0.15rem; }
-.fm__feed b { font-family: "Onest Variable", sans-serif; font-size: 1.3rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.025em; }
-.fm__feed span { color: var(--muted); font-size: 1.0625rem; line-height: 1.5; }
-@media (min-width: 900px) { .fm__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 5rem; } .fm__h { position: sticky; top: 7rem; align-self: start; } }
+/* ---------- Thirteen weeks, one scroll ---------- */
+.fw { background: var(--ink); color: #fff; }
+.fw__stick { display: grid; gap: 1.25rem; align-content: start; padding: clamp(2.5rem, 5vw, 4rem) var(--gut) 2.5rem; }
+.fw__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 0.75rem 2rem; }
+.fw__h { font-family: "Onest Variable", sans-serif; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1; font-weight: 700; letter-spacing: -0.05em; text-wrap: balance; max-width: 14ch; }
+.fw__wk { font-size: 1.1rem; color: #cfd9d3; }
+.fw__wk b { margin-left: 0.5rem; font-family: "Onest Variable", sans-serif; font-size: clamp(2.4rem, 5vw, 4.4rem); font-weight: 700; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--mint); }
+.fw__body { display: grid; gap: 1.5rem 3rem; align-items: center; }
+@media (min-width: 1000px) { .fw__body { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); } }
+.fw__chart svg { display: block; width: 100%; height: auto; }
+.fw__ev { display: grid; gap: 1.1rem; margin: 0; padding: 0; list-style: none; }
+.fw__ev li { display: grid; gap: 0.2rem; transition: opacity 0.35s; }
+.fw__ev b { font-family: "Onest Variable", sans-serif; font-size: 1.2rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; }
+.fw__ev span { color: #d6e0da; line-height: 1.45; }
+.fw.is-js .fw__ev li { opacity: 0.32; }
+.fw.is-js .fw__ev li.is-seen { opacity: 0.7; }
+.fw.is-js .fw__ev li.is-now { opacity: 1; }
+.fw.is-js .fw__ev li.is-now b { color: var(--mint); }
+.fw.is-pinned .fw__stick { position: sticky; top: 4.5rem; height: calc(100svh - 4.5rem); box-sizing: border-box; align-content: center; padding-block: 1.25rem; }
 
-/* ---------- What Fathom does ---------- */
-.fx-sec { background: var(--ink); color: #fff; padding-block: clamp(4rem, 8vw, 7rem) 0; }
-.fx-h { font-family: "Onest Variable", sans-serif; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1; font-weight: 700; letter-spacing: -0.05em; text-wrap: balance; margin-bottom: 2.25rem; max-width: 14ch; }
-.fx { display: flex; flex-direction: column; gap: 4px; background: var(--paper); padding-top: 4px; }
-.fx__p { background: #1a231f; }
-.fx__tab { display: flex; align-items: center; gap: 0.9rem; width: 100%; padding: 1rem var(--gut); text-align: left; color: #fff; font-size: 1.1rem; font-weight: 700; }
-.fx__tab b { font-family: "Onest Variable", sans-serif; letter-spacing: -0.02em; }
-.fx__ico { display: grid; place-items: center; width: 3rem; height: 3rem; background: var(--mint); color: var(--ink); flex: none; }
-.fx__body { display: none; padding: 0 var(--gut) 1.75rem; }
-.fx__p.is-open { background: #202c27; }
-.fx__p.is-open .fx__body { display: grid; gap: 0.85rem; }
-.fx__body h3 { font-family: "Onest Variable", sans-serif; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.05; font-weight: 700; letter-spacing: -0.04em; }
-.fx__tag { font-size: 1.25rem; font-weight: 600; color: var(--mint); }
-.fx__body p { color: #e0e9e4; line-height: 1.55; max-width: 28rem; }
-.fx__img { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
-.fx__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.fx__go { justify-self: start; padding: 0.8rem 1.4rem; background: var(--mint); color: var(--ink); font-weight: 700; transition: background-color 0.2s; }
-.fx__go:hover, .fx__go:focus-visible { background: #fff; }
-.fx__tab:focus-visible, .fx__go:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
-@media (min-width: 900px) {
-  .fx { flex-direction: row; height: clamp(30rem, 72svh, 40rem); }
-  .fx__p { flex: 0 0 5.75rem; position: relative; overflow: hidden; transition: flex-basis 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s; }
-  .fx__p.is-open { flex: 1 1 0; }
-  .fx__tab { position: absolute; inset: 0 auto 0 0; width: 5.75rem; flex-direction: column; justify-content: flex-start; align-items: center; gap: 1.25rem; padding: 1.25rem 0; }
-  .fx__tab b { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 1.15rem; white-space: nowrap; }
-  .fx__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.85rem 2.5rem; align-content: center; height: 100%; margin-left: 5.75rem; padding: 2rem 2.5rem 2rem 1rem; opacity: 0; visibility: hidden; transition: opacity 0.4s; }
-  .fx__p.is-open .fx__body { opacity: 1; visibility: visible; transition-delay: 0.25s; }
-  .fx__img { grid-column: 2; grid-row: 1 / span 5; align-self: stretch; aspect-ratio: auto; min-height: 0; }
-  .fx__body > :not(.fx__img) { grid-column: 1; }
-  .fx__p:not(.is-open) .fx__tab { color: #c9d5ce; }
-}
+/* ---------- What Fathom does: the product, screen by screen ---------- */
+.fp { padding-block: clamp(4.5rem, 9vw, 8rem); }
+.fp__grid { display: grid; gap: 2.5rem; }
+.fp__h { font-family: "Onest Variable", sans-serif; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1; font-weight: 700; letter-spacing: -0.05em; text-wrap: balance; max-width: 14ch; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+.fp__nav { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.fp__nav a { display: block; padding: 0.7rem 1rem; background: var(--sky); font-weight: 700; transition: background-color 0.2s, color 0.2s; }
+.fp__nav a:hover { background: #cfd9d3; }
+.fp__nav a.is-on { background: var(--ink); color: #fff; }
+.fp__screens { display: grid; gap: clamp(3rem, 7vw, 5.5rem); }
+.fp__s { scroll-margin-top: 6rem; }
+.fp__s h3 { font-family: "Onest Variable", sans-serif; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.1; font-weight: 700; letter-spacing: -0.04em; max-width: 24ch; }
+.fp__s > p { margin: 0.7rem 0 1.25rem; max-width: 34rem; line-height: 1.55; }
+.fp__go { display: inline-block; margin-top: 1.1rem; font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; color: var(--blue); }
+.ui { display: grid; gap: 1rem; padding: clamp(1rem, 2.4vw, 1.6rem); background: #fff; }
+.ui__kpis { display: flex; flex-wrap: wrap; gap: 0.75rem 2.25rem; }
+.ui__kpis div { display: grid; }
+.ui__kpis b { font-family: "Onest Variable", sans-serif; font-size: 1.5rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.ui__kpis span { font-size: 0.9375rem; color: var(--muted); }
+.ui__note { font-size: 0.9375rem; color: var(--muted); }
+.ui__cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.ui__cmp > div { display: grid; gap: 0.35rem; padding: 1rem; background: var(--card); }
+.ui__cmp > div.is-pick { background: #d4f5e6; }
+.ui__cmp b { font-family: "Onest Variable", sans-serif; font-size: 1.4rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.ui__cmp span { font-size: 0.9375rem; color: var(--muted); }
+.ui__tag { font-weight: 700; }
+.ui__tbl { width: 100%; border-collapse: collapse; }
+.ui__tbl td { padding: 0.7rem 0.8rem; font-variant-numeric: tabular-nums; }
+.ui__tbl tr:nth-child(odd) { background: var(--card); }
+.ui__tbl td:not(:first-child) { text-align: right; }
+.ui__tbl .is-late { color: #a8281c; font-weight: 700; }
+.ui__mail, .ui__slack { display: grid; gap: 0.7rem; padding: 1rem; background: var(--card); }
+.ui__mail p, .ui__slack p { line-height: 1.5; }
+.ui__slack { grid-template-columns: auto 1fr; align-items: baseline; }
+.ui__slack b { font-weight: 800; }
+.ui__slack time { justify-self: end; font-size: 0.875rem; color: var(--muted); grid-column: 2; grid-row: 1; }
+.ui__slack p, .ui__slack .ui__btn { grid-column: 1 / -1; }
+.ui__btn { justify-self: start; padding: 0.6rem 1.1rem; background: var(--ink); color: #fff; font-weight: 700; font-size: 0.9375rem; }
+.ui__team { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.ui__team li { display: grid; grid-template-columns: 2.5rem 1fr auto; gap: 0.8rem; align-items: center; padding: 0.7rem; background: var(--card); }
+.ui__team i { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; background: var(--ink); color: var(--mint); font-style: normal; font-weight: 700; }
+.ui__team span { color: var(--muted); font-size: 0.9375rem; }
+@media (min-width: 1000px) { .fp__grid { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: 5rem; } .fp__side { position: sticky; top: 7rem; align-self: start; } .fp__nav { display: grid; } }
 
 /* ---------- Numbers ---------- */
 .fn { padding-block: clamp(4.5rem, 9vw, 8rem); }
@@ -192,7 +212,7 @@ html .fa .fa-status__v { font-family: "Onest Variable", sans-serif; }
   @keyframes fh-rise { from { opacity: 0; translate: 0 1.5rem; } }
   .fm__feed li.fa-reveal { transition-delay: calc(var(--d, 0) * 110ms); }
 }
-@media (prefers-reduced-motion: reduce) { html .fa .fa-header { transition: none; } .fx__p, .fx__body { transition: none; } }
+@media (prefers-reduced-motion: reduce) { html .fa .fa-header { transition: none; } .fw__ev li { transition: none; } }
 
 /* Footer: status strip and columns in the new palette */
 html .fa .fa-status { background: #151c19; border-bottom: 0; }

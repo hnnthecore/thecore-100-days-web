@@ -312,7 +312,7 @@ form.addEventListener('submit', (e) => {
   const first = $<HTMLInputElement>('#p-name').value.trim().split(/\s+/)[0];
   const ticket = $('[data-ticket]');
   $('[data-code]').textContent = code;
-  $('[data-ticket-text]').textContent = `${first}, your pass for ${$<HTMLSelectElement>('#p-club').value} starts ${when} and lasts 3 days. Show this code at reception. You’ve been eyeing the ${planName} plan, so we’ll have a coach talk you through it. (Demo: nothing was sent.)`;
+  $('[data-ticket-text]').textContent = `${first}, your pass for ${$<HTMLSelectElement>('#p-club').value} starts ${when} and lasts 3 days. Show this code at reception. You’ve been eyeing the ${planName} plan, so we’ll have a coach talk you through it.`;
   ticket.hidden = false;
   ticket.focus();
 });

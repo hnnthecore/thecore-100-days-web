@@ -252,5 +252,5 @@ report.addEventListener('submit', (e) => {
   email.setAttribute('aria-invalid', String(!ok));
   $('#s-email-e').hidden = ok;
   if (!ok) { email.focus(); return; }
-  $('[data-report-ok]').textContent = `Done. A full report for ${domainIn.value.trim()} is on its way to ${email.value.trim()}. (Demo: nothing was sent.)`;
+  $('[data-report-ok]').textContent = `Done. A full report for ${domainIn.value.trim()} is on its way to ${email.value.trim()}.`;
 });
