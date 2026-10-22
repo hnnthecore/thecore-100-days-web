@@ -6,6 +6,7 @@
  */
 import '@fontsource-variable/bricolage-grotesque';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoTrap from '../../assets/day-034/pipe-wall.jpg';
 import photoCabinet from '../../assets/day-034/cabinet.jpg';
@@ -64,7 +65,7 @@ const REVIEWS = [['Hannah, Clifton', 'Burst pipe at 11 pm, Dan was here in 50 mi
     <!-- =========================== HEADER =========================== -->
     <header class="cp-header" data-header>
       <div class="cp-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="cp-logo" aria-label="Copperline, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--teal)" /><path d="M6 12h12a4 4 0 0 1 4 4v6" fill="none" stroke="var(--copper)" stroke-width="3.2" stroke-linecap="round" /><circle cx="22" cy="24" r="2.4" fill="#7fd0e4" /></svg><span>Copper<em>line</em></span></a>
+        <a href="#top" class="cp-logo" aria-label="Copperline, home"><Mark site="day-034-plumber" size={34} /><span>Copper<em>line</em></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
             <li><a href="#leaks">Leak calculator</a></li><li><a href="#prices">Prices</a></li><li><a href="#boiler">Boiler advice</a></li><li><a href="#plans">Care plans</a></li>
@@ -266,7 +267,7 @@ const REVIEWS = [['Hannah, Clifton', 'Burst pipe at 11 pm, Dan was here in 50 mi
 
     <footer class="cp-footer">
       <div class="cp-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="cp-logo"><span>Copper<em>line</em></span></p>
+        <p class="cp-logo"><Mark site="day-034-plumber" variant="tile" size={34} /><span>Copper<em>line</em></span></p>
         <p>A fictional plumbing company created for Thecore's 100 Days of Web (Day 034). Prices, engineers and reviews are demo content.</p>
       </div>
     </footer>

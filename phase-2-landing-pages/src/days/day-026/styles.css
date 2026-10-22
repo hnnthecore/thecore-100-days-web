@@ -48,8 +48,9 @@
 .av-header nav a { position: relative; }
 .av-header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1.5px; background: var(--clay); scale: 0 1; transform-origin: left; transition: scale 0.35s var(--ease-out-expo); }
 .av-header nav a:hover::after { scale: 1 1; }
-.av-logo { font-family: "Instrument Serif", Georgia, serif; font-size: 1.7rem; letter-spacing: -0.01em; line-height: 1; }
-.av-logo span { font-weight: 400; }
+.av-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Instrument Serif", Georgia, serif; font-size: 1.7rem; letter-spacing: -0.01em; line-height: 1; }
+.av-logo .brand-mark { flex: none; }
+.av-logo__t, .av-logo span { font-weight: 400; }
 
 /* ---------- 1 · Hero ---------- */
 .av-hero { background: radial-gradient(60% 70% at 100% 0%, var(--blush), transparent 70%), var(--cream); }

@@ -7,6 +7,7 @@
 import '@fontsource-variable/syne';
 import '@fontsource-variable/figtree';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoScoop from '../../assets/day-038/scoop.jpg';
 import photoRoaster from '../../assets/day-038/roaster.jpg';
@@ -49,7 +50,7 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
     <!-- =========================== HEADER =========================== -->
     <header class="eo-header" data-header>
       <div class="eo-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="eo-logo" aria-label="Ember and Oak, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#d9622b" /><path d="M16 5c-4 6-7 9-7 13a7 7 0 0 0 14 0c0-4-3-7-7-13z" fill="#1e1410" /><path d="M16 14c-2 3-3 4-3 6a3 3 0 0 0 6 0c0-2-1-3-3-6z" fill="#f5ecdc" /></svg><span>Ember <em>&</em> Oak</span></a>
+        <a href="#top" class="eo-logo" aria-label="Ember and Oak, home"><Mark site="day-038-coffee-roastery" variant="tile" size={36} /><span>Ember <em>&</em> Oak</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
             <li><a href="#quiz">Find your coffee</a></li><li><a href="#beans">Beans</a></li><li><a href="#brew">Brew guide</a></li><li><a href="#subscribe">Subscribe</a></li>
@@ -251,7 +252,7 @@ const HOURS = [['Monday', '7:30 – 16:00'], ['Tuesday', '7:30 – 16:00'], ['We
 
     <footer class="eo-footer">
       <div class="eo-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="eo-logo"><span>Ember <em>&</em> Oak</span></p>
+        <p class="eo-logo"><Mark site="day-038-coffee-roastery" variant="tile" size={36} /><span>Ember <em>&</em> Oak</span></p>
         <p>A fictional roastery created for Thecore's 100 Days of Web (Day 038). Coffees, prices and orders are demo content.</p>
       </div>
     </footer>

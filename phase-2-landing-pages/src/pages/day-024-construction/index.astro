@@ -7,6 +7,7 @@
 import '@fontsource-variable/space-grotesk';
 import '@fontsource/instrument-serif/400-italic.css';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import Iso from '../../components/day-024/Iso.astro';
 import { Image } from 'astro:assets';
 import photoFrame from '../../assets/day-024/worker-frame.jpg';
@@ -67,7 +68,7 @@ const TYPES = [
     <!-- =========================== HEADER =========================== -->
     <header class="hr-header" data-header>
       <div class="hr-wrap flex h-20 items-center justify-between gap-6">
-        <a href="#top" class="hr-logo" aria-label="Halden and Rowe Construction, home"><b>Halden &amp; Rowe</b><span>Construction · Est. 1987</span></a>
+        <a href="#top" class="hr-logo" aria-label="Halden and Rowe Construction, home"><Mark site="day-024-construction" size={38} /><span class="hr-logo__t"><b>Halden &amp; Rowe</b><span>Construction · Est. 1987</span></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-9 text-[15px]">
             <li><a href="#projects">Projects</a></li><li><a href="#sectors">Sectors</a></li><li><a href="#estimate">Estimate</a></li><li><a href="#process">Process</a></li>
@@ -296,7 +297,7 @@ const TYPES = [
 
     <footer class="hr-footer">
       <div class="hr-wrap flex flex-wrap items-end justify-between gap-6 py-12">
-        <p class="hr-footer__mark">Halden <em>&amp;</em> Rowe</p>
+        <p class="hr-footer__mark"><Mark site="day-024-construction" size={72} /><span>Halden <em>&amp;</em> Rowe</span></p>
         <p class="max-w-md text-sm text-(--ink-3)">A fictional contractor designed for Thecore's 100 Days of Web (Day 024). Projects, clients and figures are demo content.</p>
       </div>
     </footer>

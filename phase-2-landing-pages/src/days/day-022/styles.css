@@ -48,7 +48,7 @@
 .fr-header a { text-decoration: none; }
 .fr-header nav a:hover { color: var(--tomato); }
 .fr-logo { display: inline-flex; align-items: center; gap: 0.65rem; font-family: "Anton", Impact, sans-serif; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--char); }
-.fr-logo__mark { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--tomato); color: var(--cream); font-size: 1rem; border: 2.5px solid var(--char); }
+.fr-logo .brand-mark { flex: none; }
 .fr-cartbtn { position: relative; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border: 3px solid var(--char); border-radius: 999px; background: var(--mustard); font-weight: 800; box-shadow: 3px 3px 0 var(--char); }
 .fr-cartbtn__count { display: grid; place-items: center; min-width: 1.6rem; height: 1.6rem; padding: 0 0.35rem; border-radius: 999px; background: var(--char); color: var(--cream); font-size: 0.8rem; }
 .fr-cartbtn.is-bump { animation: bump 0.45s var(--ease-spring); }

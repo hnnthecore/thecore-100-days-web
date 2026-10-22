@@ -51,8 +51,9 @@
 .rv-header nav a { position: relative; padding-block: 0.3rem; }
 .rv-header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--pink); scale: 0 1; transform-origin: left; transition: scale 0.3s var(--ease-out-expo); }
 .rv-header nav a:hover::after { scale: 1 1; }
-.rv-logo { font-size: 1.7rem; letter-spacing: 0.04em; line-height: 1; }
-.rv-logo span { color: var(--pink); margin-inline: 0.05em; }
+.rv-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 1.7rem; letter-spacing: 0.04em; line-height: 1; }
+.rv-logo .brand-mark { flex: none; }
+.rv-logo__t span { color: var(--pink); margin-inline: 0.05em; }
 
 /* ---------- 1 · Hero ---------- */
 .rv-hero { position: relative; background: radial-gradient(50% 60% at 85% 20%, rgb(255 46 136 / 0.28), transparent 70%), var(--black); color: #fff; }

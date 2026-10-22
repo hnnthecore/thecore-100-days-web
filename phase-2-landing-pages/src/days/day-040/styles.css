@@ -49,7 +49,7 @@
 .hc-header nav a { position: relative; padding-block: 0.3rem; }
 .hc-header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--red); scale: 0 1; transform-origin: left; transition: scale 0.35s var(--ease-out-expo); }
 .hc-header nav a:hover::after { scale: 1 1; }
-.hc-logo { font-size: 1.7rem; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
+.hc-logo { display: inline-flex; align-items: center; gap: 0.65rem; font-size: 1.7rem; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
 
 .hc-input { width: 100%; height: 3rem; padding: 0 0.9rem; border: 1.5px solid var(--line); background: #fff; color: var(--ink); font: inherit; font-weight: 600; }
 textarea.hc-input { height: auto; padding-block: 0.8rem; }
@@ -193,6 +193,7 @@ textarea.hc-input { height: auto; padding-block: 0.8rem; }
 .hc-done { padding: 1.4rem 1.6rem; background: var(--paper); color: var(--ink); animation: hc-in 0.5s var(--ease-out-expo); }
 .hc-done__t { font-family: "Bodoni Moda Variable", Georgia, serif; font-size: 1.7rem; }
 .hc-footer { background: var(--ink); color: #b8b3a8; border-top: 1px solid rgb(255 255 255 / 0.12); }
+.hc-logo .brand-mark { flex: none; }
 .hc-footer .hc-logo { color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {

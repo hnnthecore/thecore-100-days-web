@@ -7,6 +7,7 @@
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/nunito';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoExam from '../../assets/day-037/exam.jpg';
 import photoTable from '../../assets/day-037/table.jpg';
@@ -59,7 +60,7 @@ const VETS = [
     <!-- =========================== HEADER =========================== -->
     <header class="vt-header" data-header>
       <div class="vt-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="vt-logo" aria-label="Pawprint Veterinary Care, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--pine)" /><g fill="var(--sun)"><ellipse cx="16" cy="21" rx="6" ry="5" /><circle cx="9" cy="14" r="2.6" /><circle cx="14" cy="9.5" r="2.6" /><circle cx="19" cy="9.5" r="2.6" /><circle cx="24" cy="14" r="2.6" /></g></svg><span>Pawprint</span></a>
+        <a href="#top" class="vt-logo" aria-label="Pawprint Veterinary Care, home"><Mark site="day-037-veterinary" size={36} /><span>Pawprint</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-bold">
             <li><a href="#check">Symptom checker</a></li><li><a href="#care">Care timeline</a></li><li><a href="#vets">Our vets</a></li><li><a href="#feed">Feeding</a></li>
@@ -253,7 +254,7 @@ const VETS = [
 
     <footer class="vt-footer">
       <div class="vt-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="vt-logo"><span>Pawprint</span></p>
+        <p class="vt-logo"><Mark site="day-037-veterinary" variant="tile" size={36} /><span>Pawprint</span></p>
         <p>A fictional clinic created for Thecore's 100 Days of Web (Day 037). Advice is general information, not a diagnosis. In an emergency, call a vet immediately.</p>
       </div>
     </footer>

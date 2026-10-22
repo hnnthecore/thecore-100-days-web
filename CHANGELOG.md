@@ -2,6 +2,17 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Days 21–40 · Real logos and favicons for every landing page
+
+The same client feedback as Days 41–45: no emoji tab icons, and a real logo on every page. Each of the 20 landing pages now has its own mark and favicon set.
+
+- **Marks:** drawn one by one on a 32 × 32 grid, each from the business itself and in its own palette: a sun with alternating rays (Sol y Sal), an oven mouth with its flame (Forno Rosso), a hex nut cut by an N (Northgate), an H whose crossbar is a beam (Halden & Rowe), two road-marking chevrons (Pace), a salon-mirror arch with the evening star (Atelier Vesper), a brilliant-cut stone (Maison Aurelle), isometric layers (Stackwell), a half-solid shield (Ironveil), a doubled slash (Rival AC), cattails and a low sun (The Saltmarsh), a lemon slice cut like a weave (Lemon & Linen), a bolt with its spark (Voltline), a copper pipe bend with flanges (Copperline), a peak with one red stripe (Apex), a house and its lane (Latch & Lane), a paw with a medical cross (Pawprint), a bean whose crease is a flame (Ember & Oak), a W trail ending on a pin (Wayfarer) and a lens aperture (Halide & Co.).
+- **Different kinds of logo:** roundels, a shield, an arch, a hard square, a single glyph, a tile. The old marks were mostly the same rounded tile with a glyph in it.
+- **Favicons:** an SVG for tabs, a 32 px PNG, a multi-size .ico, a 180 px Apple touch icon and a 512 px icon per page, in public/<page>/. The emoji icons are gone (they stay only as a fallback in the layout).
+- **In the pages:** the mark now sits beside each page's live wordmark in the header and the footer (on dark headers and footers the mark uses its tile version so it stays visible).
+- **How to change one:** edit its entry in phase-2-landing-pages/scripts/make-brand.mjs and run node scripts/make-brand.mjs; it also writes a proof sheet at public/_brand-review.png.
+- **Tested:** all 20 pages at 390 and 1280 px, opened from disk: no overflow, no broken images, four icon links and a logo in header and footer on every page.
+
 ## Day 44 · Fathom rebuilt around one live forecast
 
 Rebuilt from a written brief (src/days/day-044/DESIGN.md) with the Taste Skill and Impeccable.

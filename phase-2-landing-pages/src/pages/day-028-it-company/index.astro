@@ -7,6 +7,7 @@
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoOffice from '../../assets/day-028/office-open.jpg';
 import photoFloor from '../../assets/day-028/office-plan.jpg';
@@ -52,7 +53,7 @@ const QUIZ = [
     <!-- =========================== HEADER =========================== -->
     <header class="sw-header" data-header>
       <div class="sw-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="sw-logo" aria-label="Stackwell, home"><svg viewBox="0 0 28 28" class="size-7" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--ink)" /><path d="M7 10h14M7 14h14M7 18h9" stroke="var(--orange)" stroke-width="2.4" stroke-linecap="round" /></svg>Stackwell</a>
+        <a href="#top" class="sw-logo" aria-label="Stackwell, home"><Mark site="day-028-it-company" variant="tile" size={32} />Stackwell</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-medium">
             <li><a href="#status">Live status</a></li><li><a href="#services">Services</a></li><li><a href="#plan">Pricing</a></li><li><a href="#results">Results</a></li>
@@ -221,7 +222,7 @@ const QUIZ = [
 
     <footer class="sw-footer">
       <div class="sw-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="sw-logo !text-white">Stackwell</p>
+        <p class="sw-logo !text-white"><Mark site="day-028-it-company" variant="tile" size={30} />Stackwell</p>
         <p>A fictional IT company created for Thecore's 100 Days of Web (Day 028). Prices, clients and figures are demo content.</p>
       </div>
     </footer>

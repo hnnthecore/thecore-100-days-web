@@ -8,6 +8,7 @@ import '@fontsource-variable/newsreader';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '@fontsource-variable/figtree';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import pHero from '../../assets/day-031/hero-art.jpg';
 import pGarden from '../../assets/day-031/garden.jpg';
@@ -68,7 +69,7 @@ const hv = view('sea', sceneId);
     <!-- =========================== HEADER =========================== -->
     <header class="hl-header" data-header>
       <div class="hl-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="hl-logo" aria-label="The Saltmarsh, home">The <em>Saltmarsh</em></a>
+        <a href="#top" class="hl-logo" aria-label="The Saltmarsh, home"><Mark site="day-031-hotel" size={38} /><span>The <em>Saltmarsh</em></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-9 text-[15px] font-medium">
             <li><a href="#stay">Plan your stay</a></li><li><a href="#rooms">Rooms</a></li><li><a href="#guests">Guests</a></li><li><a href="#rates">Rates</a></li>
@@ -226,7 +227,7 @@ const hv = view('sea', sceneId);
 
     <footer class="hl-footer">
       <div class="hl-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="hl-logo">The <em>Saltmarsh</em></p>
+        <p class="hl-logo"><Mark site="day-031-hotel" size={38} /><span>The <em>Saltmarsh</em></span></p>
         <p>A fictional hotel created for Thecore's 100 Days of Web (Day 031). Rooms, rates and reviews are demo content.</p>
       </div>
     </footer>

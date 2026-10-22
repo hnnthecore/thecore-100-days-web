@@ -7,6 +7,7 @@
 import '@fontsource-variable/archivo/wdth.css';
 import '@fontsource-variable/inter';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoMechanic from '../../assets/day-023/mechanic-hero.jpg';
 import photoTyre from '../../assets/day-023/tyre.jpg';
@@ -67,7 +68,7 @@ const REVIEWS = [
     <header class="nm-header" data-header>
       <div class="nm-wrap flex h-18 items-center justify-between gap-6">
         <a href="#top" class="nm-logo" aria-label="Northgate Motorworks, home">
-          <svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 21V11l12 10V11" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="square"/></svg>
+          <Mark site="day-023-workshop" size={34} />
           <span>Northgate<b>Motorworks</b></span>
         </a>
         <nav aria-label="Main" class="hidden lg:block">
@@ -349,6 +350,7 @@ const REVIEWS = [
 
     <footer class="nm-footer">
       <div class="nm-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm text-(--muted)">
+        <p class="nm-logo" style="margin-right:auto"><Mark site="day-023-workshop" size={30} /><span>Northgate<b>Motorworks</b></span></p>
         <p>© Northgate Motorworks, a fictional garage created for Thecore's 100 Days of Web (Day 023). Quotes and reports are demo content.</p>
         <p>Labour rate £85/h + VAT · Prices shown include VAT</p>
       </div>

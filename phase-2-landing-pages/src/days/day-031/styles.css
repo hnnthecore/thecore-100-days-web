@@ -51,7 +51,7 @@
 .hl-header nav a { position: relative; padding-block: 0.3rem; }
 .hl-header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--brass); scale: 0 1; transform-origin: left; transition: scale 0.35s var(--ease-out-expo); }
 .hl-header nav a:hover::after { scale: 1 1; }
-.hl-logo { font-size: 1.7rem; letter-spacing: -0.01em; line-height: 1; white-space: nowrap; }
+.hl-logo { display: inline-flex; align-items: center; gap: 0.65rem; font-size: 1.7rem; letter-spacing: -0.01em; line-height: 1; white-space: nowrap; }
 
 /* ---------- 1 · Hero ---------- */
 .hl-hero { background: radial-gradient(60% 70% at 100% 0%, var(--glass), transparent 70%), var(--sand); }
@@ -171,6 +171,7 @@ textarea.hl-input { height: auto; padding-block: 0.8rem; }
 .hl-done__ico { display: grid; place-items: center; width: 4rem; height: 4rem; margin: 0 auto 1.25rem; border-radius: 50%; background: var(--brass); color: #fff; font-size: 1.8rem; }
 .hl-ref b { margin-left: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 0.6rem; background: #fff; font-family: ui-monospace, monospace; letter-spacing: 0.1em; }
 .hl-footer { background: var(--sea); color: rgb(255 255 255 / 0.7); }
+.hl-logo .brand-mark { flex: none; }
 .hl-footer .hl-logo { color: #fff; } .hl-footer em { color: #e5c490; }
 
 @media (prefers-reduced-motion: reduce) {

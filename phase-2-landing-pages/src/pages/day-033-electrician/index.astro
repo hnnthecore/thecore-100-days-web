@@ -6,6 +6,7 @@
  */
 import '@fontsource-variable/sora';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoWiring from '../../assets/day-033/wiring.jpg';
 import photoPanel from '../../assets/day-033/panel.jpg';
@@ -41,7 +42,7 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
     <!-- =========================== HEADER =========================== -->
     <header class="ev-header" data-header>
       <div class="ev-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="ev-logo" aria-label="Voltline Electrical, home"><svg viewBox="0 0 28 28" class="size-8" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--blue)" /><path d="M16 3 7 16h6l-2 9 10-14h-6z" fill="var(--volt)" /></svg><span>Volt<em>line</em></span></a>
+        <a href="#top" class="ev-logo" aria-label="Voltline Electrical, home"><Mark site="day-033-electrician" size={34} /><span>Volt<em>line</em></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
             <li><a href="#triage">Emergency help</a></li><li><a href="#jobs">Jobs & prices</a></li><li><a href="#safety">Safety checks</a></li><li><a href="#ev">EV chargers</a></li>
@@ -258,7 +259,7 @@ const COVER = ['B', 'CV', 'WS', 'WV', 'DY', 'ST', 'TF'];
 
     <footer class="ev-footer">
       <div class="ev-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="ev-logo"><span>Volt<em>line</em></span></p>
+        <p class="ev-logo"><Mark site="day-033-electrician" variant="tile" size={34} /><span>Volt<em>line</em></span></p>
         <p>A fictional electrician created for Thecore's 100 Days of Web (Day 033). Prices and advice are illustrative. In an emergency always call 999.</p>
       </div>
     </footer>

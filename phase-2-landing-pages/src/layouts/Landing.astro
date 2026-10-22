@@ -17,6 +17,9 @@ interface Props {
   lang?: string;
 }
 const { title, description, themeColor, icon, day, lang = 'en' } = Astro.props;
+// Every landing page has its own favicon set (see scripts/make-brand.mjs); the emoji is only a fallback.
+const BRAND_FOLDERS: Record<number, string> = { 21: 'day-021-restaurant', 22: 'day-022-pizzeria', 23: 'day-023-workshop', 24: 'day-024-construction', 25: 'day-025-transport', 26: 'day-026-hair-salon', 27: 'day-027-jewelry', 28: 'day-028-it-company', 29: 'day-029-cybersecurity', 30: 'day-030-gym', 31: 'day-031-hotel', 32: 'day-032-cleaning', 33: 'day-033-electrician', 34: 'day-034-plumber', 35: 'day-035-car-dealership', 36: 'day-036-real-estate', 37: 'day-037-veterinary', 38: 'day-038-coffee-roastery', 39: 'day-039-travel', 40: 'day-040-photography' };
+const brand = BRAND_FOLDERS[day];
 const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${icon}</text></svg>`)}`;
 ---
 <!doctype html>
@@ -30,7 +33,16 @@ const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <link rel="icon" href={favicon} />
+    {brand ? (
+      <>
+        <link rel="icon" href={`/${brand}/favicon.svg`} type="image/svg+xml" />
+        <link rel="icon" href={`/${brand}/favicon-32.png`} type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href={`/${brand}/favicon.ico`} />
+        <link rel="apple-touch-icon" href={`/${brand}/apple-touch-icon.png`} />
+      </>
+    ) : (
+      <link rel="icon" href={favicon} />
+    )}
     <slot name="head" />
   </head>
   <body>

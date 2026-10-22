@@ -8,6 +8,7 @@ import '@fontsource/anton';
 import '@fontsource-variable/dm-sans';
 import '@fontsource-variable/dm-sans/wght-italic.css';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import Pizza from '../../components/day-022/Pizza.astro';
 import { Image } from 'astro:assets';
 import photoHero from '../../assets/day-022/pizza-hero.jpg';
@@ -72,7 +73,7 @@ const REVIEWS = [
     <!-- =========================== HEADER =========================== -->
     <header class="fr-header" data-header>
       <div class="fr-wrap flex flex-wrap items-center justify-between gap-x-4 py-3 md:h-20 md:flex-nowrap md:py-0">
-        <a href="#top" class="fr-logo" aria-label="Forno Rosso, home"><span class="fr-logo__mark" aria-hidden="true">FR</span><span>Forno Rosso</span></a>
+        <a href="#top" class="fr-logo" aria-label="Forno Rosso, home"><Mark site="day-022-pizzeria" size={44} /><span>Forno Rosso</span></a>
         <nav aria-label="Main" class="order-last -mx-5 w-[calc(100%+2.5rem)] overflow-x-auto px-5 pt-3 md:order-none md:mx-0 md:w-auto md:overflow-visible md:p-0">
           <ul class="flex gap-6 whitespace-nowrap text-sm font-bold uppercase tracking-[0.14em] md:gap-7">
             <li><a href="#build">Build your own</a></li><li><a href="#classics">Pizzas</a></li><li><a href="#delivery">Delivery</a></li><li><a href="#dough">Our dough</a></li>
@@ -288,7 +289,7 @@ const REVIEWS = [
     <footer class="fr-footer">
       <div class="fr-checker" aria-hidden="true"></div>
       <div class="fr-wrap flex flex-wrap items-center justify-between gap-4 py-8 text-sm">
-        <p class="fr-logo"><span class="fr-logo__mark" aria-hidden="true">FR</span><span>Forno Rosso</span></p>
+        <p class="fr-logo"><Mark site="day-022-pizzeria" size={40} /><span>Forno Rosso</span></p>
         <p class="opacity-80">Forno Rosso is a fictional pizzeria made for Thecore's 100 Days of Web (Day 022). Orders are not real.</p>
       </div>
     </footer>

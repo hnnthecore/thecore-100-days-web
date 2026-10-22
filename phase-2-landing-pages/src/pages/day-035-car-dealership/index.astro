@@ -7,6 +7,7 @@
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import car_golf from '../../assets/day-035/car-golf.jpg';
 import car_m3 from '../../assets/day-035/car-m3.jpg';
@@ -57,7 +58,7 @@ const CHECKS = [
     <!-- =========================== HEADER =========================== -->
     <header class="ax-header" data-header>
       <div class="ax-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="ax-logo" aria-label="Apex Motor Group, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0d0d0f" /><path d="M6 24 16 7l10 17" fill="none" stroke="#e8262b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /></svg><span>APEX<small>MOTOR GROUP</small></span></a>
+        <a href="#top" class="ax-logo" aria-label="Apex Motor Group, home"><Mark site="day-035-car-dealership" variant="tile" size={36} /><span>APEX<small>MOTOR GROUP</small></span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm font-semibold">
             <li><a href="#stock">Used cars</a></li><li><a href="#check">Our promise</a></li><li><a href="#finance">Finance</a></li><li><a href="#partex">Part-exchange</a></li>
@@ -277,7 +278,7 @@ const CHECKS = [
 
     <footer class="ax-footer">
       <div class="ax-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="ax-logo !text-white"><span>APEX<small>MOTOR GROUP</small></span></p>
+        <p class="ax-logo !text-white"><Mark site="day-035-car-dealership" variant="tile" size={36} /><span>APEX<small>MOTOR GROUP</small></span></p>
         <p>A fictional dealership created for Thecore's 100 Days of Web (Day 035). Cars, prices and finance are demo content, not an offer.</p>
       </div>
     </footer>

@@ -7,6 +7,7 @@
 import '@fontsource-variable/unbounded';
 import '@fontsource-variable/dm-sans';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import ph_lisbon from '../../assets/day-039/lisbon.jpg';
 import ph_santorini from '../../assets/day-039/santorini.jpg';
@@ -54,7 +55,7 @@ const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'
     <!-- =========================== HEADER =========================== -->
     <header class="wf-header" data-header>
       <div class="wf-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="wf-logo" aria-label="Wayfarer Journeys, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="url(#wlg)" /><defs><linearGradient id="wlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a3d" /><stop offset="1" stop-color="#e84d8a" /></linearGradient></defs><path d="M7 20c4-1 6-5 9-9l9-2-3 10c-5 1-8 5-10 8l-2-3z" fill="#fff" opacity=".95" /></svg><span>Wayfarer</span></a>
+        <a href="#top" class="wf-logo" aria-label="Wayfarer Journeys, home"><Mark site="day-039-travel" size={36} /><span>Wayfarer</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
             <li><a href="#plan">Itinerary</a></li><li><a href="#places">Destinations</a></li><li><a href="#price">Price</a></li><li><a href="#pack">Packing</a></li>
@@ -216,7 +217,7 @@ const EXPERTS = [['Maya', 'Asia & Pacific'], ['Tomás', 'Europe & Mediterranean'
 
     <footer class="wf-footer">
       <div class="wf-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="wf-logo"><span>Wayfarer</span></p>
+        <p class="wf-logo"><Mark site="day-039-travel" variant="tile" size={36} /><span>Wayfarer</span></p>
         <p>A fictional travel company created for Thecore's 100 Days of Web (Day 039). Prices and advice are illustrative. Always check official entry and health guidance.</p>
       </div>
     </footer>

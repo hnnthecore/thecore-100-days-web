@@ -6,6 +6,7 @@
  */
 import '@fontsource-variable/outfit';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoMop from '../../assets/day-032/mop.jpg';
 import photoVac from '../../assets/day-032/vacuum.jpg';
@@ -61,7 +62,7 @@ const FAQ = [
     <!-- =========================== HEADER =========================== -->
     <header class="ll-header" data-header>
       <div class="ll-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="ll-logo" aria-label="Lemon and Linen, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><ellipse cx="16" cy="17" rx="12" ry="10" fill="#ffe45c" /><path d="M16 7c1-3 4-4 6-3-1 3-3 4-6 3z" fill="#1cc38b" /><path d="M9 15q3-4 8-3" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7" /></svg>Lemon <em>&</em> Linen</a>
+        <a href="#top" class="ll-logo" aria-label="Lemon and Linen, home"><Mark site="day-032-cleaning" size={34} />Lemon <em>&</em> Linen</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-medium">
             <li><a href="#rooms">What’s included</a></li><li><a href="#services">Services</a></li><li><a href="#team">Our team</a></li><li><a href="#book">Book</a></li><li><a href="#faq">FAQ</a></li>
@@ -264,7 +265,7 @@ const FAQ = [
 
     <footer class="ll-footer">
       <div class="ll-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="ll-logo">Lemon <em>&</em> Linen</p>
+        <p class="ll-logo"><Mark site="day-032-cleaning" variant="tile" size={34} />Lemon <em>&</em> Linen</p>
         <p>A fictional cleaning company created for Thecore's 100 Days of Web (Day 032). Prices, people and reviews are demo content.</p>
       </div>
     </footer>

@@ -7,6 +7,7 @@
 import '@fontsource-variable/archivo';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoHall from '../../assets/day-029/cabinets.jpg';
 import photoTech from '../../assets/day-029/tech.jpg';
@@ -49,7 +50,7 @@ const EMAILS = [
     <!-- =========================== HEADER =========================== -->
     <header class="iv-header" data-header>
       <div class="iv-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="iv-logo" aria-label="Ironveil, home"><svg viewBox="0 0 28 28" class="size-7" aria-hidden="true"><path d="M14 2 4 6v8c0 6 4 10 10 12 6-2 10-6 10-12V6z" fill="none" stroke="var(--green)" stroke-width="2" /><path d="M9 14l4 4 6-8" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>IRONVEIL</a>
+        <a href="#top" class="iv-logo" aria-label="Ironveil, home"><Mark site="day-029-cybersecurity" size={30} />IRONVEIL</a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm font-semibold tracking-wide uppercase">
             <li><a href="#soc">Our SOC</a></li><li><a href="#attack">Attack demo</a></li><li><a href="#services">Services</a></li><li><a href="#phish">Spot the phish</a></li>
@@ -233,7 +234,7 @@ const EMAILS = [
 
     <footer class="iv-footer">
       <div class="iv-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="iv-logo !text-white">IRONVEIL</p>
+        <p class="iv-logo !text-white"><Mark site="day-029-cybersecurity" size={30} />IRONVEIL</p>
         <p>A fictional security company created for Thecore's 100 Days of Web (Day 029). Figures, clients and the hotline number are demo content.</p>
       </div>
     </footer>

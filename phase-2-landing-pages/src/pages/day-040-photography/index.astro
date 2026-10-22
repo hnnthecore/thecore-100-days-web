@@ -8,6 +8,7 @@ import '@fontsource-variable/bodoni-moda';
 import '@fontsource-variable/bodoni-moda/wght-italic.css';
 import '@fontsource-variable/hanken-grotesk';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import shot01 from '../../assets/day-040/shot-01.jpg';
 import shot02 from '../../assets/day-040/shot-02.jpg';
@@ -59,7 +60,7 @@ const STEPS = [
     <!-- =========================== HEADER =========================== -->
     <header class="hc-header" data-header>
       <div class="hc-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="hc-logo" aria-label="Halide and Co., home">Halide <em>&</em> Co.</a>
+        <a href="#top" class="hc-logo" aria-label="Halide and Co., home"><Mark site="day-040-photography" size={34} /><span>Halide <em>&</em> Co.</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-9 text-sm font-semibold tracking-wide">
             <li><a href="#process">Process</a></li><li><a href="#work">Portfolio</a></li><li><a href="#packages">Packages</a></li><li><a href="#dates">Dates</a></li>
@@ -221,7 +222,7 @@ const STEPS = [
 
     <footer class="hc-footer">
       <div class="hc-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="hc-logo">Halide <em>&</em> Co.</p>
+        <p class="hc-logo"><Mark site="day-040-photography" variant="tile" size={34} /><span>Halide <em>&</em> Co.</span></p>
         <p>A fictional studio created for Thecore's 100 Days of Web (Day 040). Photographs are drawn in code. Prices and availability are demo content.</p>
       </div>
     </footer>

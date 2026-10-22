@@ -55,3 +55,7 @@ Astro writes links like `/_astro/style.css`. Those break when the site lives in 
 1. Create `src/pages/day-0xx-name/index.astro` using the `Landing` layout.
 2. Put its CSS and script in `src/days/day-0xx/`. Start the CSS with `@layer properties, theme, base, components, utilities;`, then wrap the rules in `@layer components { … }`. The first line fixes the layer order however the files load; without it, Tailwind's reset can win and shrink headings (this happened on Day 022).
 3. Run `npm run build` and open `site/day-0xx-name/index.html`.
+
+## Logos and favicons
+
+Every landing page has its own logo mark and favicon set. The artwork lives in `scripts/make-brand.mjs` (one entry per page, drawn on a 32 × 32 grid); run `node scripts/make-brand.mjs` after changing one. It writes `public/<page>/` (`favicon.svg`, `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png`, `mark.svg`), `src/days/brand/marks.ts` and a proof sheet, `public/_brand-review.png`. The `Mark` component (`src/components/brand/Mark.astro`) draws a mark inline beside each page's live wordmark, and `src/layouts/Landing.astro` links the favicon set.

@@ -8,6 +8,7 @@ import '@fontsource-variable/playfair-display';
 import '@fontsource-variable/playfair-display/wght-italic.css';
 import '@fontsource-variable/plus-jakarta-sans';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoLiving from '../../assets/day-036/hero-living.jpg';
 import listing_s1 from '../../assets/day-036/listing-s1.jpg';
@@ -54,7 +55,7 @@ const HOODS = [
     <!-- =========================== HEADER =========================== -->
     <header class="ll-header" data-header>
       <div class="ll-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="ll-logo" aria-label="Latch and Lane, home"><svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><path d="M4 15 16 4l12 11v13H4z" fill="var(--coral)" /><rect x="13" y="17" width="6" height="11" rx="1.5" fill="var(--ink)" /></svg><span>Latch <em>&</em> Lane</span></a>
+        <a href="#top" class="ll-logo" aria-label="Latch and Lane, home"><Mark site="day-036-real-estate" size={36} /><span>Latch <em>&</em> Lane</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-[15px] font-semibold">
             <li><a href="#areas">Areas</a></li><li><a href="#homes">Homes</a></li><li><a href="#afford">Affordability</a></li><li><a href="#value">Valuation</a></li>
@@ -266,7 +267,7 @@ const HOODS = [
 
     <footer class="ll-footer">
       <div class="ll-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="ll-logo"><span>Latch <em>&</em> Lane</span></p>
+        <p class="ll-logo"><Mark site="day-036-real-estate" variant="tile" size={36} /><span>Latch <em>&</em> Lane</span></p>
         <p>A fictional agency created for Thecore's 100 Days of Web (Day 036). Properties, prices and estimates are demo content.</p>
       </div>
     </footer>

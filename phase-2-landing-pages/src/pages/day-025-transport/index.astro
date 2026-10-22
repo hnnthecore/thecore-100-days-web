@@ -7,6 +7,7 @@
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/jetbrains-mono';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoRoad from '../../assets/day-025/semi-road.jpg';
 import photoWarehouse from '../../assets/day-025/shelving.jpg';
@@ -44,7 +45,7 @@ const JOBS = [
     <header class="pl-header" data-header>
       <div class="pl-wrap flex h-18 items-center justify-between gap-6">
         <a href="#top" class="pl-logo" aria-label="Pace Logistics, home">
-          <svg viewBox="0 0 32 32" class="size-8" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--blue)" /><path d="M8 21 15 11l4 6 5-6" fill="none" stroke="var(--lime)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <Mark site="day-025-transport" size={32} />
           <span>Pace<b>Logistics</b></span>
         </a>
         <nav aria-label="Main" class="hidden lg:block">
@@ -248,7 +249,7 @@ const JOBS = [
 
     <footer class="pl-footer">
       <div class="pl-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm text-white/60">
-        <p class="pl-logo text-white"><span>Pace<b>Logistics</b></span></p>
+        <p class="pl-logo text-white"><Mark site="day-025-transport" variant="tile" size={32} /><span>Pace<b>Logistics</b></span></p>
         <p>A fictional haulier created for Thecore's 100 Days of Web (Day 025). Tracking, quotes and figures are demo content.</p>
       </div>
     </footer>

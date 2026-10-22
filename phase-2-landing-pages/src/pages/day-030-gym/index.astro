@@ -7,6 +7,7 @@
 import '@fontsource/anton';
 import '@fontsource-variable/archivo';
 import Landing from '../../layouts/Landing.astro';
+import Mark from '../../components/brand/Mark.astro';
 import { Image } from 'astro:assets';
 import photoFloor from '../../assets/day-030/floor.jpg';
 import photoDumbbells from '../../assets/day-030/dumbbells.jpg';
@@ -33,7 +34,7 @@ const MEMBERS = [
     <!-- =========================== HEADER =========================== -->
     <header class="rv-header" data-header>
       <div class="rv-wrap flex h-18 items-center justify-between gap-6">
-        <a href="#top" class="rv-logo" aria-label="Rival Athletic Club, home">RIVAL<span>/</span>AC</a>
+        <a href="#top" class="rv-logo" aria-label="Rival Athletic Club, home"><Mark site="day-030-gym" variant="tile" size={30} /><span class="rv-logo__t">RIVAL<span>/</span>AC</span></a>
         <nav aria-label="Main" class="hidden lg:block">
           <ul class="flex gap-8 text-sm font-bold tracking-widest uppercase">
             <li><a href="#build">Build a week</a></li><li><a href="#classes">Classes</a></li><li><a href="#challenge">Challenge</a></li><li><a href="#plans">Membership</a></li>
@@ -208,7 +209,7 @@ const MEMBERS = [
 
     <footer class="rv-footer">
       <div class="rv-wrap flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-        <p class="rv-logo">RIVAL<span>/</span>AC</p>
+        <p class="rv-logo"><Mark site="day-030-gym" variant="tile" size={30} /><span class="rv-logo__t">RIVAL<span>/</span>AC</span></p>
         <p>A fictional gym created for Thecore's 100 Days of Web (Day 030). Classes, prices and members are demo content.</p>
       </div>
     </footer>
