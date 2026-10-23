@@ -1,0 +1,60 @@
+---
+/** Day 048 · The Meridian · live search across headlines, standfirsts and writers, with section filter and sorting. Works offline from file://. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-048/Shell.astro';
+import { loadAll, B, SECTIONS } from '../../days/day-048/data';
+
+const { index } = await loadAll();
+---
+<Site title="Search · The Meridian" description="Search every story in The Meridian by headline, topic or writer." themeColor="#0d0f12" icon="M" day={48}>
+  <Shell active="Search">
+    <header class="mg-pagehead"><div class="mg-wrap"><ol class="mg-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Search</li></ol><h1 class="mg-h1">Search</h1>
+      <div class="mt-6" style="max-width:36rem"><label for="s-q" class="mg-label">Search headlines, topics and writers</label><input id="s-q" type="search" class="mg-input" placeholder="e.g. seagrass, trams, bread" autocomplete="off" data-q /></div></div></header>
+    <section class="mg-wrap mg-section">
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div class="mg-chips" role="group" aria-label="Section" data-secs><button type="button" data-v="all" aria-pressed="true">All</button>{SECTIONS.map((s) => <button type="button" data-v={s} aria-pressed="false">{s}</button>)}</div>
+        <div class="mg-chips" role="group" aria-label="Sort" data-sort><button type="button" data-v="new" aria-pressed="true">Newest</button><button type="button" data-v="read" aria-pressed="false">Most read</button></div>
+      </div>
+      <p class="mg-meta mb-4" role="status" aria-live="polite" data-count></p>
+      <ul class="mg-list" role="list" data-results></ul>
+      <p class="mg-dek" hidden data-none>Nothing found. Try a shorter word, or clear the section filter.</p>
+    </section>
+  </Shell>
+</Site>
+
+<script define:vars={{ index }}>
+  window.__index = index;
+</script>
+<script>
+  type Item = { id: string; title: string; dek: string; section: string; author: string; date: string; reads: number; url: string };
+  const all = (window as unknown as { __index: Item[] }).__index;
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!;
+  const out = document.querySelector<HTMLElement>('[data-results]')!;
+  const sel = { section: 'all', sort: 'new' };
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const reEsc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const mark = (s: string, terms: string[]) => (terms.length ? esc(s).replace(new RegExp(`(${terms.map(reEsc).join('|')})`, 'gi'), '<mark class="mg-mark">$1</mark>') : esc(s));
+  const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  function paint() {
+    const terms = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const hits = all
+      .filter((a) => (sel.section === 'all' || a.section === sel.section) && terms.every((t) => `${a.title} ${a.dek} ${a.author} ${a.section}`.toLowerCase().includes(t)))
+      .sort((x, y) => (sel.sort === 'read' ? y.reads - x.reads : y.date.localeCompare(x.date)));
+    out.innerHTML = hits.map((a) => `<li><div><h2 class="mg-h3"><a href="${a.url}">${mark(a.title, terms)}</a></h2><p class="mg-dek">${mark(a.dek, terms)}</p><p class="mg-meta"><span class="mg-tag">${a.section}</span> · <b>${mark(a.author, terms)}</b> · ${fmt(a.date)} · ${a.reads.toLocaleString('en-GB')} reads</p></div><button type="button" class="mg-save" data-save="${a.id}" data-title="${esc(a.title)}" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z" fill="currentColor"/></svg></button></li>`).join('');
+    document.querySelector('[data-count]')!.textContent = `${hits.length} stor${hits.length === 1 ? 'y' : 'ies'}`;
+    document.querySelector<HTMLElement>('[data-none]')!.hidden = hits.length > 0;
+    dispatchEvent(new CustomEvent('saved:change'));
+  }
+  q.addEventListener('input', paint);
+  (['secs', 'sort'] as const).forEach((k) => document.querySelector(`[data-${k}]`)!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    (k === 'secs' ? (sel.section = b.dataset.v!) : (sel.sort = b.dataset.v!));
+    b.parentElement!.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paint();
+  }));
+  const pre = new URLSearchParams(location.search).get('q');
+  if (pre) q.value = pre;
+  paint();
+</script>

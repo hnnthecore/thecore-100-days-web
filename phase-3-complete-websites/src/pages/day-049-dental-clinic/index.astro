@@ -1,0 +1,107 @@
+---
+/** Day 049 · Brightside Dental · home: "What's bothering you?" with an answer for each worry, a plain price list, a photo band, the first visit, the team, reviews and a booking call. See days/day-049/DESIGN.md. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_child_jpg from '../../assets/day-049/child.jpg';
+import ph_patient_jpg from '../../assets/day-049/patient.jpg';
+import ph_hero_jpg from '../../assets/day-049/hero.jpg';
+import Shell from '../../components/day-049/Shell.astro';
+import { TEAM_PHOTOS, TREATMENT_PHOTOS } from '../../days/day-049/photos';
+import { CONCERNS } from '../../days/day-049/concerns';
+
+const B = '/day-049-dental-clinic';
+const treatments = await getCollection('treatments');
+const dentists = await getCollection('dentists');
+const byId = Object.fromEntries(treatments.map((t) => [t.id, t.data]));
+const priced = [...treatments].sort((a, b) => a.data.price - b.data.price);
+const VISIT = [['5 min', 'The chat', 'We ask what is bothering you and we listen. Nobody touches a tooth yet.'], ['20 min', 'The check', 'A gentle exam, X-rays only if they are useful, and a running explanation of what we see.'], ['5 min', 'The plan', 'A written plan with prices. You decide what happens next, and when.']];
+const REVIEWS = [['I have been terrified of dentists for twenty years. Dr Bell changed that in one visit.', 'Mark T.', 'Check-up'], ['My daughter asks when we are going back. Honestly, that never happens.', 'Chloe R.', 'Children’s visit'], ['Booked at 8am with toothache, seen by 10. Fixed and pain-free by lunch.', 'Imran S.', 'Emergency']];
+const concerns = CONCERNS.map((c) => ({ ...c, t: c.treatment ? { id: c.treatment, ...byId[c.treatment] } : null }));
+---
+<Site title="Brightside Dental · Gentle dentist in Leeds" description="Brightside Dental is a friendly, modern dental clinic in Leeds. Check-ups, whitening, aligners, implants and emergency care. Book online in a minute." themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell>
+    <section class="bd-hero" aria-labelledby="ask-t">
+      <div class="bd-wrap bd-hero__grid" data-ask data-b={B}>
+        <div>
+          <h1 id="ask-t" class="bd-h1">What’s bothering you?</h1>
+          <p class="bd-lede mt-5">Tap the one that fits. We will tell you what happens next, how long it takes and what it costs. No jargon, no telling-off.</p>
+          <div class="bd-ask" role="group" aria-label="What is bothering you" data-chips>{concerns.map((c) => <button type="button" aria-pressed="false" data-c={c.id}>{c.chip}</button>)}</div>
+          <p class="bd-trust"><span>Leeds, Park Row</span><span>Same-day emergencies</span><span>Interest-free plans</span></p>
+        </div>
+        <div class="bd-answer" aria-live="polite" data-answer>
+          <div class="bd-answer__photo"><Image src={ph_hero_jpg} alt="A dental hygienist smiling as she shows a patient a model of teeth" width={900} loading="eager" /></div>
+          <div class="bd-answer__body">
+            <div data-default class="bd-answer__swap">
+              <h2 class="bd-answer__title">New patients are always welcome.</h2>
+              <p class="mt-2">Not sure which one fits? Book a check-up and we will work it out together. The first consultation is free.</p>
+              <p class="bd-answer__go mt-4"><a href={`${B}/book/?t=check-up`} class="bd-btn bd-btn--coral">Book a check-up</a><a href={`${B}/treatments/`} class="bd-btn">See treatments and prices</a></p>
+            </div>
+            {concerns.map((c) => (
+              <div data-for={c.id} class="bd-answer__swap" hidden>
+                <h2 class="bd-answer__title">{c.chip}</h2>
+                <p class="mt-2">{c.answer}</p>
+                {c.t && <p class="bd-answer__facts mt-3"><span><b>from £{c.t.price}</b></span><span>{c.t.minutes} minutes</span><span>{c.t.title}</span></p>}
+                <p class="bd-answer__go mt-4">
+                  {c.t ? <><a href={`${B}/book/?t=${c.t.id}`} class="bd-btn bd-btn--coral">Book {c.t.title.toLowerCase()}</a><a href={`${B}/treatments/${c.t.id}/`} class="bd-btn">About {c.t.title.toLowerCase()}</a></> : c.links!.map(([l, h], i) => <a href={`${B}/${h}`} class={i === 0 ? 'bd-btn bd-btn--coral' : 'bd-btn'}>{l}</a>)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bd-section bd-section--tint" aria-labelledby="pr-t"><div class="bd-wrap">
+      <div class="bd-head"><h2 id="pr-t" class="bd-h2">Every price, up front.</h2><a href={`${B}/treatments/`} class="bd-btn bd-btn--coral">All treatments</a></div>
+      <table class="bd-priceTable" data-rise><caption class="sr-only">Brightside treatments with prices and appointment lengths</caption>
+        <thead><tr><th scope="col">Treatment</th><th scope="col">Time</th><th scope="col">From</th></tr></thead>
+        <tbody>{priced.map((t) => <tr><th scope="row"><span class="bd-rowname"><Image src={TREATMENT_PHOTOS[t.id]} alt="" width={160} height={120} class="bd-thumb" /><span><a href={`${B}/treatments/${t.id}/`}>{t.data.title}</a><br /><span class="small">{t.data.summary}</span></span></span></th><td>{t.data.minutes} min</td><td>£{t.data.price}</td></tr>)}</tbody>
+      </table>
+    </div></section>
+
+    <div class="bd-wrap bd-band mt-14" data-photo-band>
+      <figure class="bd-band__main"><Image src={ph_child_jpg} alt="A dentist smiling at a child holding a dental mirror" width={1400} /><figcaption>Gentle with little ones</figcaption></figure>
+      <figure><Image src={ph_patient_jpg} alt="A relaxed patient smiling in the dental chair" width={900} /><figcaption>Relaxed from the first minute</figcaption></figure>
+    </div>
+
+    <section class="bd-section bd-section--tint" aria-labelledby="fv-t"><div class="bd-wrap">
+      <div class="bd-head"><h2 id="fv-t" class="bd-h2">Your first visit, minute by minute.</h2></div>
+      <ol class="bd-visit" role="list" data-rise>{VISIT.map(([m, t, d]) => <li><time>{m}</time><h3 class="bd-h3">{t}</h3><p>{d}</p></li>)}</ol>
+    </div></section>
+
+    <section class="bd-section" aria-labelledby="tm-t"><div class="bd-wrap">
+      <div class="bd-head"><h2 id="tm-t" class="bd-h2">Friendly faces, steady hands.</h2><a href={`${B}/team/`} class="bd-btn">Meet the team</a></div>
+      <ul class="bd-grid bd-grid--4" role="list" data-rise>{dentists.map((d) => <li class="bd-person"><Image src={TEAM_PHOTOS[d.id]} alt={`Portrait of ${d.data.name}`} width={520} height={650} class="bd-portrait" /><h3 class="bd-h3 mt-2">{d.data.name}</h3><p class="font-bold" style="color:var(--gum-text)">{d.data.role}</p><p>{d.data.special}</p></li>)}</ul>
+    </div></section>
+
+    <section class="bd-section bd-section--ink" aria-labelledby="rv-t"><div class="bd-wrap">
+      <h2 id="rv-t" class="bd-h2">Kind words from patients.</h2>
+      <ul class="bd-reviews mt-10" role="list" data-rise>{REVIEWS.map(([q, n, t]) => <li class="bd-review"><p class="bd-quote">“{q}”</p><p class="mt-auto font-bold">{n} <span style="color:#b6c3d3;font-weight:600">· {t}</span></p></li>)}</ul>
+    </div></section>
+
+    <section class="bd-section"><div class="bd-wrap"><div class="bd-cta"><div><h2 class="bd-h2" style="max-width:16ch">Ready when you are.</h2><p class="mt-3 text-lg">Book online in a minute. Free first consultation for new patients.</p></div><div class="flex flex-wrap gap-3 md:justify-end"><a href={`${B}/book/`} class="bd-btn bd-btn--lg">Book online</a><a href={`${B}/membership/`} class="bd-btn bd-btn--lg" style="background:rgb(14 27 43/.12);color:var(--ink)">See membership</a></div></div></div></section>
+  </Shell>
+</Site>
+
+<script>
+  /* Tap a worry and the panel answers it. The choice lives in the address (#nervous). */
+  const root = document.querySelector<HTMLElement>('[data-ask]')!;
+  const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-c]')];
+  const panes = [...root.querySelectorAll<HTMLElement>('[data-for]')];
+  const dflt = root.querySelector<HTMLElement>('[data-default]')!;
+  function pick(id: string | null, push = true) {
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.c === id)));
+    panes.forEach((p) => (p.hidden = p.dataset.for !== id));
+    dflt.hidden = !!id;
+    if (push) history.replaceState(null, '', id ? '#' + id : location.pathname + location.search);
+  }
+  chips.forEach((c) => c.addEventListener('click', () => pick(c.dataset.c === chips.find((x) => x.getAttribute('aria-pressed') === 'true')?.dataset.c ? null : c.dataset.c!)));
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('bd-js');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('[data-rise]').forEach((el) => io.observe(el));
+  }
+  const start = location.hash.slice(1);
+  if (chips.some((c) => c.dataset.c === start)) pick(start, false);
+</script>

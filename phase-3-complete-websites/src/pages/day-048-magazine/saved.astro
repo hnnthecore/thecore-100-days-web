@@ -1,0 +1,42 @@
+---
+/** Day 048 · The Meridian · the reading list: every article saved with a ★, kept in localStorage. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-048/Shell.astro';
+import { loadAll, B } from '../../days/day-048/data';
+
+const { index } = await loadAll();
+---
+<Site title="Saved · The Meridian" description="Your saved stories from The Meridian, kept on this device." themeColor="#0d0f12" icon="M" day={48}>
+  <Shell>
+    <header class="mg-pagehead"><div class="mg-wrap"><ol class="mg-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Saved</li></ol><h1 class="mg-h1">Saved for later</h1><p class="mg-dek mt-3">Your reading list lives on this device. No account needed.</p></div></header>
+    <section class="mg-wrap mg-section">
+      <p class="mg-meta mb-4" role="status" data-count></p>
+      <ul class="mg-list" role="list" data-results></ul>
+      <div hidden data-none><p class="mg-h3">Nothing saved yet.</p><p class="mg-dek mt-2">Tap the star on any story and it will appear here.</p><a href={`${B}/search/`} class="mg-btn mg-btn--ink mt-5">Find something to read</a></div>
+      <button type="button" class="mg-btn mt-8" data-clear hidden>Clear all</button>
+    </section>
+  </Shell>
+</Site>
+
+<script define:vars={{ index }}>
+  window.__index = index;
+</script>
+<script>
+  import { saved } from '../../days/day-048/saved';
+  type Item = { id: string; title: string; dek: string; section: string; author: string; date: string; url: string };
+  const all = (window as unknown as { __index: Item[] }).__index;
+  const out = document.querySelector<HTMLElement>('[data-results]')!;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  function paint() {
+    const mine = saved.all().map((id) => all.find((a) => a.id === id)).filter(Boolean) as Item[];
+    out.innerHTML = mine.map((a) => `<li><div><h2 class="mg-h3"><a href="${a.url}">${esc(a.title)}</a></h2><p class="mg-dek">${esc(a.dek)}</p><p class="mg-meta"><span class="mg-tag">${a.section}</span> · <b>${esc(a.author)}</b> · ${fmt(a.date)}</p></div><button type="button" class="mg-save" data-save="${a.id}" data-title="${esc(a.title)}" aria-pressed="true"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z" fill="currentColor"/></svg></button></li>`).join('');
+    document.querySelector('[data-count]')!.textContent = mine.length ? `${mine.length} saved` : '';
+    document.querySelector<HTMLElement>('[data-none]')!.hidden = mine.length > 0;
+    document.querySelector<HTMLElement>('[data-clear]')!.hidden = mine.length === 0;
+  }
+  /* A removed story disappears from this list straight away. */
+  addEventListener('saved:change', paint);
+  document.querySelector('[data-clear]')!.addEventListener('click', () => saved.all().forEach((id) => saved.toggle(id)));
+  paint();
+</script>

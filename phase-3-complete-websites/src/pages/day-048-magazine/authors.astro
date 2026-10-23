@@ -1,0 +1,28 @@
+---
+/** Day 048 · The Meridian · the writers, from the "authors" collection, each with their stories. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-048/Shell.astro';
+import { Image } from 'astro:assets';
+import { TEAM_PHOTOS } from '../../days/day-048/photos';
+import { loadAll, B, fmtDate } from '../../days/day-048/data';
+
+const { articles, authorList } = await loadAll();
+---
+<Site title="Our writers · The Meridian" description="Meet the editors and reporters behind The Meridian, and read their latest stories." themeColor="#0d0f12" icon="M" day={48}>
+  <Shell active="Authors">
+    <header class="mg-pagehead"><div class="mg-wrap"><ol class="mg-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Writers</li></ol><h1 class="mg-h1">Our writers</h1><p class="mg-dek mt-3" style="max-width:36rem">Six journalists, one rule: tell people what we know and how we know it.</p></div></header>
+    <section class="mg-wrap mg-section">
+      <ul class="mg-cols mg-cols--3" role="list">{authorList.map((p) => {
+        const mine = articles.filter((a) => a.data.author === p.id);
+        return (
+          <li class="mg-person" id={p.id}>
+            <div class="flex items-center gap-4"><Image src={TEAM_PHOTOS[p.id]} alt={`Portrait of ${p.data.name}`} width={160} height={160} class="mg-av mg-av--photo mg-av--lg" /><div><h2 class="mg-h3">{p.data.name}</h2><p class="mg-meta">{p.data.role}</p></div></div>
+            <p>{p.body}</p>
+            <p class="mg-meta mt-4">{mine.length} stor{mine.length === 1 ? 'y' : 'ies'}</p>
+            <ul class="mt-2 grid gap-2" role="list">{mine.map((a) => <li><a href={`${B}/articles/${a.id}/`} class="mg-h4" style="text-decoration:underline;text-underline-offset:3px">{a.data.title}</a><span class="mg-meta"> · {fmtDate(a.data.date)}</span></li>)}</ul>
+          </li>
+        );
+      })}</ul>
+    </section>
+  </Shell>
+</Site>

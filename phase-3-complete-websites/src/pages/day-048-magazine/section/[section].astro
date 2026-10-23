@@ -1,0 +1,39 @@
+---
+/** Day 048 · The Meridian · one page per section (science, culture, cities, food), with sorting. */
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-048/Shell.astro';
+import Story from '../../../components/day-048/Story.astro';
+import { loadAll, B, SECTIONS } from '../../../days/day-048/data';
+import { SECTION_COLOUR } from '../../../days/day-048/art';
+
+export function getStaticPaths() {
+  return SECTIONS.map((s) => ({ params: { section: s.toLowerCase() }, props: { name: s } }));
+}
+const { name } = Astro.props;
+const { articles, authors } = await loadAll();
+const items = articles.filter((a) => a.data.section === name);
+const BLURB: Record<string, string> = { Science: 'How the world works, and who is working it out.', Culture: 'Music, film and the stories we share.', Cities: 'Streets, homes and the politics of everyday places.', Food: 'Kitchens, markets and what we put on the table.' };
+const colour = SECTION_COLOUR[name];
+---
+<Site title={`${name} · The Meridian`} description={BLURB[name]} themeColor="#0d0f12" icon="M" day={48}>
+  <Shell active={name}>
+    <header class="mg-pagehead" style={`--c:${colour}`}><div class="mg-wrap"><ol class="mg-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">{name}</li></ol><h1 class="mg-h1"><span class="mg-dot" aria-hidden="true" style={`background:${colour}`}></span>{name}</h1><p class="mg-dek mt-3">{BLURB[name]}</p></div></header>
+    <section class="mg-wrap mg-section">
+      <div class="mb-8 flex flex-wrap items-center justify-between gap-4"><p class="mg-meta" role="status"><b>{items.length}</b> stories</p>
+        <div class="mg-chips" role="group" aria-label="Sort" data-sort><button type="button" data-s="new" aria-pressed="true">Newest</button><button type="button" data-s="read" aria-pressed="false">Most read</button></div></div>
+      <ul class="mg-cols mg-cols--3" role="list" data-list>{items.map((e) => <li data-item data-date={e.data.date} data-reads={e.data.reads}><Story entry={e} authors={authors} /></li>)}</ul>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-list]')!;
+  document.querySelector('[data-sort]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    document.querySelectorAll('[data-sort] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    const items = [...list.querySelectorAll<HTMLElement>('[data-item]')];
+    items.sort((x, y) => b.dataset.s === 'read' ? Number(y.dataset.reads) - Number(x.dataset.reads) : y.dataset.date!.localeCompare(x.dataset.date!));
+    items.forEach((i) => list.appendChild(i));
+  });
+</script>

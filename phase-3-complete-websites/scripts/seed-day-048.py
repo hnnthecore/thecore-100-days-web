@@ -1,0 +1,111 @@
+"""Generates the Day 048 content: magazine articles and authors (Markdown). Run once: python scripts/seed-day-048.py"""
+import json, os
+
+authors = [
+ ('ines-marlow', 'Inés Marlow', 'Science editor', 'Inés spent a decade as a marine biologist before swapping the lab for the newsroom. She writes about oceans, climate and the people who study them.'),
+ ('tobias-reyes', 'Tobias Reyes', 'Culture writer', 'Tobias writes about film, music and the strange new ways we share stories. He lives in Glasgow with too many records.'),
+ ('amara-osei', 'Amara Osei', 'Cities correspondent', 'Amara reports on housing, transport and the everyday politics of places. Her work has taken her from Lagos to Leeds.'),
+ ('hugo-lindqvist', 'Hugo Lindqvist', 'Food editor', 'A former chef, Hugo now writes about how food connects us, from supermarket aisles to street stalls.'),
+ ('priya-nair', 'Priya Nair', 'Senior reporter', 'Priya covers technology and society with a particular interest in the people it leaves out.'),
+ ('daniel-ford', 'Daniel Ford', 'Features writer', 'Daniel writes long, patient features about work, craft and the things people do for love.'),
+]
+os.makedirs('src/content/day-048/authors', exist_ok=True)
+for slug, name, role, bio in authors:
+    with open(f'src/content/day-048/authors/{slug}.md', 'w', encoding='utf8') as f:
+        f.write('\n'.join(['---', f'name: {json.dumps(name, ensure_ascii=False)}', f'role: {json.dumps(role)}', '---']) + '\n\n' + bio + '\n')
+
+# slug, title, dek, section, author, date, hue, popular, quote, [intro, p2, heading, p3, p4]
+articles = [
+ ('the-quiet-return-of-the-seagrass', 'The quiet return of the seagrass', 'Along England’s south coast, volunteers are replanting meadows that locked away carbon for centuries.', 'Science', 'ines-marlow', '2026-10-02', 190, 5420,
+  'A hectare of seagrass can store carbon thirty-five times faster than a rainforest.',
+  ['The first thing you notice is how little there is to see. Beneath the grey water of Studland Bay, a few thin green blades sway in the current, easy to mistake for weed. Yet this unglamorous plant is one of the most effective carbon stores on the planet.',
+   'Seagrass meadows once covered thousands of hectares around Britain. Pollution, anchoring and disease wiped out most of them in the twentieth century, and for decades nobody noticed. It took a handful of divers and a university lab to realise what had gone.',
+   'Seeds from the sea floor',
+   'The restoration method is surprisingly simple. Volunteers dive down in teams, collect ripe seeds, and sow them in burlap bags weighted with stones. Every bag is mapped, and every meadow is monitored for years afterwards.',
+   'The results are slow, but they are real. Fish have returned, seahorses have been spotted, and the first new meadows are beginning to join up. “The sea is willing,” says one diver. “We only have to stop getting in the way.”']),
+ ('why-we-stopped-owning-our-music', 'Why we stopped owning our music', 'Streaming gave us everything, and quietly took something away. A look at what we lost in the shuffle.', 'Culture', 'tobias-reyes', '2026-10-01', 12, 4180,
+  'We have access to every song ever recorded and almost nothing we truly keep.',
+  ['There is a shelf in my flat that holds two hundred records. I rarely play them. Most evenings I ask a speaker to play something, and it does, instantly and without ceremony. It is a miracle. It is also strangely empty.',
+   'For decades music was an object: heavy, scratched, loaned to friends and never returned. Today it is a permission, and permissions can be withdrawn. Albums vanish from services overnight, and nothing we have paid for belongs to us.',
+   'The return of the object',
+   'Perhaps that is why vinyl, cassettes and even CDs are creeping back. Younger listeners buy records they cannot afford to play, simply to hold the thing they love. It is less about sound than about ownership.',
+   'The industry calls it a niche. Independent shops call it a lifeline. Either way, it suggests we want a relationship with music, not only a subscription.']),
+ ('the-bus-lane-that-changed-a-high-street', 'The bus lane that changed a high street', 'When one London borough gave buses a lane of their own, shops braced for disaster. It never came.', 'Cities', 'amara-osei', '2026-09-30', 28, 3890,
+  'Footfall rose within a year, and most of the people on foot had arrived by bus.',
+  ['Shopkeepers on Hollis Road were furious. A new bus lane would block deliveries, they said, and drive away customers who parked outside. Some talked of closing down. A year later, almost all of them are still there.',
+   'The lane did what planners hoped: buses became faster and more reliable, and passenger numbers rose. What nobody predicted was how many of those passengers would stop to shop on the way home.',
+   'Who really spends',
+   'Surveys on the street found that people arriving by bus visited more often than drivers, and spent about the same each week. Drivers visited rarely, and filled their boots. Bus users came back on Thursday.',
+   'The borough now plans a dozen more lanes. Traders who once opposed the scheme have asked for a bench outside their door. “They sit, they look in the window, they come in,” says the baker.']),
+ ('a-love-letter-to-the-humble-lentil', 'A love letter to the humble lentil', 'Cheap, quick and endlessly adaptable, the lentil deserves a lot more glory than it gets.', 'Food', 'hugo-lindqvist', '2026-09-29', 38, 2610,
+  'The best meal in my week costs less than a coffee and takes twenty minutes.',
+  ['I have cooked in kitchens where a single plate cost more than a family’s weekly shop. And yet the dish I return to most is a pan of lentils, onions and whatever spice happens to be nearest.',
+   'Lentils need no soaking, no fuss and no special equipment. They absorb flavour like a sponge and turn creamy when they are given time. They are also one of the most sustainable sources of protein on earth.',
+   'Three ways in',
+   'Start with red lentils for a soupy dal. Move to green for salads that hold their shape. Try black beluga lentils with garlic and lemon for something close to a feast.',
+   'None of them needs a recipe, only attention. Cook slowly, season at the end, and taste constantly. It is the best habit a cook can learn.']),
+ ('the-algorithm-in-the-waiting-room', 'The algorithm in the waiting room', 'Hospitals are quietly using software to decide who gets seen first. Who checks the checkers?', 'Science', 'priya-nair', '2026-09-27', 215, 3340,
+  'The scores are never shown to patients, and rarely to doctors.',
+  ['At a busy hospital in the north of England, a patient’s place in the queue is no longer set only by a nurse. A score, calculated in the background, nudges some people up and others down.',
+   'The software is meant to help, and in trials it has caught serious cases that people missed. But the way it works is protected as a trade secret, and the hospital cannot fully explain it.',
+   'A question of trust',
+   'Researchers who audited a similar tool in another country found that it under-rated patients from poorer postcodes. The company fixed the bug quietly, and the public learned of it only from a journal article.',
+   'Doctors say they welcome help, but not mystery. “If I cannot explain why someone was moved down the list,” says one consultant, “I should not be using it.”']),
+ ('the-last-picture-house', 'The last picture house', 'In a Welsh valley, one cinema has outlived the mine, the railway and the chain multiplex.', 'Culture', 'daniel-ford', '2026-09-25', 340, 2890,
+  'It sells a hundred tickets on a good night and has never once skipped the interval.',
+  ['The Palace has 214 seats, a velvet curtain and a projectionist who can tell by sound when a reel is about to slip. It opened in 1926 and has never closed for longer than a week.',
+   'The mine shut in the eighties. The station followed. The multiplex opened twenty miles away and promised to put the old picture house out of business. It did not.',
+   'Keeping the lights on',
+   'The Palace is run by thirty volunteers, who clean, cook, sell ice cream and swap shifts like a family. Ticket prices are low, and every screening begins with a short film made by a local school.',
+   'On Saturday nights the queue goes round the corner. People come for the films, but they stay for each other. “We are not showing movies,” says the manager. “We are showing up.”']),
+ ('the-street-that-fixed-its-own-heating', 'The street that fixed its own heating', 'Forty households in Sheffield clubbed together for a shared heat pump. Here is how it went.', 'Cities', 'amara-osei', '2026-09-22', 8, 2210,
+  'Nobody thought forty neighbours could agree on anything, let alone a boiler.',
+  ['It started with a leaflet through the door and a meeting in a church hall. Within a month, the residents of Alder Row had formed a company, hired an engineer and begun to plan something nobody on the street had seen before.',
+   'A shared heat pump, buried under the green at the end of the road, now warms forty homes through a ring of underground pipes. Bills have fallen, and the carbon savings are the equivalent of taking sixty cars off the road.',
+   'What it took',
+   'Getting there took two years, a grant, a loan and a great deal of tea. Some neighbours dropped out and others joined late. The engineer remembers the quarrels better than the pipes.',
+   'Other streets have asked for advice. The group has produced a handbook, written in plain English and illustrated with photographs of the muddy early days.']),
+ ('what-the-chef-does-with-the-bones', 'What the chef does with the bones', 'In a Lisbon kitchen, nothing is waste: not the scales, the peels or the water from the beans.', 'Food', 'hugo-lindqvist', '2026-09-20', 52, 1980,
+  'Waste is only a failure of imagination, said the chef, wiping his hands.',
+  ['The kitchen at Casa Brava is small enough to touch both walls. On a busy night, twelve people work in it, and almost nothing leaves it in a bin.',
+   'Fish bones become stock, then sauce. Peels become powders and salts. Even the cooking water from the beans is saved, whipped and used to make a dessert that tastes like caramel and costs nothing.',
+   'Cooking with constraint',
+   'The chef says the rules came from necessity. When the restaurant opened, there was no money for waste. The menu grew from what was left, and it turned out to be the best thing they ever did.',
+   'Today diners wait weeks for a table. Other restaurants send staff to learn. “We are not special,” the chef shrugs. “We just look more closely.”']),
+ ('can-a-village-run-on-its-own-power', 'Can a village run on its own power?', 'A Scottish glen is trying to generate and sell its own electricity. The arithmetic is harder than it looks.', 'Science', 'ines-marlow', '2026-09-18', 160, 1740,
+  'The wind is free. The grid connection is not.',
+  ['On paper, the plan is perfect. A hillside turbine, a small hydro scheme on the burn and a community battery in the old school would produce more electricity than the village uses in a year.',
+   'In practice the village has spent six years waiting. The grid operator needs to approve the connection, and the cost of linking up has more than doubled since the project began.',
+   'The hard part',
+   'Engineering was never the problem. The challenge has been money, regulation and patience. Each new rule seems to arrive just after the last one has been satisfied.',
+   'Still, the villagers press on. A first turbine turns, and the income from it already pays for a minibus. “Every winter that passes,” says the chair, “we learn a little more.”']),
+ ('after-the-algorithm-a-new-kind-of-playlist', 'After the algorithm, a new kind of playlist', 'A wave of human curators is returning to radio, newsletters and shared mixtapes.', 'Culture', 'tobias-reyes', '2026-09-15', 290, 1520,
+  'People want to be surprised by another person again.',
+  ['A decade ago, the future of music discovery looked automatic. Software would learn our tastes and feed us exactly what we wanted. It worked, and for a while it was wonderful.',
+   'Then it became predictable. The same songs, the same moods and the same little bubble of sound. Listeners began to look for something more human.',
+   'The new curators',
+   'Community radio stations report record numbers of volunteers. Newsletters from single enthusiasts attract tens of thousands of readers. Friends once again swap playlists with notes about why each song matters.',
+   'None of this will topple the giants. But it suggests that taste, like friendship, is something we prefer to find together.']),
+ ('the-tram-that-will-not-die', 'The tram that will not die', 'Every ten years a city declares trams dead. Every ten years, somebody builds another one.', 'Cities', 'daniel-ford', '2026-09-12', 60, 1310,
+  'Ask a passenger and they will tell you the same thing: it just feels like a proper city.',
+  ['Trams were supposed to disappear in the fifties. Ripped up for cars, they became a nostalgic curiosity. Then came traffic jams and climate targets, and with them a quiet revival.',
+   'Edinburgh, Nottingham and Manchester now run modern systems that carry millions of people a year. Smaller cities are drawing up plans of their own.',
+   'Why they work',
+   'Trams run on rails, so they are predictable. They are quiet, electric and carry more people than a bus. Developers also trust them, and build homes along the route for decades.',
+   'Critics point to the cost and the years of roadworks. Supporters answer that a good tram line outlasts governments. Walk down any line and you can see which argument wins.']),
+ ('how-a-small-bakery-learned-to-say-no', 'How a small bakery learned to say no', 'When a supermarket offered a contract worth ten times its income, the bakers turned it down.', 'Food', 'daniel-ford', '2026-09-10', 20, 1190,
+  'Growing was easy. Staying ourselves was the hard part.',
+  ['The email arrived on a Tuesday morning, between the first and second batch of croissants. A national supermarket wanted to stock the bakery’s sourdough in four hundred shops.',
+   'It was a life-changing offer. It would pay for new ovens, new vans and new staff. It would also mean making bread in a way the owners no longer recognised.',
+   'The decision',
+   'The bakers talked for weeks. They ran the numbers and slept badly. In the end they said no, politely, and offered a smaller deal with a handful of local shops.',
+   'Two years on, the bakery has a queue at the door and a waiting list for apprentices. “We still wonder sometimes,” says the owner. “But the bread tastes right, and that matters more.”']),
+]
+os.makedirs('src/content/day-048/articles', exist_ok=True)
+for slug, title, dek, section, author, date, hue, reads, quote, paras in articles:
+    fm = ['---', f'title: {json.dumps(title, ensure_ascii=False)}', f'dek: {json.dumps(dek, ensure_ascii=False)}', f'section: "{section}"', f'author: "{author}"', f'date: "{date}"', f'hue: {hue}', f'reads: {reads}', f'quote: {json.dumps(quote, ensure_ascii=False)}', '---']
+    intro, p2, head, p3, p4 = paras
+    body = f'{intro}\n\n{p2}\n\n> {quote}\n\n## {head}\n\n{p3}\n\n{p4}'
+    with open(f'src/content/day-048/articles/{slug}.md', 'w', encoding='utf8') as f:
+        f.write('\n'.join(fm) + '\n\n' + body + '\n')
+print(len(authors), len(articles))

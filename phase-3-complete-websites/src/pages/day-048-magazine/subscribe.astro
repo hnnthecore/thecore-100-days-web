@@ -1,0 +1,73 @@
+---
+/** Day 048 · The Meridian · subscribe: plans with a monthly / yearly toggle and a sign-up form. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-048/Shell.astro';
+import { B } from '../../days/day-048/data';
+
+const PLANS = [['free', 'The Friday letter', 0, 'One hand-picked story in your inbox every week.', ['Weekly email', 'Three free stories a month', 'Save articles for later']], ['digital', 'Digital', 6, 'Unlimited reading, no ads, no tracking.', ['Everything in Free', 'Unlimited articles', 'The full archive', 'Support independent journalism']], ['print', 'Print + Digital', 14, 'A beautiful quarterly magazine at your door.', ['Everything in Digital', 'Quarterly printed issue', 'Free UK delivery', 'Invitations to reader events']]] as const;
+---
+<Site title="Subscribe · The Meridian" description="Support independent journalism. Read The Meridian free by email, or subscribe for unlimited access and a quarterly print magazine." themeColor="#0d0f12" icon="M" day={48}>
+  <Shell active="Subscribe">
+    <header class="mg-pagehead"><div class="mg-wrap"><ol class="mg-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Subscribe</li></ol><h1 class="mg-h1">Read on. <em>Keep it independent.</em></h1><p class="mg-dek mt-3" style="max-width:36rem">No advertising, no billionaire owner. Just readers who value careful reporting.</p>
+      <div class="mg-toggle mt-6" role="group" aria-label="Billing" data-bill><button type="button" data-p="month" aria-pressed="false">Monthly</button><button type="button" data-p="year" aria-pressed="true">Yearly · 2 months free</button></div></div></header>
+    <section class="mg-wrap mg-section">
+      <ul class="mg-plans" role="list">{PLANS.map(([id, name, price, d, list]) => (
+        <li class:list={['mg-plan', id === 'digital' && 'mg-plan--hot']} data-plan={id} data-price={price}>
+          <h2 class="mg-h3">{name}</h2><p>{d}</p>
+          <p><b class="price" data-amount>{price === 0 ? 'Free' : '£' + Math.round(price * 10 / 12 * 100) / 100}</b> <span data-per>{price === 0 ? '' : '/ month, billed yearly'}</span></p>
+          <ul role="list">{list.map((l) => <li>{l}</li>)}</ul>
+          <button type="button" class:list={['mg-btn mg-btn--full', id === 'digital' ? 'mg-btn--signal' : '']} data-choose={id}>{id === 'free' ? 'Join free' : 'Choose ' + name}</button>
+        </li>
+      ))}</ul>
+
+      <form class="mt-12" style="max-width:34rem" data-form novalidate aria-labelledby="f-t" hidden>
+        <h2 id="f-t" class="mg-h2">Almost there: <span data-chosen></span></h2>
+        <div class="mt-5 grid gap-4">
+          <div><label for="f-name" class="mg-label">Name</label><input id="f-name" class="mg-input" autocomplete="name" data-req aria-describedby="f-name-e" /><p class="mg-err" id="f-name-e" hidden>Please add your name.</p></div>
+          <div><label for="f-email" class="mg-label">Email</label><input id="f-email" type="email" class="mg-input" autocomplete="email" data-req aria-describedby="f-email-e" /><p class="mg-err" id="f-email-e" hidden>Enter an email like name@example.com.</p></div>
+        </div>
+        <button type="submit" class="mg-btn mg-btn--signal mg-btn--lg mt-5">Continue</button>
+        <p class="mg-ok" role="status" data-ok tabindex="-1"></p>
+      </form>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const plans = [...document.querySelectorAll<HTMLElement>('[data-plan]')];
+  let period = 'year', chosen = '';
+  const money = (n: number) => '£' + (Math.round(n * 100) / 100).toString();
+  function paint() {
+    document.querySelectorAll<HTMLButtonElement>('[data-bill] button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.p === period)));
+    plans.forEach((p) => {
+      const base = Number(p.dataset.price);
+      if (!base) return;
+      p.querySelector('[data-amount]')!.textContent = money(period === 'year' ? (base * 10) / 12 : base);
+      p.querySelector('[data-per]')!.textContent = period === 'year' ? `/ month, billed yearly (${money(base * 10)})` : '/ month';
+    });
+  }
+  document.querySelector('[data-bill]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (b) { period = b.dataset.p!; paint(); }
+  });
+  paint();
+
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const check = wire(form);
+  document.addEventListener('click', (e) => {
+    const c = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-choose]');
+    if (!c) return;
+    chosen = c.closest('[data-plan]')!.querySelector('h2')!.textContent!;
+    form.querySelector('[data-chosen]')!.textContent = chosen;
+    form.hidden = false;
+    form.querySelector<HTMLElement>('input')!.focus();
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = `Welcome, ${(document.getElementById('f-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! You chose ${chosen}.`;
+    ok.focus();
+  });
+</script>

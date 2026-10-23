@@ -1,0 +1,39 @@
+---
+/** Day 049 · Brightside Dental · one page per treatment, generated from the "treatments" collection. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-049/Shell.astro';
+import { icon } from '../../../days/day-049/art';
+import { Image } from 'astro:assets';
+import { TREATMENT_PHOTOS, TREATMENT_ALTS, TEAM_PHOTOS } from '../../../days/day-049/photos';
+
+export async function getStaticPaths() {
+  const all = await getCollection('treatments');
+  const dentists = await getCollection('dentists');
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry, who: dentists.filter((d) => d.data.treatments.includes(entry.id)), others: all.filter((t) => t.id !== entry.id && t.data.category === entry.data.category).concat(all.filter((t) => t.id !== entry.id && t.data.category !== entry.data.category)).slice(0, 3) } }));
+}
+const B = '/day-049-dental-clinic';
+const { entry, who, others } = Astro.props;
+const t = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${t.title} · Brightside Dental`} description={t.summary} themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell active="treatments">
+    <header class="bd-pagehead"><div class="bd-wrap"><ol class="bd-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/treatments/`}>Treatments</a></li><li aria-current="page">{t.title}</li></ol>
+      <span class="bd-ico" set:html={icon(t.icon, 30)} style="width:4rem;height:4rem;background:#fff"></span>
+      <h1 class="bd-h1 mt-5" style="font-size:clamp(2.4rem,5vw,4rem)">{t.title}</h1><p class="bd-lede mt-4">{t.summary}</p></div></header>
+    <section class="bd-section"><div class="bd-wrap bd-split bd-split--wide">
+      <div><figure class="bd-treatphoto"><Image src={TREATMENT_PHOTOS[entry.id]} alt={TREATMENT_ALTS[entry.id]} width={1100} loading="eager" /></figure><div class="bd-prose mt-8"><Content /></div></div>
+      <aside class="bd-card" aria-label="Treatment details" style="position:sticky;top:6rem">
+        <p class="bd-tag self-start">{t.category}</p>
+        <p class="bd-price" style="font-size:2.4rem">from £{t.price.toLocaleString('en-GB')}</p>
+        <p class="bd-meta" style="margin-top:0"><span>About {t.minutes} minutes</span></p>
+        <a href={`${B}/book/?t=${entry.id}`} class="bd-btn bd-btn--coral bd-btn--full mt-3">Book this treatment</a>
+        <h2 class="bd-h3 mt-5" style="font-size:1.1rem">Who can help</h2>
+        <ul class="grid gap-2" role="list">{who.map((d) => <li class="flex items-center gap-3"><Image src={TEAM_PHOTOS[d.id]} alt={`Portrait of ${d.data.name}`} width={120} height={120} class="bd-av bd-av--photo" style="width:2.8rem;height:2.8rem" /><span><b>{d.data.name}</b><br /><span style="color:var(--muted)">{d.data.role}</span></span></li>)}</ul>
+      </aside>
+    </div></section>
+    <section class="bd-section bd-section--aqua" aria-labelledby="more-t"><div class="bd-wrap"><div class="bd-head"><h2 id="more-t" class="bd-h2">Related care</h2></div>
+      <ul class="bd-grid bd-grid--3" role="list">{others.map((o) => <li><a href={`${B}/treatments/${o.id}/`} class="bd-card"><span class="bd-ico" set:html={icon(o.data.icon)}></span><h3 class="bd-h3 mt-2">{o.data.title}</h3><p>{o.data.summary}</p></a></li>)}</ul></div></section>
+  </Shell>
+</Site>

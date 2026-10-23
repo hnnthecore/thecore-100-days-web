@@ -1,0 +1,49 @@
+---
+/** Day 049 · Brightside Dental · membership plan, with a savings calculator that compares pay-as-you-go against the plan. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-049/Shell.astro';
+
+const B = '/day-049-dental-clinic';
+const ITEMS = [['checkups', '2 check-ups a year', 110, 'free'], ['hygiene', '2 hygienist visits', 140, 'free'], ['emergency', 'An emergency appointment', 85, 'free'], ['whitening', 'Teeth whitening', 290, '10% off'], ['kids', 'Children’s check-ups (2 a year)', 70, 'free']] as const;
+const PERKS = ['2 check-ups and 2 hygienist visits every year', 'Free emergency examinations', '10% off all other treatments', 'Children under 18 included at no extra cost', 'Spread the cost: £19 a month, cancel any time'];
+---
+<Site title="Membership · Brightside Dental" description="Brightside membership: £19 a month for check-ups, hygiene, emergency exams and 10% off treatments. Try the savings calculator." themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell active="membership">
+    <header class="bd-pagehead"><div class="bd-wrap"><ol class="bd-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Membership</li></ol><h1 class="bd-h1">Look after your smile, <em>spread the cost.</em></h1><p class="bd-lede mt-4">One simple monthly plan for routine care. See how much you could save.</p></div></header>
+    <section class="bd-section"><div class="bd-wrap bd-calc">
+      <div>
+        <h2 class="bd-h3" id="calc-t" style="font-size:1.6rem">What care do you expect in a year?</h2>
+        <fieldset class="mt-5 grid gap-3" style="border:0;padding:0;min-width:0" data-items aria-labelledby="calc-t">{ITEMS.map(([id, label, price, perk], i) => <label class="bd-check"><input type="checkbox" data-price={price} data-perk={perk} checked={i < 3} /><span>{label}</span><em style="font-style:normal;font-weight:700">£{price}</em></label>)}</fieldset>
+      </div>
+      <div>
+        <div class="bd-compare" aria-live="polite"><div data-a><small>Pay as you go</small><b data-pay>£0</b></div><div data-b><small>With membership</small><b data-mem>£0</b></div></div>
+        <p class="bd-quote mt-5" style="font-size:1.4rem" data-verdict role="status"></p>
+        <div class="bd-card mt-5"><h3 class="bd-h3">Membership · £19 / month</h3><ul class="mt-2 grid gap-2" role="list">{PERKS.map((p) => <li class="flex gap-2"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;color:var(--gum-text);margin-top:2px"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>{p}</li>)}</ul><a href={`${B}/book/`} class="bd-btn bd-btn--coral bd-btn--full mt-4">Join at your next visit</a></div>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const MEMBER = 19 * 12;
+  const boxes = [...document.querySelectorAll<HTMLInputElement>('[data-items] input')];
+  const gbp = (n: number) => '£' + Math.round(n).toLocaleString('en-GB');
+  function paint() {
+    let pay = 0, extra = 0;
+    boxes.forEach((b) => {
+      if (!b.checked) return;
+      const p = Number(b.dataset.price);
+      pay += p;
+      if (b.dataset.perk === '10% off') extra += p * 0.9;
+    });
+    const mem = (pay ? MEMBER : 0) + extra;
+    document.querySelector('[data-pay]')!.textContent = gbp(pay);
+    document.querySelector('[data-mem]')!.textContent = gbp(mem);
+    const win = pay > 0 && mem < pay;
+    document.querySelector('[data-b]')!.classList.toggle('is-win', win);
+    document.querySelector('[data-a]')!.classList.toggle('is-win', !win && pay > 0);
+    document.querySelector('[data-verdict]')!.textContent = !pay ? 'Tick the care you expect to see how it adds up.' : win ? `You would save ${gbp(pay - mem)} a year with membership.` : `For this little care, pay as you go is ${gbp(mem - pay)} cheaper. Membership pays off with regular check-ups and hygiene visits.`;
+  }
+  boxes.forEach((b) => b.addEventListener('change', paint));
+  paint();
+</script>

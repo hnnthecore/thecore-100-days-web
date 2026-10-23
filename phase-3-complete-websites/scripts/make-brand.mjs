@@ -78,6 +78,30 @@ export const BRANDS = {
     mark: `<path d="M5 19a11 11 0 0 1 22 0z" fill="#ff8a1f"/><rect x="5" y="22" width="22" height="2.4" rx="1.2" fill="#0b1530"/><rect x="9" y="26.6" width="14" height="2.4" rx="1.2" fill="#0b1530"/>`,
     tileMark: `<path d="M6 19a10 10 0 0 1 20 0z" fill="#ffd84a"/><rect x="6" y="22" width="20" height="2.4" rx="1.2" fill="#f4f1e8"/><rect x="10" y="26.2" width="12" height="2.4" rx="1.2" fill="#f4f1e8"/>`,
   },
+  'day-048-magazine': {
+    name: 'The Meridian',
+    tile: '#0d0f12',
+    pageBg: '#f3f4f6',
+    // The meridian: an ink disc with one lime line of longitude through it.
+    mark: `<circle cx="16" cy="16" r="12.5" fill="#0d0f12"/><rect x="14.4" y="3.5" width="3.2" height="25" rx="1.6" fill="#d6f23b"/>`,
+    tileMark: `<circle cx="16" cy="16" r="11" fill="#d6f23b"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#0d0f12"/>`,
+  },
+  'day-049-dental-clinic': {
+    name: 'Brightside Dental',
+    tile: '#0e1b2b',
+    pageBg: '#fbfcfd',
+    // A tooth in ink with a gum-pink smile line.
+    mark: `<path d="M16 7C13 4.2 8 4.2 6.5 8 5.2 11.5 8 14.5 8.5 18.5 9 22.5 9.6 27 11.8 27c2.4 0 2.2-5.5 4.2-5.5s1.8 5.5 4.2 5.5c2.2 0 2.8-4.5 3.3-8.500.5-4 3.300-7 2-10.500C24 4.200 19 4.200 16 7z" fill="#0e1b2b"/><path d="M11.500 14.200Q16 18.600 20.500 14.200" fill="none" stroke="#ff8fa3" stroke-width="2.100" stroke-linecap="round"/>`,
+    tileMark: `<path d="M16 8C13.500 5.700 9.500 5.700 8.200 8.800 7.100 11.700 9.400 14.200 9.800 17.500 10.200 20.800 10.800 25 12.700 25c2 0 1.800-4.600 3.300-4.600s1.300 4.600 3.300 4.600c1.900 0 2.500-4.200 2.900-7.500.4-3.300 2.700-5.800 1.600-8.700C22.500 5.700 18.500 5.700 16 8z" fill="#fff"/><path d="M12.200 14.400Q16 18 19.800 14.400" fill="none" stroke="#ff8fa3" stroke-width="1.900" stroke-linecap="round"/>`,
+  },
+  'day-050-recipes': {
+    name: 'Citrus & Salt',
+    tile: '#17222c',
+    pageBg: '#f5f7f8',
+    // A lemon slice: a lemon disc cut into segments by slate pith lines.
+    mark: `<circle cx="16" cy="16" r="13" fill="#ffd60a"/><circle cx="16" cy="16" r="13" fill="none" stroke="#17222c" stroke-width="2"/><path d="M16 5v22M6.5 10.5l19 11M6.5 21.5l19-11" stroke="#17222c" stroke-width="1.8" stroke-linecap="round"/>`,
+    tileMark: `<circle cx="16" cy="16" r="11.5" fill="#ffd60a"/><path d="M16 6v20M7 11l18 10M7 21l18-10" stroke="#17222c" stroke-width="1.8" stroke-linecap="round"/>`,
+  },
 };
 
 const svg = (inner, bg) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">${bg ? `<rect width="32" height="32" rx="7" fill="${bg}"/>` : ''}${inner}</svg>\n`;

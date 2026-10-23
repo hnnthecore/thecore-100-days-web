@@ -1,0 +1,21 @@
+---
+/** Day 048 · The Meridian · one story card: cover art, section kicker, headline, standfirst, byline and a save button. */
+import { SECTION_COLOUR } from '../../days/day-048/art';
+import { Image } from 'astro:assets';
+import { STORY_PHOTOS } from '../../days/day-048/photos';
+import { B, fmtDate } from '../../days/day-048/data';
+
+interface Props { entry: any; authors: Record<string, string>; level?: 'h2' | 'h3'; art?: boolean; dek?: boolean }
+const { entry, authors, level = 'h3', art = true, dek = true } = Astro.props;
+const a = entry.data;
+const H = level;
+---
+<article class="mg-story" style={`--c:${SECTION_COLOUR[a.section]}`}>
+  <div class="mg-story__cover">
+    {art && <a href={`${B}/articles/${entry.id}/`} tabindex="-1" aria-hidden="true"><div class="mg-art"><Image src={STORY_PHOTOS[entry.id]} alt="" width={800} class="mg-photo" /></div></a>}
+    <button type="button" class="mg-save" data-save={entry.id} data-title={a.title} aria-pressed="false" aria-label={`Save ${a.title} for later`}><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z" fill="currentColor"/></svg></button>
+  </div>
+  <H><a href={`${B}/articles/${entry.id}/`}>{a.title}</a></H>
+  {dek && <p class="mg-dek">{a.dek}</p>}
+  <p class="mg-meta"><a href={`${B}/section/${a.section.toLowerCase()}/`} class="mg-tag">{a.section}</a> · <b>{authors[a.author]}</b> · {fmtDate(a.date)}</p>
+</article>

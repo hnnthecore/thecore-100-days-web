@@ -1,0 +1,116 @@
+---
+/** Day 049 · Brightside Dental · contact: a live "open now" bar for today, ways to reach us, a real map with directions, opening hours, a message form and FAQ. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-049/Shell.astro';
+import { HOURS, DAY_NAMES } from '../../days/day-049/hours';
+
+const B = '/day-049-dental-clinic';
+const order = [1, 2, 3, 4, 5, 6, 0];
+const t = (h: number) => `${h > 12 ? h - 12 : h}${h >= 12 ? 'pm' : 'am'}`;
+const FAQ = [['Are you taking new patients?', 'Yes. We welcome adults and children, and a first consultation for new patients is free.'], ['Do you treat nervous patients?', 'Every day. Tell us at booking and we will give you extra time, a calm room and the pace you choose.'], ['Can I pay in instalments?', 'Yes. Treatment plans over £300 can be spread over 6 to 24 months, interest free.'], ['What if I need to cancel?', 'Free of charge up to 24 hours before. Otherwise, a small fee may apply for longer appointments.'], ['Is there step-free access?', 'Yes. The clinic is on the ground floor with a ramp, an accessible toilet and a hearing loop.']];
+const WAYS = [['By train', 'Leeds station is a five-minute walk. Come out of the main entrance and head up towards City Square, then Park Row is on your left.'], ['By bus', 'Most buses into the centre stop within a couple of minutes’ walk. Tell us which you are taking when you book and we will say where to get off.'], ['By car or bike', 'Pay-and-display parking is close by, and there are cycle stands outside. If parking is the worry, ring us and we will help.']];
+---
+<Site title="Contact · Brightside Dental" description="Find Brightside Dental on Park Row, Leeds. Open now, opening hours, directions, contact form and answers to common questions." themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell active="contact">
+    <header class="bd-pagehead"><div class="bd-wrap"><ol class="bd-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Contact</li></ol><h1 class="bd-h1">Come and say hello.</h1></div></header>
+
+    <section class="bd-section !pb-8" aria-labelledby="now-t"><div class="bd-wrap bd-now">
+      <div class="bd-now__live">
+        <h2 id="now-t" class="bd-now__state" data-state>Opening hours</h2>
+        <p class="bd-now__sub" data-sub></p>
+        <div class="bd-day" data-day aria-hidden="true"><span class="bd-day__open" data-open-bar></span><span class="bd-day__now" data-now-pin></span><span class="bd-day__t bd-day__t--a">8am</span><span class="bd-day__t bd-day__t--b">2pm</span><span class="bd-day__t bd-day__t--c">8pm</span></div>
+      </div>
+      <ul class="bd-reach" role="list">
+        <li><span class="bd-reach__k">Ring us</span><a href="tel:01134960148" class="bd-reach__v">0113 496 0148</a><span class="bd-reach__n">For toothache, call rather than write. We keep same-day slots.</span></li>
+        <li><span class="bd-reach__k">Book online</span><a href={`${B}/book/`} class="bd-reach__v">Find a time</a><span class="bd-reach__n">Choose the treatment, the dentist and a slot in about a minute.</span></li>
+        <li><span class="bd-reach__k">Write to us</span><a href="mailto:hello@brightsidedental.co.uk" class="bd-reach__v">hello@brightsidedental.co.uk</a><span class="bd-reach__n">We reply within one working day.</span></li>
+      </ul>
+    </div></section>
+
+    <section class="bd-section !pt-8"><div class="bd-wrap bd-split">
+      <div class="grid gap-8">
+        <div class="bd-map"><iframe title="Map of Brightside Dental on Park Row, Leeds" src="https://www.openstreetmap.org/export/embed.html?bbox=-1.5565%2C53.7945%2C-1.5375%2C53.8010&amp;layer=mapnik&amp;marker=53.7977%2C-1.5468" loading="lazy" referrerpolicy="no-referrer"></iframe><p class="bd-map__note"><a href="https://www.openstreetmap.org/?mlat=53.7977&amp;mlon=-1.5468#map=17/53.7977/-1.5468" rel="noopener">Open the larger map</a> · Map data from OpenStreetMap contributors</p></div>
+        <address class="bd-addr not-italic"><b>Brightside Dental</b><span>22 Park Row, Leeds LS1 5HD</span><span>Step-free access from the street</span></address>
+        <div><h2 class="bd-h3">Getting here</h2><ul class="bd-ways" role="list">{WAYS.map(([k, d]) => <li><b>{k}</b><span>{d}</span></li>)}</ul></div>
+        <div><h2 class="bd-h3">Opening hours</h2>
+          <table class="bd-hours mt-3"><caption class="sr-only">Opening hours by day</caption><tbody>{order.map((d) => <tr data-dow={d}><th scope="row">{DAY_NAMES[d]}</th><td>{HOURS[d] ? `${t(HOURS[d]![0])} – ${t(HOURS[d]![1])}` : 'Closed'}</td></tr>)}</tbody></table></div>
+      </div>
+
+      <div class="bd-formwrap">
+        <p class="bd-callout"><b>Toothache or a broken tooth?</b> Please call <a href="tel:01134960148">0113 496 0148</a>. A message can wait a day; a tooth cannot.</p>
+        <form class="bd-box" data-contact novalidate>
+          <h2 class="bd-h3">Send us a message</h2>
+          <div class="bd-fields mt-5"><div><label for="m-name" class="bd-label">Name</label><input id="m-name" class="bd-input" autocomplete="name" data-req aria-describedby="m-name-e" /><p class="bd-err" id="m-name-e" hidden>Please add your name.</p></div>
+          <div><label for="m-email" class="bd-label">Email</label><input id="m-email" type="email" class="bd-input" autocomplete="email" data-req aria-describedby="m-email-e" /><p class="bd-err" id="m-email-e" hidden>Enter an email like name@example.com.</p></div>
+          <fieldset class="bd-set bd-span"><legend>How would you like us to reply?</legend><div class="bd-radios"><label><input type="radio" name="reply" value="email" checked /><span>By email</span></label><label><input type="radio" name="reply" value="phone" /><span>By phone</span></label></div></fieldset>
+          <div class="bd-span" data-phone hidden><label for="m-phone" class="bd-label">Phone number</label><input id="m-phone" type="tel" class="bd-input" autocomplete="tel" /></div>
+          <div class="bd-span"><label for="m-msg" class="bd-label">How can we help?</label><textarea id="m-msg" class="bd-input" maxlength="600" data-req aria-describedby="m-msg-e m-msg-c"></textarea><p class="bd-count" id="m-msg-c" data-count>0 / 600</p><p class="bd-err" id="m-msg-e" hidden>Please write a few words.</p></div></div>
+          <button type="submit" class="bd-btn bd-btn--coral bd-btn--lg mt-4">Send message</button>
+        </form>
+        <div class="bd-sent" data-sent hidden tabindex="-1" role="status"><div class="bd-done__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 class="bd-h3" data-sent-title>Thank you</h2><p data-sent-text></p><button type="button" class="bd-btn mt-4" data-again>Send another</button></div>
+      </div>
+    </div></section>
+
+    <section class="bd-section bd-section--tint" aria-labelledby="faq-t"><div class="bd-wrap bd-split"><div><h2 id="faq-t" class="bd-h2">Good to know.</h2></div><div class="bd-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  import { HOURS } from '../../days/day-049/hours';
+
+  /* A live bar for today: the open window, a marker for now, and the words to match. */
+  const START = 7, END = 21;
+  const at = (h: number) => ((h - START) / (END - START)) * 100;
+  const clock = (h: number) => (h % 12 || 12) + (h >= 12 ? 'pm' : 'am');
+  const state = document.querySelector<HTMLElement>('[data-state]')!;
+  const sub = document.querySelector<HTMLElement>('[data-sub]')!;
+  const bar = document.querySelector<HTMLElement>('[data-open-bar]')!;
+  const pin = document.querySelector<HTMLElement>('[data-now-pin]')!;
+  const wrap = document.querySelector<HTMLElement>('[data-day]')!;
+  function tick() {
+    const now = new Date();
+    document.querySelectorAll('[data-dow]').forEach((r) => r.classList.toggle('is-today', Number((r as HTMLElement).dataset.dow) === now.getDay()));
+    const h = HOURS[now.getDay()];
+    const hr = now.getHours() + now.getMinutes() / 60;
+    if (h) { bar.style.left = at(h[0]) + '%'; bar.style.width = at(h[1]) - at(h[0]) + '%'; } else { bar.style.width = '0'; }
+    pin.style.left = Math.min(100, Math.max(0, at(hr))) + '%';
+    const open = !!h && hr >= h[0] && hr < h[1];
+    wrap.classList.toggle('is-open', open);
+    if (open) {
+      const left = Math.round((h![1] - hr) * 60);
+      state.textContent = 'Open now';
+      sub.textContent = `We close at ${clock(h![1])}, in ${left >= 60 ? Math.floor(left / 60) + ' h ' : ''}${left % 60} min.`;
+    } else if (h && hr < h[0]) {
+      state.textContent = 'Closed for now';
+      sub.textContent = `We open today at ${clock(h[0])}.`;
+    } else {
+      let i = 1; while (!HOURS[(now.getDay() + i) % 7]) i++;
+      const nx = HOURS[(now.getDay() + i) % 7]!;
+      state.textContent = 'Closed for now';
+      sub.textContent = `We open ${i === 1 ? 'tomorrow' : 'on ' + ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][(now.getDay() + i) % 7]} at ${clock(nx[0])}.`;
+    }
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  /* The form: a phone field only when asked for, a live counter, a proper thank-you. */
+  const form = document.querySelector<HTMLFormElement>('[data-contact]')!;
+  const check = wire(form);
+  const phone = document.querySelector<HTMLElement>('[data-phone]')!;
+  form.querySelectorAll<HTMLInputElement>('input[name="reply"]').forEach((r) => r.addEventListener('change', () => { phone.hidden = form.querySelector<HTMLInputElement>('input[name="reply"]:checked')!.value !== 'phone'; }));
+  const msg = document.getElementById('m-msg') as HTMLTextAreaElement;
+  const count = document.querySelector<HTMLElement>('[data-count]')!;
+  msg.addEventListener('input', () => (count.textContent = msg.value.length + ' / 600'));
+  const sent = document.querySelector<HTMLElement>('[data-sent]')!;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!check()) return;
+    const first = (document.getElementById('m-name') as HTMLInputElement).value.trim().split(/\s+/)[0];
+    const by = form.querySelector<HTMLInputElement>('input[name="reply"]:checked')!.value;
+    document.querySelector('[data-sent-title]')!.textContent = `Thank you, ${first}.`;
+    document.querySelector('[data-sent-text]')!.textContent = by === 'phone' ? 'We will ring you within one working day.' : 'We will reply by email within one working day.';
+    form.hidden = true; sent.hidden = false; sent.focus();
+  });
+  document.querySelector('[data-again]')!.addEventListener('click', () => { form.reset(); count.textContent = '0 / 600'; phone.hidden = true; sent.hidden = true; form.hidden = false; (document.getElementById('m-name') as HTMLInputElement).focus(); });
+</script>

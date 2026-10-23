@@ -1,0 +1,47 @@
+---
+/** Day 049 · Brightside Dental · header (with a live "open now" badge) and footer shared by every page. Links are root paths, made relative by the build. */
+import '@fontsource-variable/sora';
+import '@fontsource-variable/figtree';
+import Mark from '../brand/Mark.astro';
+import '../../days/day-049/styles.css';
+
+interface Props { active?: 'treatments' | 'team' | 'membership' | 'contact' | 'book' }
+const { active } = Astro.props;
+const B = '/day-049-dental-clinic';
+const NAV = [['treatments', 'Treatments', `${B}/treatments/`], ['team', 'Our team', `${B}/team/`], ['membership', 'Membership', `${B}/membership/`], ['contact', 'Contact', `${B}/contact/`]] as const;
+---
+<div class="bd">
+  <header class="bd-header" data-header>
+    <div class="bd-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="bd-logo" aria-label="Brightside Dental, home"><Mark site="day-049-dental-clinic" size={34} />Brightside</a>
+      <nav aria-label="Main" class="hidden lg:block"><ul class="flex gap-9">{NAV.map(([k, l, h]) => <li><a href={h} class="bd-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-3">
+        <span class="bd-open hidden xl:inline-flex" data-open><i></i><span data-open-text>Opening hours</span></span>
+        <a href={`${B}/book/`} class="bd-btn bd-btn--coral hidden sm:inline-flex">Book online</a>
+        <button type="button" class="bd-burger lg:hidden" data-burger aria-expanded="false" aria-controls="bd-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="bd-menu" class="bd-menu lg:hidden" aria-label="Mobile" data-menu hidden><ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/book/`} aria-current={active === 'book' ? 'page' : undefined}>Book online</a></li></ul></nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="bd-footer">
+    <div class="bd-wrap grid grid-cols-2 gap-10 py-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="bd-logo !text-white"><Mark site="day-049-dental-clinic" variant="tile" size={34} />Brightside Dental</p><p class="mt-4 max-w-sm text-white/70">Gentle, modern dentistry for the whole family in the heart of Leeds. New patients always welcome.</p></div>
+      <div><h2 class="bd-foot-h">Care</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/treatments/`}>Treatments</a></li><li><a href={`${B}/team/`}>Our team</a></li><li><a href={`${B}/membership/`}>Membership</a></li><li><a href={`${B}/book/`}>Book online</a></li></ul></div>
+      <div><h2 class="bd-foot-h">Visit</h2><address class="mt-3 grid gap-1 not-italic text-white/75">22 Park Row<br />Leeds LS1 5HD<br />hello@brightsidedental.co.uk<br />0113 496 0148</address></div>
+    </div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import { openState } from '../../days/day-049/hours';
+  /* A live "open now" badge, worked out from the visitor's clock. */
+  const badge = document.querySelector<HTMLElement>('[data-open]');
+  if (badge) {
+    const s = openState(new Date());
+    badge.classList.toggle('is-open', s.open);
+    badge.querySelector('[data-open-text]')!.textContent = s.text;
+  }
+</script>

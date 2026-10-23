@@ -1,0 +1,58 @@
+---
+/** Day 049 · Brightside Dental · all treatments from the "treatments" collection, with category filter, live search and price sorting. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-049/Shell.astro';
+import { icon } from '../../../days/day-049/art';
+import { Image } from 'astro:assets';
+import { TREATMENT_PHOTOS } from '../../../days/day-049/photos';
+
+const B = '/day-049-dental-clinic';
+const all = await getCollection('treatments');
+const cats = ['Everyday', 'Cosmetic', 'Restorative', 'Family', 'Urgent'];
+---
+<Site title="Treatments · Brightside Dental" description="Check-ups, hygiene, whitening, clear aligners, implants, root canal, children's dentistry and emergency care, with clear prices." themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell active="treatments">
+    <header class="bd-pagehead"><div class="bd-wrap"><ol class="bd-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Treatments</li></ol><h1 class="bd-h1">Treatments, <em>explained.</em></h1><p class="bd-lede mt-4">Clear descriptions and honest prices, so you know what to expect before you sit down.</p></div></header>
+    <section class="bd-section !pt-10"><div class="bd-wrap">
+      <div class="mb-8 flex flex-wrap items-end gap-x-8 gap-y-5">
+        <div style="flex:1;min-width:14rem;max-width:22rem"><label for="t-q" class="bd-label">Search treatments</label><input id="t-q" type="search" class="bd-input" placeholder="e.g. whitening" autocomplete="off" data-q /></div>
+        <div><p class="bd-label" id="c-l">Category</p><div class="bd-chips" role="group" aria-labelledby="c-l" data-cats><button type="button" data-v="all" aria-pressed="true">All</button>{cats.map((c) => <button type="button" data-v={c} aria-pressed="false">{c}</button>)}</div></div>
+        <div><label for="t-s" class="bd-label">Sort by</label><select id="t-s" class="bd-input" data-sort><option value="name">Name</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></div>
+      </div>
+      <p class="mb-5 font-bold" style="color:var(--muted)" role="status" data-count></p>
+      <ul class="bd-grid bd-grid--3" role="list" data-list>{all.map((t) => (
+        <li data-t data-cat={t.data.category} data-price={t.data.price} data-name={t.data.title} data-text={`${t.data.title} ${t.data.summary} ${t.data.category}`.toLowerCase()}>
+          <a href={`${B}/treatments/${t.id}/`} class="bd-card bd-card--photo"><span class="bd-card__img"><Image src={TREATMENT_PHOTOS[t.id]} alt="" width={640} /></span><span class="flex items-center justify-between"><span class="bd-ico" set:html={icon(t.data.icon)}></span><span class="bd-tag">{t.data.category}</span></span><h2 class="bd-h3 mt-2">{t.data.title}</h2><p>{t.data.summary}</p><p class="bd-meta"><span class="bd-price" style="color:var(--navy)">from £{t.data.price.toLocaleString('en-GB')}</span><span>{t.data.minutes} min</span></p></a>
+        </li>
+      ))}</ul>
+      <p class="bd-lede mt-8" hidden data-empty>No treatments match. Try a different word or category.</p>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-list]')!;
+  const items = [...list.querySelectorAll<HTMLElement>('[data-t]')];
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!;
+  const sort = document.querySelector<HTMLSelectElement>('[data-sort]')!;
+  let cat = 'all';
+  function paint() {
+    const term = q.value.trim().toLowerCase();
+    let n = 0;
+    items.forEach((li) => { const ok = (cat === 'all' || li.dataset.cat === cat) && (!term || li.dataset.text!.includes(term)); li.hidden = !ok; if (ok) n++; });
+    [...items].sort((a, b) => sort.value === 'low' ? +a.dataset.price! - +b.dataset.price! : sort.value === 'high' ? +b.dataset.price! - +a.dataset.price! : a.dataset.name!.localeCompare(b.dataset.name!)).forEach((li) => list.appendChild(li));
+    document.querySelector('[data-count]')!.textContent = `${n} treatment${n === 1 ? '' : 's'}`;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  }
+  document.querySelector('[data-cats]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    cat = b.dataset.v!;
+    document.querySelectorAll('[data-cats] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paint();
+  });
+  q.addEventListener('input', paint);
+  sort.addEventListener('change', paint);
+  paint();
+</script>

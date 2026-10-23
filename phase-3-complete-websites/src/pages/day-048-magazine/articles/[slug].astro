@@ -1,0 +1,79 @@
+---
+/** Day 048 · The Meridian · one page per article: reading progress, text size, save, copy link, author box and related stories. */
+import { render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-048/Shell.astro';
+import Story from '../../../components/day-048/Story.astro';
+import { loadAll, B, fmtDate, readMins } from '../../../days/day-048/data';
+import { SECTION_COLOUR } from '../../../days/day-048/art';
+import { Image } from 'astro:assets';
+import { STORY_PHOTOS, TEAM_PHOTOS } from '../../../days/day-048/photos';
+
+export async function getStaticPaths() {
+  const { articles } = await loadAll();
+  return articles.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { articles, authors, authorList } = await loadAll();
+const a = entry.data;
+const person = authorList.find((p) => p.id === a.author)!;
+const { Content } = await render(entry);
+const related = [...articles.filter((x) => x.id !== entry.id && x.data.section === a.section), ...articles.filter((x) => x.id !== entry.id && x.data.section !== a.section)].slice(0, 3);
+const colour = SECTION_COLOUR[a.section];
+---
+<Site title={`${a.title} · The Meridian`} description={a.dek} themeColor="#0d0f12" icon="M" day={48}>
+  <Shell active={a.section}>
+    <div class="mg-progress" aria-hidden="true"><i data-bar></i></div>
+    <header class="mg-wrap mg-article-head" style={`--c:${colour}`}>
+      <ol class="mg-crumbs justify-center" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/section/${a.section.toLowerCase()}/`}>{a.section}</a></li></ol>
+      
+      <h1 class="mg-h1 mx-auto mt-3" style="max-width:18ch">{a.title}</h1>
+      <p class="mg-dek">{a.dek}</p>
+      <p class="mg-byline mg-meta"><span class="flex items-center gap-2"><Image src={TEAM_PHOTOS[person.id]} alt="" width={80} height={80} /> By <b><a href={`${B}/authors/`}>{authors[a.author]}</a></b></span><time datetime={a.date}>{fmtDate(a.date)}</time><span>{readMins(entry.body)} min read</span></p>
+      <div class="mg-tools" role="group" aria-label="Reading tools">
+        <button type="button" data-save={entry.id} data-title={a.title} data-label aria-pressed="false">Save for later</button>
+        <button type="button" data-size="-1" aria-label="Smaller text">A−</button>
+        <button type="button" data-size="1" aria-label="Larger text">A+</button>
+        <button type="button" data-copy>Copy link</button>
+      </div>
+      <p class="mg-ok" role="status" data-copied></p>
+    </header>
+    <div class="mg-wrap"><div class="mg-art mg-hero"><Image src={STORY_PHOTOS[entry.id]} alt="" width={1400} class="mg-photo" loading="eager" /></div></div>
+    <section class="mg-wrap mg-section" style={`--c:${colour}`}>
+      <div class="mg-body" data-body><Content /></div>
+      <aside class="mg-authorbox" aria-label="About the author"><Image src={TEAM_PHOTOS[person.id]} alt={`Portrait of ${person.data.name}`} width={160} height={160} class="mg-av mg-av--photo" /><div><p class="mg-h4">{person.data.name}</p><p class="mg-meta">{person.data.role}</p><p class="mt-2">{person.body}</p></div></aside>
+    </section>
+    <div class="mg-wrap"><a href={`${B}/articles/${related[0].id}/`} class="mg-next" aria-label={`Next read: ${related[0].data.title}`}><div><p class="mg-meta">Next read</p><p class="mg-next__t">{related[0].data.title}</p><p class="mg-dek mt-3">{related[0].data.dek}</p></div><div class="mg-next__pic"><Image src={STORY_PHOTOS[related[0].id]} alt="" width={900} /></div></a></div>
+    <section class="mg-section" style="background:var(--paper-2)" aria-labelledby="rel-t"><div class="mg-wrap"><div class="mg-sechead"><h2 id="rel-t">Keep reading</h2></div><div class="mg-cols mg-cols--2">{related.slice(1).map((e) => <Story entry={e} authors={authors} />)}</div></div></section>
+  </Shell>
+</Site>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-bar]')!;
+  const body = document.querySelector<HTMLElement>('[data-body]')!;
+  const onScroll = () => {
+    const r = body.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight * 0.3 - r.top) / (r.height - innerHeight * 0.2)));
+    bar.style.width = `${p * 100}%`;
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* Text size: three steps, remembered between visits. */
+  const SIZES = [1.05, 1.2, 1.4];
+  let step = 1;
+  try { const s = Number(localStorage.getItem('meridian-size')); if (s >= 0 && s <= 2 && localStorage.getItem('meridian-size') !== null) step = s; } catch { /* fine */ }
+  const apply = () => body.style.setProperty('--fs', `${SIZES[step]}rem`);
+  apply();
+  document.querySelectorAll<HTMLButtonElement>('[data-size]').forEach((b) => b.addEventListener('click', () => {
+    step = Math.min(2, Math.max(0, step + Number(b.dataset.size)));
+    try { localStorage.setItem('meridian-size', String(step)); } catch { /* fine */ }
+    apply();
+  }));
+
+  document.querySelector('[data-copy]')!.addEventListener('click', async () => {
+    const msg = document.querySelector<HTMLElement>('[data-copied]')!;
+    try { await navigator.clipboard.writeText(location.href); msg.textContent = 'Link copied.'; } catch { msg.textContent = 'Copy this address from your browser bar.'; }
+    setTimeout(() => (msg.textContent = ''), 2500);
+  });
+</script>

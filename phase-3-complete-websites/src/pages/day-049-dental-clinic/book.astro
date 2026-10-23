@@ -1,0 +1,57 @@
+---
+/** Day 049 · Brightside Dental · online booking: treatment, dentist, date and time, then your details and a confirmation. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-049/Shell.astro';
+import { icon } from '../../days/day-049/art';
+import { HOURS } from '../../days/day-049/hours';
+
+import { Image } from 'astro:assets';
+import { TEAM_PHOTOS } from '../../days/day-049/photos';
+const B = '/day-049-dental-clinic';
+const treatments = (await getCollection('treatments')).map((t) => ({ id: t.id, title: t.data.title, price: t.data.price, minutes: t.data.minutes, summary: t.data.summary, icon: t.data.icon, svg: icon(t.data.icon, 22) }));
+const dentists = (await getCollection('dentists')).map((d) => ({ id: d.id, name: d.data.name, role: d.data.role, treatments: d.data.treatments }));
+---
+<Site title="Book online · Brightside Dental" description="Book a dental appointment online at Brightside Dental in Leeds. Choose a treatment, a dentist and a time in under a minute." themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell active="book">
+    <div hidden aria-hidden="true">{dentists.map((d) => <Image src={TEAM_PHOTOS[d.id]} alt="" width={96} height={96} data-pid={d.id} loading="eager" />)}</div>
+    <header class="bd-pagehead"><div class="bd-wrap"><ol class="bd-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Book online</li></ol><h1 class="bd-h1">Book your <em>appointment.</em></h1></div></header>
+    <section class="bd-section !pt-10"><div class="bd-wrap bd-split bd-split--wide">
+      <div class="bd-box" data-book>
+        <ol class="bd-steps" aria-label="Progress" role="list"><li data-bar>Treatment</li><li data-bar>Dentist</li><li data-bar>Time</li><li data-bar>You</li></ol>
+
+        <div data-pane="1"><h2 class="bd-h3">What do you need?</h2><div class="bd-opts mt-4" data-treatments></div></div>
+        <div data-pane="2" hidden><h2 class="bd-h3">Who would you like to see?</h2><div class="bd-opts mt-4" data-dentists></div>
+          <div class="mt-5 flex gap-3"><button type="button" class="bd-btn" data-back>← Back</button></div></div>
+        <div data-pane="3" hidden><h2 class="bd-h3">Pick a day and time</h2>
+          <div class="bd-days mt-4" role="group" aria-label="Day" data-days></div>
+          <div class="bd-slots" role="group" aria-label="Time" data-slots></div>
+          <p class="bd-err" hidden data-slot-e>Please choose a time.</p>
+          <div class="mt-5 flex gap-3"><button type="button" class="bd-btn" data-back>← Back</button><button type="button" class="bd-btn bd-btn--teal" style="flex:1" data-next>Continue →</button></div></div>
+        <form data-pane="4" hidden novalidate><h2 class="bd-h3">Your details</h2>
+          <div class="bd-fields mt-4">
+            <div><label for="b-name" class="bd-label">Full name</label><input id="b-name" class="bd-input" autocomplete="name" data-req aria-describedby="b-name-e" /><p class="bd-err" id="b-name-e" hidden>Please add your name.</p></div>
+            <div><label for="b-email" class="bd-label">Email</label><input id="b-email" type="email" class="bd-input" autocomplete="email" data-req aria-describedby="b-email-e" /><p class="bd-err" id="b-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div><label for="b-tel" class="bd-label">Mobile number</label><input id="b-tel" type="tel" class="bd-input" autocomplete="tel" data-req aria-describedby="b-tel-e" /><p class="bd-err" id="b-tel-e" hidden>Enter a number with at least 10 digits.</p></div>
+            <fieldset class="bd-set"><legend>Are you a new patient?</legend><div class="bd-radios"><label><input type="radio" name="new" value="yes" checked /><span>Yes</span></label><label><input type="radio" name="new" value="no" /><span>No</span></label></div></fieldset>
+            <div class="bd-span"><label for="b-note" class="bd-label">Anything we should know? (optional)</label><textarea id="b-note" class="bd-input" placeholder="Nervous, allergies, access needs..."></textarea></div>
+          </div>
+          <div class="mt-5 flex gap-3"><button type="button" class="bd-btn" data-back>← Back</button><button type="submit" class="bd-btn bd-btn--coral" style="flex:1">Confirm booking</button></div></form>
+        <div data-pane="5" hidden tabindex="-1" class="bd-done"><div class="bd-done__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg></div><h2 class="bd-h2 mx-auto" style="max-width:14ch">See you soon, <em data-d-name></em>.</h2><p class="bd-lede mx-auto mt-3" data-d-text></p><a href={`${B}/`} class="bd-btn mt-6">Back to home</a></div>
+      </div>
+
+      <aside class="bd-summary" aria-labelledby="sum-t">
+        <h2 id="sum-t" class="bd-h3" style="color:#fff">Your appointment</h2>
+        <dl class="mt-4"><dt>Treatment</dt><dd data-s="t">Not chosen yet</dd><dt>Dentist</dt><dd data-s="d">Not chosen yet</dd><dt>When</dt><dd data-s="w">Not chosen yet</dd><dt>Price</dt><dd data-s="p">From £0</dd></dl>
+        <p class="text-sm" style="color:#a9c0cf">Free cancellation up to 24 hours before.</p>
+      </aside>
+    </div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ treatments, dentists, HOURS }}>
+  window.__book = { treatments, dentists, HOURS };
+</script>
+<script>
+  import '../../days/day-049/book';
+</script>

@@ -1,0 +1,44 @@
+---
+/** Day 048 · The Meridian · masthead and footer shared by every page. Links are root paths, made relative by the build. See days/day-048/DESIGN.md. */
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/newsreader';
+
+import '../../days/day-048/styles.css';
+import Mark from '../brand/Mark.astro';
+
+interface Props { active?: string }
+const { active } = Astro.props;
+const B = '/day-048-magazine';
+const NAV = [['Science', `${B}/section/science/`], ['Culture', `${B}/section/culture/`], ['Cities', `${B}/section/cities/`], ['Food', `${B}/section/food/`], ['Authors', `${B}/authors/`], ['Search', `${B}/search/`], ['Subscribe', `${B}/subscribe/`]] as const;
+---
+<div class="mg">
+  <header class="mg-head" data-header>
+    <div class="mg-wrap mg-head__in">
+      <a href={`${B}/`} class="mg-brand" aria-label="The Meridian, home"><Mark site="day-048-magazine" size={32} />The Meridian</a>
+      <nav class="mg-nav hidden lg:block" aria-label="Main"><ul class="flex gap-1">{NAV.slice(0, 6).map(([l, h]) => <li><a href={h} class="mg-navlink" aria-current={active === l ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="mg-head__end">
+        <a href={`${B}/saved/`} class="mg-saved-link">Saved <b data-saved-count>0</b></a>
+        <a href={`${B}/subscribe/`} class="mg-btn mg-btn--ink hidden sm:inline-flex" style="padding:0.55rem 1.1rem">Subscribe</a>
+        <button type="button" class="mg-burger lg:hidden" data-burger aria-expanded="false" aria-controls="mg-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="mg-menu" class="mg-menu lg:hidden" aria-label="Mobile" data-menu hidden><ul>{NAV.map(([l, h]) => <li><a href={h} aria-current={active === l ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="mg-foot">
+    <div class="mg-wrap grid grid-cols-2 gap-10 pt-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="mg-brand" style="color:var(--paper)"><Mark site="day-048-magazine" variant="tile" size={32} />The Meridian</p><p class="mt-4 max-w-sm" style="color:rgb(243 244 246/.75)">Independent journalism about science, culture, cities and food. Funded by readers, free of advertising.</p><address class="mt-4 not-italic" style="color:rgb(243 244 246/.75)">The Meridian, 14 Corn Exchange Yard, Leeds LS1 7BR<br />editor@themeridian.co.uk · 0113 496 0182</address></div>
+      <div><h2 class="mg-foot-h">Sections</h2><ul class="mt-3 grid gap-2">{NAV.slice(0, 4).map(([l, h]) => <li><a href={h}>{l}</a></li>)}</ul></div>
+      <div><h2 class="mg-foot-h">The magazine</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/authors/`}>Our writers</a></li><li><a href={`${B}/search/`}>Search</a></li><li><a href={`${B}/saved/`}>Saved stories</a></li><li><a href={`${B}/subscribe/`}>Subscribe</a></li></ul></div>
+    </div>
+    <div class="mg-wrap pt-10"><p class="mg-colophon">Set in Bricolage Grotesque and Newsreader. Photographs from Pexels. Written, edited and argued over in Leeds.</p></div>
+    <div class="mg-wrap pb-6"><p class="mg-foot__big" aria-hidden="true">The Meridian<i>.</i></p></div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import { wireSaveButtons } from '../../days/day-048/saved';
+  wireSaveButtons();
+</script>

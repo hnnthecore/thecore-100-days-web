@@ -1,0 +1,114 @@
+---
+/** Day 048 · The Meridian · front page: a wall of every headline sized by readership, then a row for each section. See days/day-048/DESIGN.md. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-048/Shell.astro';
+import Story from '../../components/day-048/Story.astro';
+import { Image } from 'astro:assets';
+import { STORY_PHOTOS } from '../../days/day-048/photos';
+import { loadAll, B, SECTIONS, fmtDate } from '../../days/day-048/data';
+import { SECTION_COLOUR } from '../../days/day-048/art';
+import { TEAM_PHOTOS } from '../../days/day-048/photos';
+
+const { articles, authors } = await loadAll();
+const byReads = [...articles].sort((a, b) => b.data.reads - a.data.reads);
+const lo = Math.min(...articles.map((a) => a.data.reads)), hi = Math.max(...articles.map((a) => a.data.reads));
+const weight = (r: number) => Math.sqrt((r - lo) / (hi - lo || 1));
+const nf = new Intl.NumberFormat('en-GB');
+---
+<Site title="The Meridian · Independent magazine on science, culture, cities and food" description="The Meridian is an independent magazine about science, culture, cities and food. Long reads, no ads, funded by readers." themeColor="#0d0f12" icon="M" day={48}>
+  <Shell>
+    <section class="mg-wrap" aria-labelledby="wall-t" data-wall>
+      <div class="mg-wallhead">
+        <h1 id="wall-t">Twelve stories, each as large as it is read.</h1>
+        <div class="mg-ctl">
+          <div class="mg-chips" role="group" aria-label="Section" data-sections>
+            <button type="button" aria-pressed="true" data-sec="all">All</button>
+            {SECTIONS.map((s) => <button type="button" aria-pressed="false" data-sec={s} style={`--c:${SECTION_COLOUR[s]}`}><i></i>{s}</button>)}
+          </div>
+          <div class="mg-chips" role="group" aria-label="Order" data-order>
+            <button type="button" aria-pressed="true" data-ord="reads">Most read</button>
+            <button type="button" aria-pressed="false" data-ord="date">Newest</button>
+          </div>
+        </div>
+      </div>
+      <ol class="mg-wall" role="list" data-list>
+        {byReads.map((a, i) => (
+          <li class={i === 0 ? 'is-lead' : undefined} style={`--w:${weight(a.data.reads).toFixed(3)};--c:${SECTION_COLOUR[a.data.section]}`} data-sec={a.data.section} data-reads={a.data.reads} data-date={a.data.date} data-id={a.id}>
+            <a class="mg-wall__a" href={`${B}/articles/${a.id}/`} data-peek={a.id}>{a.data.title}</a><span class="mg-wall__s">{a.data.section} · {authors[a.data.author]} · {nf.format(a.data.reads)} reads</span>
+          </li>
+        ))}
+      </ol>
+      <div class="mg-peek" aria-hidden="true" data-peek-box>{articles.map((a) => <Image src={STORY_PHOTOS[a.id]} alt="" width={420} data-peek-img={a.id} />)}</div>
+    </section>
+
+    {SECTIONS.map((sec, i) => {
+      const items = articles.filter((a) => a.data.section === sec).slice(0, 3);
+      return (
+        <section class="mg-section" style={`background:${i % 2 === 0 ? 'var(--paper-2)' : 'var(--paper)'};--c:${SECTION_COLOUR[sec]}`} aria-labelledby={`s-${sec}`}>
+          <div class="mg-wrap"><div class="mg-sechead"><h2 id={`s-${sec}`}><span class="mg-dot" aria-hidden="true"></span>{sec}</h2><a href={`${B}/section/${sec.toLowerCase()}/`}>All {sec.toLowerCase()}</a></div>
+            <div class="mg-cols mg-cols--3">{items.map((e) => <Story entry={e} authors={authors} />)}</div></div>
+        </section>
+      );
+    })}
+
+    <section class="mg-wrap mg-section" aria-labelledby="letter-t">
+      <div class="mg-letter">
+        <div class="mg-letter__photo"><Image src={TEAM_PHOTOS['ines-marlow']} alt="Inés Marlow, science editor" width={520} height={650} /></div>
+        <div class="mg-letter__body">
+          <h2 id="letter-t">Read three properly, not thirty badly.</h2>
+          <p>Six of us make The Meridian from a rented room in Leeds. We publish a few long stories a week, there are no adverts, and nobody above us to please.</p>
+          <p>If something here was worth your time, subscribe. That is the whole business plan, and it is why we can take as long over a story as it needs.</p>
+          <p class="mg-letter__sign">Inés Marlow, science editor</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mg-wrap mg-section !pt-0">
+      <div class="mg-news" aria-labelledby="nl-t">
+        <div><h2 id="nl-t" class="mg-h2">One good read, every Friday.</h2><p class="mt-3" style="color:rgb(243 244 246/.78);font-size:1.1rem">Our editor picks the best story of the week and sends it to your inbox. Nothing else.</p></div>
+        <form data-news novalidate><label for="n-email" class="mg-label">Email address</label><div class="flex gap-2"><input id="n-email" type="email" class="mg-input" autocomplete="email" data-req aria-describedby="n-email-e" /><button type="submit" class="mg-btn mg-btn--signal">Sign up</button></div><p class="mg-err" id="n-email-e" data-err></p><p class="mg-ok" data-ok role="status"></p></form>
+      </div>
+    </section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const form = document.querySelector<HTMLFormElement>('[data-news]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = 'You are on the list. See you on Friday.';
+    form.reset();
+  });
+
+  /* The wall: filter by section, order by reads or date, and a cover photo that follows the pointer. */
+  const wall = document.querySelector<HTMLElement>('[data-wall]')!;
+  const list = wall.querySelector<HTMLElement>('[data-list]')!;
+  const items = [...list.children] as HTMLElement[];
+  let sec = 'all', ord = 'reads';
+  function paint() {
+    const sorted = [...items].sort((a, b) => ord === 'reads' ? Number(b.dataset.reads) - Number(a.dataset.reads) : b.dataset.date!.localeCompare(a.dataset.date!));
+    sorted.forEach((el, i) => { el.style.order = String(i); el.classList.toggle('is-lead', i === 0); el.classList.toggle('is-off', sec !== 'all' && el.dataset.sec !== sec); });
+  }
+  wall.querySelectorAll<HTMLButtonElement>('[data-sec]').forEach((b) => { if (b.closest('[data-sections]')) b.addEventListener('click', () => { sec = b.dataset.sec!; wall.querySelectorAll('[data-sections] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); paint(); }); });
+  wall.querySelectorAll<HTMLButtonElement>('[data-ord]').forEach((b) => b.addEventListener('click', () => { ord = b.dataset.ord!; wall.querySelectorAll('[data-order] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); paint(); }));
+  paint();
+
+  const box = wall.querySelector<HTMLElement>('[data-peek-box]')!;
+  const imgs = [...box.querySelectorAll<HTMLElement>('[data-peek-img]')];
+  let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+  const loop = () => { cx += (tx - cx) * 0.18; cy += (ty - cy) * 0.18; box.style.transform = `translate3d(${cx}px,${cy}px,0)`; raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.5 ? requestAnimationFrame(loop) : 0; };
+  const show = (id: string | null) => { imgs.forEach((i) => i.classList.toggle('is-on', i.dataset.peekImg === id)); box.classList.toggle('is-on', !!id); };
+  if (matchMedia('(hover: hover) and (min-width: 900px)').matches) {
+    list.querySelectorAll<HTMLElement>('[data-peek]').forEach((a) => {
+      a.addEventListener('pointerenter', () => show(a.dataset.peek!));
+      a.addEventListener('pointerleave', () => show(null));
+      a.addEventListener('focus', () => show(a.dataset.peek!));
+      a.addEventListener('blur', () => show(null));
+    });
+    list.addEventListener('pointermove', (e) => { tx = Math.min(e.clientX + 24, innerWidth - 290); ty = Math.min(e.clientY + 24, innerHeight - 230); if (!raf) raf = requestAnimationFrame(loop); });
+  }
+</script>

@@ -1,0 +1,29 @@
+---
+/** Day 049 · Brightside Dental · the team from the "dentists" collection, with the treatments each person offers. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { TEAM_PHOTOS } from '../../days/day-049/photos';
+import Shell from '../../components/day-049/Shell.astro';
+
+const B = '/day-049-dental-clinic';
+const dentists = await Promise.all((await getCollection('dentists')).map(async (d) => ({ d, ...(await render(d)) })));
+const treatments = await getCollection('treatments');
+const title = (id: string) => treatments.find((t) => t.id === id)?.data.title ?? id;
+---
+<Site title="Our team · Brightside Dental" description="Meet the dentists and hygienist at Brightside Dental in Leeds: friendly, experienced and gentle." themeColor="#0e1b2b" icon="B" day={49}>
+  <Shell active="team">
+    <header class="bd-pagehead"><div class="bd-wrap"><ol class="bd-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Our team</li></ol><h1 class="bd-h1">Meet the <em>team.</em></h1><p class="bd-lede mt-4">Four clinicians, over fifty years of experience between them and one shared rule: nobody is ever rushed.</p></div></header>
+    <section class="bd-section"><div class="bd-wrap">
+      <ul class="bd-grid bd-grid--2" role="list">{dentists.map(({ d, Content }) => (
+        <li class="bd-card" id={d.id}>
+          <div class="flex items-center gap-4"><Image src={TEAM_PHOTOS[d.id]} alt={`Portrait of ${d.data.name}`} width={240} height={240} class="bd-av bd-av--photo bd-av--lg" /><div><h2 class="bd-h3">{d.data.name}</h2><p class="font-bold" style="color:var(--teal)">{d.data.role}</p><p style="color:var(--muted)">{d.data.special} · {d.data.years} years</p></div></div>
+          <div class="mt-3" style="color:var(--muted)"><Content /></div>
+          <p class="mt-3 font-bold">Offers</p>
+          <ul class="flex flex-wrap gap-2" role="list">{d.data.treatments.map((t) => <li><a href={`${B}/treatments/${t}/`} class="bd-tag">{title(t)}</a></li>)}</ul>
+          <a href={`${B}/book/?d=${d.id}`} class="bd-btn bd-btn--teal mt-4 self-start">Book with {d.data.name.split(' ')[0] === 'Dr' ? d.data.name.split(' ')[1] : d.data.name.split(' ')[0]}</a>
+        </li>
+      ))}</ul>
+    </div></section>
+  </Shell>
+</Site>

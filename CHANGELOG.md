@@ -2,6 +2,20 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Day 49 · Brightside Dental redesigned around "What's bothering you?"
+
+- **Idea:** the home page opens with the patient's worry. Seven choices (pain, nerves, cost, a nicer smile, a child, a missing tooth, a check-up) each give a plain answer, the treatment's price and time, and a Book button that already knows what for. The choice is kept in the address.
+- **Look:** the aqua and coral template, Fraunces serif, floating pill nav, stats strip and booking card over the photo are gone. White page, ink-blue type, pale blue surfaces and one gum pink; Sora and Figtree; flat colour only.
+- **Contact page rebuilt:** a live open-now bar for today, three ways to reach us, a real OpenStreetMap map with directions, a message form with a phone-or-email choice and a proper thank-you. The membership card no longer stretches over the footer, and a Tailwind class clash that squeezed the form fields is fixed.
+- **Also:** a plain price table of every treatment, the first visit minute by minute, a single-bar masthead, drawn tick marks (no emoji), logo (a tooth with a smile line) and favicon set, DESIGN.md.
+
+## Day 48 · The Meridian redesigned as a wall of headlines sized by readership
+
+- **Idea:** the front page set by its readers. Every story is a headline and the headline is as large as it is read. Section buttons filter, Most read / Newest reorders, and on desktop the cover photo follows the pointer.
+- **Look:** the cream newsprint, Bodoni masthead, double rules and red button are gone. Cool light page, ink, one flat colour per section and a lime highlighter; Bricolage Grotesque and Newsreader; no gradients, shadows or hairlines.
+- **Also:** a single-bar masthead, section tags moved into each story's byline, star icons drawn as SVG (no emoji), a real footer address, logo and favicon set, DESIGN.md.
+- **Checked:** source linter clean; sweep of all 21 pages at 360, 768 and 1280 px with no findings.
+
 ## Day 47 · Solstice Sound redesigned around a dial of the programme
 
 - **Idea:** the festival as a clock face. A big dial on the home page: three rings (Sunset, Forest, Dome), 16:00 to 23:00 round the circle, every act an arc. Day tabs, press an act to see its time and add it to your plan; keyboard works.
