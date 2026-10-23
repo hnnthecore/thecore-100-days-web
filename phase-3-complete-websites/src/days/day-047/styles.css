@@ -206,13 +206,7 @@ html .sf-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; pad
 /* Home hero redesign: the countdown becomes a perforated festival ticket */
 @media (max-width: 480px) { html .sf-count > div { padding-inline: 0.2rem; } }
 
-/* Navigation redesign: bottom dock. On desktop the bar floats at the foot of the screen like an app dock */
-@media (min-width: 1024px) {
-  html .sf-header { position: fixed !important; top: auto !important; bottom: 1rem; left: 50%; translate: -50% 0; width: min(58rem, 94vw); border-radius: 999px; background: rgb(11 21 48 / 0.94) !important; z-index: 60; border: 0 !important; }
-  html .sf-header > div { height: 3.6rem !important; padding-inline: 1.4rem; max-width: none !important; }
-  html .sf-header nav a:hover { color: #ffe14d; }
-  html .sf footer { padding-bottom: 5.5rem; }
-}
+html .sf-header nav a:hover { color: var(--yellow); }
 
 /* Inner-page header redesign */
 html .sf-pagehead { position: relative; border-bottom: 0; padding-bottom: clamp(3rem, 6vw, 5rem); }
@@ -418,3 +412,4 @@ html .sf-header { background: var(--night); }
   @keyframes sd-arc-in { from { opacity: 0; } }
   .sd-tabs button, .sd-centre__n { transition: background-color 0.2s, color 0.2s; }
 }
+@media (min-width: 980px) and (max-width: 1279px) { .sd-h1 { font-size: 4.4vw; } }
