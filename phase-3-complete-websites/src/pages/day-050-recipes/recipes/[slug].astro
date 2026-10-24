@@ -1,0 +1,68 @@
+---
+/** Day 050 · Citrus & Salt · one page per recipe: servings scaler, metric / US units, add-to-list, cook mode with timers, print. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-050/Shell.astro';
+import RecipeCard from '../../../components/day-050/RecipeCard.astro';
+import { Image } from 'astro:assets';
+import { RECIPE_PHOTOS } from '../../../days/day-050/photos';
+
+export async function getStaticPaths() {
+  const all = await getCollection('recipes');
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry, more: all.filter((r) => r.id !== entry.id).slice(0, 3) } }));
+}
+const B = '/day-050-recipes';
+const { entry, more } = Astro.props;
+const r = entry.data;
+const { Content } = await render(entry);
+const recipe = { id: entry.id, title: r.title, serves: r.serves, ingredients: r.ingredients, steps: r.steps };
+---
+<Site title={`${r.title} · Citrus & Salt`} description={r.tagline} themeColor="#17222c" icon="C" day={50}>
+  <Shell active="recipes">
+    <header class="cs-pagehead"><div class="cs-wrap"><ol class="cs-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/recipes/`}>Recipes</a></li><li aria-current="page">{r.title}</li></ol>
+      <div class="flex flex-wrap gap-2">{r.diets.map((d) => <span class="cs-tag" style="background:#fff">{d}</span>)}</div>
+      <h1 class="cs-h1 mt-4" style="font-size:clamp(2.6rem,6vw,4.8rem)">{r.title}</h1><p class="cs-lede mt-3" style="color:#33405f">{r.tagline}</p>
+      <p class="cs-facts mt-4" style="font-size:1rem"><span>{r.minutes} min</span><span>Serves {r.serves}</span><span>{r.difficulty}</span><span>{r.kcal} kcal per serving</span><span>{r.cuisine}</span></p>
+      <div class="mt-6 flex flex-wrap gap-3"><button type="button" class="cs-btn cs-btn--tomato cs-btn--lg" data-cook>Start cook mode</button><button type="button" class="cs-btn cs-heart--text" data-fav={entry.id} data-title={r.title} data-label aria-pressed="false">Save</button><button type="button" class="cs-btn" data-print>Print</button></div></div></header>
+
+    <section class="cs-section"><div class="cs-wrap cs-recipe">
+      <div class="grid gap-6">
+        <div class="cs-panel" style="padding:0;overflow:hidden"><Image src={RECIPE_PHOTOS[entry.id]} alt={r.title} width={1000} class="cs-photo cs-photo--wide" loading="eager" /></div>
+        <div class="cs-panel cs-panel--sticky" aria-labelledby="ing-t">
+          <h2 id="ing-t" class="cs-h3">Ingredients</h2>
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="cs-stepper" role="group" aria-label="Servings"><button type="button" aria-label="Fewer servings" data-serv="-1">−</button><output data-serves aria-live="polite">Serves {r.serves}</output><button type="button" aria-label="More servings" data-serv="1">+</button></div>
+            <div class="cs-seg" role="group" aria-label="Units" data-units><button type="button" data-u="metric" aria-pressed="true">Metric</button><button type="button" data-u="us" aria-pressed="false">US</button></div>
+          </div>
+          <ul class="cs-ing" role="list" data-ing></ul>
+          <p class="mt-3 text-sm" style="color:var(--muted)">Tick what you already have, then add the rest to your list.</p>
+          <button type="button" class="cs-btn cs-btn--navy cs-btn--full mt-3" data-addlist>Add the rest to my shopping list</button>
+          <p class="cs-ok" role="status" data-added></p>
+        </div>
+      </div>
+      <div>
+        <div class="cs-prose" style="font-size:1.1rem"><Content /></div>
+        <h2 class="cs-h2 mt-8">Method</h2>
+        <ol class="cs-steps mt-5" role="list">{r.steps.map((s) => <li><div>{s.t}{s.m > 0 && <span class="cs-tag ml-2">{s.m} min</span>}</div></li>)}</ol>
+        <p class="cs-tip"><b>Cook's tip:</b> {r.tip}</p>
+      </div>
+    </div></section>
+
+    <section class="cs-section cs-section--mint" aria-labelledby="more-t"><div class="cs-wrap"><div class="cs-head"><h2 id="more-t" class="cs-h2">Cook this next</h2></div><ul class="cs-grid cs-grid--3" role="list">{more.map((m) => <li><RecipeCard entry={m} /></li>)}</ul></div></section>
+
+    <dialog class="cs-cook" aria-label={`Cook mode: ${r.title}`} data-dialog>
+      <div class="cs-cook__in">
+        <div class="cs-cook__bar"><div class="cs-cook__prog" aria-hidden="true"><i data-prog></i></div><span class="font-extrabold" data-where></span><button type="button" class="cs-btn cs-btn--sm" data-close>Close ×</button></div>
+        <div class="cs-cook__step" aria-live="polite"><p class="cs-cook__n" data-n></p><p data-text></p><div class="cs-timer" data-timer hidden><output data-clock>00:00</output><button type="button" class="cs-btn cs-btn--sm cs-btn--lemon" data-tgo>Start timer</button></div></div>
+        <div class="flex gap-3"><button type="button" class="cs-btn cs-btn--lg" data-prev>← Back</button><button type="button" class="cs-btn cs-btn--lg cs-btn--lemon" style="flex:1" data-next>Next step →</button></div>
+      </div>
+    </dialog>
+  </Shell>
+</Site>
+
+<script define:vars={{ recipe }}>
+  window.__recipe = recipe;
+</script>
+<script>
+  import '../../../days/day-050/recipe-page';
+</script>

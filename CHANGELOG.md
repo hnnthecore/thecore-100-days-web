@@ -2,11 +2,24 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Day 51 · Hirewell redesigned as a chart of pay
+
+- **Idea:** the home page is a salary chart. Every role is a bar from its lowest to its highest pay on one shared scale, and a slider moves an orange "I need at least" line across it: bars are cut at the line, roles that cannot reach it fade and a sentence keeps count. Category buttons filter and one button reorders (top pay or newest). The day-rate contract role sits below with its yearly equivalent worked out.
+- **Look:** the dark green hero with a search box, stats counter, mint chips and lime highlighter are gone. Cobalt on cool white, ink type and one orange; Schibsted Grotesk and Public Sans; flat-edged buttons; no gradients, shadows or emoji.
+- **Also:** a plain single-bar masthead, three plain-spoken promises, the five hiring companies with their workplace photographs, drawn star icons, a real footer address, logo (two pay bars with an orange tick) and favicon set, DESIGN.md. Fixed the Tailwind class clash that squeezed form fields.
+- **Checked:** source linter clean; sweep of all 22 pages at 360, 768 and 1280 px with no findings; dragging the line, the category filter and the sort were tested in a real browser.
+
+## Day 50 · Citrus & Salt redesigned as a weekly dinner planner
+
+- **Idea:** the home page is the week itself. Seven dinner slots; pick a recipe for each night or fill the gaps with quick ones. The summary shows dinners, total cooking time and things to buy, and one button merges the whole week into the shopping list. New visitors start with a sample week.
+- **Look:** the lemon-yellow hero, sticker shadows, tilted photo collage, DM Serif and tomato red are gone. Sea salt, slate and a single lemon; Archivo and Karla; flat-edged buttons instead of pills; no gradients, shadows or emoji.
+- **Also:** a plain single-bar masthead, photo-first recipe cards, drawn hearts, logo (a lemon slice) and favicon set, DESIGN.md.
+- **Also fixed (Day 49):** the membership card was stretched far too tall and ran over the footer; it now sits inside its column.
+
 ## Day 49 · Brightside Dental redesigned around "What's bothering you?"
 
 - **Idea:** the home page opens with the patient's worry. Seven choices (pain, nerves, cost, a nicer smile, a child, a missing tooth, a check-up) each give a plain answer, the treatment's price and time, and a Book button that already knows what for. The choice is kept in the address.
 - **Look:** the aqua and coral template, Fraunces serif, floating pill nav, stats strip and booking card over the photo are gone. White page, ink-blue type, pale blue surfaces and one gum pink; Sora and Figtree; flat colour only.
-- **Contact page rebuilt:** a live open-now bar for today, three ways to reach us, a real OpenStreetMap map with directions, a message form with a phone-or-email choice and a proper thank-you. The membership card no longer stretches over the footer, and a Tailwind class clash that squeezed the form fields is fixed.
 - **Also:** a plain price table of every treatment, the first visit minute by minute, a single-bar masthead, drawn tick marks (no emoji), logo (a tooth with a smile line) and favicon set, DESIGN.md.
 
 ## Day 48 · The Meridian redesigned as a wall of headlines sized by readership

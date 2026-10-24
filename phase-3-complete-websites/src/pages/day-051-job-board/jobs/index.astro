@@ -1,0 +1,79 @@
+---
+/** Day 051 · Hirewell · all jobs: live search, category / work-mode / level / type filters, a minimum-salary slider and sorting. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-051/Shell.astro';
+import JobCard from '../../../components/day-051/JobCard.astro';
+
+const B = '/day-051-job-board';
+const jobs = (await getCollection('jobs')).sort((a, b) => b.data.posted.localeCompare(a.data.posted));
+const companies = await getCollection('companies');
+const co = (id: string) => companies.find((c) => c.id === id)!;
+const cats = [...new Set(jobs.map((j) => j.data.category))].sort();
+---
+<Site title="Find jobs · Hirewell" description="Search and filter open roles by category, work mode, level and minimum salary. Every listing shows its pay." themeColor="#2a44ff" icon="H" day={51}>
+  <Shell active="jobs">
+    <header class="hw-pagehead"><div class="hw-wrap"><ol class="hw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Jobs</li></ol><h1 class="hw-h1" style="font-size:clamp(2.2rem,5vw,3.8rem)">Find your next <span class="hw-hl">role.</span></h1></div></header>
+    <section class="hw-section !pt-8"><div class="hw-wrap hw-layout">
+      <form class="hw-filters" aria-label="Filters" data-filters onsubmit="return false">
+        <div><label for="f-q" class="hw-label">Search</label><input id="f-q" type="search" class="hw-input" placeholder="Title, company or skill" autocomplete="off" data-q /></div>
+        <div><label for="f-c" class="hw-label">Category</label><select id="f-c" class="hw-input" data-cat><option value="">All categories</option>{cats.map((c) => <option>{c}</option>)}</select></div>
+        <fieldset style="border:0;padding:0;min-width:0"><legend class="hw-label">Work mode</legend><div class="hw-checks" data-mode>{['Remote', 'Hybrid', 'On-site'].map((m) => <label><input type="checkbox" value={m} />{m}</label>)}</div></fieldset>
+        <fieldset style="border:0;padding:0;min-width:0"><legend class="hw-label">Level</legend><div class="hw-chips" data-level>{['Junior', 'Mid', 'Senior'].map((l) => <button type="button" data-v={l} aria-pressed="false">{l}</button>)}</div></fieldset>
+        <div><label for="f-s" class="hw-label">Minimum salary: <output data-sout>Any</output></label><input id="f-s" type="range" min="0" max="70000" step="5000" value="0" data-sal /></div>
+        <button type="button" class="hw-btn" data-reset>Clear filters</button>
+      </form>
+      <div>
+        <div class="mb-5 flex flex-wrap items-center justify-between gap-3"><p class="font-bold" role="status" aria-live="polite" data-count></p>
+          <div class="flex items-center gap-2"><label for="f-o" class="hw-label !mb-0">Sort</label><select id="f-o" class="hw-input" style="width:auto" data-sort><option value="new">Newest</option><option value="pay">Highest pay</option></select></div></div>
+        <ul class="grid gap-4" role="list" data-list>{jobs.map((j) => <li data-job data-id={j.id} data-text={`${j.data.title} ${co(j.data.company).data.name} ${j.data.tags.join(' ')} ${j.data.location}`.toLowerCase()} data-c={j.data.category} data-m={j.data.mode} data-l={j.data.level} data-max={j.data.max} data-posted={j.data.posted} data-annual={j.data.max >= 1000 ? 1 : 0}><JobCard entry={j} company={co(j.data.company)} level="h2" /></li>)}</ul>
+        <div hidden data-empty class="hw-card"><p class="hw-h3" style="color:var(--ink)">No jobs match those filters.</p><p>Try removing a filter or lowering the minimum salary.</p></div>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-list]')!;
+  const items = [...list.querySelectorAll<HTMLElement>('[data-job]')];
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const q = $<HTMLInputElement>('[data-q]'), cat = $<HTMLSelectElement>('[data-cat]'), sal = $<HTMLInputElement>('[data-sal]'), sort = $<HTMLSelectElement>('[data-sort]');
+  const levels = new Set<string>();
+
+  function paint() {
+    const term = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const modes = [...document.querySelectorAll<HTMLInputElement>('[data-mode] input:checked')].map((i) => i.value);
+    const min = Number(sal.value);
+    $('[data-sout]').textContent = min ? `£${min.toLocaleString('en-GB')}+` : 'Any';
+    let n = 0;
+    items.forEach((li) => {
+      const ok = term.every((t) => li.dataset.text!.includes(t)) && (!cat.value || li.dataset.c === cat.value) && (!modes.length || modes.includes(li.dataset.m!)) && (!levels.size || levels.has(li.dataset.l!)) && (!min || (li.dataset.annual === '1' && +li.dataset.max! >= min));
+      li.hidden = !ok; if (ok) n++;
+    });
+    [...items].sort((a, b) => sort.value === 'pay' ? (+b.dataset.max! * (b.dataset.annual === '1' ? 1 : 250)) - (+a.dataset.max! * (a.dataset.annual === '1' ? 1 : 250)) : b.dataset.posted!.localeCompare(a.dataset.posted!)).forEach((li) => list.appendChild(li));
+    $('[data-count]').textContent = `${n} job${n === 1 ? '' : 's'}`;
+    $<HTMLElement>('[data-empty]').hidden = n > 0;
+  }
+  [q, sal].forEach((e) => e.addEventListener('input', paint));
+  [cat, sort].forEach((e) => e.addEventListener('change', paint));
+  $('[data-mode]').addEventListener('change', paint);
+  $('[data-level]').addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    const on = !levels.has(b.dataset.v!);
+    on ? levels.add(b.dataset.v!) : levels.delete(b.dataset.v!);
+    b.setAttribute('aria-pressed', String(on));
+    paint();
+  });
+  $('[data-reset]').addEventListener('click', () => {
+    q.value = ''; cat.value = ''; sal.value = '0'; sort.value = 'new'; levels.clear();
+    document.querySelectorAll<HTMLInputElement>('[data-mode] input').forEach((i) => (i.checked = false));
+    document.querySelectorAll('[data-level] button').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    paint();
+  });
+  /* Arriving from the home page search: ?q=design&cat=Design */
+  const p = new URLSearchParams(location.search);
+  if (p.get('q')) q.value = p.get('q')!;
+  if (p.get('cat') && [...cat.options].some((o) => o.value === p.get('cat'))) cat.value = p.get('cat')!;
+  paint();
+</script>

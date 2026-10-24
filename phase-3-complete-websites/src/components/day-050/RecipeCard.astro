@@ -1,0 +1,21 @@
+---
+/** Day 050 · Citrus & Salt · one recipe card: photograph, title, tagline, facts and a favourite heart. */
+import { Image } from 'astro:assets';
+import { RECIPE_PHOTOS } from '../../days/day-050/photos';
+const B = '/day-050-recipes';
+interface Props { entry: any; level?: 'h2' | 'h3' }
+const { entry, level = 'h3' } = Astro.props;
+const r = entry.data;
+const H = level;
+---
+<div class="cs-cell">
+  <button type="button" class="cs-heart" data-fav={entry.id} data-title={r.title} aria-pressed="false" aria-label={`Add ${r.title} to favourites`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+  <a href={`${B}/recipes/${entry.id}/`} class="cs-card">
+    <div class="cs-card__pic"><Image src={RECIPE_PHOTOS[entry.id]} alt={r.title} width={700} class="cs-photo" /></div>
+    <div class="cs-card__body">
+      <H>{r.title}</H>
+      <p>{r.tagline}</p>
+      <p class="cs-facts"><span>{r.minutes} min</span><span>Serves {r.serves}</span><span>{r.difficulty}</span>{r.diets.slice(0, 1).map((d: string) => <span class="cs-tag">{d}</span>)}</p>
+    </div>
+  </a>
+</div>

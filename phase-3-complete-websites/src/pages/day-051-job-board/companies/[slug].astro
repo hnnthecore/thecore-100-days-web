@@ -1,0 +1,32 @@
+---
+/** Day 051 · Hirewell · one page per company, with its open roles. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { COMPANY_PHOTOS, COMPANY_ALTS } from '../../../days/day-051/photos';
+import Shell from '../../../components/day-051/Shell.astro';
+import JobCard from '../../../components/day-051/JobCard.astro';
+
+export async function getStaticPaths() {
+  const companies = await getCollection('companies');
+  const jobs = await getCollection('jobs');
+  return companies.map((entry) => ({ params: { slug: entry.id }, props: { entry, open: jobs.filter((j) => j.data.company === entry.id).sort((a, b) => b.data.posted.localeCompare(a.data.posted)) } }));
+}
+const B = '/day-051-job-board';
+const { entry, open } = Astro.props;
+const c = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${c.name} jobs · Hirewell`} description={c.tagline} themeColor="#2a44ff" icon="H" day={51}>
+  <Shell active="companies">
+    <header class="hw-pagehead"><div class="hw-wrap"><ol class="hw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/companies/`}>Companies</a></li><li aria-current="page">{c.name}</li></ol>
+      <div class="flex flex-wrap items-center gap-5"><span class="hw-logo-tile" style={`background:${c.colour};width:4.6rem;height:4.6rem;font-size:2rem`} aria-hidden="true">{c.name[0]}</span><div><h1 class="hw-h1" style="font-size:clamp(2rem,5vw,3.4rem)">{c.name}</h1><p class="hw-lede mt-1">{c.tagline}</p></div></div>
+      <p class="hw-tags mt-4" style="margin:1rem 0 0"><span class="hw-tag">{c.industry}</span><span class="hw-tag">{c.size}</span><span class="hw-tag">{c.city}</span></p></div></header>
+    <section class="hw-section"><div class="hw-wrap">
+      <figure class="hw-cophoto"><Image src={COMPANY_PHOTOS[entry.id]} alt={COMPANY_ALTS[entry.id]} width={1200} loading="eager" /></figure>
+      <div class="hw-prose mt-8" style="font-size:1.15rem"><Content /></div>
+      <div class="hw-head mt-12"><h2 class="hw-h2">{open.length} open {open.length === 1 ? 'role' : 'roles'}</h2></div>
+      <ul class="hw-grid hw-grid--2" role="list">{open.map((j) => <li><JobCard entry={j} company={entry} /></li>)}</ul>
+    </div></section>
+  </Shell>
+</Site>

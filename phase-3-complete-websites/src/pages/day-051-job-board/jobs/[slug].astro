@@ -1,0 +1,109 @@
+---
+/** Day 051 · Hirewell · one page per job: full description, key facts, save, and an apply dialog with CV upload validation. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { COMPANY_PHOTOS, COMPANY_ALTS } from '../../../days/day-051/photos';
+import Shell from '../../../components/day-051/Shell.astro';
+import JobCard from '../../../components/day-051/JobCard.astro';
+import { pay } from '../../../days/day-051/store';
+
+export async function getStaticPaths() {
+  const jobs = await getCollection('jobs');
+  const companies = await getCollection('companies');
+  return jobs.map((entry) => ({ params: { slug: entry.id }, props: { entry, company: companies.find((c) => c.id === entry.data.company)!, similar: jobs.filter((j) => j.id !== entry.id && (j.data.category === entry.data.category || j.data.company === entry.data.company)).slice(0, 2), companies } }));
+}
+const B = '/day-051-job-board';
+const { entry, company, similar, companies } = Astro.props;
+const j = entry.data, c = company.data;
+const { Content } = await render(entry);
+const when = new Date(j.posted + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Site title={`${j.title} at ${c.name} · Hirewell`} description={j.summary} themeColor="#2a44ff" icon="H" day={51}>
+  <Shell active="jobs">
+    <header class="hw-pagehead"><div class="hw-wrap"><ol class="hw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/jobs/`}>Jobs</a></li><li aria-current="page">{j.title}</li></ol>
+      <div class="flex items-center gap-4"><span class="hw-logo-tile" style={`background:${c.colour};width:3.6rem;height:3.6rem;font-size:1.5rem`} aria-hidden="true">{c.name[0]}</span><a href={`${B}/companies/${company.id}/`} class="font-bold" style="color:var(--em)">{c.name} →</a></div>
+      <h1 class="hw-h1 mt-4" style="font-size:clamp(2.2rem,5vw,3.8rem)">{j.title}</h1>
+      <p class="hw-tags mt-4" style="margin:0"><span class="hw-tag hw-tag--peach">{j.level}</span><span class="hw-tag">{j.mode}</span><span class="hw-tag">{j.type}</span><span class="hw-tag">{j.location}</span>{j.tags.map((t) => <span class="hw-tag">{t}</span>)}</p></div></header>
+    <section class="hw-section"><div class="hw-wrap hw-split">
+      <div><figure class="hw-cophoto hw-cophoto--sm"><Image src={COMPANY_PHOTOS[company.id]} alt={COMPANY_ALTS[company.id]} width={900} loading="eager" /><figcaption>Inside {c.name}</figcaption></figure><div class="hw-prose mt-8"><Content /></div></div>
+      <aside class="hw-side" aria-label="Apply">
+        <p class="hw-h2" style="font-size:1.7rem">{pay(j.min, j.max)}</p>
+        <dl class="hw-facts"><div><dt>Company</dt><dd>{c.name}</dd></div><div><dt>Location</dt><dd>{j.location}</dd></div><div><dt>Work mode</dt><dd>{j.mode}</dd></div><div><dt>Contract</dt><dd>{j.type}</dd></div><div><dt>Posted</dt><dd>{when}</dd></div></dl>
+        <button type="button" class="hw-btn hw-btn--solid hw-btn--lg hw-btn--full" data-apply>Apply now</button>
+        <p class="hw-ok" role="status" data-applied hidden>You applied for this role.</p>
+        <button type="button" class="hw-btn hw-btn--full mt-3" data-save={entry.id} data-title={j.title} data-label aria-pressed="false">Save job</button>
+      </aside>
+    </div></section>
+    {similar.length > 0 && <section class="hw-section hw-section--mint" aria-labelledby="sim-t"><div class="hw-wrap"><div class="hw-head"><h2 id="sim-t" class="hw-h2">Similar roles</h2></div><ul class="hw-grid hw-grid--2" role="list">{similar.map((s) => <li><JobCard entry={s} company={companies.find((x) => x.id === s.data.company)!} /></li>)}</ul></div></section>}
+
+    <dialog class="hw-dialog" data-dialog aria-labelledby="ap-t">
+      <div class="hw-dialog__in">
+        <div data-form-wrap>
+          <h2 id="ap-t" class="hw-h3" style="font-size:1.4rem">Apply: {j.title}</h2><p class="mt-1" style="color:var(--muted)">{c.name} · {j.location}</p>
+          <form data-form novalidate class="mt-5"><div class="hw-fields">
+            <div><label for="a-name" class="hw-label">Full name</label><input id="a-name" class="hw-input" autocomplete="name" data-req aria-describedby="a-name-e" /><p class="hw-err" id="a-name-e" hidden>Please add your name.</p></div>
+            <div><label for="a-email" class="hw-label">Email</label><input id="a-email" type="email" class="hw-input" autocomplete="email" data-req aria-describedby="a-email-e" /><p class="hw-err" id="a-email-e" hidden>Enter an email like name@example.com.</p></div>
+            <div class="hw-span"><span class="hw-label" id="cv-l">CV (PDF or Word, up to 2 MB)</span><label class="hw-file"><input type="file" id="a-cv" accept=".pdf,.doc,.docx" aria-labelledby="cv-l" aria-describedby="a-cv-e" /><b data-file-name>Choose a file</b><small>or drag it here</small></label><p class="hw-err" id="a-cv-e" hidden></p></div>
+            <div class="hw-span"><label for="a-note" class="hw-label">Short note (optional)</label><textarea id="a-note" class="hw-input" placeholder="Tell us why you'd be great."></textarea></div>
+          </div><div class="mt-5 flex gap-3"><button type="button" class="hw-btn" data-close>Cancel</button><button type="submit" class="hw-btn hw-btn--solid" style="flex:1">Send application</button></div></form>
+        </div>
+        <div data-done hidden tabindex="-1" class="text-center"><p class="hw-logo-tile mx-auto" style="background:var(--em);width:4rem;height:4rem;font-size:1.8rem">OK</p><h2 class="hw-h2 mx-auto mt-4" style="font-size:1.6rem">Application sent, <span data-d-name></span>!</h2><p class="mt-2" style="color:var(--muted)" data-d-text></p><button type="button" class="hw-btn mt-5" data-close>Close</button></div>
+      </div>
+    </dialog>
+  </Shell>
+</Site>
+
+<script define:vars={{ id: entry.id, title: j.title, company: c.name }}>
+  window.__job = { id, title, company };
+</script>
+<script>
+  import { wire } from '../../../days/shared/forms';
+  import { applied, saved } from '../../../days/day-051/store';
+  const job = (window as unknown as { __job: { id: string; title: string; company: string } }).__job;
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const dlg = $<HTMLDialogElement>('[data-dialog]');
+  const form = $<HTMLFormElement>('[data-form]');
+  const cv = $<HTMLInputElement>('#a-cv');
+  const check = wire(form);
+
+  const paintApplied = () => {
+    const done = applied.has(job.id);
+    $('[data-applied]').hidden = !done;
+    const b = $<HTMLButtonElement>('[data-apply]');
+    b.textContent = done ? 'Applied' : 'Apply now';
+    b.disabled = done;
+  };
+  paintApplied();
+  addEventListener('applied:change', paintApplied);
+
+  $('[data-apply]').addEventListener('click', () => { $('[data-form-wrap]').hidden = false; $('[data-done]').hidden = true; dlg.showModal(); });
+  dlg.addEventListener('click', (e) => { const t = e.target as HTMLElement; if (t === dlg || t.closest('[data-close]')) dlg.close(); });
+
+  /* CV rules: PDF or Word, no bigger than 2 MB. */
+  function cvOk(): boolean {
+    const f = cv.files?.[0];
+    const msg = $('#a-cv-e');
+    let err = '';
+    if (!f) err = 'Please attach your CV.';
+    else if (!/\.(pdf|docx?)$/i.test(f.name)) err = 'Use a PDF or Word file.';
+    else if (f.size > 2 * 1024 * 1024) err = 'That file is over 2 MB.';
+    msg.textContent = err; msg.hidden = !err;
+    cv.setAttribute('aria-invalid', String(!!err));
+    return !err;
+  }
+  cv.addEventListener('change', () => { $('[data-file-name]').textContent = cv.files?.[0]?.name ?? 'Choose a file'; cvOk(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const a = check(), b = cvOk();
+    if (!a || !b) { if (a) cv.focus(); return; }
+    const first = $<HTMLInputElement>('#a-name').value.trim().split(/\s+/)[0];
+    $('[data-d-name]').textContent = first;
+    $('[data-d-text]').textContent = `${job.company} will review your application for ${job.title} and reply to ${$<HTMLInputElement>('#a-email').value.trim()}.`;
+    applied.add(job.id);
+    saved.remove(job.id);
+    $('[data-form-wrap]').hidden = true;
+    const done = $('[data-done]'); done.hidden = false; done.focus();
+  });
+</script>

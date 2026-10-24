@@ -1,0 +1,41 @@
+---
+/** Day 050 · Citrus & Salt · about the site, how the tools work, and a small contact form. */
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import kitchen from '../../assets/day-050/about-kitchen.jpg';
+import Shell from '../../components/day-050/Shell.astro';
+
+const B = '/day-050-recipes';
+const HOW = [['Scaling', 'Amounts are stored as numbers, not text, so doubling a recipe is simple multiplication. Results are rounded to kitchen fractions like ½ and ¾.'], ['Units', 'Grams and millilitres convert to ounces and fluid ounces with one tap. Spoon measures stay the same in both.'], ['Cook mode', 'A full-screen view with one step at a time, large type and timers. Arrow keys move between steps.'], ['Shopping list', 'Items with the same name and unit are merged. Your list and favourites live in your browser, never on a server.']];
+---
+<Site title="About · Citrus & Salt" description="About Citrus & Salt: why we write recipes the way we do, and how the scaling, cook mode and shopping list tools work." themeColor="#17222c" icon="C" day={50}>
+  <Shell active="about">
+    <header class="cs-pagehead"><div class="cs-wrap"><ol class="cs-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">About</li></ol><h1 class="cs-h1">Recipes without the <em>scroll.</em></h1><p class="cs-lede mt-3" style="color:#33405f">We believe a recipe should be short, honest and a pleasure to cook from.</p></div></header>
+    <section class="cs-section"><div class="cs-wrap cs-split">
+      <div><figure class="cs-aboutphoto"><Image src={kitchen} alt="Two friends laughing as they whisk a batter and assemble a layered cake in a bright kitchen" width={1000} loading="eager" /></figure><div class="cs-prose mt-8"><p>Citrus &amp; Salt started in a small flat kitchen where the cook was tired of scrolling past three pages of backstory to find the ingredients. So we built the site we wanted: ingredients first, clear steps, and tools that help.</p><p class="mt-5">Every recipe is tested at least three times, costed honestly and written so a beginner can follow it without asking anyone.</p></div></div>
+      <ul class="grid gap-4" role="list">{HOW.map(([t, d]) => <li class="cs-panel"><h2 class="cs-h3">{t}</h2><p class="mt-2" style="color:var(--muted)">{d}</p></li>)}</ul>
+    </div></section>
+    <section class="cs-section cs-section--mint" aria-labelledby="ct-t"><div class="cs-wrap" style="max-width:40rem">
+      <h2 id="ct-t" class="cs-h2">Suggest a recipe</h2>
+      <form class="mt-6 grid gap-4" data-form novalidate>
+        <div><label for="s-name" class="cs-label">Name</label><input id="s-name" class="cs-input" autocomplete="name" data-req aria-describedby="s-name-e" /><p class="cs-err" id="s-name-e" hidden>Please add your name.</p></div>
+        <div><label for="s-email" class="cs-label">Email</label><input id="s-email" type="email" class="cs-input" autocomplete="email" data-req aria-describedby="s-email-e" /><p class="cs-err" id="s-email-e" hidden>Enter an email like name@example.com.</p></div>
+        <div><label for="s-msg" class="cs-label">What should we cook next?</label><textarea id="s-msg" class="cs-input" data-req aria-describedby="s-msg-e"></textarea><p class="cs-err" id="s-msg-e" hidden>Please write a few words.</p></div>
+        <div><button type="submit" class="cs-btn cs-btn--navy cs-btn--lg">Send suggestion</button></div><p class="cs-ok" role="status" data-ok></p>
+      </form>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = `Thanks ${(document.getElementById('s-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We read every suggestion.`;
+    form.reset();
+  });
+</script>

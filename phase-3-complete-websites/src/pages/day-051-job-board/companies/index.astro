@@ -1,0 +1,33 @@
+---
+/** Day 051 · Hirewell · hiring companies from the "companies" collection, with industry filter and open-role counts. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { COMPANY_PHOTOS } from '../../../days/day-051/photos';
+import Shell from '../../../components/day-051/Shell.astro';
+
+const B = '/day-051-job-board';
+const companies = await getCollection('companies');
+const jobs = await getCollection('jobs');
+const inds = [...new Set(companies.map((c) => c.data.industry))].sort();
+---
+<Site title="Companies · Hirewell" description="Companies hiring on Hirewell: what they do, how big they are and which roles are open." themeColor="#2a44ff" icon="H" day={51}>
+  <Shell active="companies">
+    <header class="hw-pagehead"><div class="hw-wrap"><ol class="hw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Companies</li></ol><h1 class="hw-h1" style="font-size:clamp(2.2rem,5vw,3.8rem)">Companies that are <span class="hw-hl">hiring.</span></h1></div></header>
+    <section class="hw-section !pt-8"><div class="hw-wrap">
+      <div class="hw-chips mb-6" role="group" aria-label="Industry" data-inds><button type="button" data-v="all" aria-pressed="true">All</button>{inds.map((i) => <button type="button" data-v={i} aria-pressed="false">{i}</button>)}</div>
+      <ul class="hw-grid hw-grid--3" role="list">{companies.map((c) => { const n = jobs.filter((j) => j.data.company === c.id).length; return (
+        <li data-co data-i={c.data.industry}><a href={`${B}/companies/${c.id}/`} class="hw-card hw-card--photo"><span class="hw-card__img"><Image src={COMPANY_PHOTOS[c.id]} alt="" width={640} /></span><span class="hw-logo-tile" style={`background:${c.data.colour}`} aria-hidden="true">{c.data.name[0]}</span><h2 class="hw-h3">{c.data.name}</h2><p>{c.data.tagline}</p><p class="hw-tags" style="margin-top:auto"><span class="hw-tag">{c.data.industry}</span><span class="hw-tag">{c.data.size}</span><span class="hw-tag hw-tag--peach">{n} open {n === 1 ? 'role' : 'roles'}</span></p></a></li>
+      ); })}</ul>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  document.querySelector('[data-inds]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    document.querySelectorAll('[data-inds] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    document.querySelectorAll<HTMLElement>('[data-co]').forEach((li) => (li.hidden = !(b.dataset.v === 'all' || li.dataset.i === b.dataset.v)));
+  });
+</script>

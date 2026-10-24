@@ -1,0 +1,140 @@
+---
+/** Day 050 · Citrus & Salt · home: the week board (seven dinners, total cooking time, one merged shopping list), then quick recipes and the recipe box. See days/day-050/DESIGN.md. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import Shell from '../../components/day-050/Shell.astro';
+import RecipeCard from '../../components/day-050/RecipeCard.astro';
+import { RECIPE_PHOTOS } from '../../days/day-050/photos';
+import { DAYS } from '../../days/day-050/week';
+
+const B = '/day-050-recipes';
+const all = (await getCollection('recipes')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const quick = all.filter((r) => r.data.minutes <= 20);
+const data = all.map((r) => ({ id: r.id, title: r.data.title, minutes: r.data.minutes, serves: r.data.serves, diets: r.data.diets, ingredients: r.data.ingredients.map((i) => ({ q: i.q, u: i.u, n: i.n })) }));
+const DIETS = ['Vegan', 'Vegetarian', 'Gluten-free', 'High-protein', 'Quick'];
+const TOOLS = [['Scale any recipe', 'Cooking for two or ten? Change the servings and every amount follows, in grams or cups.'], ['Cook mode', 'Big, hands-free steps with a timer on the ones that need one, so your phone stays clean.'], ['One shopping list', 'Add what you need from any recipe, or the whole week. Duplicates are merged: three lots of garlic become one line.']];
+---
+<Site title="Citrus & Salt · Weeknight recipes and a dinner plan for the week" description="Citrus & Salt is a recipe site for real weeknights: plan the week's dinners, scale recipes, cook with timers and keep one merged shopping list." themeColor="#17222c" icon="C" day={50}>
+  <Shell>
+    <section class="cs-wrap cs-weekhead" aria-labelledby="wk-t">
+      <h1 id="wk-t" class="cs-h1">What’s for dinner this week?</h1>
+      <p class="cs-lede">Pick a dinner for each night, or let us fill the gaps with quick ones for Monday to Thursday. When the week looks right, one tap puts every ingredient on your shopping list.</p>
+    </section>
+
+    <section class="cs-wrap" aria-label="This week's dinners" data-week data-b={B}>
+      <ol class="cs-week" role="list">{DAYS.map((d) => (
+        <li class="cs-day" data-day={d}>
+          <button type="button" class="cs-day__open" data-open={d} aria-label={`Choose dinner for ${d}`}></button>
+          <p class="cs-day__name">{d}</p>
+          <div class="cs-day__empty" data-empty><span class="cs-day__plus" aria-hidden="true">+</span>Pick a dinner</div>
+          <div class="cs-day__set" data-set hidden></div>
+        </li>
+      ))}</ol>
+      <div class="cs-sum" aria-live="polite">
+        <p class="cs-sum__nums"><span><b data-n-dinners>0</b><span>dinners</span></span><span><b data-n-time>0 min</b><span>of cooking</span></span><span><b data-n-items>0</b><span>things to buy</span></span></p>
+        <p class="cs-sum__go"><button type="button" class="cs-btn" data-shuffle>Fill the empty days</button><button type="button" class="cs-btn cs-btn--lemon" data-add disabled>Add the week to my shopping list</button><button type="button" class="cs-btn" data-clear>Clear</button></p>
+      </div>
+      <p class="cs-note" role="status" data-note></p>
+      <div hidden aria-hidden="true" data-bank>{all.map((r) => <Image src={RECIPE_PHOTOS[r.id]} alt="" width={480} data-pid={r.id} loading="eager" />)}</div>
+
+      <dialog class="cs-picker" aria-labelledby="pk-t" data-picker>
+        <div class="cs-picker__in">
+          <div class="cs-picker__head"><h2 id="pk-t" class="cs-h3" data-pk-title>Dinner</h2><button type="button" class="cs-btn cs-btn--sm" data-pk-close>Close</button></div>
+          <ul class="cs-picker__list" role="list" data-pk-list></ul>
+        </div>
+      </dialog>
+    </section>
+
+    <section class="cs-section" aria-labelledby="quick-t"><div class="cs-wrap" data-rise>
+      <div class="cs-head"><h2 id="quick-t" class="cs-h2">Under 20 minutes</h2><a href={`${B}/recipes/`} class="cs-btn">All recipes</a></div>
+      <ul class="cs-grid cs-grid--3" role="list">{quick.map((r) => <li><RecipeCard entry={r} /></li>)}</ul>
+    </div></section>
+
+    <section class="cs-section cs-section--mint" aria-labelledby="tool-t"><div class="cs-wrap" data-rise>
+      <div class="cs-head"><h2 id="tool-t" class="cs-h2">Made for cooking, not scrolling.</h2></div>
+      <ul class="cs-steps3" role="list">{TOOLS.map(([t, d]) => <li><h3>{t}</h3><p>{d}</p></li>)}</ul>
+      <p class="cs-diets mt-10">{DIETS.map((d) => <a href={`${B}/recipes/#${d}`} class="cs-btn">{d}</a>)}</p>
+    </div></section>
+
+    <section class="cs-section cs-section--navy" aria-labelledby="all-t"><div class="cs-wrap" data-rise>
+      <div class="cs-head"><h2 id="all-t" class="cs-h2">The whole recipe box</h2></div>
+      <ul class="cs-grid cs-grid--4" role="list">{all.slice(0, 4).map((r) => <li><RecipeCard entry={r} /></li>)}</ul>
+      <p class="mt-8"><a href={`${B}/recipes/`} class="cs-btn cs-btn--lemon cs-btn--lg">See all {all.length} recipes</a></p>
+    </div></section>
+
+    <section class="cs-section"><div class="cs-wrap"><div class="cs-cta"><h2 class="cs-h2" style="max-width:16ch">Hungry? Let’s cook.</h2><p class="mt-3 text-lg">Pick a recipe, tap cook mode and the steps read themselves out to you, one at a time.</p><a href={`${B}/recipes/`} class="cs-btn cs-btn--lg mt-6">Browse recipes</a></div></div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ data }}>
+  window.__recipes = data;
+</script>
+<script>
+  import { DAYS, week, shuffle, totals, addWeekToList, hoursText, seed } from '../../days/day-050/week';
+  import type { Recipe } from '../../days/day-050/week';
+  const recipes = (window as any).__recipes as Recipe[];
+  const root = document.querySelector<HTMLElement>('[data-week]')!;
+  const B = root.dataset.b!;
+  const byId = Object.fromEntries(recipes.map((r) => [r.id, r]));
+  const imgOf = (id: string) => root.querySelector<HTMLImageElement>(`[data-bank] [data-pid="${id}"]`);
+  const note = root.querySelector<HTMLElement>('[data-note]')!;
+  const addBtn = root.querySelector<HTMLButtonElement>('[data-add]')!;
+
+  function paint() {
+    const cur = week.get();
+    DAYS.forEach((d) => {
+      const li = root.querySelector<HTMLElement>(`[data-day="${d}"]`)!;
+      const r = byId[cur[d]];
+      const set = li.querySelector<HTMLElement>('[data-set]')!;
+      li.querySelector<HTMLElement>('[data-empty]')!.hidden = !!r;
+      set.hidden = !r;
+      li.classList.toggle('is-set', !!r);
+      li.querySelector('[data-x]')?.remove();
+      set.innerHTML = '';
+      if (r) {
+        const im = imgOf(r.id);
+        set.innerHTML = `<div class="cs-day__pic">${im ? `<img src="${im.currentSrc || im.src}" alt="" />` : ''}</div><div class="cs-day__body"><a class="cs-day__title" href="${B}/recipes/${r.id}/" style="pointer-events:auto;position:relative;z-index:2">${r.title}</a><span class="cs-day__min">${r.minutes} min</span></div>`;
+        const x = document.createElement('button');
+        x.type = 'button'; x.className = 'cs-day__x'; x.dataset.x = d; x.setAttribute('aria-label', `Remove ${r.title} from ${d}`); x.textContent = '×';
+        li.append(x);
+      }
+    });
+    const t = totals(recipes);
+    root.querySelector('[data-n-dinners]')!.textContent = String(t.dinners);
+    root.querySelector('[data-n-time]')!.textContent = hoursText(t.minutes);
+    root.querySelector('[data-n-items]')!.textContent = String(t.kinds);
+    addBtn.disabled = t.dinners === 0;
+  }
+  const dlg = root.querySelector<HTMLDialogElement>('[data-picker]')!;
+  const pkList = root.querySelector<HTMLElement>('[data-pk-list]')!;
+  let target = '';
+  function openPicker(day: string) {
+    target = day;
+    root.querySelector('[data-pk-title]')!.textContent = `Dinner on ${day}`;
+    pkList.innerHTML = recipes.map((r) => { const im = imgOf(r.id); return `<li><button type="button" class="cs-pick" data-pick="${r.id}">${im ? `<img src="${im.currentSrc || im.src}" alt="" />` : '<span></span>'}<span><b>${r.title}</b><small>Serves ${r.serves}</small></span><span class="cs-pick__t">${r.minutes} min</span></button></li>`; }).join('');
+    dlg.showModal();
+  }
+  root.addEventListener('click', (e) => {
+    const el = e.target as HTMLElement;
+    const open = el.closest<HTMLElement>('[data-open]');
+    const x = el.closest<HTMLElement>('[data-x]');
+    const pick = el.closest<HTMLElement>('[data-pick]');
+    if (x) { week.set(x.dataset.x!, null); note.textContent = ''; }
+    else if (pick) { week.set(target, pick.dataset.pick!); dlg.close(); note.textContent = ''; }
+    else if (open) openPicker(open.dataset.open!);
+    else if (el.closest('[data-pk-close]')) dlg.close();
+    else if (el.closest('[data-shuffle]')) { shuffle(recipes); note.textContent = ''; }
+    else if (el.closest('[data-clear]')) { week.clear(); note.textContent = ''; }
+    else if (el.closest('[data-add]')) { const t = addWeekToList(recipes); note.textContent = `Added ${t.kinds} things for ${t.dinners} dinner${t.dinners === 1 ? '' : 's'} to your shopping list.`; }
+  });
+  addEventListener('week:change', paint);
+  seed(recipes);
+  paint();
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('cs-js');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('[data-rise]').forEach((el) => io.observe(el));
+  }
+</script>

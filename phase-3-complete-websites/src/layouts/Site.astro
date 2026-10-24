@@ -15,7 +15,7 @@ interface Props {
 }
 const { title, description, themeColor, icon, day, lang = 'en' } = Astro.props;
 // Sites that have brand files (see scripts/make-brand.mjs) get a real favicon set; the rest keep their emoji.
-const BRAND_FOLDERS: Record<number, string> = { 41: 'day-041-bookshop', 42: 'day-042-architecture', 43: 'day-043-community-farm', 44: 'day-044-saas-product', 45: 'day-045-language-school', 46: 'day-046-herbal-shop', 47: 'day-047-music-festival', 48: 'day-048-magazine', 49: 'day-049-dental-clinic', 50: 'day-050-recipes' };
+const BRAND_FOLDERS: Record<number, string> = { 41: 'day-041-bookshop', 42: 'day-042-architecture', 43: 'day-043-community-farm', 44: 'day-044-saas-product', 45: 'day-045-language-school', 46: 'day-046-herbal-shop', 47: 'day-047-music-festival', 48: 'day-048-magazine', 49: 'day-049-dental-clinic', 50: 'day-050-recipes', 51: 'day-051-job-board', 52: 'day-052-yoga-studio' };
 const brand = BRAND_FOLDERS[day];
 const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${icon}</text></svg>`)}`;
 // The hub lives three folders above a day's index page; pages nested deeper need more "../".

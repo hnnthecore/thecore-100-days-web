@@ -1,0 +1,42 @@
+---
+/** Day 051 · Hirewell · masthead (with a saved-jobs counter) and footer shared by every page. Links are root paths, made relative by the build. See days/day-051/DESIGN.md. */
+import '@fontsource-variable/schibsted-grotesk';
+import '@fontsource-variable/public-sans';
+import '../../days/day-051/styles.css';
+import Mark from '../brand/Mark.astro';
+
+interface Props { active?: 'jobs' | 'companies' | 'saved' | 'employers' }
+const { active } = Astro.props;
+const B = '/day-051-job-board';
+const NAV = [['jobs', 'Find jobs', `${B}/jobs/`], ['companies', 'Companies', `${B}/companies/`], ['employers', 'For employers', `${B}/employers/`]] as const;
+---
+<div class="hw">
+  <header class="hw-header" data-header>
+    <div class="hw-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="hw-logo" aria-label="Hirewell, home"><Mark site="day-051-job-board" size={34} />Hirewell</a>
+      <nav aria-label="Main" class="hidden md:block"><ul class="flex gap-1">{NAV.map(([k, l, h]) => <li><a href={h} class="hw-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-2">
+        <a href={`${B}/saved/`} class="hw-saved" aria-label="My saved jobs" aria-current={active === 'saved' ? 'page' : undefined}>Saved <b data-saved-count>0</b></a>
+        <a href={`${B}/employers/#post`} class="hw-btn hw-btn--solid hidden lg:inline-flex">Post a job</a>
+        <button type="button" class="hw-burger md:hidden" data-burger aria-expanded="false" aria-controls="hw-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="hw-menu" class="hw-menu md:hidden" aria-label="Mobile" data-menu hidden><ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/saved/`} aria-current={active === 'saved' ? 'page' : undefined}>Saved jobs</a></li><li><a href={`${B}/employers/#post`}>Post a job</a></li></ul></nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="hw-footer">
+    <div class="hw-wrap grid grid-cols-2 gap-10 pt-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="hw-logo !text-white"><Mark site="day-051-job-board" variant="tile" size={34} />Hirewell</p><p class="mt-4 max-w-sm text-white/75">A job board for people who want good work with good people. The salary is on every listing, always.</p><address class="mt-4 not-italic text-white/75">Hirewell, 3 Brewery Wharf, Leeds LS10 1JZ<br />hello@hirewell.co.uk · 0113 496 0197</address></div>
+      <div><h2 class="hw-foot-h">Job seekers</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/jobs/`}>Find jobs</a></li><li><a href={`${B}/companies/`}>Companies</a></li><li><a href={`${B}/saved/`}>Saved jobs</a></li></ul></div>
+      <div><h2 class="hw-foot-h">Employers</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/employers/`}>Pricing</a></li><li><a href={`${B}/employers/#post`}>Post a job</a></li></ul></div>
+    </div>
+    <div class="hw-wrap pb-6 pt-12"><p class="hw-foot-big" aria-hidden="true">Hirewell</p></div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import { wireChrome } from '../../days/day-051/store';
+  wireChrome();
+</script>

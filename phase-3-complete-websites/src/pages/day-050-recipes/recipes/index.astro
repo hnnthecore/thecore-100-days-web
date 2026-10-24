@@ -1,0 +1,76 @@
+---
+/** Day 050 · Citrus & Salt · all recipes: live search, multi-select diet filters, a time slider, favourites and sorting. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-050/Shell.astro';
+import RecipeCard from '../../../components/day-050/RecipeCard.astro';
+
+const B = '/day-050-recipes';
+const all = (await getCollection('recipes')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const diets = [...new Set(all.flatMap((r) => r.data.diets))].sort();
+---
+<Site title="Recipes · Citrus & Salt" description="Search and filter Citrus & Salt recipes by diet, cooking time and favourites." themeColor="#17222c" icon="C" day={50}>
+  <Shell active="recipes">
+    <header class="cs-pagehead"><div class="cs-wrap"><ol class="cs-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Recipes</li></ol><h1 class="cs-h1">All the <em>recipes.</em></h1></div></header>
+    <section class="cs-section !pt-10"><div class="cs-wrap">
+      <div class="cs-filters">
+        <div><label for="r-q" class="cs-label">Search</label><input id="r-q" type="search" class="cs-input" placeholder="Dish or ingredient" autocomplete="off" data-q /></div>
+        <div><p class="cs-label" id="d-l">Diet (pick any)</p><div class="cs-chips" role="group" aria-labelledby="d-l" data-diets>{diets.map((d) => <button type="button" data-v={d} aria-pressed="false">{d}</button>)}</div></div>
+        <div><label for="r-t" class="cs-label">Ready in <output data-tout>60 min</output> or less</label><input id="r-t" type="range" min="10" max="60" step="5" value="60" data-time /></div>
+        <div><label for="r-s" class="cs-label">Sort by</label><select id="r-s" class="cs-input" data-sort><option value="name">Name</option><option value="fast">Quickest</option><option value="kcal">Lightest</option></select></div>
+      </div>
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-3"><p class="font-extrabold" role="status" aria-live="polite" data-count></p><div class="cs-chips"><button type="button" data-favs aria-pressed="false">Favourites only</button><button type="button" data-reset>Clear filters</button></div></div>
+      <ul class="cs-grid cs-grid--3" role="list" data-list>{all.map((r) => <li data-r data-name={r.data.title} data-text={`${r.data.title} ${r.data.tagline} ${r.data.cuisine} ${r.data.ingredients.map((i) => i.n).join(' ')}`.toLowerCase()} data-dt={r.data.diets.join('|')} data-min={r.data.minutes} data-kcal={r.data.kcal} data-id={r.id}><RecipeCard entry={r} level="h2" /></li>)}</ul>
+      <div hidden data-empty class="cs-panel mt-6"><p class="cs-h3">Nothing matches.</p><p class="mt-2" style="color:var(--muted)">Try fewer filters or a longer cooking time.</p></div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { favs } from '../../../days/day-050/kitchen';
+  const list = document.querySelector<HTMLElement>('[data-list]')!;
+  const items = [...list.querySelectorAll<HTMLElement>('[data-r]')];
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!;
+  const time = document.querySelector<HTMLInputElement>('[data-time]')!;
+  const sort = document.querySelector<HTMLSelectElement>('[data-sort]')!;
+  const favBtn = document.querySelector<HTMLButtonElement>('[data-favs]')!;
+  const picked = new Set<string>();
+  let favOnly = false;
+
+  function paint() {
+    const term = q.value.trim().toLowerCase();
+    document.querySelector('[data-tout]')!.textContent = `${time.value} min`;
+    let n = 0;
+    items.forEach((li) => {
+      const d = li.dataset.dt!.split('|');
+      const ok = (!term || term.split(/\s+/).every((t) => li.dataset.text!.includes(t))) && [...picked].every((p) => d.includes(p)) && +li.dataset.min! <= +time.value && (!favOnly || favs.has(li.dataset.id!));
+      li.hidden = !ok; if (ok) n++;
+    });
+    [...items].sort((a, b) => sort.value === 'fast' ? +a.dataset.min! - +b.dataset.min! : sort.value === 'kcal' ? +a.dataset.kcal! - +b.dataset.kcal! : a.dataset.name!.localeCompare(b.dataset.name!)).forEach((li) => list.appendChild(li));
+    document.querySelector('[data-count]')!.textContent = `${n} recipe${n === 1 ? '' : 's'}`;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  }
+  document.querySelector('[data-diets]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    const on = !picked.has(b.dataset.v!);
+    on ? picked.add(b.dataset.v!) : picked.delete(b.dataset.v!);
+    b.setAttribute('aria-pressed', String(on));
+    paint();
+  });
+  favBtn.addEventListener('click', () => { favOnly = !favOnly; favBtn.setAttribute('aria-pressed', String(favOnly)); paint(); });
+  document.querySelector('[data-reset]')!.addEventListener('click', () => {
+    picked.clear(); favOnly = false; q.value = ''; time.value = '60'; sort.value = 'name';
+    document.querySelectorAll('[data-diets] button, [data-favs]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    paint();
+  });
+  [q, time].forEach((el) => el.addEventListener('input', paint));
+  sort.addEventListener('change', paint);
+  addEventListener('favs:change', () => favOnly && paint());
+
+  /* Arriving from the home page with #Vegan style links. */
+  const hash = decodeURIComponent(location.hash.slice(1));
+  const chip = [...document.querySelectorAll<HTMLButtonElement>('[data-diets] button')].find((b) => b.dataset.v === hash);
+  if (chip) { picked.add(hash); chip.setAttribute('aria-pressed', 'true'); }
+  paint();
+</script>

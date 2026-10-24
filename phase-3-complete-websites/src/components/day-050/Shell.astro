@@ -1,0 +1,41 @@
+---
+/** Day 050 · Citrus & Salt · masthead (with the shopping-list counter) and footer shared by every page. Links are root paths, made relative by the build. See days/day-050/DESIGN.md. */
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/karla';
+import '../../days/day-050/styles.css';
+import Mark from '../brand/Mark.astro';
+
+interface Props { active?: 'recipes' | 'list' | 'about' }
+const { active } = Astro.props;
+const B = '/day-050-recipes';
+const NAV = [['recipes', 'Recipes', `${B}/recipes/`], ['list', 'Shopping list', `${B}/shopping-list/`], ['about', 'About', `${B}/about/`]] as const;
+---
+<div class="cs">
+  <header class="cs-header" data-header>
+    <div class="cs-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="cs-logo" aria-label="Citrus and Salt, home"><Mark site="day-050-recipes" size={34} />Citrus &amp; Salt</a>
+      <nav aria-label="Main" class="hidden md:block"><ul class="flex gap-2">{NAV.map(([k, l, h]) => <li><a href={h} class="cs-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-3">
+        <a href={`${B}/shopping-list/`} class="cs-listpill" aria-label="Shopping list">List <b data-list-count>0</b></a>
+        <button type="button" class="cs-burger md:hidden" data-burger aria-expanded="false" aria-controls="cs-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="cs-menu" class="cs-menu md:hidden" aria-label="Mobile" data-menu hidden><ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="cs-footer">
+    <div class="cs-wrap grid grid-cols-2 gap-10 pt-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="cs-logo !text-white"><Mark site="day-050-recipes" variant="tile" size={34} />Citrus &amp; Salt</p><p class="mt-4 max-w-sm text-white/75">Weeknight recipes we actually cook. Honest ingredients, clear steps and no scrolling past someone's life story.</p></div>
+      <div><h2 class="cs-foot-h">Cook</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/recipes/`}>All recipes</a></li><li><a href={`${B}/shopping-list/`}>Shopping list</a></li><li><a href={`${B}/about/`}>About</a></li></ul></div>
+      <div><h2 class="cs-foot-h">Write to us</h2><address class="mt-3 grid gap-1 not-italic text-white/80">hello@citrusandsalt.co.uk</address></div>
+    </div>
+    <div class="cs-wrap pb-6 pt-12"><p class="cs-foot-big" aria-hidden="true">Citrus &amp; Salt<i>.</i></p></div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import { wireChrome } from '../../days/day-050/kitchen';
+  wireChrome();
+</script>

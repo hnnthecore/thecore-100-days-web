@@ -1,0 +1,62 @@
+---
+/** Day 050 · Citrus & Salt · the shopping list built from recipes: merged duplicates, tick off, add your own, copy as text. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-050/Shell.astro';
+
+const B = '/day-050-recipes';
+---
+<Site title="Shopping list · Citrus & Salt" description="Your shopping list, built from the recipes you choose. Duplicate ingredients are merged and everything is kept on this device." themeColor="#17222c" icon="C" day={50}>
+  <Shell active="list">
+    <header class="cs-pagehead"><div class="cs-wrap"><ol class="cs-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Shopping list</li></ol><h1 class="cs-h1">Your <em>shopping list.</em></h1><p class="cs-lede mt-3" style="color:#33405f">Built from your recipes. It lives on this device, so no account is needed.</p></div></header>
+    <section class="cs-section !pt-10"><div class="cs-wrap" style="max-width:46rem">
+      <form class="mb-8 flex flex-wrap gap-3" data-add novalidate aria-label="Add an item">
+        <div style="flex:1;min-width:12rem"><label for="a-item" class="cs-label">Add your own item</label><input id="a-item" class="cs-input" placeholder="e.g. toothpaste" autocomplete="off" aria-describedby="a-item-e" /><p class="cs-err" id="a-item-e" hidden>Type an item first.</p></div>
+        <div class="self-end"><button type="submit" class="cs-btn cs-btn--navy" style="padding-block:0.85rem">Add</button></div>
+      </form>
+      <p class="mb-3 font-extrabold" role="status" aria-live="polite" data-count></p>
+      <ul class="cs-shop" role="list" data-items></ul>
+      <div hidden data-empty class="cs-panel"><p class="cs-h3">Your list is empty.</p><p class="mt-2" style="color:var(--muted)">Open a recipe and tap "Add the rest to my shopping list".</p><a href={`${B}/recipes/`} class="cs-btn cs-btn--tomato mt-4">Find a recipe</a></div>
+      <div class="mt-6 flex flex-wrap gap-3" data-tools hidden><button type="button" class="cs-btn" data-copy>Copy as text</button><button type="button" class="cs-btn" data-done>Remove ticked</button><button type="button" class="cs-btn" data-clear>Clear all</button></div>
+      <p class="cs-ok" role="status" data-msg></p>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { list, pretty } from '../../days/day-050/kitchen';
+  const out = document.querySelector<HTMLElement>('[data-items]')!;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const label = (i: { q: number; u: string; name: string }) => `${i.q ? pretty(i.q) + (i.u ? ' ' + i.u : '') + ' ' : ''}${i.name}`.trim();
+
+  function paint() {
+    const items = list.all();
+    out.innerHTML = items.map((i) => `<li class="${i.done ? 'is-done' : ''}"><label><input type="checkbox" data-id="${esc(i.id)}" ${i.done ? 'checked' : ''} /><span><b>${esc(label(i))}</b>${i.recipe ? `<small>${esc(i.recipe)}</small>` : ''}</span></label><button type="button" class="rm" data-rm="${esc(i.id)}" aria-label="Remove ${esc(i.name)}">×</button></li>`).join('');
+    const left = items.filter((i) => !i.done).length;
+    document.querySelector('[data-count]')!.textContent = items.length ? `${left} to buy · ${items.length - left} done` : '';
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = items.length > 0;
+    document.querySelector<HTMLElement>('[data-tools]')!.hidden = items.length === 0;
+  }
+  out.addEventListener('change', (e) => { const c = e.target as HTMLInputElement; if (c.dataset.id) list.toggle(c.dataset.id); });
+  out.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-rm]'); if (b) list.remove(b.dataset.rm!); });
+  document.querySelector('[data-done]')!.addEventListener('click', () => list.clearDone());
+  document.querySelector('[data-clear]')!.addEventListener('click', () => list.clear());
+  document.querySelector('[data-copy]')!.addEventListener('click', async () => {
+    const msg = document.querySelector<HTMLElement>('[data-msg]')!;
+    const text = list.all().filter((i) => !i.done).map((i) => `- ${label(i)}`).join('\n');
+    try { await navigator.clipboard.writeText(text); msg.textContent = 'Copied. Paste it into your notes or a message.'; } catch { msg.textContent = 'Could not copy automatically. Select the list and copy it by hand.'; }
+  });
+  const form = document.querySelector<HTMLFormElement>('[data-add]')!;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = form.querySelector<HTMLInputElement>('input')!;
+    const v = input.value.trim();
+    document.getElementById('a-item-e')!.hidden = v.length > 0;
+    input.setAttribute('aria-invalid', String(!v));
+    if (!v) { input.focus(); return; }
+    list.add([{ name: v, q: 0, u: '', recipe: '' }]);
+    input.value = '';
+    input.focus();
+  });
+  addEventListener('list:change', paint);
+  paint();
+</script>

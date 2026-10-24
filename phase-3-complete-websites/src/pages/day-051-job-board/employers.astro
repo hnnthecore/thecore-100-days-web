@@ -1,0 +1,79 @@
+---
+/** Day 051 · Hirewell · for employers: pricing, a "post a job" form with a live preview card, and FAQ. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-051/Shell.astro';
+
+const B = '/day-051-job-board';
+const PLANS = [['basic', 'Basic', 99, '30 days live, listed in search and category pages.'], ['boost', 'Boost', 199, 'Everything in Basic plus a featured spot on the home page and a weekly email push.'], ['team', 'Team', 449, 'Five listings for 60 days each, with your company page and priority support.']] as const;
+const FAQ = [['Why do you require a salary?', 'Roles with a salary get far more applications from the people you want. It also saves everyone a conversation that would end in a mismatch.'], ['How long until my job is live?', 'Usually within one working day. We check for a clear salary and a real address before we publish.'], ['Can I edit a live listing?', 'Yes. Edit it any time and the changes go out immediately.'], ['Do you offer discounts for charities?', 'Yes. Registered charities and social enterprises get 30% off every plan.']];
+---
+<Site title="For employers · Hirewell" description="Post a job on Hirewell from £99. See a live preview of your listing, choose a plan and reach candidates who read the details." themeColor="#2a44ff" icon="H" day={51}>
+  <Shell active="employers">
+    <header class="hw-pagehead"><div class="hw-wrap"><ol class="hw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">For employers</li></ol><h1 class="hw-h1" style="font-size:clamp(2.2rem,5vw,3.8rem)">Hire people who <span class="hw-hl">read the details.</span></h1><p class="hw-lede mt-3">Simple prices, honest listings and candidates who know what they are applying for.</p></div></header>
+
+    <section class="hw-section" id="post" aria-labelledby="post-t"><div class="hw-wrap hw-split" style="grid-template-columns:1fr">
+      <h2 id="post-t" class="hw-h2">Post a job</h2>
+      <form data-post novalidate class="grid gap-8 lg:grid-cols-2" style="align-items:start">
+        <div class="grid gap-5">
+          <fieldset style="border:0;padding:0;min-width:0"><legend class="hw-label">Choose a plan</legend><div class="hw-plans" style="grid-template-columns:1fr">{PLANS.map(([id, name, price, d], i) => <label class="hw-plan"><input type="radio" name="plan" value={id} data-price={price} checked={i === 0} /><span class="flex items-baseline justify-between"><b class="hw-h3">{name}</b><b class="price">£{price}</b></span><span style="color:var(--muted)">{d}</span></label>)}</div></fieldset>
+          <div class="hw-fields">
+            <div><label for="p-title" class="hw-label">Job title</label><input id="p-title" class="hw-input" data-req aria-describedby="p-title-e" data-live="title" placeholder="e.g. Senior Designer" /><p class="hw-err" id="p-title-e" hidden>Please add a job title.</p></div>
+            <div><label for="p-co" class="hw-label">Company</label><input id="p-co" class="hw-input" data-req aria-describedby="p-co-e" data-live="co" placeholder="Your company" autocomplete="organization" /><p class="hw-err" id="p-co-e" hidden>Please add your company.</p></div>
+            <div><label for="p-loc" class="hw-label">Location</label><input id="p-loc" class="hw-input" data-live="loc" placeholder="City or Remote" /></div>
+            <div><label for="p-mode" class="hw-label">Work mode</label><select id="p-mode" class="hw-input" data-live="mode"><option>On-site</option><option>Hybrid</option><option>Remote</option></select></div>
+            <div><label for="p-min" class="hw-label">Salary from (£)</label><input id="p-min" type="number" min="0" step="1000" class="hw-input" data-live="min" placeholder="40000" aria-describedby="p-sal-e" /></div>
+            <div><label for="p-max" class="hw-label">Salary to (£)</label><input id="p-max" type="number" min="0" step="1000" class="hw-input" data-live="max" placeholder="55000" aria-describedby="p-sal-e" /></div>
+            <p class="hw-err hw-span" id="p-sal-e" hidden>Please give a salary range, with the top figure higher than the bottom.</p>
+            <div class="hw-span"><label for="p-email" class="hw-label">Contact email</label><input id="p-email" type="email" class="hw-input" data-req aria-describedby="p-email-e" autocomplete="email" /><p class="hw-err" id="p-email-e" hidden>Enter an email like name@example.com.</p></div>
+          </div>
+        </div>
+        <div class="grid gap-5" style="position:sticky;top:5.5rem">
+          <div class="hw-preview" aria-live="polite"><p>Live preview</p>
+            <div class="hw-card"><div class="hw-job"><span class="hw-logo-tile" style="background:var(--em)" data-pv="tile">H</span><div><h3 data-pv="title">Your job title</h3><p style="font-weight:600;color:var(--muted)" data-pv="co">Your company</p></div><p class="hw-job__meta"><span data-pv="loc"> Location</span><span data-pv="mode">On-site</span><span class="hw-job__pay" data-pv="pay">Add a salary</span></p></div></div></div>
+          <div class="hw-card" style="background:var(--em);color:#fff"><div class="flex items-baseline justify-between"><span style="color:#b3d4c4;font-weight:600">Total today</span><b class="hw-h2" style="font-size:2.2rem" data-total>£99</b></div><button type="submit" class="hw-btn hw-btn--lime hw-btn--lg hw-btn--full mt-3">Publish job</button></div>
+          <p class="hw-ok" role="status" data-ok tabindex="-1"></p>
+        </div>
+      </form>
+    </div></section>
+
+    <section class="hw-section hw-section--mint" aria-labelledby="faq-t"><div class="hw-wrap hw-split"><div><h2 id="faq-t" class="hw-h2 mt-3">Before you post.</h2></div><div class="hw-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  import { gbp, pay } from '../../days/day-051/store';
+  const form = document.querySelector<HTMLFormElement>('[data-post]')!;
+  const check = wire(form);
+  const val = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
+  const pv = (k: string) => form.querySelector<HTMLElement>(`[data-pv="${k}"]`)!;
+
+  function preview() {
+    pv('title').textContent = val('p-title') || 'Your job title';
+    const co = val('p-co');
+    pv('co').textContent = co || 'Your company';
+    pv('tile').textContent = (co || 'H')[0].toUpperCase();
+    pv('loc').textContent = val('p-loc') || 'Location';
+    pv('mode').textContent = val('p-mode');
+    const lo = Number(val('p-min')), hi = Number(val('p-max'));
+    pv('pay').textContent = lo > 0 && hi > lo ? pay(lo, hi) : 'Add a salary';
+    const plan = form.querySelector<HTMLInputElement>('input[name="plan"]:checked')!;
+    form.querySelector('[data-total]')!.textContent = gbp(Number(plan.dataset.price));
+  }
+  form.addEventListener('input', preview);
+  form.addEventListener('change', preview);
+  preview();
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    const a = check();
+    const lo = Number(val('p-min')), hi = Number(val('p-max'));
+    const salOk = lo > 0 && hi > lo;
+    document.getElementById('p-sal-e')!.hidden = salOk;
+    ['p-min', 'p-max'].forEach((id) => document.getElementById(id)!.setAttribute('aria-invalid', String(!salOk)));
+    if (!a || !salOk) { if (a) document.getElementById('p-min')!.focus(); ok.textContent = ''; return; }
+    ok.textContent = `"${val('p-title')}" is ready. We'll check it and publish within one working day.`;
+    ok.focus();
+  });
+</script>

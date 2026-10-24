@@ -102,6 +102,22 @@ export const BRANDS = {
     mark: `<circle cx="16" cy="16" r="13" fill="#ffd60a"/><circle cx="16" cy="16" r="13" fill="none" stroke="#17222c" stroke-width="2"/><path d="M16 5v22M6.5 10.5l19 11M6.5 21.5l19-11" stroke="#17222c" stroke-width="1.8" stroke-linecap="round"/>`,
     tileMark: `<circle cx="16" cy="16" r="11.5" fill="#ffd60a"/><path d="M16 6v20M7 11l18 10M7 21l18-10" stroke="#17222c" stroke-width="1.8" stroke-linecap="round"/>`,
   },
+  'day-051-job-board': {
+    name: 'Hirewell',
+    tile: '#0f1220',
+    pageBg: '#f4f5f9',
+    // Two pay bars of different lengths on cobalt, with an orange tick between them.
+    mark: `<rect width="32" height="32" rx="8" fill="#2a44ff"/><rect x="6" y="8" width="14" height="5" rx="2.5" fill="#fff"/><rect x="11" y="19" width="15" height="5" rx="2.5" fill="#fff"/><rect x="15.2" y="5" width="2.6" height="22" rx="1.3" fill="#ff6a1a"/>`,
+    tileMark: `<rect x="4" y="4" width="24" height="24" rx="6" fill="#2a44ff"/><rect x="8" y="10" width="10" height="4" rx="2" fill="#fff"/><rect x="12" y="18" width="12" height="4" rx="2" fill="#fff"/><rect x="15.3" y="7.5" width="2.4" height="17" rx="1.2" fill="#ff6a1a"/>`,
+  },
+  'day-052-yoga-studio': {
+    name: 'Stillwater',
+    tile: '#0c2a31',
+    pageBg: '#f2f7f7',
+    // Three ripples on still water; the middle one is filled with early-morning light.
+    mark: `<circle cx="16" cy="16" r="13.5" fill="none" stroke="#0c2a31" stroke-width="1.8"/><circle cx="16" cy="16" r="9" fill="#f2c46d"/><circle cx="16" cy="16" r="4.2" fill="none" stroke="#0c2a31" stroke-width="1.8"/>`,
+    tileMark: `<circle cx="16" cy="16" r="12.5" fill="none" stroke="#cadfe2" stroke-width="1.6"/><circle cx="16" cy="16" r="8.5" fill="#f2c46d"/><circle cx="16" cy="16" r="3.8" fill="none" stroke="#0c2a31" stroke-width="1.6"/>`,
+  },
 };
 
 const svg = (inner, bg) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">${bg ? `<rect width="32" height="32" rx="7" fill="${bg}"/>` : ''}${inner}</svg>\n`;
