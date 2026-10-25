@@ -1,0 +1,32 @@
+---
+/** Day 053 · Static · one page per show: cover, host, follow button and every episode. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-053/Shell.astro';
+import EpisodeRow from '../../../components/day-053/EpisodeRow.astro';
+import { Image } from 'astro:assets';
+import { hueOf } from '../../../days/day-053/art';
+import { SHOW_COVERS, COVER_ALTS, HOST_PHOTOS } from '../../../days/day-053/photos';
+
+export async function getStaticPaths() {
+  const shows = await getCollection('shows');
+  const eps = await getCollection('episodes');
+  return shows.map((entry) => ({ params: { slug: entry.id }, props: { entry, list: eps.filter((e) => e.data.show === entry.id).sort((a, b) => b.data.number - a.data.number) } }));
+}
+const B = '/day-053-podcast-network';
+const { entry, list } = Astro.props;
+const s = entry.data;
+const { Content } = await render(entry);
+---
+<Site title={`${s.title} · Static`} description={s.tagline} themeColor={s.colour} icon="S" day={53} jsonLd={{ '@context': 'https://schema.org', '@type': 'PodcastSeries', name: s.title, description: s.tagline, genre: s.category, author: { '@type': 'Person', name: s.host } }}>
+  <Shell active="shows">
+    <header class="st-pagehead" style={`--bg:color-mix(in srgb, ${s.colour} 14%, #f0eef7)`}><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/shows/`}>Shows</a></li><li aria-current="page">{s.title}</li></ol>
+      <div class="grid items-center gap-8 md:grid-cols-[14rem_1fr]"><div class="st-art"><Image src={SHOW_COVERS[entry.id]} alt={COVER_ALTS[entry.id]} width={600} loading="eager" /></div>
+        <div><span class="st-pill" style={`--c:${s.colour}`}>{s.category}</span><h1 class="st-h1 mt-3" style="font-size:clamp(2.4rem,6vw,4.6rem)">{s.title}</h1><p class="st-lede mt-3" style="color:#35304c">{s.tagline}</p><p class="st-host mt-3"><Image src={HOST_PHOTOS[entry.id]} alt={`Portrait of ${s.host}`} width={96} height={96} class="st-host__img" /><span><b>Hosted by {s.host}</b><small>{list.length} episodes</small></span></p>
+          <div class="mt-5 flex flex-wrap gap-3"><button type="button" class="st-btn st-btn--tang" data-play={list[0].id} data-title={list[0].data.title} data-show={s.title} data-dur={list[0].data.minutes * 60} data-hue={hueOf(s.colour)} data-label data-idle="Play latest" aria-pressed="false">Play latest</button><button type="button" class="st-btn" data-follow={entry.id} aria-pressed="false">Follow</button></div></div></div></div></header>
+    <section class="st-section"><div class="st-wrap st-split">
+      <div><h2 class="st-h2 mb-4" style="font-size:2rem">Episodes</h2>{list.map((e) => <EpisodeRow entry={e} show={entry} />)}</div>
+      <aside class="st-card"><h2 class="st-h3">About the show</h2><div class="st-prose mt-3" style="font-size:1rem"><Content /></div></aside>
+    </div></section>
+  </Shell>
+</Site>

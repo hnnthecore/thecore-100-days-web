@@ -2,6 +2,32 @@
 
 A short record of what changed on each day, how it was tested and what is still open. Newest first.
 
+## Days 52 and 53 · Professional extras
+
+The new standard for every site (see the definition of done), applied to Stillwater and Static first.
+
+- **Search and sharing:** every page has its own title and description; a 1200 × 630 share image is made per site (og.png); structured data (a local business on Stillwater, an organisation, podcast series and podcast episodes on Static); sitemap.xml and robots.txt written on every build (scripts/seo.mjs).
+- **404, privacy and cookies:** a styled 404 page (also copied to 404.html) kept out of search results, and Privacy and Cookies pages written for each business, linked from the footer.
+- **Accessibility:** axe-core run on every page at desktop and phone width; the only finding (the Thecore badge sitting outside a page landmark) is fixed for every site in the shared layout.
+- **Without JavaScript:** controls that need scripts are hidden and a plain list of shows is shown instead.
+- **Speed:** page weight measured: about 185 KB (Stillwater) and about 290 KB (Static) before lazy photographs.
+- **Handover:** a HANDOVER.md for each site: how to change text, photos, colours, rebuild and publish, what the forms still need, and what was tested.
+- **Not done:** Safari, Firefox and a real phone have not been tested (only Chrome); forms still do not send anything.
+
+## Day 53 · Static redesigned as a radio you tune
+
+- **Idea:** the home page is a tuner. Four shows sit on a frequency band; turn the needle (slider, arrow keys or station buttons) and the animated static clears as you lock onto a station, which shows the cover, host, one line and the latest episode with Play. The persistent player is unchanged.
+- **Look:** the centred headline, fan of tilted covers, hard offset shadows and tangerine are gone. Brushed aluminium, graphite and one red needle; Archivo and Work Sans; flat-edged buttons; play and pause icons drawn in CSS; no gradients, shadows or emoji.
+- **Also:** a plain single-bar masthead, a real footer address, logo (a half-dial with a needle) and favicon set, DESIGN.md.
+- **Checked:** source linter clean; sweep of the pages at 360, 768 and 1280 px; the tuner was run in a real browser.
+
+## Day 52 · Stillwater redesigned around a one-minute breath
+
+- **Idea:** the home page lets you breathe before it asks for anything. A soft disc grows for four counts and settles for six over one minute, and beside it "Today at Stillwater" lists the classes still to come with their room and spaces left (tomorrow's once today is over), each linking to the timetable. Reduced motion keeps the disc still.
+- **Look:** the dark photo hero, Cormorant italics, floating pill nav, terracotta buttons and cream paper are gone. Mist, deep teal-ink and a soft gold; Outfit and Hanken Grotesk; flat-edged buttons; no gradients, shadows or flower glyphs.
+- **Also:** a plain single-bar masthead, "before, during, after" for a first class, teachers with large portraits, logo (three ripples) and favicon set, DESIGN.md, and the form-layout clash fixed again.
+- **Checked:** source linter clean; sweep of all 14 pages at 360, 768 and 1280 px with no findings; the breathing pacer was run in a real browser.
+
 ## Day 51 · Hirewell redesigned as a chart of pay
 
 - **Idea:** the home page is a salary chart. Every role is a bar from its lowest to its highest pay on one shared scale, and a slider moves an orange "I need at least" line across it: bars are cut at the line, roles that cannot reach it fade and a sentence keeps count. Category buttons filter and one button reorders (top pay or newest). The day-rate contract role sits below with its yearly equivalent worked out.

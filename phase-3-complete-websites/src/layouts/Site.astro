@@ -12,10 +12,16 @@ interface Props {
   icon: string;
   day: number;
   lang?: string;
+  /** Structured data (schema.org) for this page, as a plain object or an array of them. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Keep a page out of search results (used by the 404 page). */
+  noindex?: boolean;
 }
-const { title, description, themeColor, icon, day, lang = 'en' } = Astro.props;
+const { title, description, themeColor, icon, day, lang = 'en', jsonLd, noindex = false } = Astro.props;
+/* Absolute address of the published site. Social networks need a full URL for the share image: change this one line when the site moves to its own domain. */
+const ORIGIN = 'https://hnnthecore.github.io/thecore-100-days-web/phase-3-complete-websites/site';
 // Sites that have brand files (see scripts/make-brand.mjs) get a real favicon set; the rest keep their emoji.
-const BRAND_FOLDERS: Record<number, string> = { 41: 'day-041-bookshop', 42: 'day-042-architecture', 43: 'day-043-community-farm', 44: 'day-044-saas-product', 45: 'day-045-language-school', 46: 'day-046-herbal-shop', 47: 'day-047-music-festival', 48: 'day-048-magazine', 49: 'day-049-dental-clinic', 50: 'day-050-recipes', 51: 'day-051-job-board', 52: 'day-052-yoga-studio' };
+const BRAND_FOLDERS: Record<number, string> = { 41: 'day-041-bookshop', 42: 'day-042-architecture', 43: 'day-043-community-farm', 44: 'day-044-saas-product', 45: 'day-045-language-school', 46: 'day-046-herbal-shop', 47: 'day-047-music-festival', 48: 'day-048-magazine', 49: 'day-049-dental-clinic', 50: 'day-050-recipes', 51: 'day-051-job-board', 52: 'day-052-yoga-studio', 53: 'day-053-podcast-network', 54: 'day-054-college', 55: 'day-055-wedding-venue' };
 const brand = BRAND_FOLDERS[day];
 const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${icon}</text></svg>`)}`;
 // The hub lives three folders above a day's index page; pages nested deeper need more "../".
@@ -33,6 +39,13 @@ const hub = '../'.repeat(depth + 2) + 'index.html';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {brand && <meta property="og:image" content={`${ORIGIN}/${brand}/og.png`} />}
+    {brand && <meta property="og:image:width" content="1200" />}
+    {brand && <meta property="og:image:height" content="630" />}
+    {brand && <meta name="twitter:image" content={`${ORIGIN}/${brand}/og.png`} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     {brand ? (
       <>
         <link rel="icon" href={`/${brand}/favicon.svg`} type="image/svg+xml" />
@@ -43,12 +56,15 @@ const hub = '../'.repeat(depth + 2) + 'index.html';
     ) : (
       <link rel="icon" href={favicon} />
     )}
+    <noscript><style>[data-needs-js] { display: none !important; }</style></noscript>
     <slot name="head" />
   </head>
   <body>
     <a class="sr-only-focusable rounded-full bg-black px-4 py-2 font-semibold text-white" href="#main">Skip to content</a>
     <slot />
-    <a class="thecore-badge" href={hub} aria-label={`Thecore 100 Days of Web, day ${day}. Back to all projects`}><span aria-hidden="true">T</span> Day {String(day).padStart(3, '0')} · Thecore</a>
+    <aside aria-label="About this project">
+      <a class="thecore-badge" href={hub} aria-label={`Thecore 100 Days of Web, day ${day}. Back to all projects`}><span aria-hidden="true">T</span> Day {String(day).padStart(3, '0')} · Thecore</a>
+    </aside>
     <script>
       import '../scripts/smooth';
     </script>

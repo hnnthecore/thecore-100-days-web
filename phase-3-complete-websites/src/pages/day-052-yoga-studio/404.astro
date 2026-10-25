@@ -1,0 +1,15 @@
+---
+/** Day 052 · Stillwater · Page not found. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-052/Shell.astro';
+const B = '/day-052-yoga-studio';
+---
+<Site title="Page not found · Stillwater" description="This page could not be found. Go back to the Stillwater home page, the timetable or the class list." themeColor="#0c2a31" icon="S" day={52} noindex>
+  <Shell>
+    <header class="sw-pagehead"><div class="sw-wrap"><ol class="sw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Page not found</li></ol><h1 class="sw-h1">That page is not here.</h1></div></header>
+    <section class="sw-section"><div class="sw-wrap">
+<p class="sw-lede">The page you were looking for has moved, or it was never here. These will get you back on the mat:</p>
+      <p class="mt-6"><a href={`${B}/`} class="sw-btn sw-btn--coral sw-btn--lg">Go to the home page</a> <a href={`${B}/timetable/`} class="sw-btn sw-btn--lg">See the timetable</a> <a href={`${B}/classes/`} class="sw-btn sw-btn--lg">Browse classes</a></p>
+    </div></section>
+  </Shell>
+</Site>

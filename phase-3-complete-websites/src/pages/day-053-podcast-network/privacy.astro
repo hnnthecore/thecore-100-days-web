@@ -1,0 +1,26 @@
+---
+/** Day 053 · Static · Privacy. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-053/Shell.astro';
+const B = '/day-053-podcast-network';
+---
+<Site title="Privacy · Static" description="How Static uses the details you give us when you pitch a show, how long we keep them and your rights. We do not track what you listen to." themeColor="#16181b" icon="S" day={53}>
+  <Shell>
+    <header class="st-pagehead"><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Privacy</li></ol><h1 class="st-h1">Privacy.</h1></div></header>
+    <section class="st-section"><div class="st-wrap">
+      <div class="st-prose">
+<p>This page explains what Static Audio Ltd does with your details. We are at 12 Canal Street, Manchester M1 3EZ. Last updated 24 October 2026.</p>
+<h2>What we ask for, and why</h2>
+<p>If you pitch us a show we ask for your name, your email and a few lines about your idea, so we can read it and reply. That is all the website asks for. Listening to episodes needs no account.</p>
+<h2>What we do not do</h2>
+<p>We do not sell your details or share them for advertising. We do not run advertising or tracking tools on this website, and we do not track what you listen to.</p>
+<h2>How long we keep it</h2>
+<p>Pitches are kept for twelve months, or until you ask us to delete them. If we work together, the details move into our contract records, which we keep as the law requires.</p>
+<h2>Your rights</h2>
+<p>You can ask to see what we hold about you, to correct it or to have it deleted. Email <a href="mailto:hello@staticaudio.co.uk">hello@staticaudio.co.uk</a> and we will answer within one month. You can also complain to the Information Commissioner's Office at ico.org.uk.</p>
+<h2>On this device</h2>
+<p>Your place in each episode, your listening history and the shows you follow are remembered in your browser's own storage, so “My library” and the player at the foot of the page can carry on where you stopped. They stay on your device. See the <a href={`${B}/cookies/`}>cookies page</a>.</p>
+      </div>
+    </div></section>
+  </Shell>
+</Site>

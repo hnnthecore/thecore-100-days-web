@@ -6,7 +6,7 @@
   "description": "Thecore 100 Days · Phase 3 complete websites (Days 41–60)",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/relativize.mjs",
+    "build": "astro build && node scripts/relativize.mjs && node scripts/seo.mjs",
     "preview": "astro preview"
   },
   "dependencies": {

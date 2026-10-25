@@ -112,11 +112,39 @@ export const BRANDS = {
   },
   'day-052-yoga-studio': {
     name: 'Stillwater',
+    tagline: 'Yoga and pilates in Brighton',
     tile: '#0c2a31',
     pageBg: '#f2f7f7',
     // Three ripples on still water; the middle one is filled with early-morning light.
     mark: `<circle cx="16" cy="16" r="13.5" fill="none" stroke="#0c2a31" stroke-width="1.8"/><circle cx="16" cy="16" r="9" fill="#f2c46d"/><circle cx="16" cy="16" r="4.2" fill="none" stroke="#0c2a31" stroke-width="1.8"/>`,
     tileMark: `<circle cx="16" cy="16" r="12.5" fill="none" stroke="#cadfe2" stroke-width="1.6"/><circle cx="16" cy="16" r="8.5" fill="#f2c46d"/><circle cx="16" cy="16" r="3.8" fill="none" stroke="#0c2a31" stroke-width="1.6"/>`,
+  },
+  'day-053-podcast-network': {
+    name: 'Static',
+    tagline: 'An independent podcast network',
+    tile: '#16181b',
+    pageBg: '#e3e5e8',
+    // A half-dial: five tick marks on an arc and a red tuning needle.
+    mark: `<path d="M3 24a13 13 0 0 1 26 0" fill="none" stroke="#16181b" stroke-width="2.4" stroke-linecap="round"/><path d="M6.2 15.5l1.4 1M11 10.4l1 1.5M16 8.4v1.8M21 10.4l-1 1.5M25.8 15.5l-1.4 1" stroke="#16181b" stroke-width="1.8" stroke-linecap="round"/><path d="M16 25L21.5 12.5" stroke="#e5322d" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="25" r="2.4" fill="#16181b"/>`,
+    tileMark: `<path d="M5 23a11 11 0 0 1 22 0" fill="none" stroke="#e3e5e8" stroke-width="2.2" stroke-linecap="round"/><path d="M16 24L21 13" stroke="#e5322d" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="24" r="2.3" fill="#ffb347"/>`,
+  },
+  'day-054-college': {
+    name: 'Northgate College',
+    tagline: 'Foundation, undergraduate and postgraduate study in Leeds',
+    tile: '#14172e',
+    pageBg: '#f5f6fa',
+    // A gate: an arch with three route lines running through it, in the colours of the course map.
+    mark: `<path d="M5 29V14a11 11 0 0 1 22 0v15z" fill="#14172e"/><rect x="9" y="13" width="14" height="2.6" rx="1.3" fill="#0f9d8a"/><rect x="9" y="18.2" width="14" height="2.6" rx="1.3" fill="#e8742a"/><rect x="9" y="23.4" width="14" height="2.6" rx="1.3" fill="#d6336c"/>`,
+    tileMark: `<path d="M7 27V14.5a9 9 0 0 1 18 0V27z" fill="#f5f6fa"/><rect x="10.5" y="13.6" width="11" height="2.2" rx="1.1" fill="#0f9d8a"/><rect x="10.5" y="17.9" width="11" height="2.2" rx="1.1" fill="#e8742a"/><rect x="10.5" y="22.2" width="11" height="2.2" rx="1.1" fill="#d6336c"/>`,
+  },
+  'day-055-wedding-venue': {
+    name: 'Hollowfield Barn',
+    tagline: 'A wedding barn in the Cotswolds',
+    tile: '#231b17',
+    pageBg: '#f4f3f0',
+    // A barn: a gabled front in barn red with a white braced door.
+    mark: `<path d="M3.5 28.5V13.2L16 4l12.5 9.2v15.3z" fill="#9a2f22"/><rect x="10" y="15" width="12" height="13.5" fill="#f4f3f0"/><path d="M10 15l12 13.5M22 15L10 28.5" stroke="#9a2f22" stroke-width="1.6"/><rect x="10" y="15" width="12" height="13.5" fill="none" stroke="#9a2f22" stroke-width="1.6"/>`,
+    tileMark: `<path d="M5 26.5V14.3L16 6l11 8.3v12.2z" fill="#c9503f"/><rect x="11" y="15.5" width="10" height="11" fill="#f4f3f0"/><path d="M11 15.5l10 11M21 15.5l-10 11" stroke="#c9503f" stroke-width="1.4"/>`,
   },
 };
 
@@ -153,6 +181,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     // The home-screen icon has no rounded corners of its own: phones round it, so it needs a full square.
     const touch = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${b.tile}"/>${b.tileMark}</svg>`;
     await writeFile(join(dir, 'apple-touch-icon.png'), await png(touch, 180));
+    // Share image (1200 x 630): the mark large on the page colour, with the name and a line about the site.
+    const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="${b.pageBg}"/><g transform="translate(90 135) scale(10.6)">${b.mark}</g><text x="520" y="300" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="108" letter-spacing="-4" fill="${b.tile}">${esc(b.name)}</text><text x="524" y="380" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="${b.tile}" fill-opacity="0.72">${esc(b.tagline || '')}</text></svg>`;
+    await writeFile(join(dir, 'og.png'), await sharp(Buffer.from(og), { density: 144 }).resize(1200, 630).png().toBuffer());
     await writeFile(join(dir, 'favicon.ico'), ico(await Promise.all([16, 32, 48].map(async (size) => ({ size, data: await png(tile, size) })))));
     console.log('wrote', folder);
   }

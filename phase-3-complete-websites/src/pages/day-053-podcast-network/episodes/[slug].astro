@@ -1,0 +1,92 @@
+---
+/** Day 053 · Static · one page per episode: a big player with a waveform you can click to seek, chapters, and show notes. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-053/Shell.astro';
+import EpisodeRow from '../../../components/day-053/EpisodeRow.astro';
+import { Image } from 'astro:assets';
+import { hueOf, bars } from '../../../days/day-053/art';
+import { SHOW_COVERS } from '../../../days/day-053/photos';
+
+export async function getStaticPaths() {
+  const eps = await getCollection('episodes');
+  const shows = await getCollection('shows');
+  return eps.map((entry) => ({ params: { slug: entry.id }, props: { entry, show: shows.find((s) => s.id === entry.data.show)!, more: eps.filter((e) => e.data.show === entry.data.show && e.id !== entry.id).sort((a, b) => b.data.number - a.data.number).slice(0, 3), shows } }));
+}
+const B = '/day-053-podcast-network';
+const { entry, show, more, shows } = Astro.props;
+const e = entry.data, s = show.data;
+const { Content } = await render(entry);
+const hue = hueOf(s.colour);
+const dur = e.minutes * 60;
+const date = new Date(e.date + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const ref = { id: entry.id, title: e.title, show: s.title, dur, hue };
+const hm = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
+---
+<Site title={`${e.title} · ${s.title} · Static`} description={e.summary} themeColor={s.colour} icon="S" day={53} jsonLd={{ '@context': 'https://schema.org', '@type': 'PodcastEpisode', name: e.title, description: e.summary, datePublished: e.date, timeRequired: `PT${e.minutes}M`, episodeNumber: e.number, partOfSeries: { '@type': 'PodcastSeries', name: s.title } }}>
+  <Shell active="shows">
+    <header class="st-pagehead" style={`--bg:color-mix(in srgb, ${s.colour} 14%, #f0eef7)`}><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li><a href={`${B}/shows/${show.id}/`}>{s.title}</a></li><li aria-current="page">Ep {e.number}</li></ol>
+      <p class="st-pill" style={`--c:${s.colour}`}>{s.title} · Episode {e.number}</p>
+      <h1 class="st-h1 mt-3" style="font-size:clamp(2.2rem,5.4vw,4.2rem);max-width:20ch">{e.title}</h1>
+      <p class="st-lede mt-4" style="color:#35304c">{e.summary}</p>
+      <p class="mt-3 font-bold">{date} · {e.minutes} min{e.guest ? ` · with ${e.guest}` : ''}</p></div></header>
+    <section class="st-section !pt-8"><div class="st-wrap st-split">
+      <div>
+        <div class="st-big" data-big aria-label="Episode player">
+          <div class="flex items-center gap-4"><div class="st-art" style="width:5rem;border-color:#fff;box-shadow:none" ><Image src={SHOW_COVERS[show.id]} alt="" width={200} /></div><div><b class="st-h3" style="font-size:1.3rem">{e.title}</b><br /><span style="color:#b3aed0;font-weight:600">{s.title}</span></div></div>
+          <button type="button" class="st-wave" data-wave aria-label="Seek within the episode">{bars(entry.id, 72).map((h) => <i style={`height:${Math.round(h * 100)}%`}></i>)}</button>
+          <div class="st-time"><span data-b-pos>0:00</span><span>{hm(dur)}</span></div>
+          <div class="st-ctrl"><button type="button" data-b-back>−15 s</button><button type="button" class="st-playbtn" data-play={entry.id} data-title={e.title} data-show={s.title} data-dur={dur} data-hue={hue} aria-pressed="false" aria-label={`Play ${e.title}`}>▶</button><button type="button" data-b-fwd>+30 s</button><label class="sr-only" for="b-speed">Speed</label><select id="b-speed" data-b-speed><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div>
+        </div>
+        <p class="mt-3 text-sm" style="color:var(--muted)">Demo player: this episode has no real audio, but the timing, seeking, speed and mini-player all work.</p>
+        <h2 class="st-h2 mt-10" style="font-size:1.8rem">Chapters</h2>
+        <ol class="st-chap" role="list">{e.chapters.map((c, i) => <li><button type="button" data-chap={c.t} data-i={i}><span>{c.title}</span><time>{hm(c.t)}</time></button></li>)}</ol>
+        <div class="st-prose mt-8"><Content /></div>
+      </div>
+      <aside class="grid gap-5 self-start"><div class="st-card"><h2 class="st-h3">Share</h2><p class="mt-2">Send this episode to someone who'd like it.</p><button type="button" class="st-btn mt-3" data-copy>Copy link</button><p class="st-ok" role="status" data-copied></p></div>
+        <div class="st-card"><h2 class="st-h3">More from {s.title}</h2><div>{more.map((m) => <EpisodeRow entry={m} show={show} />)}</div></div></aside>
+    </div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ ref, dur }}>
+  window.__ep = { ref, dur };
+</script>
+<script>
+  import { player, position, fmt } from '../../../days/day-053/player';
+  const { ref, dur } = (window as unknown as { __ep: { ref: { id: string }; dur: number } }).__ep;
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const waves = [...document.querySelectorAll<HTMLElement>('[data-wave] i')];
+  const chaps = [...document.querySelectorAll<HTMLButtonElement>('[data-chap]')];
+  const speed = $<HTMLSelectElement>('[data-b-speed]');
+
+  const mine = () => player.state()?.id === ref.id;
+  function paint() {
+    const s = player.state();
+    const pos = mine() ? position(s) : 0;
+    $('[data-b-pos]').textContent = fmt(pos);
+    const upto = Math.floor((pos / dur) * waves.length);
+    waves.forEach((w, i) => w.classList.toggle('is-past', i < upto));
+    let now = -1;
+    chaps.forEach((c, i) => { if (mine() && pos >= Number(c.dataset.chap)) now = i; });
+    chaps.forEach((c, i) => c.classList.toggle('is-now', i === now));
+    if (mine() && s) speed.value = String(s.speed);
+  }
+  const ensure = () => { if (!mine()) player.play(ref as never); };
+  $('[data-wave]').addEventListener('click', (e) => {
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    ensure();
+    player.seek(((e.clientX - r.left) / r.width) * dur);
+  });
+  $('[data-b-back]').addEventListener('click', () => { if (mine()) player.skip(-15); });
+  $('[data-b-fwd]').addEventListener('click', () => { if (mine()) player.skip(30); });
+  speed.addEventListener('change', () => { ensure(); player.speed(Number(speed.value)); });
+  chaps.forEach((c) => c.addEventListener('click', () => { ensure(); player.seek(Number(c.dataset.chap)); }));
+  $('[data-copy]').addEventListener('click', async () => {
+    const m = $('[data-copied]');
+    try { await navigator.clipboard.writeText(location.href); m.textContent = 'Link copied.'; } catch { m.textContent = 'Copy the address from your browser bar.'; }
+  });
+  addEventListener('player:change', paint);
+  setInterval(paint, 250);
+  paint();
+</script>

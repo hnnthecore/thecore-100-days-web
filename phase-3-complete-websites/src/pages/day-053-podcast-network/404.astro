@@ -1,0 +1,15 @@
+---
+/** Day 053 · Static · Page not found. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-053/Shell.astro';
+const B = '/day-053-podcast-network';
+---
+<Site title="Page not found · Static" description="This page could not be found. Go back to the Static tuner, the shows or the episode list." themeColor="#16181b" icon="S" day={53} noindex>
+  <Shell>
+    <header class="st-pagehead"><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Page not found</li></ol><h1 class="st-h1">Dead air.</h1></div></header>
+    <section class="st-section"><div class="st-wrap">
+<p class="st-lede">Nothing is broadcasting on this frequency. Try one of these instead:</p>
+      <p class="mt-6"><a href={`${B}/`} class="st-btn st-btn--tang st-btn--lg">Back to the tuner</a> <a href={`${B}/shows/`} class="st-btn st-btn--lg">All shows</a> <a href={`${B}/episodes/`} class="st-btn st-btn--lg">All episodes</a></p>
+    </div></section>
+  </Shell>
+</Site>

@@ -1,0 +1,55 @@
+---
+/** Day 053 · Static · every episode: live search, filter by show, a length limit and sorting. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-053/Shell.astro';
+import EpisodeRow from '../../../components/day-053/EpisodeRow.astro';
+
+const B = '/day-053-podcast-network';
+const shows = await getCollection('shows');
+const eps = (await getCollection('episodes')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+<Site title="Episodes · Static" description="Search and filter every Static episode by show and length." themeColor="#16181b" icon="S" day={53}>
+  <Shell active="episodes">
+    <header class="st-pagehead"><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Episodes</li></ol><h1 class="st-h1" style="font-size:clamp(2.4rem,6vw,4.6rem)">All <span style="color:var(--tang)">episodes.</span></h1></div></header>
+    <section class="st-section !pt-8"><div class="st-wrap">
+      <div class="mb-6 grid gap-5 md:grid-cols-[1.2fr_1fr_1fr]">
+        <div class="st-field"><label for="e-q" class="st-label">Search</label><input id="e-q" type="search" class="st-input" placeholder="Title, guest or topic" autocomplete="off" data-q /></div>
+        <div class="st-field"><label for="e-s" class="st-label">Show</label><select id="e-s" class="st-input" data-show><option value="">All shows</option>{shows.map((s) => <option value={s.id}>{s.data.title}</option>)}</select></div>
+        <div class="st-field"><label for="e-l" class="st-label">Up to <output data-lout>40 min</output></label><input id="e-l" type="range" min="10" max="40" step="5" value="40" data-len style="accent-color:var(--tang)" /></div>
+      </div>
+      <div class="mb-3 flex flex-wrap items-center justify-between gap-3"><p class="font-bold" role="status" aria-live="polite" data-count></p>
+        <div class="st-chips" role="group" aria-label="Sort" data-sort><button type="button" data-v="new" aria-pressed="true">Newest</button><button type="button" data-v="short" aria-pressed="false">Shortest</button></div></div>
+      <div data-list>{eps.map((e) => <EpisodeRow entry={e} show={shows.find((s) => s.id === e.data.show)} level="h2" />)}</div>
+      <p class="st-lede mt-6" hidden data-empty>No episodes match. Try a different word or show.</p>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-list]')!;
+  const items = [...list.querySelectorAll<HTMLElement>('[data-ep]')];
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!, sh = document.querySelector<HTMLSelectElement>('[data-show]')!, len = document.querySelector<HTMLInputElement>('[data-len]')!;
+  let sort = 'new';
+  function paint() {
+    const terms = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    document.querySelector('[data-lout]')!.textContent = `${len.value} min`;
+    let n = 0;
+    items.forEach((el) => { const ok = terms.every((t) => el.dataset.text!.includes(t)) && (!sh.value || el.dataset.sid === sh.value) && +el.dataset.min! <= +len.value; el.hidden = !ok; if (ok) n++; });
+    [...items].sort((a, b) => sort === 'short' ? +a.dataset.min! - +b.dataset.min! : b.dataset.date!.localeCompare(a.dataset.date!)).forEach((el) => list.appendChild(el));
+    document.querySelector('[data-count]')!.textContent = `${n} episode${n === 1 ? '' : 's'}`;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  }
+  [q, len].forEach((e) => e.addEventListener('input', paint));
+  sh.addEventListener('change', paint);
+  document.querySelector('[data-sort]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    sort = b.dataset.v!;
+    document.querySelectorAll('[data-sort] button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paint();
+  });
+  const pre = new URLSearchParams(location.search).get('q');
+  if (pre) q.value = pre;
+  paint();
+</script>

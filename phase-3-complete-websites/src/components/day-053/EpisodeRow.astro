@@ -1,0 +1,22 @@
+---
+/** Day 053 · Static · one episode row: cover, show, title, summary, length and a play button wired to the shared player. */
+import { Image } from 'astro:assets';
+import { hueOf } from '../../days/day-053/art';
+import { SHOW_COVERS } from '../../days/day-053/photos';
+const B = '/day-053-podcast-network';
+interface Props { entry: any; show: any; level?: 'h2' | 'h3' }
+const { entry, show, level = 'h3' } = Astro.props;
+const e = entry.data, s = show.data;
+const H = level;
+const hue = hueOf(s.colour);
+const date = new Date(e.date + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<div class="st-ep" data-ep data-text={`${e.title} ${e.summary} ${e.guest} ${s.title}`.toLowerCase()} data-sid={entry.data.show} data-min={e.minutes} data-date={e.date}>
+  <a href={`${B}/episodes/${entry.id}/`} class="st-art" tabindex="-1" aria-hidden="true"><Image src={SHOW_COVERS[entry.data.show]} alt="" width={160} /></a>
+  <div>
+    <p class="meta"><span class="st-pill" style={`--c:${s.colour}`}>{s.title}</span> &nbsp;Ep {e.number} · {date} · {e.minutes} min</p>
+    <H><a href={`${B}/episodes/${entry.id}/`}>{e.title}</a></H>
+    <p>{e.summary}</p>
+  </div>
+  <button type="button" class="st-playbtn" data-play={entry.id} data-title={e.title} data-show={s.title} data-dur={e.minutes * 60} data-hue={hue} aria-pressed="false" aria-label={`Play ${e.title}`}></button>
+</div>

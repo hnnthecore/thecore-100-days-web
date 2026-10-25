@@ -1,0 +1,60 @@
+---
+/** Day 053 · Static · header, footer and the sticky mini-player shared by every page. Links are root paths, made relative by the build. See days/day-053/DESIGN.md. */
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/work-sans';
+import '../../days/day-053/styles.css';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Mark from '../brand/Mark.astro';
+import { SHOW_COVERS } from '../../days/day-053/photos';
+const allShows = await getCollection('shows');
+
+interface Props { active?: 'shows' | 'episodes' | 'library' | 'about' }
+const { active } = Astro.props;
+const B = '/day-053-podcast-network';
+const NAV = [['shows', 'Shows', `${B}/shows/`], ['episodes', 'Episodes', `${B}/episodes/`], ['library', 'My library', `${B}/library/`], ['about', 'About', `${B}/about/`]] as const;
+---
+<div class="st">
+  <header class="st-header" data-header>
+    <div class="st-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="st-logo" aria-label="Static, home"><Mark site="day-053-podcast-network" size={34} />Static</a>
+      <nav aria-label="Main" class="hidden md:block"><ul class="flex gap-1">{NAV.map(([k, l, h]) => <li><a href={h} class="st-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-2">
+        <a href={`${B}/about/#pitch`} class="st-btn st-btn--ink hidden sm:inline-flex">Pitch a show</a>
+        <button type="button" class="st-burger md:hidden" data-burger aria-expanded="false" aria-controls="st-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="st-menu" class="st-menu md:hidden" aria-label="Mobile" data-menu hidden><ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/about/#pitch`}>Pitch a show</a></li></ul></nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="st-footer">
+    <div class="st-wrap grid grid-cols-2 gap-10 pt-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="st-logo !text-white"><Mark site="day-053-podcast-network" variant="tile" size={34} />Static</p><p class="mt-4 max-w-sm text-white/75">An independent podcast network. Four shows, made slowly and with care. No algorithms, no ad-read marathons.</p><address class="mt-4 not-italic text-white/75">Static Audio Ltd, 12 Canal Street, Manchester M1 3EZ<br />hello@staticaudio.co.uk · 0161 496 0153</address></div>
+      <div><h2 class="st-foot-h">Listen</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/shows/`}>Shows</a></li><li><a href={`${B}/episodes/`}>All episodes</a></li><li><a href={`${B}/library/`}>My library</a></li></ul></div>
+      <div><h2 class="st-foot-h">Network</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/about/`}>About</a></li><li><a href={`${B}/about/#pitch`}>Pitch a show</a></li><li><a href={`${B}/privacy/`}>Privacy</a></li><li><a href={`${B}/cookies/`}>Cookies</a></li></ul></div>
+    </div>
+    <div class="st-wrap pb-6 pt-12"><p class="st-foot-big" aria-hidden="true">Static</p></div>
+  </footer>
+
+  <div hidden aria-hidden="true">{allShows.map((sh) => <Image src={SHOW_COVERS[sh.id]} alt="" width={120} data-stitle={sh.data.title} loading="eager" />)}</div>
+  <section class="st-mini" data-mini hidden aria-label="Player">
+    <div class="st-mini__in">
+      <a data-m-link href="#" class="st-art" aria-label="Open episode page" data-m-art></a>
+      <div class="st-mini__t"><b data-m-title></b><small data-m-show></small></div>
+      <div class="st-mini__c">
+        <button type="button" data-m-back aria-label="Back 15 seconds" class="hide-sm">−15</button>
+        <button type="button" class="st-playbtn" data-m-play aria-label="Play" data-state="play"></button>
+        <button type="button" data-m-fwd aria-label="Forward 30 seconds" class="hide-sm">+30</button>
+        <button type="button" data-m-speed aria-label="Playback speed">1×</button>
+        <button type="button" data-m-close aria-label="Close player">×</button>
+      </div>
+      <div class="st-mini__bar"><span data-m-pos>0:00</span><input type="range" min="0" max="100" value="0" step="1" data-m-range aria-label="Seek" /><span data-m-dur>0:00</span></div>
+    </div>
+  </section>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import '../../days/day-053/mini';
+</script>

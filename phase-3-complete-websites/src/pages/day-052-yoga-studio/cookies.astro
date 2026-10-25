@@ -1,0 +1,24 @@
+---
+/** Day 052 · Stillwater · Cookies. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-052/Shell.astro';
+const B = '/day-052-yoga-studio';
+---
+<Site title="Cookies · Stillwater" description="Stillwater does not use cookies. This page explains the one small list your browser remembers so the timetable works." themeColor="#0c2a31" icon="S" day={52}>
+  <Shell>
+    <header class="sw-pagehead"><div class="sw-wrap"><ol class="sw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Cookies</li></ol><h1 class="sw-h1">Cookies.</h1></div></header>
+    <section class="sw-section"><div class="sw-wrap">
+      <div class="sw-prose">
+<p>Last updated 24 October 2026.</p>
+<h2>We do not use cookies</h2>
+<p>This website does not set any cookies. There are no advertising cookies, no analytics cookies and no third-party tracking.</p>
+<h2>What your browser remembers</h2>
+<p>To make the timetable work, the site stores one small list in your browser's local storage, under the name <b>stillwater-bookings</b>. It holds the classes you have booked on this device, so that the “Booked” count and “My classes” stay correct from page to page. It is not sent anywhere.</p>
+<h2>How to clear it</h2>
+<p>Cancel a class from “My classes” and it is removed from the list. To remove everything, clear this site's data in your browser settings.</p>
+<h2>Questions</h2>
+<p>Email <a href="mailto:hello@stillwateryoga.co.uk">hello@stillwateryoga.co.uk</a>.</p>
+      </div>
+    </div></section>
+  </Shell>
+</Site>

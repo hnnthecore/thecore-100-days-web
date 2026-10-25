@@ -1,0 +1,60 @@
+---
+/** Day 052 · Stillwater · pricing: drop-in, class pass and membership, a monthly / yearly toggle, a "how often do you practise?" estimator and FAQ. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-052/Shell.astro';
+
+const B = '/day-052-yoga-studio';
+const FAQ = [['Do I need to bring anything?', 'Just yourself and something comfortable. Mats, blocks, straps and blankets are all here for you.'], ['Can I freeze my membership?', 'Yes. Pause for up to two months a year, free of charge, for travel, injury or life.'], ['Do passes expire?', 'A 10-class pass is valid for six months, so you can practise at your own rhythm.'], ['What is your cancellation policy?', 'Cancel free up to two hours before class. After that, the class counts as used.'], ['Is there a student or concession rate?', 'Yes. Students, over-65s and NHS staff get 20% off any pass or membership.']];
+---
+<Site title="Pricing · Stillwater" description="Stillwater pricing: drop-in £14, 10-class pass £110 and unlimited membership from £69 a month. First class half price." themeColor="#0c2a31" icon="S" day={52}>
+  <Shell active="pricing">
+    <header class="sw-pagehead"><div class="sw-wrap"><ol class="sw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Pricing</li></ol><h1 class="sw-h1">Simple, <em>fair</em> pricing.</h1><p class="sw-lede mt-4">Pay as you go, buy a pass or become a member. Your first class is half price.</p>
+      <div class="sw-toggle mt-6" role="group" aria-label="Billing" data-bill><button type="button" data-p="month" aria-pressed="true">Monthly</button><button type="button" data-p="year" aria-pressed="false">Yearly · save 15%</button></div></div></header>
+    <section class="sw-section !pt-12"><div class="sw-wrap">
+      <ul class="sw-plans" role="list">
+        <li class="sw-plan"><h2 class="sw-h3">Drop-in</h2><p style="color:var(--muted)">One class, no strings.</p><p><b class="price">£14</b> <span style="color:var(--muted)">/ class</span></p><ul role="list"><li>Any class, any time</li><li>Mat and props included</li><li>First class £7</li></ul><a href={`${B}/timetable/`} class="sw-btn sw-btn--full">Book a class</a></li>
+        <li class="sw-plan"><h2 class="sw-h3">10-class pass</h2><p style="color:var(--muted)">Practise at your own rhythm.</p><p><b class="price">£110</b> <span style="color:var(--muted)">/ 10 classes</span></p><ul role="list"><li>Just £11 a class</li><li>Valid for six months</li><li>Share with a friend</li></ul><a href={`${B}/timetable/`} class="sw-btn sw-btn--full">Buy a pass</a></li>
+        <li class="sw-plan sw-plan--hot" data-member data-base="69"><span class="sw-flag">Best value</span><h2 class="sw-h3">Unlimited</h2><p style="color:var(--muted)">Come as often as you like.</p><p><b class="price" data-amount>£69</b> <span style="color:var(--muted)" data-per>/ month</span></p><ul role="list"><li>Unlimited classes</li><li>Free guest pass each month</li><li>Pause for up to two months</li><li>10% off workshops</li></ul><a href={`${B}/timetable/`} class="sw-btn sw-btn--coral sw-btn--full">Join today</a></li>
+      </ul>
+    </div></section>
+
+    <section class="sw-section sw-section--lilac" aria-labelledby="est-t"><div class="sw-wrap sw-split">
+      <div><h2 id="est-t" class="sw-h2 mt-3">How often will you practise?</h2></div>
+      <div class="sw-box" data-est><label for="e-n" class="sw-label">Classes per week: <output data-n>2</output></label><input id="e-n" type="range" min="1" max="6" value="2" style="width:100%;accent-color:var(--coral)" />
+        <ul class="mt-5 grid gap-3" role="list" data-rows></ul><p class="sw-h3 mt-5" data-best role="status" aria-live="polite"></p></div>
+    </div></section>
+
+    <section class="sw-section" aria-labelledby="faq-t"><div class="sw-wrap sw-split"><div><h2 id="faq-t" class="sw-h2 mt-3">Good to know.</h2></div><div class="sw-faq">{FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+  </Shell>
+</Site>
+
+<script>
+  let year = false;
+  const member = document.querySelector<HTMLElement>('[data-member]')!;
+  function paintBill() {
+    const base = Number(member.dataset.base);
+    member.querySelector('[data-amount]')!.textContent = '£' + (year ? Math.round(base * 0.85) : base);
+    member.querySelector('[data-per]')!.textContent = year ? `/ month, billed yearly (£${Math.round(base * 0.85 * 12)})` : '/ month';
+    document.querySelectorAll<HTMLButtonElement>('[data-bill] button').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.p === 'year') === year)));
+    paintEst();
+  }
+  document.querySelector('[data-bill]')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (b) { year = b.dataset.p === 'year'; paintBill(); }
+  });
+
+  /* Monthly cost of each option for a given weekly habit (4.33 weeks a month). */
+  const input = document.getElementById('e-n') as HTMLInputElement;
+  function paintEst() {
+    const n = Number(input.value);
+    document.querySelector('[data-n]')!.textContent = String(n);
+    const classes = n * 4.33;
+    const opts: [string, number][] = [['Drop-in', classes * 14], ['10-class pass', classes * 11], ['Unlimited membership', year ? 69 * 0.85 : 69]];
+    const best = Math.min(...opts.map((o) => o[1]));
+    document.querySelector('[data-rows]')!.innerHTML = opts.map(([name, cost]) => `<li class="flex justify-between gap-3" style="padding:.7rem 1rem;border-radius:1rem;background:${cost === best ? 'var(--sage)' : '#fff'}"><span>${name}</span><b>£${Math.round(cost)} / month</b></li>`).join('');
+    const bestName = opts.find((o) => o[1] === best)![0];
+    document.querySelector('[data-best]')!.textContent = `At ${n} class${n === 1 ? '' : 'es'} a week, ${bestName.toLowerCase()} costs you least.`;
+  }
+  input.addEventListener('input', paintEst);
+  paintBill();
+</script>

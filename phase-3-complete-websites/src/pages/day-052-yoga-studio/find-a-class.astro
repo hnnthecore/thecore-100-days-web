@@ -1,0 +1,85 @@
+---
+/** Day 052 · Stillwater · a four-question quiz that recommends a class style and links to its times. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-052/Shell.astro';
+
+const B = '/day-052-yoga-studio';
+const classes = await getCollection('yogaClasses');
+const data = classes.map((c) => ({ id: c.id, title: c.data.title, tagline: c.data.tagline, level: c.data.level, intensity: c.data.intensity, minutes: c.data.minutes }));
+---
+<Site title="Find your class · Stillwater" description="Answer four quick questions and we'll suggest the Stillwater class that fits you best." themeColor="#0c2a31" icon="S" day={52}>
+  <Shell active="quiz">
+    <header class="sw-pagehead"><div class="sw-wrap"><ol class="sw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Find my class</li></ol><h1 class="sw-h1">Find your <em>class.</em></h1><p class="sw-lede mt-4">Four questions, about a minute. There are no wrong answers.</p></div></header>
+    <section class="sw-section"><div class="sw-wrap" style="max-width:42rem">
+      <div class="sw-box" data-quiz>
+        <div data-run><div class="sw-prog" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" data-bar><i></i></div>
+          <p class="mt-5 sw-stepcount" data-step></p><h2 class="sw-h2 mt-2" style="font-size:2.2rem;max-width:none" data-q tabindex="-1"></h2><div class="sw-opts" data-opts></div></div>
+        <div data-result hidden tabindex="-1" class="text-center"><h2 class="sw-h1 mt-3" style="font-size:clamp(2.6rem,6vw,4rem)" data-title></h2><p class="sw-lede mx-auto mt-3" data-why></p>
+          <div class="mt-6 flex flex-wrap justify-center gap-3"><a class="sw-btn sw-btn--coral sw-btn--lg" data-book href={`${B}/timetable/`}>See times</a><a class="sw-btn sw-btn--lg" data-learn href={`${B}/classes/`}>Read about this class</a><button type="button" class="sw-btn sw-btn--lg" data-again>Start again</button></div></div>
+      </div>
+    </div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ data }}>
+  window.__classes = data;
+</script>
+<script>
+  type C = { id: string; title: string; tagline: string; level: string; intensity: number; minutes: number };
+  const classes = (window as unknown as { __classes: C[] }).__classes;
+  const base = location.pathname.replace(/find-a-class\/(index\.html)?$/, '');
+  const root = document.querySelector<HTMLElement>('[data-quiz]')!;
+  const $ = <T extends HTMLElement>(s: string) => root.querySelector<T>(s)!;
+
+  /* Each answer is a pair: a target intensity (1 to 5) or a flag the class must satisfy. */
+  const QS: { q: string; a: [string, Partial<Record<'int' | 'beginner' | 'short' | 'prenatal' | 'calm', number>>][] }[] = [
+    { q: 'How do you want to feel afterwards?', a: [['Calm and soft', { int: 1, calm: 1 }], ['Loose and stretched', { int: 2 }], ['Strong and capable', { int: 4 }], ['Sweaty and energised', { int: 5 }]] },
+    { q: 'How much yoga have you done?', a: [['None at all', { beginner: 1 }], ['A little, years ago', { beginner: 1 }], ['A fair bit', {}], ['I practise regularly', {}]] },
+    { q: 'How much time do you have?', a: [['About half an hour', { short: 1 }], ['Around an hour', {}], ['As long as it takes', {}]] },
+    { q: 'Anything we should know?', a: [['I am expecting a baby', { prenatal: 1 }], ['I have a stiff back or joints', { int: 2 }], ['My mind is very busy', { calm: 1 }], ['Nothing special', {}]] },
+  ];
+  let i = 0;
+  const picks: Partial<Record<'int' | 'beginner' | 'short' | 'prenatal' | 'calm', number>>[] = [];
+
+  function ask() {
+    const q = QS[i];
+    $('[data-step]').textContent = `Question ${i + 1} of ${QS.length}`;
+    $('[data-q]').textContent = q.q;
+    const bar = $('[data-bar]');
+    bar.setAttribute('aria-valuenow', String(i));
+    bar.querySelector<HTMLElement>('i')!.style.width = `${(i / QS.length) * 100}%`;
+    $('[data-opts]').innerHTML = q.a.map(([label], n) => `<button type="button" data-n="${n}">${label}</button>`).join('');
+    $('[data-q]').focus();
+  }
+  function recommend(): C {
+    const want = picks.reduce((acc, p) => ({ ...acc, ...p, int: p.int ?? acc.int }), {} as typeof picks[number]);
+    if (want.prenatal) return classes.find((c) => c.id === 'prenatal')!;
+    const score = (c: C) => {
+      let s = 0;
+      if (want.int) s -= Math.abs(c.intensity - want.int) * 2;
+      if (want.beginner && c.level === 'Intermediate') s -= 6;
+      if (want.beginner && c.level === 'Beginner') s += 2;
+      if (want.short && c.minutes <= 40) s += 4;
+      if (want.calm && /meditation|yin/.test(c.id)) s += 3;
+      return s;
+    };
+    return [...classes].filter((c) => c.id !== 'prenatal').sort((a, b) => score(b) - score(a))[0];
+  }
+  function finish() {
+    const c = recommend();
+    $('[data-title]').textContent = c.title;
+    $('[data-why]').textContent = `${c.tagline}. ${c.minutes} minutes, ${c.level.toLowerCase()}.`;
+    $<HTMLAnchorElement>('[data-book]').href = `${base}timetable/?c=${c.id}`;
+    $<HTMLAnchorElement>('[data-learn]').href = `${base}classes/${c.id}/`;
+    $('[data-run]').hidden = true;
+    const r = $('[data-result]'); r.hidden = false; r.focus();
+  }
+  root.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const o = t.closest<HTMLButtonElement>('[data-opts] button');
+    if (o) { picks.push(QS[i].a[Number(o.dataset.n)][1]); if (++i < QS.length) ask(); else finish(); return; }
+    if (t.closest('[data-again]')) { i = 0; picks.length = 0; $('[data-result]').hidden = true; $('[data-run]').hidden = false; ask(); }
+  });
+  ask();
+</script>

@@ -1,0 +1,25 @@
+---
+/** Day 052 · Stillwater · the four teachers from the "yogaTeachers" collection, with the classes each leads. */
+import { getCollection, render } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import { TEACHER_PHOTOS } from '../../days/day-052/photos';
+import Shell from '../../components/day-052/Shell.astro';
+
+const B = '/day-052-yoga-studio';
+const teachers = await Promise.all((await getCollection('yogaTeachers')).map(async (t) => ({ t, ...(await render(t)) })));
+const classes = await getCollection('yogaClasses');
+---
+<Site title="Teachers · Stillwater" description="Meet the four teachers at Stillwater yoga and pilates studio in Brighton: warm, qualified and endlessly patient." themeColor="#0c2a31" icon="S" day={52}>
+  <Shell active="teachers">
+    <header class="sw-pagehead"><div class="sw-wrap"><ol class="sw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Teachers</li></ol><h1 class="sw-h1">The people <em>behind the mat.</em></h1></div></header>
+    <section class="sw-section"><div class="sw-wrap"><ul class="sw-grid sw-grid--2" role="list">{teachers.map(({ t, Content }) => (
+      <li class="sw-card" id={t.id}>
+        <div class="flex items-center gap-5"><Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={200} height={200} class="sw-av sw-av--photo sw-av--lg" /><div><h2 class="sw-h3">{t.data.name}</h2><p>{t.data.role}</p><p style="color:var(--coral-d)">{t.data.years} years teaching</p></div></div>
+        <div class="mt-4"><Content /></div>
+        <p class="mt-4 font-medium">Leads</p>
+        <ul class="mt-2 flex flex-wrap gap-2" role="list">{classes.filter((c) => c.data.teacher === t.id).map((c) => <li><a href={`${B}/classes/${c.id}/`} class="sw-pill">{c.data.title}</a></li>)}</ul>
+      </li>
+    ))}</ul></div></section>
+  </Shell>
+</Site>

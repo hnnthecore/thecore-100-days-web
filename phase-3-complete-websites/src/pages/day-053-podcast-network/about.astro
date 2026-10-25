@@ -1,0 +1,36 @@
+---
+/** Day 053 · Static · about the network, how the player works, and a show pitch form. */
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-053/Shell.astro';
+
+const B = '/day-053-podcast-network';
+const VALUES = [['Slow on purpose', 'We publish fewer, better episodes. Every one is edited by a human who listened to the whole thing.'], ['Honest sound', 'Recorded on location where we can, with the real noise of the real place.'], ['Listeners first', 'No tracking pixels, no dark patterns and no mid-roll ads that interrupt a story.'], ['Hosts own their work', 'Every host keeps their rights, their audience and a fair share of what the show earns.']];
+---
+<Site title="About & pitch · Static" description="About the Static podcast network, our values, and how to pitch us a show." themeColor="#16181b" icon="S" day={53}>
+  <Shell active="about">
+    <header class="st-pagehead"><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">About</li></ol><h1 class="st-h1" style="font-size:clamp(2.4rem,6vw,4.6rem)">Made <span style="color:var(--tang)">slowly.</span></h1><p class="st-lede mt-3">Static started in a spare room with two microphones and a belief that listeners deserve better.</p></div></header>
+    <section class="st-section"><div class="st-wrap"><ul class="st-grid st-grid--4" role="list">{VALUES.map(([t, d]) => <li class="st-card"><h2 class="st-h3">{t}</h2><p class="mt-2">{d}</p></li>)}</ul></div></section>
+    <section class="st-section st-section--ink" id="pitch" aria-labelledby="pitch-t"><div class="st-wrap" style="max-width:44rem">
+      <h2 id="pitch-t" class="st-h2">Pitch a show</h2><p class="st-lede mt-3" style="color:#b3aed0">Tell us what you'd make, who it's for and why you.</p>
+      <form class="mt-8 grid gap-5" data-form novalidate>
+        <div class="st-field"><label for="p-name" class="st-label" style="color:#fff">Your name</label><input id="p-name" class="st-input" autocomplete="name" data-req aria-describedby="p-name-e" /><p class="st-err" id="p-name-e" hidden style="color:#ffb199">Please add your name.</p></div>
+        <div class="st-field"><label for="p-email" class="st-label" style="color:#fff">Email</label><input id="p-email" type="email" class="st-input" autocomplete="email" data-req aria-describedby="p-email-e" /><p class="st-err" id="p-email-e" hidden style="color:#ffb199">Enter an email like name@example.com.</p></div>
+        <div class="st-field"><label for="p-idea" class="st-label" style="color:#fff">Your idea</label><textarea id="p-idea" class="st-input" data-req aria-describedby="p-idea-e"></textarea><p class="st-err" id="p-idea-e" hidden style="color:#ffb199">Please describe your idea in a few words.</p></div>
+        <div><button type="submit" class="st-btn st-btn--tang st-btn--lg">Send pitch</button></div><p class="st-ok" role="status" data-ok style="color:#7fe3b5"></p>
+      </form>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  import { wire } from '../../days/shared/forms';
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const check = wire(form);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = form.querySelector<HTMLElement>('[data-ok]')!;
+    if (!check()) { ok.textContent = ''; return; }
+    ok.textContent = `Thanks ${(document.getElementById('p-name') as HTMLInputElement).value.trim().split(/\s+/)[0]}! We read every pitch within two weeks.`;
+    form.reset();
+  });
+</script>

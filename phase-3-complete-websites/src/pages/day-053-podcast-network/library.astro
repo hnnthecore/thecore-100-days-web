@@ -1,0 +1,60 @@
+---
+/** Day 053 · Static · "My library": continue listening where you stopped, and the shows you follow. Everything is stored on this device. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import Shell from '../../components/day-053/Shell.astro';
+import { hueOf } from '../../days/day-053/art';
+
+const B = '/day-053-podcast-network';
+const shows = await getCollection('shows');
+const eps = await getCollection('episodes');
+const index = {
+  eps: eps.map((e) => ({ id: e.id, title: e.data.title, show: shows.find((s) => s.id === e.data.show)!.data.title, showId: e.data.show, dur: e.data.minutes * 60, hue: hueOf(shows.find((s) => s.id === e.data.show)!.data.colour), date: e.data.date })),
+  shows: shows.map((s) => ({ id: s.id, title: s.data.title, tagline: s.data.tagline, colour: s.data.colour })),
+};
+---
+<Site title="My library · Static" description="Your listening history and followed shows on Static, kept on this device." themeColor="#16181b" icon="S" day={53}>
+  <Shell active="library">
+    <header class="st-pagehead"><div class="st-wrap"><ol class="st-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">My library</li></ol><h1 class="st-h1" style="font-size:clamp(2.4rem,6vw,4.6rem)">My <span style="color:var(--tang)">library.</span></h1><p class="st-lede mt-3">Your history and followed shows live on this device. No account needed.</p></div></header>
+    <section class="st-section"><div class="st-wrap st-split">
+      <div>
+        <div class="st-head"><h2 class="st-h2" style="font-size:2rem">Continue listening</h2><button type="button" class="st-btn st-btn--sm" data-clear hidden>Clear history</button></div>
+        <div data-hist></div>
+        <div class="st-card" hidden data-hist-empty><p class="st-h3">Nothing here yet.</p><p class="mt-2">Play any episode and it will appear here, ready to resume.</p><a href={`${B}/episodes/`} class="st-btn st-btn--tang mt-4">Find an episode</a></div>
+      </div>
+      <aside><h2 class="st-h3 mb-4" style="font-size:1.6rem">Following</h2><ul class="grid gap-3" role="list" data-follow-list></ul><p style="color:var(--muted)" data-follow-empty hidden>You are not following any shows. Tap "Follow" on a show page.</p></aside>
+    </div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ index, B }}>
+  window.__lib = { index, base: B };
+</script>
+<script>
+  import { history, follows, player, fmt, position } from '../../days/day-053/player';
+  type Ep = { id: string; title: string; show: string; showId: string; dur: number; hue: number; date: string };
+  type Show = { id: string; title: string; tagline: string; colour: string };
+  const { index } = (window as unknown as { __lib: { index: { eps: Ep[]; shows: Show[] } } }).__lib;
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const root = location.pathname.slice(0, location.pathname.indexOf('day-053-podcast-network/') + 'day-053-podcast-network/'.length);
+
+  function paint() {
+    const cur = player.state();
+    const rows = history.all().map((h) => ({ h, e: index.eps.find((x) => x.id === h.id) })).filter((r) => r.e) as { h: { id: string; pos: number }; e: Ep }[];
+    $('[data-hist]').innerHTML = rows.map(({ h, e }) => {
+      const pos = cur && cur.id === e.id ? position(cur) : h.pos;
+      const pct = Math.min(100, Math.round((pos / e.dur) * 100));
+      return `<div class="st-ep" style="grid-template-columns:1fr auto"><div><p class="meta"><span class="st-pill" style="--c:hsl(${e.hue} 80% 45%)">${esc(e.show)}</span></p><h3><a href="${root}episodes/${e.id}/index.html">${esc(e.title)}</a></h3><p>${pct >= 98 ? 'Finished' : `${fmt(pos)} of ${fmt(e.dur)}`}</p><div style="height:.4rem;border-radius:99px;background:var(--line);margin-top:.4rem;overflow:hidden"><i style="display:block;height:100%;width:${pct}%;background:var(--tang)"></i></div></div><button type="button" class="st-playbtn" data-play="${e.id}" data-title="${esc(e.title)}" data-show="${esc(e.show)}" data-dur="${e.dur}" data-hue="${e.hue}" aria-pressed="false" aria-label="Play ${esc(e.title)}">▶</button></div>`;
+    }).join('');
+    $<HTMLElement>('[data-hist-empty]').hidden = rows.length > 0;
+    $<HTMLElement>('[data-clear]').hidden = rows.length === 0;
+    const fl = follows.all().map((id) => index.shows.find((s) => s.id === id)).filter(Boolean) as Show[];
+    $('[data-follow-list]').innerHTML = fl.map((s) => `<li class="st-card" style="padding:1rem"><a href="${root}shows/${s.id}/index.html" class="st-h3" style="color:${s.colour}">${esc(s.title)}</a><p style="font-size:.9rem">${esc(s.tagline)}</p><button type="button" class="st-btn st-btn--sm mt-2" data-follow="${s.id}" aria-pressed="true">Following</button></li>`).join('');
+    $<HTMLElement>('[data-follow-empty]').hidden = fl.length > 0;
+  }
+  $('[data-clear]').addEventListener('click', () => history.clear());
+  addEventListener('player:change', paint);
+  addEventListener('follow:change', paint);
+  paint();
+</script>

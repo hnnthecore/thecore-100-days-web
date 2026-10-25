@@ -1,0 +1,52 @@
+---
+/** Day 052 · Stillwater · all classes from the "yogaClasses" collection, filterable by level and intensity. */
+import { getCollection } from 'astro:content';
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-052/Shell.astro';
+import { Image } from 'astro:assets';
+import { CLASS_PHOTOS } from '../../../days/day-052/photos';
+
+const B = '/day-052-yoga-studio';
+const classes = await getCollection('yogaClasses');
+const teachers = await getCollection('yogaTeachers');
+const tn = (id: string) => teachers.find((t) => t.id === id)?.data.name ?? '';
+---
+<Site title="Classes · Stillwater" description="Vinyasa, yin, hatha, power, prenatal, meditation, Pilates and mobility classes for every level at Stillwater in Brighton." themeColor="#0c2a31" icon="S" day={52}>
+  <Shell active="classes">
+    <header class="sw-pagehead"><div class="sw-wrap"><ol class="sw-crumbs" aria-label="Breadcrumb"><li><a href={`${B}/`}>Home</a></li><li aria-current="page">Classes</li></ol><h1 class="sw-h1">Our <em>classes.</em></h1><p class="sw-lede mt-4">Eight styles, from restful to energetic. Not sure where to start? <a href={`${B}/find-a-class/`} style="text-decoration:underline">Take the two-minute quiz</a>.</p></div></header>
+    <section class="sw-section !pt-10"><div class="sw-wrap">
+      <div class="mb-8 flex flex-wrap gap-x-10 gap-y-5">
+        <div><p class="sw-label" id="lv-l">Level</p><div class="sw-chips" role="group" aria-labelledby="lv-l" data-lv><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="Beginner" aria-pressed="false">Beginner</button><button type="button" data-v="All levels" aria-pressed="false">All levels</button><button type="button" data-v="Intermediate" aria-pressed="false">Intermediate</button></div></div>
+        <div><p class="sw-label" id="in-l">Energy</p><div class="sw-chips" role="group" aria-labelledby="in-l" data-in><button type="button" data-v="all" aria-pressed="true">Any</button><button type="button" data-v="soft" aria-pressed="false">Restful</button><button type="button" data-v="mid" aria-pressed="false">Moderate</button><button type="button" data-v="hard" aria-pressed="false">Energetic</button></div></div>
+      </div>
+      <p class="mb-5 font-medium" style="color:var(--muted)" role="status" data-count></p>
+      <ul class="sw-grid sw-grid--3" role="list">{classes.map((c) => (
+        <li data-c data-lv={c.data.level} data-in={c.data.intensity <= 2 ? 'soft' : c.data.intensity === 3 ? 'mid' : 'hard'}>
+          <a href={`${B}/classes/${c.id}/`} class="sw-class"><div class="sw-class__art"><Image src={CLASS_PHOTOS[c.id]} alt="" width={640} /></div>
+            <div class="sw-class__body"><p class="flex gap-2"><span class="sw-pill">{c.data.level}</span></p><h2 class="sw-h3">{c.data.title}</h2><p>{c.data.tagline}</p>
+              <p class="sw-meta"><span>{c.data.minutes} min</span><span>with {tn(c.data.teacher)}</span><span class="sw-dots" role="img" aria-label={`Intensity ${c.data.intensity} of 5`}>{[1, 2, 3, 4, 5].map((n) => <i class={n <= c.data.intensity ? 'on' : ''}></i>)}</span></p></div></a>
+        </li>
+      ))}</ul>
+      <p class="sw-lede mt-8" hidden data-empty>No classes match. Try a different level or energy.</p>
+    </div></section>
+  </Shell>
+</Site>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('[data-c]')];
+  const sel = { lv: 'all', in: 'all' };
+  function paint() {
+    let n = 0;
+    items.forEach((li) => { const ok = (sel.lv === 'all' || li.dataset.lv === sel.lv) && (sel.in === 'all' || li.dataset.in === sel.in); li.hidden = !ok; if (ok) n++; });
+    document.querySelector('[data-count]')!.textContent = `${n} class${n === 1 ? '' : 'es'}`;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  }
+  (['lv', 'in'] as const).forEach((k) => document.querySelector(`[data-${k}].sw-chips`)!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    sel[k] = b.dataset.v!;
+    b.parentElement!.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paint();
+  }));
+  paint();
+</script>

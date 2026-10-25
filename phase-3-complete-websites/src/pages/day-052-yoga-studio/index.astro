@@ -1,0 +1,114 @@
+---
+/** Day 052 · Stillwater · home: a one-minute breathing pacer beside today's classes, then the classes, a photo band, what a first class is like, the teachers, a quote and the offer. See days/day-052/DESIGN.md. */
+import { getCollection } from 'astro:content';
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import ph_b_jpg from '../../assets/day-052/b.jpg';
+import ph_c_jpg from '../../assets/day-052/c.jpg';
+import Shell from '../../components/day-052/Shell.astro';
+import { CLASS_PHOTOS, TEACHER_PHOTOS } from '../../days/day-052/photos';
+
+const B = '/day-052-yoga-studio';
+const classes = await getCollection('yogaClasses');
+const teachers = await getCollection('yogaTeachers');
+const info = Object.fromEntries(classes.map((c) => [c.id, { title: c.data.title, minutes: c.data.minutes }]));
+const LD = { '@context': 'https://schema.org', '@type': 'SportsActivityLocation', name: 'Stillwater', description: 'A yoga and pilates studio in Brighton with twenty-one classes a week.', telephone: '01632 960151', email: 'hello@stillwateryoga.co.uk', address: { '@type': 'PostalAddress', streetAddress: '9 Kensington Gardens', addressLocality: 'Brighton', postalCode: 'BN1 4AL', addressCountry: 'GB' } };
+const BEFORE = [['10 min', 'Before', 'Come early. We show you around, find you a mat, blocks and a blanket, and nobody minds if it is your first time.'], ['60 min', 'During', 'Follow at your own pace. Every pose has a gentler option, and resting is always allowed. The room is warm and softly lit.'], ['After', 'Afterwards', 'A long rest to finish, then tea in the lounge if you have time. Most people stay longer than they planned.']];
+---
+<Site title="Stillwater · Yoga and pilates studio in Brighton" description="Stillwater is a calm, welcoming yoga and pilates studio in Brighton. Twenty-one classes a week for every level. Breathe for a minute, then book." themeColor="#0c2a31" icon="S" day={52} jsonLd={LD}>
+  <Shell>
+    <section class="sw-hero" aria-labelledby="sw-t">
+      <div class="sw-wrap sw-hero__grid">
+        <div class="sw-pacer" data-pacer data-needs-js>
+          <div class="sw-pacer__stage" aria-hidden="true"><i class="sw-pacer__ring"></i><i class="sw-pacer__ring"></i><span class="sw-pacer__disc"></span><span class="sw-pacer__label" data-label>Ready when you are</span></div>
+          <p class="sw-pacer__time" data-time role="status"></p>
+          <button type="button" class="sw-btn sw-btn--plum sw-btn--lg" data-go>Breathe for a minute</button>
+        </div>
+        <div>
+          <h1 id="sw-t" class="sw-h1">Take one breath first.</h1>
+          <p class="sw-lede mt-5">Stillwater is a yoga and pilates studio in Brighton. Twenty-one classes a week, small groups, and teachers who remember your name. Here is what is on.</p>
+          <div data-today><h2 class="sw-h3 mt-8" data-today-title>Today at Stillwater</h2><div class="sw-today" data-today-list><a class="sw-today__row" href={`${B}/timetable/`}><time>Today</time><span><b>See the timetable</b><small>The next seven days, with spaces left</small></span></a></div></div>
+          <p class="mt-5"><a href={`${B}/timetable/`} class="sw-btn sw-btn--coral">Book a class</a> <a href={`${B}/find-a-class/`} class="sw-btn">Find my class</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sw-section sw-section--lilac" aria-labelledby="cl-t"><div class="sw-wrap" data-rise>
+      <div class="sw-head"><h2 id="cl-t" class="sw-h2">Something for every mood.</h2><a href={`${B}/classes/`} class="sw-btn">All classes</a></div>
+      <ul class="sw-grid sw-grid--4" role="list">{classes.slice(0, 4).map((c) => <li><a href={`${B}/classes/${c.id}/`} class="sw-class"><div class="sw-class__art"><Image src={CLASS_PHOTOS[c.id]} alt="" width={640} /></div><div class="sw-class__body"><h3 class="sw-h3">{c.data.title}</h3><p>{c.data.tagline}</p><p class="sw-meta"><span>{c.data.minutes} min</span><span>{c.data.level}</span></p></div></a></li>)}</ul>
+    </div></section>
+
+    <div class="sw-wrap sw-band mt-14" data-photo-band>
+      <figure><Image src={ph_b_jpg} alt="A mixed-age group sitting on mats in a calm yoga class" width={900} /><figcaption>All ages, all levels</figcaption></figure>
+      <figure><Image src={ph_c_jpg} alt="Two women in warrior pose in a minimalist studio" width={900} /><figcaption>Strong and soft</figcaption></figure>
+    </div>
+
+    <section class="sw-section" aria-labelledby="how-t"><div class="sw-wrap" data-rise>
+      <div class="sw-head"><h2 id="how-t" class="sw-h2">Nothing to prepare. Just come.</h2></div>
+      <ol class="sw-steps3" role="list">{BEFORE.map(([t, h, d]) => <li><time>{t}</time><h3 class="sw-h3">{h}</h3><p>{d}</p></li>)}</ol>
+    </div></section>
+
+    <section class="sw-section sw-section--lilac" aria-labelledby="tc-t"><div class="sw-wrap" data-rise>
+      <div class="sw-head"><h2 id="tc-t" class="sw-h2">Kind, curious, experienced.</h2><a href={`${B}/teachers/`} class="sw-btn">Meet everyone</a></div>
+      <ul class="sw-grid sw-grid--4" role="list">{teachers.map((t) => <li><Image src={TEACHER_PHOTOS[t.id]} alt={`Portrait of ${t.data.name}`} width={520} height={650} class="sw-portrait" /><h3 class="sw-h3">{t.data.name}</h3><p style="color:var(--muted)">{t.data.role}. {t.data.styles}.</p></li>)}</ul>
+    </div></section>
+
+    <section class="sw-section sw-section--plum"><div class="sw-wrap" style="max-width:56rem" data-rise><p class="sw-quote">“I walked in stressed and wired. An hour later I walked out lighter, and I’ve been back every week since.”</p><p class="mt-5" style="color:var(--muted)">Hannah, member since 2023</p></div></section>
+
+    <section class="sw-section" aria-labelledby="cta-t"><div class="sw-wrap"><div class="sw-hero__cta" style="background:var(--sun-soft);border-radius:0.6rem;padding:clamp(2rem,6vw,4rem)"><h2 id="cta-t" class="sw-h2">Your first class is half price.</h2><p class="sw-lede mt-4">Just £7 for any class this month. No commitment, no pressure.</p><p class="mt-7"><a href={`${B}/timetable/`} class="sw-btn sw-btn--plum sw-btn--lg">See the timetable</a> <a href={`${B}/pricing/`} class="sw-btn sw-btn--lg" style="background:rgb(12 42 49 / .1)">View pricing</a></p></div></div></section>
+  </Shell>
+</Site>
+
+<script define:vars={{ info }}>
+  window.__info = info;
+</script>
+<script>
+  import { upcoming } from '../../days/day-052/schedule';
+  const B = '/day-052-yoga-studio';
+  const info = (window as any).__info as Record<string, { title: string; minutes: number }>;
+
+  /* Today's classes (or tomorrow's, once today is over), with spaces left. */
+  const now = new Date();
+  const days = upcoming(now, 3);
+  const today = days[0].items;
+  const list = today.length ? today : (days.find((d, i) => i > 0 && d.items.length)?.items ?? []);
+  const title = document.querySelector<HTMLElement>('[data-today-title]')!;
+  title.textContent = today.length ? 'Today at Stillwater' : 'Tomorrow at Stillwater';
+  const host = document.querySelector<HTMLElement>('[data-today-list]')!;
+  if (list.length) {
+    host.innerHTML = list.slice(0, 4).map((s) => { const left = s.cap - s.booked; return `<a class="sw-today__row" href="${B}/timetable/?c=${s.cls}"><time>${s.time}</time><span><b>${info[s.cls].title}</b><small>${info[s.cls].minutes} min · ${s.room} room</small></span><span class="sw-today__left${left <= 3 ? ' is-low' : ''}">${left === 0 ? 'Full' : left + (left === 1 ? ' space left' : ' spaces left')}</span></a>`; }).join('');
+  }
+
+  /* One minute of breathing: four counts in, six out. */
+  const pacer = document.querySelector<HTMLElement>('[data-pacer]')!;
+  const go = pacer.querySelector<HTMLButtonElement>('[data-go]')!;
+  const label = pacer.querySelector<HTMLElement>('[data-label]')!;
+  const clock = pacer.querySelector<HTMLElement>('[data-time]')!;
+  let timer = 0, t0 = 0;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function stop(done: boolean) {
+    clearInterval(timer); timer = 0; pacer.classList.remove('is-on');
+    label.textContent = done ? 'That is one minute' : 'Ready when you are';
+    clock.textContent = done ? 'How do you feel? Today’s classes are just beside this.' : '';
+    go.textContent = done ? 'Breathe again' : 'Breathe for a minute';
+  }
+  go.addEventListener('click', () => {
+    if (timer) { stop(false); return; }
+    t0 = performance.now();
+    if (!reduce) pacer.classList.add('is-on');
+    go.textContent = 'Stop';
+    const tick = () => {
+      const s = (performance.now() - t0) / 1000;
+      if (s >= 60) { stop(true); return; }
+      label.textContent = s % 10 < 4 ? 'Breathe in' : 'Breathe out';
+      clock.textContent = Math.ceil(60 - s) + ' seconds left';
+    };
+    tick(); timer = window.setInterval(tick, 200);
+  });
+
+  if (!reduce) {
+    document.documentElement.classList.add('sw-js');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('[data-rise]').forEach((el) => io.observe(el));
+  }
+</script>

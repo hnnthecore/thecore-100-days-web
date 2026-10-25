@@ -1,0 +1,44 @@
+---
+/** Day 052 · Stillwater · masthead (with a my-bookings counter) and footer shared by every page. Links are root paths, made relative by the build. See days/day-052/DESIGN.md. */
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/hanken-grotesk';
+import '../../days/day-052/styles.css';
+import Mark from '../brand/Mark.astro';
+
+interface Props { active?: 'classes' | 'timetable' | 'teachers' | 'pricing' | 'quiz' }
+const { active } = Astro.props;
+const B = '/day-052-yoga-studio';
+const NAV = [['classes', 'Classes', `${B}/classes/`], ['timetable', 'Timetable', `${B}/timetable/`], ['teachers', 'Teachers', `${B}/teachers/`], ['pricing', 'Pricing', `${B}/pricing/`]] as const;
+---
+<div class="sw">
+  <header class="sw-header" data-header>
+    <div class="sw-wrap flex h-[4.5rem] items-center justify-between gap-6">
+      <a href={`${B}/`} class="sw-logo" aria-label="Stillwater yoga, home"><Mark site="day-052-yoga-studio" size={34} />Stillwater</a>
+      <nav aria-label="Main" class="hidden lg:block"><ul class="flex gap-1">{NAV.map(([k, l, h]) => <li><a href={h} class="sw-navlink" aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}</ul></nav>
+      <div class="flex items-center gap-2">
+        <a href={`${B}/timetable/#mine`} class="sw-mybook" aria-label="My bookings">Booked <b data-book-count>0</b></a>
+        <a href={`${B}/timetable/`} class="sw-btn sw-btn--coral hidden sm:inline-flex">Book a class</a>
+        <button type="button" class="sw-burger lg:hidden" data-burger aria-expanded="false" aria-controls="sw-menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="sw-menu" class="sw-menu lg:hidden" aria-label="Mobile" data-menu hidden><ul>{NAV.map(([k, l, h]) => <li><a href={h} aria-current={active === k ? 'page' : undefined}>{l}</a></li>)}<li><a href={`${B}/find-a-class/`} aria-current={active === 'quiz' ? 'page' : undefined}>Find my class</a></li><li><a href={`${B}/timetable/`}>Book a class</a></li></ul></nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="sw-footer">
+    <div class="sw-wrap grid grid-cols-2 gap-10 pt-14 lg:grid-cols-4">
+      <div class="col-span-2"><p class="sw-logo !text-white"><Mark site="day-052-yoga-studio" variant="tile" size={34} />Stillwater</p><p class="mt-4 max-w-sm text-white/75">A calm, welcoming yoga and pilates studio in Brighton. Twenty-one classes a week and a warm cup of tea after every one.</p></div>
+      <div><h2 class="sw-foot-h">Practise</h2><ul class="mt-3 grid gap-2"><li><a href={`${B}/classes/`}>Classes</a></li><li><a href={`${B}/timetable/`}>Timetable</a></li><li><a href={`${B}/find-a-class/`}>Find my class</a></li><li><a href={`${B}/pricing/`}>Pricing</a></li></ul></div>
+      <div><h2 class="sw-foot-h">Visit</h2><address class="mt-3 grid gap-1 not-italic text-white/80">9 Kensington Gardens<br />Brighton BN1 4AL<br />hello@stillwateryoga.co.uk<br />01632 960151</address><p class="mt-3 text-white/80"><a href={`${B}/privacy/`}>Privacy</a> · <a href={`${B}/cookies/`}>Cookies</a></p></div>
+    </div>
+    <div class="sw-wrap pb-6 pt-12"><p class="sw-foot-big" aria-hidden="true">Stillwater</p></div>
+  </footer>
+</div>
+<script>
+  import '../../days/shared/shell';
+  import { bookings } from '../../days/day-052/schedule';
+  const paint = () => document.querySelectorAll('[data-book-count]').forEach((el) => (el.textContent = String(bookings.all().length)));
+  paint();
+  addEventListener('bookings:change', paint);
+</script>
