@@ -1,0 +1,1 @@
+const order=VeloraStore.getOrder();if(!order){location.replace('shop.html')}else{document.querySelector('[data-confirmation-name]').textContent=`${order.name.split(' ')[0]}.`;document.querySelector('[data-confirmation-reference]').textContent=order.reference;document.querySelector('[data-confirmation-total]').textContent=VeloraStore.money.format(order.total)}
