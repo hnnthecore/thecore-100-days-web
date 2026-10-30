@@ -18,6 +18,11 @@ if (root) {
   addEventListener('keydown', (event) => { if (event.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') { setMenu(false); burger.focus(); } });
   matchMedia('(min-width: 1020px)').addEventListener('change', (event) => { if (event.matches) setMenu(false); });
 
+  /* Keep navigation as direct page loads and suppress WebKit's force-press destination preview. */
+  root.querySelectorAll<HTMLAnchorElement>('.e54-nav a, .e54-mobile-menu a').forEach((link) => {
+    link.addEventListener('webkitmouseforcewillbegin', (event) => event.preventDefault());
+  });
+
   const updateHeader = () => header.classList.toggle('is-scrolled', scrollY > 20);
   addEventListener('scroll', updateHeader, { passive: true });
   updateHeader();

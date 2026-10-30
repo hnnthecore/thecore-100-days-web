@@ -31,7 +31,7 @@ const isActive = (href: string) => current === href.replace(/\/+$/, '');
         <span><b>Nexora</b> Education</span>
       </a>
       <nav class="e54-nav" aria-label="Main navigation">
-        <ul>{NAV.map(([, label, href]) => <li><a href={href} aria-current={isActive(href) ? 'page' : undefined}>{label}</a></li>)}</ul>
+        <ul>{NAV.map(([, label, href]) => <li><a href={href} draggable="false" aria-current={isActive(href) ? 'page' : undefined}>{label}</a></li>)}</ul>
       </nav>
       <div class="e54-header__actions">
         <a class="e54-link-cta" href={`${B}/contact/`}>Talk to an adviser</a>
@@ -42,7 +42,7 @@ const isActive = (href: string) => current === href.replace(/\/+$/, '');
     </div>
     <nav class="e54-mobile-menu" id="e54-mobile-menu" data-menu aria-label="Mobile navigation" hidden>
       <div class="e54-wrap">
-        <ul>{NAV.map(([, label, href]) => <li><a href={href} aria-current={isActive(href) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a></li>)}</ul>
+        <ul>{NAV.map(([, label, href]) => <li><a href={href} draggable="false" aria-current={isActive(href) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a></li>)}</ul>
         <a class="e54-button e54-button--primary" href={`${B}/contact/`}>Start an enquiry</a>
       </div>
     </nav>
