@@ -1,0 +1,24 @@
+---
+const destination = './day-054-education/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <title>Opening Nexora Education…</title>
+    <script is:inline>
+      window.location.replace(new URL('day-054-education/', window.location.href).href);
+    </script>
+  </head>
+  <body>
+    <main>
+      <p>
+        Opening <a href={destination}>Nexora Education</a>…
+      </p>
+    </main>
+  </body>
+</html>

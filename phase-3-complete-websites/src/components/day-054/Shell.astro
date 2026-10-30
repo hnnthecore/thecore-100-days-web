@@ -1,0 +1,84 @@
+---
+/** Day 054 · Nexora Education · shared header, navigation and footer. */
+import '@fontsource-variable/inter';
+import '../../days/day-054/styles.css';
+import Mark from '../brand/Mark.astro';
+
+const B = '/day-054-education';
+const NAV = [
+  ['home', 'Home', `${B}/`],
+  ['about', 'About', `${B}/about/`],
+  ['programmes', 'Programmes', `${B}/programmes/`],
+  ['experience', 'Experience', `${B}/experience/`],
+  ['resources', 'Resources', `${B}/resources/`],
+  ['contact', 'Contact', `${B}/contact/`],
+] as const;
+const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => current === href.replace(/\/+$/, '');
+---
+<div class="e54">
+  <div class="e54-announcement">
+    <div class="e54-wrap e54-announcement__in">
+      <p><span>Nexora</span> Practical learning, designed around meaningful goals.</p>
+      <a href={`${B}/programmes/`}>View programmes <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  <header class="e54-header" data-header>
+    <div class="e54-wrap e54-header__in">
+      <a class="e54-logo" href={`${B}/`} aria-label="Nexora Education, home">
+        <Mark site="day-054-education" size={38} />
+        <span><b>Nexora</b> Education</span>
+      </a>
+      <nav class="e54-nav" aria-label="Main navigation">
+        <ul>{NAV.map(([, label, href]) => <li><a href={href} aria-current={isActive(href) ? 'page' : undefined}>{label}</a></li>)}</ul>
+      </nav>
+      <div class="e54-header__actions">
+        <a class="e54-link-cta" href={`${B}/contact/`}>Talk to an adviser</a>
+        <button class="e54-menu-button" type="button" data-burger aria-expanded="false" aria-controls="e54-mobile-menu" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="e54-mobile-menu" id="e54-mobile-menu" data-menu aria-label="Mobile navigation" hidden>
+      <div class="e54-wrap">
+        <ul>{NAV.map(([, label, href]) => <li><a href={href} aria-current={isActive(href) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a></li>)}</ul>
+        <a class="e54-button e54-button--primary" href={`${B}/contact/`}>Start an enquiry</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="e54-footer">
+    <div class="e54-wrap">
+      <div class="e54-footer__top">
+        <div class="e54-footer__lead">
+          <a class="e54-logo e54-logo--light" href={`${B}/`} aria-label="Nexora Education, home">
+            <Mark site="day-054-education" variant="tile" size={40} />
+            <span><b>Nexora</b> Education</span>
+          </a>
+          <p>Practical learning design for organisations, teams and independent learners who want knowledge to lead to action.</p>
+        </div>
+        <div>
+          <h2>Explore</h2>
+          <ul><li><a href={`${B}/about/`}>About</a></li><li><a href={`${B}/programmes/`}>Programmes</a></li><li><a href={`${B}/experience/`}>Learning experience</a></li><li><a href={`${B}/resources/`}>Resources</a></li></ul>
+        </div>
+        <div>
+          <h2>Next steps</h2>
+          <ul><li><a href={`${B}/contact/#questions`}>Questions</a></li><li><a href={`${B}/contact/`}>Make an enquiry</a></li><li><a href={`${B}/experience/`}>Learning approach</a></li><li><a href="#main">Back to top</a></li></ul>
+        </div>
+      </div>
+      <div class="e54-footer__bottom">
+        <p>© 2026 Nexora Education</p>
+        <p>Learning designed with clarity, care and purpose.</p>
+      </div>
+    </div>
+    <div class="e54-footer__word" aria-hidden="true">Learn forward.</div>
+  </footer>
+</div>
+
+<script>
+  import '../../days/day-054/main';
+</script>
+

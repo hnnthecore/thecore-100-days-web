@@ -1,0 +1,26 @@
+---
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import Shell from '../../../components/day-054/Shell.astro';
+import { PROGRAMMES } from '../../../days/day-054/content';
+import heroImage from '../../../assets/day-045/about-cafe.jpg';
+import businessImage from '../../../assets/day-044/feature-teams.jpg';
+import techImage from '../../../assets/day-051/team.jpg';
+import climateImage from '../../../assets/day-045/whiteboard.jpg';
+const B = '/day-054-education';
+const images = [
+  { src: businessImage, alt: 'A diverse team working through a leadership challenge together' },
+  { src: techImage, alt: 'Colleagues collaborating around a laptop during a practical learning session' },
+  { src: climateImage, alt: 'A facilitator leading a workshop at a whiteboard' },
+];
+---
+<Site title="Programmes · Nexora Education" description="Explore Nexora Education's adaptable learning programmes in leadership, digital practice and climate-ready communities." themeColor="#14213D" icon="N" day={54} origin="https://thecoretechnology.github.io/thecore-100-days-web/phase-3-complete-websites/site" showProjectBadge={false}>
+  <Shell>
+    <section class="e54-page-hero e54-page-hero--programmes" aria-labelledby="programmes-page-title"><div class="e54-wrap e54-page-hero__grid"><div><nav class="e54-breadcrumb" aria-label="Breadcrumb"><a href={`${B}/`}>Home</a><span aria-hidden="true">/</span><span>Programmes</span></nav><p class="e54-kicker">Learning pathways</p><h1 id="programmes-page-title" class="e54-display">Programmes built around <em>real decisions.</em></h1><p class="e54-page-hero__lede">Each pathway connects a clear learning goal with guided practice, collaborative sessions and a useful project outcome.</p></div><figure class="e54-page-hero__media"><Image src={heroImage} alt="Learners working together around a shared table" width={1200} loading="eager" /></figure></div></section>
+
+    <section class="e54-section e54-ivory" aria-labelledby="pathways-title"><div class="e54-wrap"><div class="e54-section-heading e54-section-heading--row" data-reveal><div><p class="e54-kicker">Current pathways</p><h2 id="pathways-title" class="e54-title">A focused starting point, <em>adapted to context.</em></h2></div><p class="e54-heading-note">Programme length and delivery rhythm are agreed after the audience, scope and intended outcomes are clear.</p></div><div class="e54-programme-list">{PROGRAMMES.map((programme, index) => <article id={programme.slug} class="e54-programme-detail" data-reveal><div class="e54-programme-detail__media"><Image src={images[index].src} alt={images[index].alt} width={1000} /></div><div class="e54-programme-detail__body"><div class="e54-programme__meta"><span>{programme.number}</span><p>{programme.tag}</p></div><h3>{programme.title}</h3><p class="e54-lede">{programme.summary}</p><dl><div><dt>Duration</dt><dd>{programme.duration}</dd></div><div><dt>Format</dt><dd>{programme.format}</dd></div></dl><h4>Learning objectives</h4><ul>{programme.objectives.map((objective) => <li>{objective}</li>)}</ul><a class="e54-button e54-button--primary" href={`${B}/contact/?programme=${encodeURIComponent(programme.title)}`}>Discuss this programme <span aria-hidden="true">↗</span></a></div></article>)}</div></div></section>
+
+    <section class="e54-section e54-white" aria-labelledby="custom-title"><div class="e54-wrap e54-editorial-split"><div data-reveal><p class="e54-kicker">Custom learning design</p><h2 id="custom-title" class="e54-title">Start with the change, not a catalogue.</h2></div><div class="e54-prose" data-reveal><p class="e54-lede">When an existing pathway is not the right fit, Nexora can shape a learning journey around a defined audience and practical outcome.</p><p>The first step is a discovery conversation about context, constraints and what learners should be able to decide, make or do differently.</p><a class="e54-text-link" href={`${B}/contact/?programme=Custom%20learning%20design`}>Discuss a custom brief <span aria-hidden="true">↗</span></a></div></div></section>
+  </Shell>
+</Site>
+

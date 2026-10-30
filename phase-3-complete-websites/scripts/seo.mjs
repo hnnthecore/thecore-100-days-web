@@ -11,6 +11,9 @@ import { fileURLToPath } from 'node:url';
 
 const OUT = fileURLToPath(new URL('../site/', import.meta.url));
 const ORIGIN = process.env.SITE_ORIGIN || 'https://hnnthecore.github.io/thecore-100-days-web/phase-3-complete-websites/site';
+const SITE_ORIGINS = {
+  'day-054-education': 'https://thecoretechnology.github.io/thecore-100-days-web/phase-3-complete-websites/site',
+};
 const posix = (p) => p.split(sep).join('/');
 
 async function* walk(dir) {
@@ -24,6 +27,7 @@ let sites = 0;
 for (const entry of await readdir(OUT, { withFileTypes: true })) {
   if (!entry.isDirectory() || !entry.name.startsWith('day-')) continue;
   const dir = join(OUT, entry.name);
+  const origin = process.env.SITE_ORIGIN || SITE_ORIGINS[entry.name] || ORIGIN;
   const pages = [];
   for await (const f of walk(dir)) {
     if (!f.endsWith('index.html')) continue;
@@ -33,9 +37,9 @@ for (const entry of await readdir(OUT, { withFileTypes: true })) {
   }
   pages.sort();
   const today = new Date().toISOString().slice(0, 10);
-  const urls = pages.map((p) => `  <url><loc>${ORIGIN}/${entry.name}/${p}</loc><lastmod>${today}</lastmod></url>`).join('\n');
+  const urls = pages.map((p) => `  <url><loc>${origin}/${entry.name}/${p}</loc><lastmod>${today}</lastmod></url>`).join('\n');
   await writeFile(join(dir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
-  await writeFile(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/${entry.name}/sitemap.xml\n`);
+  await writeFile(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${origin}/${entry.name}/sitemap.xml\n`);
   try {
     await stat(join(dir, '404/index.html'));
     const html = await readFile(join(dir, '404/index.html'), 'utf8');

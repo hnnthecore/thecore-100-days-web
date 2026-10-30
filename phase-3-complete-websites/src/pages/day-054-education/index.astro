@@ -1,0 +1,44 @@
+---
+import Site from '../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import Shell from '../../components/day-054/Shell.astro';
+import { PROGRAMMES, PRINCIPLES } from '../../days/day-054/content';
+import heroImage from '../../assets/day-045/about-group.jpg';
+import classroomImage from '../../assets/day-045/classroom.jpg';
+import businessImage from '../../assets/day-044/feature-teams.jpg';
+import techImage from '../../assets/day-051/team.jpg';
+import climateImage from '../../assets/day-045/whiteboard.jpg';
+
+const B = '/day-054-education';
+const images = [
+  { src: businessImage, alt: 'A diverse team working through a leadership challenge together' },
+  { src: techImage, alt: 'Colleagues collaborating around a laptop during a practical learning session' },
+  { src: climateImage, alt: 'A facilitator leading a workshop at a whiteboard' },
+];
+const LD = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Nexora Education', description: 'Practical, project-led learning designed for organisations, teams and independent learners.' };
+---
+<Site title="Nexora Education · Practical learning for meaningful progress" description="Nexora Education designs practical, project-led learning for organisations, teams and independent learners." themeColor="#14213D" icon="N" day={54} jsonLd={LD} origin="https://thecoretechnology.github.io/thecore-100-days-web/phase-3-complete-websites/site" showProjectBadge={false}>
+  <Shell>
+    <section class="e54-hero" aria-labelledby="hero-title">
+      <div class="e54-wrap e54-hero__grid">
+        <div class="e54-hero__copy">
+          <p class="e54-kicker e54-hero-step">Project-led education for a changing world</p>
+          <h1 id="hero-title" class="e54-display e54-hero-step">Learn forward.<br /><em>Build what matters.</em></h1>
+          <p class="e54-hero__lede e54-hero-step">Nexora designs practical learning experiences that turn important questions into confident action—for organisations, teams and independent learners.</p>
+          <div class="e54-actions e54-hero-step"><a class="e54-button e54-button--primary" href={`${B}/programmes/`}>Explore programmes <span aria-hidden="true">↗</span></a><a class="e54-text-link" href={`${B}/experience/`}>See how learning works <span aria-hidden="true">→</span></a></div>
+        </div>
+        <div class="e54-hero__visual e54-hero-step"><div class="e54-hero__frame"><Image src={heroImage} alt="A diverse group of adult learners listening together in a bright learning space" width={1200} loading="eager" /></div><div class="e54-hero__note e54-float"><span class="e54-hero__note-icon" aria-hidden="true">✦</span><p><small>Learning principle 01</small><b>Make before you memorise.</b></p></div></div>
+      </div>
+    </section>
+
+    <section class="e54-stats" aria-labelledby="framework-title"><div class="e54-wrap"><div class="e54-stats__intro" data-reveal><p id="framework-title">A clear path from question to outcome</p><span>A practical framework for purposeful learning</span></div><ul class="e54-stats__grid" role="list"><li data-reveal><strong>01</strong><span>Clarify the goal</span></li><li data-reveal><strong>02</strong><span>Design the journey</span></li><li data-reveal><strong>03</strong><span>Learn through practice</span></li><li data-reveal><strong>04</strong><span>Reflect and improve</span></li></ul></div></section>
+
+    <section class="e54-section e54-about" aria-labelledby="intro-title"><div class="e54-wrap e54-about__grid"><div class="e54-section-heading" data-reveal><p class="e54-kicker">About Nexora</p><h2 id="intro-title" class="e54-title">Education should move at the speed of <em>curiosity.</em></h2></div><div class="e54-about__copy" data-reveal><p class="e54-lede">We design learning around useful questions, active participation and thoughtful feedback.</p><p>Our role is to make the journey clear without removing the challenge that makes learning meaningful.</p><a class="e54-text-link" href={`${B}/about/`}>Meet Nexora <span aria-hidden="true">↗</span></a></div><figure class="e54-about__photo" data-reveal><Image src={classroomImage} alt="A facilitator leading a focused learning session" width={1200} /><figcaption><span>01</span> Space to listen, question and try again.</figcaption></figure><div class="e54-about__statement" data-reveal><span aria-hidden="true">“</span><p>Not education as a finish line. Education as a way of moving through the world.</p></div></div></section>
+
+    <section class="e54-section e54-programmes" aria-labelledby="featured-title"><div class="e54-wrap"><div class="e54-section-heading e54-section-heading--row" data-reveal><div><p class="e54-kicker">Featured programmes</p><h2 id="featured-title" class="e54-title">Choose a question worth <em>following.</em></h2></div><p class="e54-heading-note">Each pathway can be shaped around the audience, context and outcomes that matter.</p></div><div class="e54-programme-grid">{PROGRAMMES.map((programme, index) => <article class={`e54-programme e54-programme--${programme.colour}`} data-reveal><div class="e54-programme__image"><Image src={images[index].src} alt={images[index].alt} width={900} /></div><div class="e54-programme__body"><div class="e54-programme__meta"><span>{programme.number}</span><p>{programme.tag}</p></div><h3>{programme.title}</h3><p>{programme.summary}</p><a href={`${B}/programmes/#${programme.slug}`}>View programme <span aria-hidden="true">↗</span></a></div></article>)}</div><div class="e54-section-action" data-reveal><a class="e54-button e54-button--primary" href={`${B}/programmes/`}>View all programme details <span aria-hidden="true">↗</span></a></div></div></section>
+
+    <section class="e54-section e54-why" aria-labelledby="approach-title"><div class="e54-wrap e54-why__grid"><div class="e54-why__sticky" data-reveal><p class="e54-kicker e54-kicker--light">How learning works</p><h2 id="approach-title" class="e54-title e54-title--light">Serious learning.<br /><em>Human energy.</em></h2><p>A connected experience built around practice, conversation and reflection.</p><a class="e54-text-link e54-text-link--light" href={`${B}/experience/`}>Explore the experience <span aria-hidden="true">↗</span></a></div><ol class="e54-reasons">{PRINCIPLES.map((principle) => <li data-reveal><span class="e54-reasons__number">{principle.number}</span><span class="e54-reasons__icon" aria-hidden="true">✦</span><div><h3>{principle.title}</h3><p>{principle.text}</p></div></li>)}</ol></div></section>
+
+    <section class="e54-section e54-cta-band" aria-labelledby="home-cta-title"><div class="e54-wrap e54-cta-band__in" data-reveal><div><p class="e54-kicker">Start a conversation</p><h2 id="home-cta-title" class="e54-title">Bring us the learning challenge.</h2></div><div><p>Tell us who the learning is for, what needs to change and what a useful outcome would look like.</p><a class="e54-button e54-button--primary" href={`${B}/contact/`}>Talk to an adviser <span aria-hidden="true">↗</span></a></div></div></section>
+  </Shell>
+</Site>

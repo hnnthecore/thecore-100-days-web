@@ -1,0 +1,23 @@
+---
+import Site from '../../../layouts/Site.astro';
+import { Image } from 'astro:assets';
+import Shell from '../../../components/day-054/Shell.astro';
+import { PRINCIPLES } from '../../../days/day-054/content';
+import teamImage from '../../../assets/day-045/classroom.jpg';
+import collaborationImage from '../../../assets/day-045/about-cafe.jpg';
+const B = '/day-054-education';
+---
+<Site title="About · Nexora Education" description="Learn about Nexora Education's mission, educational philosophy and practical approach to learning design." themeColor="#14213D" icon="N" day={54} origin="https://thecoretechnology.github.io/thecore-100-days-web/phase-3-complete-websites/site" showProjectBadge={false}>
+  <Shell>
+    <section class="e54-page-hero e54-page-hero--about" aria-labelledby="about-page-title"><div class="e54-wrap e54-page-hero__grid"><div><nav class="e54-breadcrumb" aria-label="Breadcrumb"><a href={`${B}/`}>Home</a><span aria-hidden="true">/</span><span>About</span></nav><p class="e54-kicker">About Nexora</p><h1 id="about-page-title" class="e54-display">Learning with <em>purpose and direction.</em></h1><p class="e54-page-hero__lede">Nexora Education designs clear, participatory learning journeys for people and organisations working through meaningful change.</p></div><figure class="e54-page-hero__media"><Image src={teamImage} alt="A facilitator speaking with learners in a bright classroom" width={1200} loading="eager" /></figure></div></section>
+
+    <section class="e54-section e54-white" aria-labelledby="mission-title"><div class="e54-wrap e54-editorial-split"><div data-reveal><p class="e54-kicker">Our mission</p><h2 id="mission-title" class="e54-title">Make learning useful enough to <em>change what happens next.</em></h2></div><div class="e54-prose" data-reveal><p class="e54-lede">We believe education works best when people understand why they are learning, have room to make decisions and can see their progress.</p><p>Nexora brings structure to that process. We clarify the goal, shape a practical learning journey and create opportunities to apply, discuss and improve the work along the way.</p><p>Our vision is a learning culture where knowledge is not treated as a collection of answers, but as a resource for better questions, stronger judgement and thoughtful action.</p></div></div></section>
+
+    <section class="e54-section e54-ivory" aria-labelledby="philosophy-title"><div class="e54-wrap"><div class="e54-section-heading e54-section-heading--row" data-reveal><div><p class="e54-kicker">Educational philosophy</p><h2 id="philosophy-title" class="e54-title">Clarity without <em>oversimplifying.</em></h2></div><p class="e54-heading-note">Our principles guide how we frame content, facilitate participation and support meaningful progress.</p></div><div class="e54-value-grid">{PRINCIPLES.map((principle) => <article class="e54-value" data-reveal><span>{principle.number}</span><h3>{principle.title}</h3><p>{principle.text}</p></article>)}</div></div></section>
+
+    <section class="e54-section e54-navy" aria-labelledby="role-title"><div class="e54-wrap e54-image-split"><figure data-reveal><Image src={collaborationImage} alt="Two learners discussing work together over notebooks" width={1000} /></figure><div data-reveal><p class="e54-kicker e54-kicker--light">Our role</p><h2 id="role-title" class="e54-title e54-title--light">Structure the journey. Keep the thinking with the learner.</h2><p>We set a clear rhythm, create purposeful prompts and make feedback easier to use. Learners retain ownership of the decisions, the work and the meaning they take from it.</p><a class="e54-button e54-button--primary" href={`${B}/experience/`}>Explore the learning experience <span aria-hidden="true">↗</span></a></div></div></section>
+
+    <section class="e54-section e54-cta-band"><div class="e54-wrap e54-cta-band__in" data-reveal><div><p class="e54-kicker">Work with Nexora</p><h2 class="e54-title">Have a learning goal in mind?</h2></div><div><p>Share the audience, context and outcome. We will help you define a useful next conversation.</p><a class="e54-button e54-button--primary" href={`${B}/contact/`}>Start an enquiry <span aria-hidden="true">↗</span></a></div></div></section>
+  </Shell>
+</Site>
+

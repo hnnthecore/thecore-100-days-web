@@ -1,0 +1,31 @@
+---
+import Site from '../../../layouts/Site.astro';
+import Shell from '../../../components/day-054/Shell.astro';
+const B = '/day-054-education';
+const FAQ = [
+  ['Who are Nexora programmes designed for?', 'The pathways are designed for organisations, teams and independent learners who want learning to connect directly with meaningful work and real-world questions.'],
+  ['Can learning be delivered online or in person?', 'A programme can be designed for online, in-person or blended delivery. The right format depends on the learners, the subject and the intended outcomes.'],
+  ['Can a pathway be adapted to our needs?', 'Yes. The content and learning rhythm can be shaped after the audience, context, constraints and intended outcomes are clear.'],
+  ['What happens when I use this enquiry form?', 'The form validates your details in the browser. It will only transmit information after a secure submission endpoint is configured; until then, it clearly confirms that nothing was sent.'],
+];
+---
+<Site title="Contact · Nexora Education" description="Contact Nexora Education to discuss a programme, learning challenge or custom learning design brief." themeColor="#14213D" icon="N" day={54} origin="https://thecoretechnology.github.io/thecore-100-days-web/phase-3-complete-websites/site" showProjectBadge={false}>
+  <Shell>
+    <section class="e54-contact-hero" aria-labelledby="contact-page-title"><div class="e54-wrap"><nav class="e54-breadcrumb e54-breadcrumb--light" aria-label="Breadcrumb"><a href={`${B}/`}>Home</a><span aria-hidden="true">/</span><span>Contact</span></nav><p class="e54-kicker e54-kicker--light">Start a conversation</p><h1 id="contact-page-title" class="e54-display">Let’s define the <em>next useful step.</em></h1><p>Tell us about the audience, the learning goal and what meaningful progress would look like.</p></div></section>
+
+    <section class="e54-section e54-contact" aria-labelledby="enquiry-title"><div class="e54-wrap e54-contact__grid"><div class="e54-contact__copy" data-reveal><p class="e54-kicker e54-kicker--light">Programme enquiries</p><h2 id="enquiry-title" class="e54-title e54-title--light">Bring the context. We’ll help shape the question.</h2><p>Nexora can discuss an existing pathway or a custom learning brief. No commitment is implied by sharing an initial enquiry.</p><ul><li><span aria-hidden="true">✓</span> Begin with the audience and intended change</li><li><span aria-hidden="true">✓</span> Identify practical constraints and delivery needs</li><li><span aria-hidden="true">✓</span> Agree whether a deeper discovery conversation is useful</li></ul><div class="e54-contact-facts"><div><strong>Delivery</strong><span>Online, in-person or blended</span></div><div><strong>First conversation</strong><span>Audience, context and intended outcome</span></div></div></div>
+        <!-- Production integration point: set data-endpoint to a secure POST endpoint when one is available. -->
+        <form class="e54-form" data-form data-endpoint="" novalidate data-reveal>
+          <p class="e54-form__notice"><strong>Review your enquiry before sending.</strong> Secure online delivery is not connected yet, so this form checks your details without transmitting personal information.</p>
+          <div class="e54-field"><label for="e54-name">Your name</label><input id="e54-name" name="name" autocomplete="name" required aria-describedby="e54-name-error" /><p id="e54-name-error" class="e54-error" hidden>Please enter your name.</p></div>
+          <div class="e54-field"><label for="e54-email">Email address</label><input id="e54-email" name="email" type="email" autocomplete="email" required aria-describedby="e54-email-error" /><p id="e54-email-error" class="e54-error" hidden>Enter an email in the format name@example.com.</p></div>
+          <div class="e54-field"><label for="e54-interest">What are you interested in?</label><select id="e54-interest" name="interest" required aria-describedby="e54-interest-error"><option value="">Choose a pathway or service</option><option>Future-Ready Leadership</option><option>Human-Centred Digital Practice</option><option>Climate-Ready Communities</option><option>Custom learning design</option></select><p id="e54-interest-error" class="e54-error" hidden>Please choose an option.</p></div>
+          <div class="e54-field"><label for="e54-message">What would you like to learn or change?</label><textarea id="e54-message" name="message" rows="5" minlength="12" required aria-describedby="e54-message-help e54-message-error"></textarea><p id="e54-message-help" class="e54-help">A sentence or two is plenty.</p><p id="e54-message-error" class="e54-error" hidden>Please write at least 12 characters.</p></div>
+          <label class="e54-check"><input type="checkbox" name="confirm" required aria-describedby="e54-confirm-error" /><span>I confirm these enquiry details are accurate.</span></label><p id="e54-confirm-error" class="e54-error" hidden>Please confirm that the details are accurate.</p>
+          <button class="e54-button e54-button--primary" type="submit">Check enquiry details <span aria-hidden="true">↗</span></button><div class="e54-form__status" data-status role="status" tabindex="-1" hidden></div>
+        </form>
+      </div></section>
+
+    <section class="e54-section e54-faq" id="questions" aria-labelledby="questions-title"><div class="e54-wrap e54-faq__grid"><div class="e54-faq__intro" data-reveal><p class="e54-kicker">Questions, answered</p><h2 id="questions-title" class="e54-title">Before you get in touch.</h2><p>Useful details about delivery, adaptation and the current enquiry process.</p></div><div class="e54-accordion" data-reveal>{FAQ.map(([q, a], index) => <details open={index === 0}><summary><span>{q}</span><i aria-hidden="true"></i></summary><div><p>{a}</p></div></details>)}</div></div></section>
+  </Shell>
+</Site>

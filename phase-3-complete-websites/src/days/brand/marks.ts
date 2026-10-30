@@ -65,10 +65,10 @@ export const MARKS = {
     "tile": "#16181b",
     "tileMark": "<path d=\"M5 23a11 11 0 0 1 22 0\" fill=\"none\" stroke=\"#e3e5e8\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M16 24L21 13\" stroke=\"#e5322d\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><circle cx=\"16\" cy=\"24\" r=\"2.3\" fill=\"#ffb347\"/>"
   },
-  "day-054-college": {
-    "mark": "<path d=\"M5 29V14a11 11 0 0 1 22 0v15z\" fill=\"#14172e\"/><rect x=\"9\" y=\"13\" width=\"14\" height=\"2.6\" rx=\"1.3\" fill=\"#0f9d8a\"/><rect x=\"9\" y=\"18.2\" width=\"14\" height=\"2.6\" rx=\"1.3\" fill=\"#e8742a\"/><rect x=\"9\" y=\"23.4\" width=\"14\" height=\"2.6\" rx=\"1.3\" fill=\"#d6336c\"/>",
-    "tile": "#14172e",
-    "tileMark": "<path d=\"M7 27V14.5a9 9 0 0 1 18 0V27z\" fill=\"#f5f6fa\"/><rect x=\"10.5\" y=\"13.6\" width=\"11\" height=\"2.2\" rx=\"1.1\" fill=\"#0f9d8a\"/><rect x=\"10.5\" y=\"17.9\" width=\"11\" height=\"2.2\" rx=\"1.1\" fill=\"#e8742a\"/><rect x=\"10.5\" y=\"22.2\" width=\"11\" height=\"2.2\" rx=\"1.1\" fill=\"#d6336c\"/>"
+  "day-054-education": {
+    "mark": "<path d=\"M3.5 7.5c5.4 0 9.1 1.5 12.5 4.8v15.2c-3.4-3-7.1-4.4-12.5-4.4z\" fill=\"#3157D5\"/><path d=\"M28.5 7.5c-5.4 0-9.1 1.5-12.5 4.8v15.2c3.4-3 7.1-4.4 12.5-4.4z\" fill=\"#14213D\"/><path d=\"M16 12.3V5.8\" stroke=\"#3157D5\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"16\" cy=\"3.5\" r=\"2\" fill=\"#3157D5\"/>",
+    "tile": "#14213D",
+    "tileMark": "<path d=\"M4.5 8.5c4.9 0 8.2 1.4 11.5 4.3v13.7c-3.3-2.7-6.6-4-11.5-4z\" fill=\"#9FB2F2\"/><path d=\"M27.5 8.5c-4.9 0-8.2 1.4-11.5 4.3v13.7c3.3-2.7 6.6-4 11.5-4z\" fill=\"#FFFFFF\"/><path d=\"M16 12.8V6.5\" stroke=\"#9FB2F2\" stroke-width=\"1.9\" stroke-linecap=\"round\"/><circle cx=\"16\" cy=\"4.2\" r=\"1.8\" fill=\"#9FB2F2\"/>"
   },
   "day-055-wedding-venue": {
     "mark": "<path d=\"M3.5 28.5V13.2L16 4l12.5 9.2v15.3z\" fill=\"#9a2f22\"/><rect x=\"10\" y=\"15\" width=\"12\" height=\"13.5\" fill=\"#f4f3f0\"/><path d=\"M10 15l12 13.5M22 15L10 28.5\" stroke=\"#9a2f22\" stroke-width=\"1.6\"/><rect x=\"10\" y=\"15\" width=\"12\" height=\"13.5\" fill=\"none\" stroke=\"#9a2f22\" stroke-width=\"1.6\"/>",

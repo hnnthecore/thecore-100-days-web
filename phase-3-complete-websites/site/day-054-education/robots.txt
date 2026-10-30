@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thecoretechnology.github.io/thecore-100-days-web/phase-3-complete-websites/site/day-054-education/sitemap.xml
