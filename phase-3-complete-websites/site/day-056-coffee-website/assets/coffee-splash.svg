@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 500">
+  <defs>
+    <radialGradient id="coffee" cx="42%" cy="35%" r="72%">
+      <stop offset="0" stop-color="#b47a55"/>
+      <stop offset=".24" stop-color="#74432d"/>
+      <stop offset=".68" stop-color="#3a1b12"/>
+      <stop offset="1" stop-color="#1b0906"/>
+    </radialGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f0c69c" stop-opacity=".8"/>
+      <stop offset=".28" stop-color="#9a6345" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#120604" stop-opacity=".2"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"/>
+      <feOffset dy="18" result="offset"/>
+      <feColorMatrix in="offset" values="0 0 0 0 0.08 0 0 0 0 0.02 0 0 0 0 0.01 0 0 0 .46 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path fill="url(#coffee)" d="M95 331c31-35 68-48 111-48-25-37-44-77-36-121 2-13 9-34 20-31 11 4 6 23 5 34-4 36 12 73 40 96 5-62 31-118 80-154 11-8 30-19 37-8 7 10-9 23-18 32-38 37-56 91-47 143 36-61 93-103 159-125 14-5 36-8 39 5 4 14-17 22-31 28-52 23-95 64-119 115 54-35 121-50 185-39 15 3 38 10 35 24-3 13-27 12-42 12-52 0-103 22-139 60 46-12 95-5 136 20 12 8 30 23 21 35-8 11-27 0-40-6-57-27-128-18-176 22-42 34-100 40-151 16-38-18-67-59-51-90Z"/>
+    <path fill="url(#shine)" d="M125 319c53-38 117-40 171-11 47-70 113-116 190-135-77 32-139 88-174 160-60-35-127-40-187-14Z" opacity=".75"/>
+    <path fill="none" stroke="#c99470" stroke-opacity=".46" stroke-width="9" stroke-linecap="round" d="M179 294c19-18 38-29 64-33M291 260c20-44 49-78 90-104M350 304c43-24 87-33 135-26"/>
+    <g fill="url(#coffee)">
+      <circle cx="76" cy="257" r="23"/><circle cx="123" cy="181" r="13"/><circle cx="478" cy="101" r="17"/><circle cx="536" cy="170" r="10"/><circle cx="559" cy="320" r="19"/><circle cx="74" cy="397" r="15"/><circle cx="513" cy="404" r="10"/>
+      <path d="M99 237c-21-23-35-49-41-79 24 13 42 34 49 61 3 10 1 20-8 18ZM489 122c9-31 27-55 54-72-1 29-12 56-34 75-8 7-23 8-20-3Z"/>
+    </g>
+  </g>
+</svg>
