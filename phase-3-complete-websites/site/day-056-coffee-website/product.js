@@ -2,7 +2,21 @@
   const id=new URLSearchParams(location.search).get('id')||'vanilla-bean';
   const product=BreworaStore.product(id)||BREWORA_PRODUCTS[0];
   document.title=`${product.name} · BREWORA`;
-  document.querySelector('[data-product-visual]').innerHTML=BreworaUI.photo(product,true);
+  const visual=document.querySelector('[data-product-visual]');
+  visual.style.setProperty('--product-surface',product.tone);
+  visual.innerHTML=BreworaUI.gallery(product);
+  const mainImage=visual.querySelector('[data-gallery-main]');
+  visual.addEventListener('click',event=>{
+    const thumbnail=event.target.closest('[data-gallery-thumb]');
+    if(!thumbnail)return;
+    mainImage.src=thumbnail.dataset.src;
+    mainImage.alt=thumbnail.dataset.alt;
+    visual.querySelectorAll('[data-gallery-thumb]').forEach(button=>{
+      const active=button===thumbnail;
+      button.classList.toggle('is-active',active);
+      button.setAttribute('aria-pressed',String(active));
+    });
+  });
   document.querySelector('[data-product-badge]').textContent=product.badge;
   document.querySelector('[data-product-name]').textContent=product.name;
   document.querySelector('[data-product-notes]').textContent=product.notes;
